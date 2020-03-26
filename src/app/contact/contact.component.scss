@@ -1,0 +1,7 @@
+label > input[required="required"] {
+  content: "*"; color:red;
+}
+
+.required::after {
+  content: " *";
+}
