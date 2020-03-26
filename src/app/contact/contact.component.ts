@@ -38,8 +38,6 @@ export class ContactComponent implements OnInit {
   });
 
   allowSubmit: boolean;
-  showError: boolean;
-  showSuccess: boolean;
 
   constructor(private httpClient: HttpClient, private toastr: ToastrService) { }
 
@@ -110,14 +108,6 @@ export class ContactComponent implements OnInit {
     // setTimeout(() => {
     //   this.showError = false;
     // }, 5000);
-  }
-
-  closeSuccess() {
-    this.showSuccess = false;
-  }
-
-  closeError() {
-    this.showError = false;
   }
 
   async submitContactForm(): Promise<void> {

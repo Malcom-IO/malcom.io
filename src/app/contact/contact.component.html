@@ -8,26 +8,8 @@
 
   <section id="contact">
 
-    <!-- <div class="row justify-content-center" *ngIf="showSuccess" [@fadeAnimation]="'in'">
-      <div class="col-6">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <h4 class="alert-heading">Message Sent!</h4>
-          <p>Thank you for your interest in Malcom IO.</p>
-          <button type="button" class="close" (click)="closeSuccess()" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </div>
-    </div> -->
-
-      <div class="row justify-content-center" *ngIf="showError" [@fadeAnimation]="'in'">
-        <div class="col-6">
-
-        </div>
-      </div>
-
     <div class="row justify-content-center">
-      <div class="col-6">
+      <div class="col-lg-6 col-md-12">
 
         <div class="form-group">
           <label for="username" class="required">Your name</label>
@@ -101,7 +83,7 @@
     </div>
 
     <div class="row justify-content-center">
-      <div class="col-6">
+      <div class="col-lg-6 col-md-12">
         <re-captcha
           [formControlName]="'recaptcha'"
           name="captcha"
@@ -115,7 +97,7 @@
       </div>
     </div>
     <div class="row justify-content-center mt-3" *ngIf="contactForm">
-      <div class="col-6">
+      <div class="col-lg-6 col-md-12">
         <button class="btn btn-primary"
           (click)="submitContactForm()"
           [disabled]="contactForm.invalid || !allowSubmit">
