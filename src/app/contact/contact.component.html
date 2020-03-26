@@ -1,10 +1,10 @@
-<hr class="my-5" />
+<hr class="my-5"  #scrollPoint/>
 
 <h2 class="mb-2 font-weight-bold text-center blue-text">
   <i class="fas fa-address-card"></i> Contact us
 </h2>
 
-<form [formGroup]="contactForm" class="p-1 grey-text" >
+<form [formGroup]="contactForm" class="p-1 grey-text">
 
   <section id="contact">
 
@@ -25,7 +25,7 @@
               name="name"
               formControlName="name"
               [ngClass]="contactForm.controls.name.invalid ? 'is-invalid' : ''"
-              class="form-control" placeholder="Name" />
+              class="form-control" placeholder="Name"/>
             <div class="invalid-feedback">
               Name is required.
             </div>
@@ -103,6 +103,10 @@
           [disabled]="contactForm.invalid || !allowSubmit">
           Send <i class="fas fa-paper-plane ml-1"></i>
         </button>
+        <!-- <button class="btn btn-primary"
+          (click)="test()">
+          Send <i class="fas fa-paper-plane ml-1"></i>
+        </button> -->
       </div>
     </div>
 

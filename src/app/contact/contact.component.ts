@@ -1,5 +1,5 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -36,6 +36,8 @@ export class ContactComponent implements OnInit {
     body: new FormControl(''),
     recaptcha: new FormControl('')
   });
+
+  @ViewChild('scrollPoint', { static: false }) scrollPoint: ElementRef;
 
   allowSubmit: boolean;
 
@@ -95,9 +97,8 @@ export class ContactComponent implements OnInit {
   }
 
   test(): void {
-
-    this.showGenericSuccess();
-    this.showGenericError();
+    // this.showGenericSuccess();
+    // this.showGenericError();
 
     // this.validateRecaptcha();
     // console.log('recaptcha:', this.contactForm.value.recaptcha);
@@ -134,6 +135,8 @@ export class ContactComponent implements OnInit {
         this.showGenericError();
         console.error(result);
       }
+    } else {
+      this.scrollPoint.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
