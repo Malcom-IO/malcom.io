@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LogoComponent } from '../shared/logo.component';
 
 interface Feature {
   icon: string;
@@ -10,7 +11,7 @@ interface Feature {
 
 @Component({
   selector: 'app-quillquest',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, LogoComponent],
   templateUrl: './quillquest.component.html',
   styleUrl: './quillquest.component.scss',
 })
