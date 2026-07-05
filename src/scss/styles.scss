@@ -23,11 +23,32 @@ header,
 }
 
 #intro {
+  position: relative;
+  overflow: hidden;
   background-size: cover;
   background-color: $gray-800;
 }
 
+// Oversized brand spiral bleeding off the right edge — ties the hero to the mark.
+#intro::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  width: 82vmin;
+  height: 82vmin;
+  max-width: 760px;
+  max-height: 760px;
+  transform: translateY(-50%);
+  background: url("/assets/img/mark.svg") no-repeat center / contain;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
 #intro > .container-fluid {
+  position: relative;
+  z-index: 1;
   max-width: 43em;
 }
 
