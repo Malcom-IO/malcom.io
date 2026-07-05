@@ -1,90 +1,90 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
+import { Component, ViewChild, ElementRef, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
+import { firstValueFrom } from 'rxjs';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha-2';
+import { ToastService } from '../shared/toast.service';
 
 @Component({
   selector: 'app-contact',
+  imports: [ReactiveFormsModule, RecaptchaModule, RecaptchaFormsModule],
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss'],
+  styleUrl: './contact.component.scss',
   animations: [
     // the fade-in/fade-out animation.
     trigger('fadeAnimation', [
-
       // the "in" style determines the "resting" state of the element when it is visible.
       state('in', style({ opacity: 1 })),
 
-      // fade in when created. this could also be written as transition('void => *')
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(600)
-      ]),
+      // fade in when created.
+      transition(':enter', [style({ opacity: 0 }), animate(600)]),
 
-      // fade out when destroyed. this could also be written as transition('void => *')
-      transition(':leave',
-        animate(600, style({ opacity: 0 })))
-    ])
-  ]
+      // fade out when destroyed.
+      transition(':leave', animate(600, style({ opacity: 0 }))),
+    ]),
+  ],
 })
-export class ContactComponent implements OnInit {
-
-  contactForm: FormGroup = new FormGroup({
+export class ContactComponent {
+  contactForm = new FormGroup({
     name: new FormControl(''),
     email: new FormControl(''),
     subject: new FormControl(''),
     body: new FormControl(''),
-    recaptcha: new FormControl('')
+    recaptcha: new FormControl(''),
   });
 
-  @ViewChild('scrollPoint', { static: false }) scrollPoint: ElementRef;
+  @ViewChild('scrollPoint') scrollPoint!: ElementRef;
 
-  allowSubmit: boolean;
+  allowSubmit = false;
 
-  constructor(private httpClient: HttpClient, private toastr: ToastrService) { }
+  // reCAPTCHA manipulates the DOM and needs `window`, so it must only render in the
+  // browser — never during static prerendering.
+  protected readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  ngOnInit(): void {
+  constructor(
+    private httpClient: HttpClient,
+    private toast: ToastService,
+  ) {}
+
+  resolved(captchaResponse: string | null): void {
+    this.allowSubmit = !!captchaResponse;
   }
 
-  logForm() {
-    const name: string = this.contactForm.value.name;
-    const email: string = this.contactForm.value.email;
-    const subject: string = this.contactForm.value.subject;
-    const body: string = this.contactForm.value.body;
-
-    console.log('name:', name);
-    console.log('email:', email);
-    console.log('subject:', subject);
-    console.log('body:', body);
-  }
-
-  resolved(captchaResponse: string): void {
-    if (captchaResponse && captchaResponse !== null) {
-      this.allowSubmit = true;
-    } else {
-      this.allowSubmit = false;
-    }
-  }
-
-  validateEmail() {
-    const requiredErrors: ValidationErrors = Validators.required(this.contactForm.controls.email);
+  validateEmail(): void {
+    const requiredErrors: ValidationErrors | null = Validators.required(
+      this.contactForm.controls.email,
+    );
     if (requiredErrors === null) {
-      const emailErrors: ValidationErrors = Validators.email(this.contactForm.controls.email);
+      const emailErrors: ValidationErrors | null = Validators.email(
+        this.contactForm.controls.email,
+      );
       this.contactForm.controls.email.setErrors(emailErrors);
     } else {
       this.contactForm.controls.email.setErrors(requiredErrors);
     }
   }
 
-  validateName() {
-    const requiredErrors: ValidationErrors = Validators.required(this.contactForm.controls.name);
+  validateName(): void {
+    const requiredErrors: ValidationErrors | null = Validators.required(
+      this.contactForm.controls.name,
+    );
     if (requiredErrors !== null) {
       this.contactForm.controls.name.setErrors(requiredErrors);
     }
   }
 
-  validateRecaptcha() {
-    const requiredErrors: ValidationErrors = Validators.required(this.contactForm.controls.recaptcha);
+  validateRecaptcha(): void {
+    const requiredErrors: ValidationErrors | null = Validators.required(
+      this.contactForm.controls.recaptcha,
+    );
     if (requiredErrors !== null) {
       this.contactForm.controls.recaptcha.setErrors(requiredErrors);
     }
@@ -96,36 +96,22 @@ export class ContactComponent implements OnInit {
     this.validateRecaptcha();
   }
 
-  test(): void {
-    // this.showGenericSuccess();
-    // this.showGenericError();
-
-    // this.validateRecaptcha();
-    // console.log('recaptcha:', this.contactForm.value.recaptcha);
-    // this.contactForm.reset();
-
-    // this.showError = true;
-
-    // setTimeout(() => {
-    //   this.showError = false;
-    // }, 5000);
-  }
-
   async submitContactForm(): Promise<void> {
-
     this.validate();
 
     if (this.contactForm.valid) {
-      const data: any = {
+      const data = {
         name: this.contactForm.value.name,
         email: this.contactForm.value.email,
         body: this.contactForm.value.body,
         subject: this.contactForm.value.subject,
-        recaptchaResponse: this.contactForm.value.recaptcha
+        recaptchaResponse: this.contactForm.value.recaptcha,
       };
 
       const url = 'https://1kpckwhgib.execute-api.us-west-2.amazonaws.com/prod/contact-us';
-      const result: any = await this.httpClient.post(url, data).toPromise();
+      const result = await firstValueFrom(
+        this.httpClient.post<{ success: boolean }>(url, data),
+      );
 
       if (result.success) {
         this.allowSubmit = false;
@@ -140,12 +126,13 @@ export class ContactComponent implements OnInit {
     }
   }
 
-  showGenericSuccess() {
-    this.toastr.success('Thank you for your interest in Malcom IO.', 'Message Sent!');
+  showGenericSuccess(): void {
+    this.toast.success('Thank you for your interest in Malcom IO.', 'Message Sent!');
   }
 
-  showGenericError() {
-    const msg = 'Looks like something went wrong, we apologize for any inconvenience. Please try again later.';
-    this.toastr.error(msg, 'Message Not Sent.');
+  showGenericError(): void {
+    const msg =
+      'Looks like something went wrong, we apologize for any inconvenience. Please try again later.';
+    this.toast.error(msg, 'Message Not Sent.');
   }
 }

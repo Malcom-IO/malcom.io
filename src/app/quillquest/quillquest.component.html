@@ -1,0 +1,103 @@
+<!-- ============================================================
+     QuillQuest — mobile game landing page
+     Placeholder scaffolding. Replace copy, links, and screenshots
+     with the real QuillQuest assets when they're ready.
+     ============================================================ -->
+
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top malcom-navbar" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand font-monospace" routerLink="/home"><span class="green-text fw-bold">Malcom</span> IO</a>
+    <ul class="navbar-nav ms-auto flex-row gap-3">
+      <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
+      <li class="nav-item"><a class="nav-link active" routerLink="/quillquest">QuillQuest</a></li>
+    </ul>
+  </div>
+</nav>
+<!--/.Navbar-->
+
+<main class="qq">
+  <!--Hero-->
+  <section class="qq-hero text-center text-white d-flex align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <i class="fas fa-feather-pointed fa-4x mb-4"></i>
+          <h1 class="display-3 fw-bold mb-3">QuillQuest</h1>
+          <p class="lead mb-4">
+            Placeholder tagline — the one-line hook that makes people want to play QuillQuest.
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a [href]="appStoreUrl" class="btn btn-light btn-lg">
+              <i class="fab fa-apple me-2"></i> App Store
+            </a>
+            <a [href]="playStoreUrl" class="btn btn-light btn-lg">
+              <i class="fab fa-google-play me-2"></i> Google Play
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--/.Hero-->
+
+  <div class="container">
+    <!--Features-->
+    <section id="features" class="text-center py-5">
+      <h2 class="mb-5 fw-bold">Why you'll love it</h2>
+      <div class="row">
+        @for (feature of features; track feature.title) {
+          <div class="col-md-4 mb-4">
+            <i class="fas {{ feature.icon }} fa-3x green-text mb-3"></i>
+            <h4 class="fw-bold">{{ feature.title }}</h4>
+            <p class="grey-text">{{ feature.description }}</p>
+          </div>
+        }
+      </div>
+    </section>
+    <!--/.Features-->
+
+    <!--Screenshots-->
+    <section id="screenshots" class="text-center py-5">
+      <h2 class="mb-5 fw-bold">Take a look</h2>
+      <div class="row justify-content-center g-4">
+        @for (shot of screenshots; track shot) {
+          <div class="col-6 col-md-3">
+            <!-- Replace with: <img class="img-fluid rounded shadow-sm" src="/assets/quillquest/screen-{{ shot }}.png" alt="QuillQuest screenshot {{ shot }}" /> -->
+            <div class="qq-screenshot d-flex align-items-center justify-content-center rounded shadow-sm">
+              <span class="text-muted">Screenshot {{ shot }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+    <!--/.Screenshots-->
+
+    <!--Call to action-->
+    <section class="text-center py-5">
+      <h2 class="fw-bold mb-3">Ready to play?</h2>
+      <p class="grey-text mb-4">Placeholder — a short nudge to download the game.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
+          <i class="fab fa-apple me-2"></i> Download for iOS
+        </a>
+        <a [href]="playStoreUrl" class="btn btn-primary btn-lg">
+          <i class="fab fa-google-play me-2"></i> Get it on Android
+        </a>
+      </div>
+    </section>
+    <!--/.Call to action-->
+  </div>
+</main>
+
+<hr class="my-5" />
+
+<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark">
+  <div class="footer-copyright text-center py-3 font-monospace">
+    <a [href]="privacyUrl">Privacy Policy</a>
+    &nbsp;·&nbsp;
+    © Copyright: <a href="https://malcom.io"> Malcom IO</a> {{ currentDate | date: 'yyyy' }}
+  </div>
+</footer>
+<!-- Footer -->
