@@ -1,112 +1,101 @@
-<hr class="my-5"  #scrollPoint/>
+<hr class="my-5" #scrollPoint />
 
-<h2 class="mb-2 font-weight-bold text-center blue-text">
+<h2 class="mb-2 fw-bold text-center blue-text">
   <i class="fas fa-address-card"></i> Contact us
 </h2>
 
-<form [formGroup]="contactForm" class="p-1 grey-text">
+<form [formGroup]="contactForm" class="p-1 grey-text" ngSkipHydration>
 
   <section id="contact">
 
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-12">
 
-        <div class="form-group">
-          <label for="username" class="required">Your name</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="addon-wrapping">
-                <i class="fas fa-user"></i>
-              </span>
-            </div>
+        <div class="mb-3">
+          <label for="name" class="required">Your name</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
             <input
               type="text"
               id="name"
               name="name"
               formControlName="name"
-              [ngClass]="contactForm.controls.name.invalid ? 'is-invalid' : ''"
-              class="form-control" placeholder="Name"/>
+              [class.is-invalid]="contactForm.controls.name.invalid"
+              class="form-control" placeholder="Name" />
             <div class="invalid-feedback">
               Name is required.
             </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="username" class="required">Your email</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fas fa-envelope"></i>
-              </span>
-            </div>
+        <div class="mb-3">
+          <label for="email" class="required">Your email</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
             <input
               type="email"
               id="email"
               name="email"
               formControlName="email"
-              [ngClass]="contactForm.controls.email.invalid ? 'is-invalid' : ''"
+              [class.is-invalid]="contactForm.controls.email.invalid"
               class="form-control"
-              placeholder="Email"/>
+              placeholder="Email" />
             <div class="invalid-feedback">
               Please enter a valid email address.
             </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="username">Subject</label>
+        <div class="mb-3">
+          <label for="subject">Subject</label>
           <div class="input-group flex-nowrap">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fas fa-tag"></i>
-              </span>
-            </div>
+            <span class="input-group-text">
+              <i class="fas fa-tag"></i>
+            </span>
             <input type="text" id="subject" name="subject" formControlName="subject" class="form-control"
               placeholder="Subject" />
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="username">Your message</label>
+        <div class="mb-3">
+          <label for="body">Your message</label>
           <div class="input-group flex-nowrap">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fas fa-pen-square"></i>
-              </span>
-            </div>
-            <textarea class="form-control" formControlName="body" aria-label="With textarea" rows="8"></textarea>
+            <span class="input-group-text">
+              <i class="fas fa-square-pen"></i>
+            </span>
+            <textarea id="body" class="form-control" formControlName="body" aria-label="Your message" rows="8"></textarea>
           </div>
-
         </div>
       </div>
     </div>
 
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-12">
-        <re-captcha
-          [formControlName]="'recaptcha'"
-          name="captcha"
-          (resolved)="resolved($event)"
-          siteKey="6LcZleIUAAAAAMRW1yyDXvUHza9EBAesB0fKYMVz"
-          [ngClass]="contactForm.controls.recaptcha.invalid ? 'is-invalid' : ''"></re-captcha>
+        @if (isBrowser) {
+          <re-captcha
+            [formControlName]="'recaptcha'"
+            name="captcha"
+            (resolved)="resolved($event)"
+            siteKey="6LcZleIUAAAAAMRW1yyDXvUHza9EBAesB0fKYMVz"
+            [class.is-invalid]="contactForm.controls.recaptcha.invalid"></re-captcha>
+        }
         <div class="invalid-feedback">
           reCAPTCHA required.
         </div>
-        <!-- <re-captcha (resolved)="resolved($event)" siteKey="6LcZleIUAAAAAMRW1yyDXvUHza9EBAesB0fKYMVz"></re-captcha> -->
       </div>
     </div>
-    <div class="row justify-content-center mt-3" *ngIf="contactForm">
+
+    <div class="row justify-content-center mt-3">
       <div class="col-lg-6 col-md-12">
         <button class="btn btn-primary"
           (click)="submitContactForm()"
           [disabled]="contactForm.invalid || !allowSubmit">
-          Send <i class="fas fa-paper-plane ml-1"></i>
+          Send <i class="fas fa-paper-plane ms-1"></i>
         </button>
-        <!-- <button class="btn btn-primary"
-          (click)="test()">
-          Send <i class="fas fa-paper-plane ml-1"></i>
-        </button> -->
       </div>
     </div>
 

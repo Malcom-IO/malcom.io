@@ -1,0 +1,13 @@
+.qq-hero {
+  min-height: 60vh;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+  // TODO: swap for a real QuillQuest key-art background when available.
+  background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+}
+
+.qq-screenshot {
+  aspect-ratio: 9 / 16;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+}
