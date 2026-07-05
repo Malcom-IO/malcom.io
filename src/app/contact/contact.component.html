@@ -61,6 +61,7 @@
         <re-captcha
           [formControlName]="'recaptcha'"
           name="captcha"
+          theme="dark"
           (resolved)="resolved($event)"
           siteKey="6LcZleIUAAAAAMRW1yyDXvUHza9EBAesB0fKYMVz"
           [class.is-invalid]="contactForm.controls.recaptcha.invalid"></re-captcha>
