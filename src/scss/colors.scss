@@ -1,4 +1,14 @@
-.orange-text { color: color("orange"); }
-.blue-text { color: color("blue"); }
-.red-text { color: color("red"); }
-.green-text { color: color("green"); }
+// Brand text-color helpers, mapped onto Bootstrap 5's palette variables.
+// (Bootstrap 4's color() function was removed in Bootstrap 5.)
+.orange-text {
+  color: $orange;
+}
+.blue-text {
+  color: $blue;
+}
+.red-text {
+  color: $red;
+}
+.green-text {
+  color: $green;
+}
