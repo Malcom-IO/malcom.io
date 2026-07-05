@@ -57,3 +57,4 @@ aws-exports.js
 awsconfiguration.json
 # local image-review scratch page
 /image-preview.html
+/redesign-preview.html
