@@ -3,12 +3,13 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, TitleStrategy } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { SeoTitleStrategy } from './shared/seo-title-strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,8 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(),
-    provideAnimations(), provideClientHydration(),
+    provideAnimations(),
+    provideClientHydration(),
+    { provide: TitleStrategy, useClass: SeoTitleStrategy },
   ],
 };
