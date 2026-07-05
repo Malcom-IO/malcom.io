@@ -1,0 +1,12 @@
+{
+  "name": "malcom-contact-worker",
+  "private": true,
+  "description": "Cloudflare Worker for the malcom.io contact form (Turnstile + Resend).",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
