@@ -17,7 +17,7 @@ const ORIGIN = 'https://www.malcom.io';
 const DEFAULT_DESCRIPTION =
   'Malcom IO builds custom software — from medical software and health interoperability ' +
   'to the QuillQuest mobile game — with a passion for improving the world.';
-const DEFAULT_IMAGE = `${ORIGIN}/assets/img/logo.png`;
+const DEFAULT_IMAGE = `${ORIGIN}/assets/img/og-card.png`;
 
 /**
  * Sets the document title AND per-route Open Graph / Twitter / description / canonical
