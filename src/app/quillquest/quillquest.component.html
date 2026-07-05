@@ -5,99 +5,99 @@
      ============================================================ -->
 
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top malcom-navbar" data-bs-theme="dark">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/home"><app-logo></app-logo></a>
-    <ul class="navbar-nav ms-auto flex-row gap-3">
-      <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
-      <li class="nav-item"><a class="nav-link active" routerLink="/quillquest">QuillQuest</a></li>
-    </ul>
-  </div>
-</nav>
-<!--/.Navbar-->
-
-<main class="qq">
-  <!--Hero-->
-  <section class="qq-hero text-center text-white d-flex align-items-center">
+<header id="header">
+  <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" data-bs-theme="dark">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <i class="fas fa-feather-pointed fa-4x mb-4"></i>
-          <h1 class="display-3 fw-bold mb-3">QuillQuest</h1>
-          <p class="lead mb-4">
-            Placeholder tagline — the one-line hook that makes people want to play QuillQuest.
-          </p>
-          <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a [href]="appStoreUrl" class="btn btn-light btn-lg">
-              <i class="fab fa-apple me-2"></i> App Store
-            </a>
-            <a [href]="playStoreUrl" class="btn btn-light btn-lg">
-              <i class="fab fa-google-play me-2"></i> Google Play
-            </a>
-          </div>
+      <a class="navbar-brand" routerLink="/home"><app-logo></app-logo></a>
+      <ul class="navbar-nav ms-auto flex-row gap-4">
+        <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" routerLink="/quillquest">QuillQuest</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!--Hero-->
+  <section class="qq-hero">
+    <div class="container">
+      <div class="qq-hero-inner">
+        <i class="fas fa-feather-pointed fa-2x green-text d-block mb-4"></i>
+        <p class="eyebrow">A Malcom IO game</p>
+        <h1 class="display-mono qq-title">QuillQuest</h1>
+        <p class="lead-lg qq-tagline">
+          Placeholder tagline — the one-line hook that makes people want to play QuillQuest.
+        </p>
+        <div class="qq-cta">
+          <a [href]="appStoreUrl" class="btn btn-primary btn-lg"><i class="fab fa-apple me-2"></i> App Store</a>
+          <a [href]="playStoreUrl" class="btn btn-outline-light btn-lg"><i class="fab fa-google-play me-2"></i> Google Play</a>
         </div>
       </div>
     </div>
   </section>
-  <!--/.Hero-->
 
-  <div class="container">
-    <!--Features-->
-    <section id="features" class="text-center py-5">
-      <h2 class="mb-5 fw-bold">Why you'll love it</h2>
-      <div class="row">
+  <!--Features-->
+  <section id="features" class="section section-line">
+    <div class="container">
+      <p class="eyebrow">Why you'll love it</p>
+      <h2 class="h-section">Built to keep you playing</h2>
+      <div class="row g-4 mt-3">
         @for (feature of features; track feature.title) {
-          <div class="col-md-4 mb-4">
-            <i class="fas {{ feature.icon }} fa-3x green-text mb-3"></i>
-            <h4 class="fw-bold">{{ feature.title }}</h4>
-            <p class="grey-text">{{ feature.description }}</p>
-          </div>
-        }
-      </div>
-    </section>
-    <!--/.Features-->
-
-    <!--Screenshots-->
-    <section id="screenshots" class="text-center py-5">
-      <h2 class="mb-5 fw-bold">Take a look</h2>
-      <div class="row justify-content-center g-4">
-        @for (shot of screenshots; track shot) {
-          <div class="col-6 col-md-3">
-            <!-- Replace with: <img class="img-fluid rounded shadow-sm" src="/assets/quillquest/screen-{{ shot }}.png" alt="QuillQuest screenshot {{ shot }}" /> -->
-            <div class="qq-screenshot d-flex align-items-center justify-content-center rounded shadow-sm">
-              <span class="text-muted">Screenshot {{ shot }}</span>
+          <div class="col-md-4">
+            <div class="brand-card">
+              <i class="fas {{ feature.icon }} fa-2x green-text d-block mt-1 mb-3"></i>
+              <h3 class="h5 fw-semibold">{{ feature.title }}</h3>
+              <p class="text-muted-2 mb-0">{{ feature.description }}</p>
             </div>
           </div>
         }
       </div>
-    </section>
-    <!--/.Screenshots-->
+    </div>
+  </section>
 
-    <!--Call to action-->
-    <section class="text-center py-5">
-      <h2 class="fw-bold mb-3">Ready to play?</h2>
-      <p class="grey-text mb-4">Placeholder — a short nudge to download the game.</p>
-      <div class="d-flex flex-wrap justify-content-center gap-3">
-        <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-          <i class="fab fa-apple me-2"></i> Download for iOS
-        </a>
-        <a [href]="playStoreUrl" class="btn btn-primary btn-lg">
-          <i class="fab fa-google-play me-2"></i> Get it on Android
-        </a>
+  <!--Screenshots-->
+  <section id="screenshots" class="section section-line">
+    <div class="container">
+      <p class="eyebrow">Take a look</p>
+      <h2 class="h-section">Screens from the game</h2>
+      <div class="row g-4 mt-3 justify-content-center">
+        @for (shot of screenshots; track shot) {
+          <div class="col-6 col-md-3">
+            <!-- Replace with: <img class="qq-shot-img" src="/assets/quillquest/screen-{{ shot }}.png" alt="QuillQuest screenshot {{ shot }}" /> -->
+            <div class="qq-screenshot">
+              <span class="text-muted-2 small">Screenshot {{ shot }}</span>
+            </div>
+          </div>
+        }
       </div>
-    </section>
-    <!--/.Call to action-->
-  </div>
+      <p class="text-muted-2 small mt-4 font-monospace mb-0">
+        Placeholder frames — drop real screenshots into /assets/quillquest/.
+      </p>
+    </div>
+  </section>
+
+  <!--Call to action-->
+  <section class="section section-line text-center">
+    <div class="container">
+      <p class="eyebrow justify-content-center">Ready to play?</p>
+      <h2 class="h-section">Download QuillQuest</h2>
+      <div class="qq-cta justify-content-center mt-4">
+        <a [href]="appStoreUrl" class="btn btn-primary btn-lg"><i class="fab fa-apple me-2"></i> Download for iOS</a>
+        <a [href]="playStoreUrl" class="btn btn-outline-light btn-lg"><i class="fab fa-google-play me-2"></i> Get it on Android</a>
+      </div>
+    </div>
+  </section>
 </main>
 
-<hr class="my-5" />
-
-<!-- Footer -->
-<footer class="page-footer font-small unique-color-dark">
-  <div class="footer-copyright text-center py-3 font-monospace">
-    <a [href]="privacyUrl">Privacy Policy</a>
-    &nbsp;·&nbsp;
-    © Copyright: <a href="https://malcom.io"> Malcom IO</a> {{ currentDate | date: 'yyyy' }}
+<!--Footer-->
+<footer class="page-footer">
+  <div class="container py-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <a routerLink="/home" class="text-decoration-none"><app-logo></app-logo></a>
+    <div class="d-flex gap-4 font-monospace small">
+      <a routerLink="/home">Home</a>
+      <a routerLink="/quillquest">QuillQuest</a>
+      <a [href]="privacyUrl">Privacy</a>
+    </div>
+    <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO</div>
   </div>
 </footer>
-<!-- Footer -->

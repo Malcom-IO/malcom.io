@@ -1,13 +1,49 @@
 .qq-hero {
-  min-height: 60vh;
-  padding-top: 6rem;
-  padding-bottom: 4rem;
-  // TODO: swap for a real QuillQuest key-art background when available.
-  background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 12rem 0 6rem;
+  border-bottom: 1px solid var(--line-soft);
+  // subtle green glow so the game hero reads distinct from the studio site
+  background:
+    radial-gradient(130% 90% at 78% 15%, rgba(40, 167, 69, 0.13), transparent 58%),
+    var(--ground);
+}
+
+.qq-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 44rem;
+}
+
+.qq-title {
+  font-size: clamp(3rem, 10vw, 6rem);
+  margin: 0 0 1.25rem;
+}
+
+.qq-tagline {
+  max-width: 36rem;
+  margin-bottom: 2rem;
+}
+
+.qq-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .qq-screenshot {
   aspect-ratio: 9 / 16;
-  background-color: #e9ecef;
-  border: 1px solid #dee2e6;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qq-shot-img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--line);
 }
