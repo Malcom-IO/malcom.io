@@ -1,7 +1,36 @@
-label > input[required="required"] {
-  content: "*"; color:red;
+:host {
+  display: block;
+}
+
+.contact-form {
+  max-width: 660px;
+}
+
+.form-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
 }
 
 .required::after {
   content: " *";
+  color: var(--brand-bright);
+}
+
+.form-control {
+  background-color: var(--surface);
+  border-color: var(--line);
+  color: var(--text);
+}
+.form-control:focus {
+  background-color: var(--surface);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  color: var(--text);
+}
+.form-control::placeholder {
+  color: #6d7681;
 }
