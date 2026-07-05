@@ -1,0 +1,11 @@
+name = "malcom-contact"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# Non-secret config — safe to commit.
+# Secrets are set in Cloudflare, never here:
+#   npx wrangler secret put TURNSTILE_SECRET
+#   npx wrangler secret put RESEND_API_KEY
+[vars]
+MAIL_TO = "marcus@malcom.io"
+MAIL_FROM = "Malcom IO <contact@malcom.io>"
