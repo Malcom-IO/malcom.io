@@ -26,7 +26,7 @@ declare const turnstile: {
 
 // Cloudflare Worker (Turnstile verify + Resend email). Replaces the old AWS Lambda.
 const CONTACT_ENDPOINT = 'https://malcom-contact.malcomio.workers.dev';
-const TURNSTILE_SITE_KEY = '0x4AAAAAAADwMRSPJhDBDL3BT';
+const TURNSTILE_SITE_KEY = '0x4AAAAAADwMRSPJhDBDL3BT';
 
 @Component({
   selector: 'app-contact',
