@@ -58,3 +58,8 @@ awsconfiguration.json
 # local image-review scratch page
 /image-preview.html
 /redesign-preview.html
+/contact-backend-options.html
+
+# Cloudflare Worker local dev (never commit)
+.dev.vars
+.wrangler/
