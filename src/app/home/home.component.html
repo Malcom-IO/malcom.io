@@ -6,7 +6,7 @@
       <ul class="navbar-nav ms-auto flex-row gap-4">
         <li class="nav-item"><a class="nav-link active" routerLink="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/quillquest">QuillQuest</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact" (click)="scrollToSection('contact', $event)">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -23,8 +23,8 @@
         Our focus is software — but we love building anything interesting that improves the world.
       </p>
       <div class="hero-cta">
-        <a href="#what-we-do" class="btn btn-primary btn-lg">See what we do</a>
-        <a href="#contact" class="btn btn-outline-light btn-lg">Get in touch</a>
+        <a href="#what-we-do" (click)="scrollToSection('what-we-do', $event)" class="btn btn-primary btn-lg">See what we do</a>
+        <a href="#contact" (click)="scrollToSection('contact', $event)" class="btn btn-outline-light btn-lg">Get in touch</a>
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@
     <div class="d-flex gap-4 font-monospace small">
       <a routerLink="/home">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
-      <a href="#contact">Contact</a>
+      <a href="#contact" (click)="scrollToSection('contact', $event)">Contact</a>
     </div>
     <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO</div>
   </div>
