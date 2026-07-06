@@ -34,3 +34,17 @@
 .form-control::placeholder {
   color: #6d7681;
 }
+
+// Honeypot — visually removed, still submitted; bots fill it, humans don't.
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cf-turnstile-host {
+  min-height: 65px;
+}

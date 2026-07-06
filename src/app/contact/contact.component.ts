@@ -1,5 +1,12 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, ViewChild, ElementRef, inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  inject,
+  PLATFORM_ID,
+  AfterViewInit,
+  NgZone,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import {
   FormGroup,
@@ -10,52 +17,81 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha-2';
 import { ToastService } from '../shared/toast.service';
+
+declare const turnstile: {
+  render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+  reset: (el?: HTMLElement) => void;
+};
+
+// Cloudflare Worker (Turnstile verify + Resend email). Replaces the old AWS Lambda.
+const CONTACT_ENDPOINT = 'https://malcom-contact.malcomio.workers.dev';
+const TURNSTILE_SITE_KEY = '0x4AAAAAAADwMRSPJhDBDL3BT';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, RecaptchaModule, RecaptchaFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
-  animations: [
-    // the fade-in/fade-out animation.
-    trigger('fadeAnimation', [
-      // the "in" style determines the "resting" state of the element when it is visible.
-      state('in', style({ opacity: 1 })),
-
-      // fade in when created.
-      transition(':enter', [style({ opacity: 0 }), animate(600)]),
-
-      // fade out when destroyed.
-      transition(':leave', animate(600, style({ opacity: 0 }))),
-    ]),
-  ],
 })
-export class ContactComponent {
+export class ContactComponent implements AfterViewInit {
   contactForm = new FormGroup({
     name: new FormControl(''),
     email: new FormControl(''),
     subject: new FormControl(''),
     body: new FormControl(''),
-    recaptcha: new FormControl(''),
+    website: new FormControl(''), // honeypot — humans leave this empty
   });
 
   @ViewChild('scrollPoint') scrollPoint!: ElementRef;
+  @ViewChild('turnstile') turnstileEl?: ElementRef<HTMLElement>;
 
-  allowSubmit = false;
-
-  // reCAPTCHA manipulates the DOM and needs `window`, so it must only render in the
-  // browser — never during static prerendering.
   protected readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly zone = inject(NgZone);
+
+  turnstileToken: string | null = null;
+  sending = false;
 
   constructor(
     private httpClient: HttpClient,
     private toast: ToastService,
   ) {}
 
-  resolved(captchaResponse: string | null): void {
-    this.allowSubmit = !!captchaResponse;
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.renderTurnstile();
+    }
+  }
+
+  /** Render the Turnstile widget, waiting for its async script to load. */
+  private renderTurnstile(attempts = 0): void {
+    if (!this.turnstileEl) {
+      return;
+    }
+    if (typeof turnstile === 'undefined') {
+      if (attempts < 100) {
+        setTimeout(() => this.renderTurnstile(attempts + 1), 100);
+      }
+      return;
+    }
+    turnstile.render(this.turnstileEl.nativeElement, {
+      sitekey: TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      callback: (token: string) => this.zone.run(() => (this.turnstileToken = token)),
+      'error-callback': () => this.zone.run(() => (this.turnstileToken = null)),
+      'expired-callback': () => this.zone.run(() => (this.turnstileToken = null)),
+    });
+  }
+
+  private resetTurnstile(): void {
+    this.turnstileToken = null;
+    if (this.isBrowser && typeof turnstile !== 'undefined' && this.turnstileEl) {
+      try {
+        turnstile.reset(this.turnstileEl.nativeElement);
+      } catch {
+        /* widget may not be mounted yet */
+      }
+    }
   }
 
   validateEmail(): void {
@@ -81,48 +117,45 @@ export class ContactComponent {
     }
   }
 
-  validateRecaptcha(): void {
-    const requiredErrors: ValidationErrors | null = Validators.required(
-      this.contactForm.controls.recaptcha,
-    );
-    if (requiredErrors !== null) {
-      this.contactForm.controls.recaptcha.setErrors(requiredErrors);
-    }
-  }
-
   validate(): void {
     this.validateName();
     this.validateEmail();
-    this.validateRecaptcha();
   }
 
   async submitContactForm(): Promise<void> {
     this.validate();
 
-    if (this.contactForm.valid) {
-      const data = {
-        name: this.contactForm.value.name,
-        email: this.contactForm.value.email,
-        body: this.contactForm.value.body,
-        subject: this.contactForm.value.subject,
-        recaptchaResponse: this.contactForm.value.recaptcha,
-      };
+    if (!this.contactForm.valid || !this.turnstileToken) {
+      this.scrollPoint.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
 
-      const url = 'https://1kpckwhgib.execute-api.us-west-2.amazonaws.com/prod/contact-us';
+    this.sending = true;
+    const data = {
+      name: this.contactForm.value.name,
+      email: this.contactForm.value.email,
+      subject: this.contactForm.value.subject,
+      body: this.contactForm.value.body,
+      website: this.contactForm.value.website, // honeypot
+      token: this.turnstileToken,
+    };
+
+    try {
       const result = await firstValueFrom(
-        this.httpClient.post<{ success: boolean }>(url, data),
+        this.httpClient.post<{ success?: boolean }>(CONTACT_ENDPOINT, data),
       );
-
-      if (result.success) {
-        this.allowSubmit = false;
+      if (result?.success) {
         this.contactForm.reset();
+        this.resetTurnstile();
         this.showGenericSuccess();
       } else {
         this.showGenericError();
-        console.error(result);
       }
-    } else {
-      this.scrollPoint.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    } catch {
+      this.showGenericError();
+      this.resetTurnstile();
+    } finally {
+      this.sending = false;
     }
   }
 
