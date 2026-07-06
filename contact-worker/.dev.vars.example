@@ -1,0 +1,9 @@
+# Local dev only. Copy this to `.dev.vars` (which is gitignored) and fill in real
+# values ONLY if you want to run `npx wrangler dev` locally.
+#
+# For DEPLOY you do NOT need this file — secrets go straight to Cloudflare with:
+#   npx wrangler secret put TURNSTILE_SECRET
+#   npx wrangler secret put RESEND_API_KEY
+
+TURNSTILE_SECRET=your-turnstile-secret-key
+RESEND_API_KEY=your-resend-api-key
