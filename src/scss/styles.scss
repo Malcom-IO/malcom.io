@@ -221,6 +221,20 @@ section[id] {
   transform: translateY(0);
 }
 
+// ----------------------------------------------------------- scroll reveal
+.reveal-init {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal-init.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
 // ----------------------------------------------------------- reduced motion
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -233,5 +247,10 @@ section[id] {
   }
   .brand-card:hover {
     transform: none;
+  }
+  // never leave reveal content hidden when motion is off
+  .reveal-init {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
