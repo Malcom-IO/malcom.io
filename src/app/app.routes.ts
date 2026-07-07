@@ -32,6 +32,7 @@ export const routes: Routes = [
         'QuillQuest is a free, offline spelling game for grades 3–8 — no ads, no tracking, ' +
         'no accounts. Hear a word, spell it, and climb the ranks.',
       ogImage: QQ_OG_IMAGE,
+      ogImageAlt: 'QuillQuest — a spelling adventure for kids',
     } satisfies SeoData,
   },
   {
