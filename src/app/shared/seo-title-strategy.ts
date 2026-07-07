@@ -9,6 +9,11 @@ export interface SeoData {
   ogTitle?: string;
   /** Absolute URL to a share image (defaults to the site logo). */
   ogImage?: string;
+  /** Share-image pixel size — defaults to the standard 1200×630 card. */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  /** Alt text for the share image (defaults to the share title). */
+  ogImageAlt?: string;
   /** e.g. 'noindex' to keep a page out of search results. */
   robots?: string;
 }
@@ -46,6 +51,16 @@ export class SeoTitleStrategy extends TitleStrategy {
     const description = data.description ?? DEFAULT_DESCRIPTION;
     const shareTitle = data.ogTitle ?? title ?? 'Malcom IO';
     const image = data.ogImage ?? DEFAULT_IMAGE;
+    const imageAlt = data.ogImageAlt ?? shareTitle;
+    // Explicit dimensions/type let scrapers render the large card on the first
+    // scrape instead of showing a blank/small one until they measure the file.
+    const imageWidth = data.ogImageWidth ?? 1200;
+    const imageHeight = data.ogImageHeight ?? 630;
+    const imageType = image.endsWith('.webp')
+      ? 'image/webp'
+      : /\.jpe?g$/.test(image)
+        ? 'image/jpeg'
+        : 'image/png';
     const url = `${ORIGIN}${snapshot.url}`;
 
     this.meta.updateTag({ name: 'description', content: description });
@@ -53,9 +68,14 @@ export class SeoTitleStrategy extends TitleStrategy {
     this.meta.updateTag({ property: 'og:description', content: description });
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ property: 'og:image', content: image });
+    this.meta.updateTag({ property: 'og:image:width', content: String(imageWidth) });
+    this.meta.updateTag({ property: 'og:image:height', content: String(imageHeight) });
+    this.meta.updateTag({ property: 'og:image:type', content: imageType });
+    this.meta.updateTag({ property: 'og:image:alt', content: imageAlt });
     this.meta.updateTag({ name: 'twitter:title', content: shareTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
     this.meta.updateTag({ name: 'twitter:image', content: image });
+    this.meta.updateTag({ name: 'twitter:image:alt', content: imageAlt });
 
     if (data.robots) {
       this.meta.updateTag({ name: 'robots', content: data.robots });
