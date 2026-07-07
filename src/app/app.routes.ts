@@ -6,7 +6,9 @@ import { QuillquestSupportComponent } from './quillquest/quillquest-support.comp
 import { AuthComponent } from './auth/auth.component';
 import { SeoData } from './shared/seo-title-strategy';
 
-const QQ_OG_IMAGE = 'https://www.malcom.io/assets/quillquest/icon.png';
+// Purpose-built 1200×630 share card (twitter:card is summary_large_image, so a
+// square icon would get cropped). Regenerate with scripts/make-og-card.mjs if edited.
+const QQ_OG_IMAGE = 'https://www.malcom.io/assets/quillquest/og-card.png';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

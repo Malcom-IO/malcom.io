@@ -53,6 +53,14 @@
   margin-bottom: 2rem;
 }
 
+.qq-cta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.qq-cta-block--center {
+  align-items: center;
+}
 .qq-cta {
   display: flex;
   flex-wrap: wrap;
@@ -63,6 +71,31 @@
   opacity: 1;
   cursor: default;
   pointer-events: none;
+}
+.qq-cta-note {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+// personal "made by a parent" note under the trust heading
+.qq-parent-note {
+  max-width: 40rem;
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--brand);
+  font-size: 1.1rem;
+  color: #cdd3d9;
+  font-style: italic;
+}
+
+.qq-inline-link {
+  color: var(--brand-bright);
+  text-decoration: none;
+}
+.qq-inline-link:hover {
+  text-decoration: underline;
 }
 
 .qq-hero-shot {
