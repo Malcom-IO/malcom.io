@@ -188,7 +188,50 @@ section[id] {
 .page-footer a:hover {
   color: var(--brand-bright);
 }
+// nav links get a >=24px target (WCAG 2.5.8) and a visible keyboard focus state
+.page-footer-nav a {
+  display: inline-block;
+  padding-block: 0.35rem;
+}
+.page-footer a:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 3px;
+  border-radius: 3px;
+  color: var(--text);
+}
 
-#smooth {
-  scroll-behavior: smooth;
+// ----------------------------------------------------------------- skip link
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--brand);
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.15s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+// ----------------------------------------------------------- reduced motion
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .brand-card:hover {
+    transform: none;
+  }
 }

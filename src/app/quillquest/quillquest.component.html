@@ -2,7 +2,7 @@
   <!-- Hero -->
   <section class="qq-hero">
     <div class="container">
-      <div class="row align-items-center g-5">
+      <div class="row align-items-center gy-5 gx-4 gx-lg-5">
         <div class="col-lg-6 qq-hero-copy">
           <img
             class="qq-appicon"
@@ -30,21 +30,23 @@
             kid by level, so younger and older spellers fit right in too.
           </p>
           <div class="qq-cta-block">
-            <div class="qq-cta">
-              @if (appStoreUrl) {
+            @if (appStoreUrl) {
+              <div class="qq-cta">
                 <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                  <i class="fab fa-apple me-2"></i> Download on the App Store
+                  <i class="fab fa-apple me-2" aria-hidden="true"></i> Download on the App Store
                 </a>
-              } @else {
-                <!-- TODO (launch day): set appStoreUrl to flip this into a real download link -->
-                <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
-                  <i class="fab fa-apple me-2"></i> Coming to the App Store — 2026
-                </span>
-                <a class="btn btn-outline-light btn-lg" [href]="notifyMailto">
-                  <i class="fas fa-bell me-2"></i> Email me at launch
+              </div>
+            } @else {
+              <!-- TODO (launch day): set appStoreUrl to show a real App Store download button -->
+              <div class="qq-cta">
+                <a class="btn btn-primary btn-lg" [href]="notifyMailto">
+                  <i class="fas fa-bell me-2" aria-hidden="true"></i> Email me at launch
                 </a>
-              }
-            </div>
+              </div>
+              <p class="qq-status-chip">
+                <i class="fab fa-apple" aria-hidden="true"></i> Coming to the App Store — 2026
+              </p>
+            }
             <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
           </div>
         </div>
@@ -77,7 +79,7 @@
         @for (t of trust; track t.title) {
           <div class="col-md-6 col-xl-3">
             <div class="brand-card">
-              <i class="fas {{ t.icon }} fa-xl green-text d-block mt-1 mb-3"></i>
+              <i class="fas {{ t.icon }} fa-xl green-text d-block mt-1 mb-3" aria-hidden="true"></i>
               <h3 class="h5 fw-semibold">{{ t.title }}</h3>
               <p class="text-muted-2 mb-0">{{ t.body }}</p>
             </div>
@@ -95,7 +97,7 @@
   <!-- What kids get -->
   <section id="what-kids-get" class="section section-line">
     <div class="container">
-      <div class="row g-5 align-items-center">
+      <div class="row gy-5 gx-4 gx-lg-5 align-items-center">
         <div class="col-lg-7">
           <p class="eyebrow">What kids get</p>
           <h2 class="h-section">A real quest, built on real spelling</h2>
@@ -123,13 +125,13 @@
   </section>
 
   <!-- Screenshot gallery -->
-  <section id="screens" class="section section-line">
+  <section id="screens" class="section section-line qq-screens">
     <div class="container">
       <p class="eyebrow">Take a look</p>
       <h2 class="h-section">Screens from the game</h2>
       <p class="text-muted-2 small font-monospace d-lg-none mb-0 mt-2">Swipe to see more →</p>
     </div>
-    <div class="qq-gallery" role="list">
+    <div class="qq-gallery" role="list" tabindex="0" aria-label="Game screenshots — use arrow keys to scroll">
       @for (shot of shots; track shot.src) {
         <figure class="qq-gallery-item" role="listitem">
           <img
@@ -156,20 +158,22 @@
         Just spelling worth leveling up.
       </p>
       <div class="qq-cta-block qq-cta-block--center mt-4">
-        <div class="qq-cta justify-content-center">
-          @if (appStoreUrl) {
+        @if (appStoreUrl) {
+          <div class="qq-cta justify-content-center">
             <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-              <i class="fab fa-apple me-2"></i> Download on the App Store
+              <i class="fab fa-apple me-2" aria-hidden="true"></i> Download on the App Store
             </a>
-          } @else {
-            <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
-              <i class="fab fa-apple me-2"></i> Coming to the App Store — 2026
-            </span>
-            <a class="btn btn-outline-light btn-lg" [href]="notifyMailto">
-              <i class="fas fa-bell me-2"></i> Email me at launch
+          </div>
+        } @else {
+          <div class="qq-cta justify-content-center">
+            <a class="btn btn-primary btn-lg" [href]="notifyMailto">
+              <i class="fas fa-bell me-2" aria-hidden="true"></i> Email me at launch
             </a>
-          }
-        </div>
+          </div>
+          <p class="qq-status-chip">
+            <i class="fab fa-apple" aria-hidden="true"></i> Coming to the App Store — 2026
+          </p>
+        }
         <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
       </div>
     </div>

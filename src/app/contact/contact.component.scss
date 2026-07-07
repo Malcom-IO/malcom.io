@@ -22,7 +22,8 @@
 
 .form-control {
   background-color: var(--surface);
-  border-color: var(--line);
+  // raised from --line (1.36:1) to meet WCAG 1.4.11 non-text contrast (~3:1 on ground)
+  border-color: #5c6672;
   color: var(--text);
 }
 .form-control:focus {
@@ -32,7 +33,7 @@
   color: var(--text);
 }
 .form-control::placeholder {
-  color: #6d7681;
+  color: #8a94a0; // >=4.5:1 on the input surface (WCAG 1.4.3)
 }
 
 // Honeypot — visually removed, still submitted; bots fill it, humans don't.
