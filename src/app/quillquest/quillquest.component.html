@@ -20,6 +20,7 @@
             <li>Free</li>
             <li>Offline</li>
             <li>No ads</li>
+            <li>No in-app purchases</li>
             <li>No tracking</li>
             <li>No accounts</li>
           </ul>
@@ -28,17 +29,23 @@
             builds real skill along the way. Great for grades 3–8 (roughly ages 8–14); it places every
             kid by level, so younger and older spellers fit right in too.
           </p>
-          <div class="qq-cta">
-            @if (appStoreUrl) {
-              <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                <i class="fab fa-apple me-2"></i> Download on the App Store
-              </a>
-            } @else {
-              <!-- TODO: set appStoreUrl (component) to the live listing to turn this into a real download link -->
-              <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
-                <i class="fab fa-apple me-2"></i> Coming soon to the App Store
-              </span>
-            }
+          <div class="qq-cta-block">
+            <div class="qq-cta">
+              @if (appStoreUrl) {
+                <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
+                  <i class="fab fa-apple me-2"></i> Download on the App Store
+                </a>
+              } @else {
+                <!-- TODO (launch day): set appStoreUrl to flip this into a real download link -->
+                <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
+                  <i class="fab fa-apple me-2"></i> Coming to the App Store — 2026
+                </span>
+                <a class="btn btn-outline-light btn-lg" [href]="notifyMailto">
+                  <i class="fas fa-bell me-2"></i> Email me at launch
+                </a>
+              }
+            </div>
+            <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
           </div>
         </div>
 
@@ -63,6 +70,9 @@
     <div class="container">
       <p class="eyebrow">Why parents trust it</p>
       <h2 class="h-section">Private by design, and it really teaches</h2>
+      <p class="qq-parent-note">
+        Made by a parent who wanted spelling practice their own kids would actually choose.
+      </p>
       <div class="row g-4 mt-3">
         @for (t of trust; track t.title) {
           <div class="col-md-6 col-xl-3">
@@ -74,6 +84,11 @@
           </div>
         }
       </div>
+      <p class="text-muted-2 mt-4 mb-0">
+        Private by design — read our
+        <a routerLink="/quillquest/privacy" class="qq-inline-link">privacy policy</a> or
+        <a routerLink="/quillquest/support" class="qq-inline-link">get support</a>.
+      </p>
     </div>
   </section>
 
@@ -136,20 +151,26 @@
     <div class="container">
       <p class="eyebrow justify-content-center">Ready to play?</p>
       <h2 class="h-section">Get QuillQuest free</h2>
-      <p class="lead-lg text-muted-2 mx-auto" style="max-width: 46ch">
-        Free, offline, and private — no ads, no tracking, no accounts. Just spelling worth leveling up.
+      <p class="lead-lg text-muted-2 mx-auto" style="max-width: 48ch">
+        Free, offline, and private — no ads, no in-app purchases, no tracking, no accounts.
+        Just spelling worth leveling up.
       </p>
-      <div class="qq-cta justify-content-center mt-4">
-        @if (appStoreUrl) {
-          <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-            <i class="fab fa-apple me-2"></i> Download on the App Store
-          </a>
-        } @else {
-          <!-- TODO: set appStoreUrl once the listing is live -->
-          <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
-            <i class="fab fa-apple me-2"></i> Coming soon to the App Store
-          </span>
-        }
+      <div class="qq-cta-block qq-cta-block--center mt-4">
+        <div class="qq-cta justify-content-center">
+          @if (appStoreUrl) {
+            <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
+              <i class="fab fa-apple me-2"></i> Download on the App Store
+            </a>
+          } @else {
+            <span class="btn btn-primary btn-lg disabled" aria-disabled="true">
+              <i class="fab fa-apple me-2"></i> Coming to the App Store — 2026
+            </span>
+            <a class="btn btn-outline-light btn-lg" [href]="notifyMailto">
+              <i class="fas fa-bell me-2"></i> Email me at launch
+            </a>
+          }
+        </div>
+        <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
       </div>
     </div>
   </section>

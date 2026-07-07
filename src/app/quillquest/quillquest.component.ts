@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from './quillquest-shell.component';
 
 const A = '/assets/quillquest';
@@ -28,14 +29,18 @@ const SHOT_META: [string, string, string][] = [
 
 @Component({
   selector: 'app-quillquest',
-  imports: [QuillquestShellComponent],
+  imports: [QuillquestShellComponent, RouterLink],
   templateUrl: './quillquest.component.html',
   styleUrl: './quillquest.component.scss',
 })
 export class QuillquestComponent {
-  // TODO: set to the App Store listing URL once the app is live; the hero/CTA
-  // buttons flip from "Coming soon" to a real download link automatically.
+  // TODO (launch day): set to the App Store listing URL once the app is live;
+  // both CTAs flip from "Coming soon" to a real download link automatically.
   readonly appStoreUrl: string | null = null;
+
+  // Lightweight "notify me" fallback while the listing isn't live yet.
+  readonly notifyMailto =
+    'mailto:contact@malcom.io?subject=Notify%20me%20when%20QuillQuest%20launches';
 
   readonly iconSrc = `${A}/web/icon-256.webp`;
   readonly iconSrcset = `${A}/web/icon-256.webp 256w, ${A}/web/icon-512.webp 512w`;
