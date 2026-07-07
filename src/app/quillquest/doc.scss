@@ -1,0 +1,81 @@
+// Shared layout for the QuillQuest legal/support pages (privacy + support).
+// Plain and readable — deliberately not over-designed.
+.qq-doc {
+  padding: 8rem 0 5rem;
+}
+
+.doc-inner {
+  max-width: 44rem;
+}
+
+.doc-title {
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  margin: 0.25rem 0 0.75rem;
+}
+
+.doc-meta {
+  font-size: 0.85rem;
+  margin-bottom: 1.75rem;
+}
+
+// clearly-marked placeholders the owner fills in before publish
+.doc-todo {
+  color: var(--brand-bright);
+  font-family: var(--mono);
+}
+
+.doc-lead {
+  font-size: 1.15rem;
+  color: #cdd3d9;
+  margin-bottom: 2.5rem;
+}
+
+.doc-h {
+  font-family: var(--sans);
+  font-weight: 650;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  margin: 2.5rem 0 0.85rem;
+}
+
+.doc-inner p {
+  color: #cdd3d9;
+}
+
+.doc-list {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+.doc-list li {
+  color: #cdd3d9;
+}
+
+// FAQ (support page)
+.doc-faq {
+  margin: 1.25rem 0 0;
+}
+.doc-faq dt {
+  font-weight: 650;
+  color: var(--text);
+  margin-top: 1.4rem;
+}
+.doc-faq dt:first-child {
+  margin-top: 0;
+}
+.doc-faq dd {
+  margin: 0.35rem 0 0;
+  color: #cdd3d9;
+}
+
+.doc-inner a {
+  color: var(--brand-bright);
+  text-decoration: none;
+}
+.doc-inner a:hover {
+  text-decoration: underline;
+}
+
+.doc-inner strong {
+  color: var(--text);
+}
