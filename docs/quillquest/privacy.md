@@ -2,7 +2,7 @@
 
 **URL:** `/quillquest/privacy` · **App Store Connect:** Privacy Policy URL (required)
 
-**Effective date:** _[TODO: fill in on publish]_
+**Effective date:** July 7, 2026
 
 QuillQuest is a spelling game for kids, built to be private by design.
 **QuillQuest does not collect, store, or transmit any personal information.**
