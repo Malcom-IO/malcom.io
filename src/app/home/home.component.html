@@ -29,10 +29,17 @@
       </div>
     </div>
   </div>
+  <a
+    class="hero-scroll"
+    href="#what-we-do"
+    (click)="scrollToSection('what-we-do', $event)"
+    aria-label="Scroll to what we do">
+    <span class="hero-scroll-track"><span class="hero-scroll-thumb"></span></span>
+  </a>
 </section>
 
 <!--What we do-->
-<section id="what-we-do" class="section">
+<section id="what-we-do" class="section" appReveal>
   <div class="container">
     <p class="eyebrow">What we do</p>
     <h2 class="h-section">Software, built with care</h2>
@@ -78,7 +85,7 @@
 </section>
 
 <!--Approach statement-->
-<section class="section section-line">
+<section class="section section-line" appReveal>
   <div class="container">
     <div class="row justify-content-center text-center">
       <div class="col-lg-9">
@@ -93,7 +100,7 @@
 </section>
 
 <!--Contact-->
-<section id="contact" class="section section-line">
+<section id="contact" class="section section-line" appReveal>
   <div class="container">
     <app-contact></app-contact>
   </div>

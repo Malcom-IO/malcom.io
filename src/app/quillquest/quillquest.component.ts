@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from './quillquest-shell.component';
+import { RevealDirective } from '../shared/reveal.directive';
 
 const A = '/assets/quillquest';
 
@@ -29,7 +30,7 @@ const SHOT_META: [string, string, string][] = [
 
 @Component({
   selector: 'app-quillquest',
-  imports: [QuillquestShellComponent, RouterLink],
+  imports: [QuillquestShellComponent, RouterLink, RevealDirective],
   templateUrl: './quillquest.component.html',
   styleUrl: './quillquest.component.scss',
 })
