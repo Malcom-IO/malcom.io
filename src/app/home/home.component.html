@@ -1,10 +1,10 @@
 <!--Navbar-->
 <header id="header">
-  <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" data-bs-theme="dark">
+  <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" data-bs-theme="dark" aria-label="Primary">
     <div class="container">
       <a class="navbar-brand" routerLink="/home"><app-logo></app-logo></a>
       <ul class="navbar-nav ms-auto flex-row gap-4">
-        <li class="nav-item"><a class="nav-link active" routerLink="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" routerLink="/home" aria-current="page">Home</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/quillquest">QuillQuest</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact" (click)="scrollToSection('contact', $event)">Contact</a></li>
       </ul>
@@ -12,6 +12,7 @@
   </nav>
 </header>
 
+<main id="main-content">
 <!--Hero-->
 <section class="hero">
   <div class="container">
@@ -43,7 +44,7 @@
       <div class="col-md-4">
         <div class="brand-card">
           <span class="card-eyebrow">Healthcare</span>
-          <i class="fas fa-suitcase-medical fa-2x blue-text d-block mt-3 mb-3"></i>
+          <i class="fas fa-suitcase-medical fa-2x blue-text d-block mt-3 mb-3" aria-hidden="true"></i>
           <h3 class="h5 fw-semibold">Medical software</h3>
           <p class="text-muted-2 mb-0">
             Health interoperability or a custom application to improve the lives of patients —
@@ -54,7 +55,7 @@
       <div class="col-md-4">
         <div class="brand-card">
           <span class="card-eyebrow">Partnership</span>
-          <i class="fas fa-heart fa-2x red-text d-block mt-3 mb-3"></i>
+          <i class="fas fa-heart fa-2x red-text d-block mt-3 mb-3" aria-hidden="true"></i>
           <h3 class="h5 fw-semibold">Happiness</h3>
           <p class="text-muted-2 mb-0">
             Easy to work with — we listen to your needs and come in on budget and on schedule.
@@ -64,7 +65,7 @@
       <div class="col-md-4">
         <div class="brand-card">
           <span class="card-eyebrow">Craft</span>
-          <i class="fas fa-hammer fa-2x green-text d-block mt-3 mb-3"></i>
+          <i class="fas fa-hammer fa-2x green-text d-block mt-3 mb-3" aria-hidden="true"></i>
           <h3 class="h5 fw-semibold">Adventure</h3>
           <p class="text-muted-2 mb-0">
             We love building things that improve everyday lives. Have a project idea or concept?
@@ -97,16 +98,19 @@
     <app-contact></app-contact>
   </div>
 </section>
+</main>
 
 <!--Footer-->
 <footer class="page-footer">
   <div class="container py-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
     <a routerLink="/home" class="text-decoration-none"><app-logo></app-logo></a>
-    <div class="d-flex gap-4 font-monospace small">
+    <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
       <a routerLink="/home">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
       <a href="#contact" (click)="scrollToSection('contact', $event)">Contact</a>
-    </div>
+      <a routerLink="/quillquest/support">Support</a>
+      <a routerLink="/quillquest/privacy">Privacy</a>
+    </nav>
     <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO</div>
   </div>
 </footer>

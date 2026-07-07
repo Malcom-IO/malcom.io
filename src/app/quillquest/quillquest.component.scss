@@ -10,6 +10,17 @@
     var(--ground);
 }
 
+// Hero-only eyebrow bump (matches the home hero; global .eyebrow token unchanged).
+.qq-hero .eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--brand-bright);
+}
+.qq-hero .eyebrow::before {
+  width: 2.2rem;
+}
+
 .qq-appicon {
   width: 72px;
   height: 72px;
@@ -66,11 +77,19 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
-// the "coming soon" placeholder reads as a button but isn't a live link
-.qq-cta .btn.disabled {
-  opacity: 1;
-  cursor: default;
-  pointer-events: none;
+// pre-launch status as a quiet pill, not a fake (disabled) primary button
+.qq-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
 }
 .qq-cta-note {
   font-family: var(--mono);
@@ -96,6 +115,11 @@
 }
 .qq-inline-link:hover {
   text-decoration: underline;
+}
+.qq-inline-link:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 .qq-hero-shot {
@@ -151,15 +175,35 @@
 }
 
 // ---------------------------------------------------------------- gallery
+// the full-bleed strip scrolls internally; clip the section so it can never
+// widen the page (fixes a small mobile horizontal-overflow jiggle)
+.qq-screens {
+  overflow-x: clip;
+}
+
 // horizontal scroll strip with snap; keeps the page body from scrolling sideways
 .qq-gallery {
   display: flex;
   gap: 1.25rem;
   overflow-x: auto;
+  max-width: 100%;
   scroll-snap-type: x mandatory;
+  scroll-padding-left: 1.5rem;
   padding: 2rem max(1.5rem, calc((100vw - 1140px) / 2 + 12px)) 1rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+}
+.qq-gallery:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+// desktop-only right-edge fade cues that the strip scrolls to more screens
+@media (min-width: 992px) {
+  .qq-gallery {
+    -webkit-mask-image: linear-gradient(to right, #000 90%, transparent);
+    mask-image: linear-gradient(to right, #000 90%, transparent);
+  }
 }
 .qq-gallery-item {
   flex: 0 0 auto;

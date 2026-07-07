@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling, TitleStrategy } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(),
-    provideAnimations(),
     provideClientHydration(),
     { provide: TitleStrategy, useClass: SeoTitleStrategy },
   ],

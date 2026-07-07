@@ -1,12 +1,10 @@
-<div #scrollPoint></div>
-
 <p class="eyebrow">Get in touch</p>
 <h2 class="h-section">Let's build something</h2>
 <p class="lead-lg text-muted-2 mb-4" style="max-width: 54ch">
   Tell us about your project or idea, and we'll get back to you.
 </p>
 
-<form [formGroup]="contactForm" class="contact-form">
+<form [formGroup]="contactForm" (ngSubmit)="submitContactForm()" novalidate class="contact-form">
   <div class="row g-3">
     <div class="col-md-6">
       <label for="name" class="form-label required">Your name</label>
@@ -15,10 +13,18 @@
         id="name"
         name="name"
         formControlName="name"
-        [class.is-invalid]="contactForm.controls.name.invalid"
+        aria-required="true"
+        autocomplete="name"
+        [class.is-invalid]="contactForm.controls.name.invalid && contactForm.controls.name.touched"
+        [attr.aria-invalid]="
+          contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'true' : null
+        "
+        [attr.aria-describedby]="
+          contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'name-err' : null
+        "
         class="form-control form-control-lg"
         placeholder="Name" />
-      <div class="invalid-feedback">Name is required.</div>
+      <div id="name-err" class="invalid-feedback">Name is required.</div>
     </div>
 
     <div class="col-md-6">
@@ -28,10 +34,18 @@
         id="email"
         name="email"
         formControlName="email"
-        [class.is-invalid]="contactForm.controls.email.invalid"
+        aria-required="true"
+        autocomplete="email"
+        [class.is-invalid]="contactForm.controls.email.invalid && contactForm.controls.email.touched"
+        [attr.aria-invalid]="
+          contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'true' : null
+        "
+        [attr.aria-describedby]="
+          contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'email-err' : null
+        "
         class="form-control form-control-lg"
         placeholder="you@example.com" />
-      <div class="invalid-feedback">Please enter a valid email address.</div>
+      <div id="email-err" class="invalid-feedback">Please enter a valid email address.</div>
     </div>
 
     <div class="col-12">
@@ -52,7 +66,6 @@
         formControlName="body"
         class="form-control"
         rows="6"
-        aria-label="Your message"
         placeholder="Tell us about your project…"></textarea>
     </div>
 
@@ -74,10 +87,11 @@
 
     <div class="col-12">
       <button
+        type="submit"
         class="btn btn-primary btn-lg"
-        (click)="submitContactForm()"
-        [disabled]="contactForm.invalid || !turnstileToken || sending">
-        {{ sending ? 'Sending…' : 'Send message' }} <i class="fas fa-paper-plane ms-2"></i>
+        [disabled]="!turnstileToken || sending">
+        {{ sending ? 'Sending…' : 'Send message' }}
+        <i class="fas fa-paper-plane ms-2" aria-hidden="true"></i>
       </button>
     </div>
   </div>

@@ -71,8 +71,9 @@ navbar, footer) live in `src/scss/styles.scss`; Bootstrap's dark theme is enable
 | Path | Page |
 | --- | --- |
 | `/home` | Main Malcom IO landing page (default) |
-| `/quillquest` | QuillQuest mobile-game landing page |
-| `/auth` | Placeholder, reserved for future authentication |
+| `/quillquest` | QuillQuest landing page (iOS spelling game) |
+| `/quillquest/privacy` | QuillQuest privacy policy (App Store requirement) |
+| `/quillquest/support` | QuillQuest support / FAQ (App Store requirement) |
 
 ## Contact form
 
@@ -85,13 +86,19 @@ and how secrets/deploys work.
 
 ## QuillQuest
 
-`/quillquest` is scaffolded with placeholder copy, feature cards, screenshot slots, and
-App Store / Google Play buttons. To finish it, edit `src/app/quillquest/quillquest.component.*`:
+`/quillquest` is a complete, iOS-only landing page (hero, trust cards, character mascots, a
+responsive WebP screenshot gallery, and an "Email me at launch" CTA), plus the
+`/quillquest/privacy` and `/quillquest/support` pages the App Store submission requires. All
+three share `QuillquestShellComponent` (navbar + cross-linked footer).
 
-- Replace the placeholder copy and the `appStoreUrl` / `playStoreUrl` / `privacyUrl` values.
-- Drop real screenshots under `public/assets/quillquest/` and swap the placeholder
-  `.qq-screenshot` blocks for `<img>` tags.
-- Replace the hero gradient in `quillquest.component.scss` with real key art.
+Launch-day TODOs (both clearly marked in code):
+
+- Set `appStoreUrl` in `src/app/quillquest/quillquest.component.ts` — the CTA flips from
+  "Coming to the App Store" to a real **Download on the App Store** button automatically.
+- Set the privacy **effective date** in `quillquest-privacy.component.html` if it changes.
+
+Optimized share/screenshot assets live under `public/assets/quillquest/web/`; regenerate them
+with `scripts/optimize-quillquest-images.sh` and the social card with `scripts/make-og-card.mjs`.
 
 ## Deployment
 

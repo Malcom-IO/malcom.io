@@ -14,7 +14,11 @@ import { LogoComponent } from '../shared/logo.component';
   imports: [DatePipe, RouterLink, RouterLinkActive, LogoComponent],
   template: `
     <header id="header">
-      <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" data-bs-theme="dark">
+      <nav
+        class="navbar navbar-expand-lg fixed-top malcom-navbar"
+        data-bs-theme="dark"
+        aria-label="Primary"
+      >
         <div class="container">
           <a class="navbar-brand" routerLink="/home"><app-logo></app-logo></a>
           <ul class="navbar-nav ms-auto flex-row gap-4">
@@ -24,6 +28,7 @@ import { LogoComponent } from '../shared/logo.component';
                 class="nav-link"
                 routerLink="/quillquest"
                 routerLinkActive="active"
+                ariaCurrentWhenActive="page"
                 [routerLinkActiveOptions]="{ exact: false }"
                 >QuillQuest</a
               >
@@ -33,16 +38,17 @@ import { LogoComponent } from '../shared/logo.component';
       </nav>
     </header>
 
-    <main><ng-content></ng-content></main>
+    <main id="main-content"><ng-content></ng-content></main>
 
     <footer class="page-footer">
       <div
         class="container py-4 d-flex flex-wrap justify-content-between align-items-center gap-3"
       >
         <a routerLink="/home" class="text-decoration-none"><app-logo></app-logo></a>
-        <nav class="d-flex flex-wrap gap-4 font-monospace small" aria-label="QuillQuest pages">
+        <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
           <a routerLink="/home">Home</a>
           <a routerLink="/quillquest">QuillQuest</a>
+          <a [routerLink]="['/home']" fragment="contact">Contact</a>
           <a routerLink="/quillquest/support">Support</a>
           <a routerLink="/quillquest/privacy">Privacy</a>
         </nav>

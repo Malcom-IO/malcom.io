@@ -16,6 +16,8 @@ export interface SeoData {
   ogImageAlt?: string;
   /** e.g. 'noindex' to keep a page out of search results. */
   robots?: string;
+  /** schema.org JSON-LD object(s) embedded for rich results. */
+  jsonLd?: object | object[];
 }
 
 const ORIGIN = 'https://www.malcom.io';
@@ -61,7 +63,11 @@ export class SeoTitleStrategy extends TitleStrategy {
       : /\.jpe?g$/.test(image)
         ? 'image/jpeg'
         : 'image/png';
-    const url = `${ORIGIN}${snapshot.url}`;
+    // GitHub Pages serves the 200 document at the trailing-slash URL, so
+    // canonical/og:url must match that (the no-slash form 301-redirects).
+    const cleanPath = snapshot.url.split('#')[0].split('?')[0];
+    const path = cleanPath === '/' ? '/' : cleanPath.replace(/\/?$/, '/');
+    const url = `${ORIGIN}${path}`;
 
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: shareTitle });
@@ -84,6 +90,7 @@ export class SeoTitleStrategy extends TitleStrategy {
     }
 
     this.setCanonical(url);
+    this.setJsonLd(data.jsonLd);
   }
 
   private setCanonical(href: string): void {
@@ -94,5 +101,21 @@ export class SeoTitleStrategy extends TitleStrategy {
       this.doc.head.appendChild(link);
     }
     link.setAttribute('href', href);
+  }
+
+  /** Embed (or clear) the route's schema.org JSON-LD; baked in at prerender. */
+  private setJsonLd(data?: object | object[]): void {
+    let script = this.doc.querySelector<HTMLScriptElement>('script#ld-json');
+    if (!data) {
+      script?.remove();
+      return;
+    }
+    if (!script) {
+      script = this.doc.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = 'ld-json';
+      this.doc.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(data);
   }
 }

@@ -1,8 +1,5 @@
 // Brand text-color helpers, mapped onto Bootstrap 5's palette variables.
 // (Bootstrap 4's color() function was removed in Bootstrap 5.)
-.orange-text {
-  color: $orange;
-}
 .blue-text {
   color: $blue;
 }
@@ -12,7 +9,4 @@
 .green-text {
   // brand green — matches the logo mark, favicon, and share card
   color: #28a745;
-}
-.grey-text {
-  color: var(--muted);
 }
