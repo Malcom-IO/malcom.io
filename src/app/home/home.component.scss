@@ -1,11 +1,24 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: min(90vh, 940px);
+  min-height: min(82vh, 760px);
   display: flex;
   align-items: center;
-  padding: 8rem 0 5rem;
+  padding: 6.5rem 0 5rem;
   border-bottom: 1px solid var(--line-soft);
+}
+
+// Hero-only eyebrow: a step up in scale/presence so it doesn't read as a tiny
+// caption under the huge display headline. The global .eyebrow token stays as-is
+// (it labels ~11 restrained section headers elsewhere).
+.hero .eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--brand-bright);
+}
+.hero .eyebrow::before {
+  width: 2.2rem;
 }
 
 // Oversized brand spiral bleeding off the right edge.

@@ -7,14 +7,8 @@ import {
   AfterViewInit,
   NgZone,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  ValidationErrors,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from '../shared/toast.service';
@@ -41,18 +35,18 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAADwMRSPJhDBDL3BT';
 })
 export class ContactComponent implements AfterViewInit {
   contactForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
     subject: new FormControl(''),
     body: new FormControl(''),
     website: new FormControl(''), // honeypot — humans leave this empty
   });
 
-  @ViewChild('scrollPoint') scrollPoint!: ElementRef;
   @ViewChild('turnstile') turnstileEl?: ElementRef<HTMLElement>;
 
   protected readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly zone = inject(NgZone);
+  private readonly doc = inject(DOCUMENT);
 
   turnstileToken: string | null = null;
   sending = false;
@@ -99,39 +93,15 @@ export class ContactComponent implements AfterViewInit {
     }
   }
 
-  validateEmail(): void {
-    const requiredErrors: ValidationErrors | null = Validators.required(
-      this.contactForm.controls.email,
-    );
-    if (requiredErrors === null) {
-      const emailErrors: ValidationErrors | null = Validators.email(
-        this.contactForm.controls.email,
-      );
-      this.contactForm.controls.email.setErrors(emailErrors);
-    } else {
-      this.contactForm.controls.email.setErrors(requiredErrors);
-    }
-  }
-
-  validateName(): void {
-    const requiredErrors: ValidationErrors | null = Validators.required(
-      this.contactForm.controls.name,
-    );
-    if (requiredErrors !== null) {
-      this.contactForm.controls.name.setErrors(requiredErrors);
-    }
-  }
-
-  validate(): void {
-    this.validateName();
-    this.validateEmail();
-  }
-
   async submitContactForm(): Promise<void> {
-    this.validate();
-
-    if (!this.contactForm.valid || !this.turnstileToken) {
-      this.scrollPoint.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    if (this.contactForm.invalid) {
+      this.contactForm.markAllAsTouched();
+      this.focusFirstInvalid();
+      return;
+    }
+    if (!this.turnstileToken) {
+      this.toast.error('Please complete the verification check below.', 'Almost there');
+      this.turnstileEl?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -162,6 +132,17 @@ export class ContactComponent implements AfterViewInit {
     } finally {
       this.sending = false;
     }
+  }
+
+  /** Move focus to the first invalid field so keyboard/screen-reader users can fix it. */
+  private focusFirstInvalid(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    const el = this.doc.querySelector<HTMLElement>(
+      '.contact-form input.ng-invalid, .contact-form textarea.ng-invalid',
+    );
+    el?.focus();
   }
 
   showGenericSuccess(): void {
