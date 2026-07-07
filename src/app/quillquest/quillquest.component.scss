@@ -1,26 +1,54 @@
+// ---------------------------------------------------------------- hero
 .qq-hero {
   position: relative;
   overflow: hidden;
-  padding: 12rem 0 6rem;
+  padding: 9rem 0 5rem;
   border-bottom: 1px solid var(--line-soft);
   // subtle green glow so the game hero reads distinct from the studio site
   background:
-    radial-gradient(130% 90% at 78% 15%, rgba(40, 167, 69, 0.13), transparent 58%),
+    radial-gradient(120% 85% at 82% 12%, rgba(40, 167, 69, 0.14), transparent 60%),
     var(--ground);
 }
 
-.qq-hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 44rem;
+.qq-appicon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: block;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
 .qq-title {
-  font-size: clamp(3rem, 10vw, 6rem);
-  margin: 0 0 1.25rem;
+  font-size: clamp(3rem, 9vw, 5rem);
+  margin: 0 0 1rem;
 }
 
 .qq-tagline {
+  max-width: 34rem;
+  margin-bottom: 1.25rem;
+}
+
+.qq-badges {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+.qq-badges li {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+}
+
+.qq-hero-sub {
   max-width: 36rem;
   margin-bottom: 2rem;
 }
@@ -30,20 +58,96 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
-
-.qq-screenshot {
-  aspect-ratio: 9 / 16;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+// the "coming soon" placeholder reads as a button but isn't a live link
+.qq-cta .btn.disabled {
+  opacity: 1;
+  cursor: default;
+  pointer-events: none;
 }
 
-.qq-shot-img {
-  width: 100%;
+.qq-hero-shot {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+.qq-hero-shot img {
+  width: 330px;
+  max-width: 72vw;
   height: auto;
-  border-radius: 14px;
+  border-radius: 26px;
   border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+// ---------------------------------------------------------------- what kids get
+.qq-perks {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  gap: 0.9rem;
+}
+.qq-perks li {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  color: #cdd3d9;
+}
+.qq-perks li i {
+  margin-top: 0.28rem;
+  flex: none;
+}
+
+.qq-buddies {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.qq-buddy {
+  margin: 0;
+  text-align: center;
+}
+.qq-buddy img {
+  width: clamp(84px, 12vw, 128px);
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+}
+.qq-buddy figcaption {
+  margin-top: 0.35rem;
+}
+
+// ---------------------------------------------------------------- gallery
+// horizontal scroll strip with snap; keeps the page body from scrolling sideways
+.qq-gallery {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 2rem max(1.5rem, calc((100vw - 1140px) / 2 + 12px)) 1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.qq-gallery-item {
+  flex: 0 0 auto;
+  width: 260px;
+  margin: 0;
+  scroll-snap-align: center;
+}
+.qq-gallery-item img {
+  width: 260px;
+  height: auto;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+.qq-gallery-item figcaption {
+  margin-top: 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+  text-wrap: balance;
 }

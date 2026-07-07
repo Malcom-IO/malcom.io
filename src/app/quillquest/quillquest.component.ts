@@ -1,46 +1,91 @@
 import { Component } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { LogoComponent } from '../shared/logo.component';
+import { QuillquestShellComponent } from './quillquest-shell.component';
 
-interface Feature {
+const A = '/assets/quillquest';
+
+interface Trust {
   icon: string;
   title: string;
-  description: string;
+  body: string;
 }
+
+interface Shot {
+  src: string;
+  srcset: string;
+  alt: string;
+  caption: string;
+}
+
+// [file stem, alt text, gallery caption] — order matches the App Store listing.
+const SHOT_META: [string, string, string][] = [
+  ['qq-iphone-1-home', 'QuillQuest home screen', 'Spelling worth leveling up'],
+  ['qq-iphone-2-trail', 'The QuillQuest adventure trail', 'An adventure map to every word'],
+  ['qq-iphone-3-round', 'Spelling a word during a round', 'Hear it. Spell it. Nail it.'],
+  ['qq-iphone-4-reveal', 'Answer reveal with feedback', 'Feedback that actually teaches'],
+  ['qq-iphone-5-summary', 'End-of-round summary', 'Every word is a win'],
+  ['qq-iphone-6-players', 'Multiple player profiles', 'One app, every kid'],
+];
 
 @Component({
   selector: 'app-quillquest',
-  imports: [DatePipe, RouterLink, LogoComponent],
+  imports: [QuillquestShellComponent],
   templateUrl: './quillquest.component.html',
   styleUrl: './quillquest.component.scss',
 })
 export class QuillquestComponent {
-  currentDate = new Date();
+  // TODO: set to the App Store listing URL once the app is live; the hero/CTA
+  // buttons flip from "Coming soon" to a real download link automatically.
+  readonly appStoreUrl: string | null = null;
 
-  // TODO: replace placeholder copy/links/screenshots with the real QuillQuest content.
-  readonly appStoreUrl = '#';
-  readonly playStoreUrl = '#';
-  readonly privacyUrl = '#';
+  readonly iconSrc = `${A}/web/icon-256.webp`;
+  readonly iconSrcset = `${A}/web/icon-256.webp 256w, ${A}/web/icon-512.webp 512w`;
 
-  readonly features: Feature[] = [
+  readonly heroShot = {
+    src: `${A}/web/qq-iphone-1-home-660.webp`,
+    srcset: `${A}/web/qq-iphone-1-home-440.webp 440w, ${A}/web/qq-iphone-1-home-660.webp 660w`,
+  };
+
+  readonly trust: Trust[] = [
     {
-      icon: 'fa-feather-pointed',
-      title: 'Craft Your Story',
-      description: 'Placeholder — describe the core gameplay loop that makes QuillQuest fun.',
+      icon: 'fa-shield-halved',
+      title: 'Truly private',
+      body: 'Plays fully offline, collects nothing, and sends nothing anywhere. No ads, trackers, accounts, or chat.',
     },
     {
-      icon: 'fa-wand-magic-sparkles',
-      title: 'Magical Worlds',
-      description: 'Placeholder — highlight the worlds, levels, or adventures players explore.',
+      icon: 'fa-graduation-cap',
+      title: 'Actually teaches',
+      body: 'A graded curriculum, mastery-based levels, and spaced-repetition review of the words your kid misses.',
     },
     {
-      icon: 'fa-trophy',
-      title: 'Compete & Collect',
-      description: 'Placeholder — call out achievements, leaderboards, or collectibles.',
+      icon: 'fa-heart',
+      title: 'Healthy by design',
+      body: 'Optional reminders (off by default) and streaks that reward just showing up — no nagging.',
+    },
+    {
+      icon: 'fa-people-roof',
+      title: 'For the whole family',
+      body: 'Each kid gets their own profile, buddy, and avatar.',
     },
   ];
 
-  // Placeholder screenshot slots — swap in real image paths under /assets/quillquest/.
-  readonly screenshots = [1, 2, 3, 4];
+  readonly perks: string[] = [
+    '10 levels of hand-graded words (~3,500), from Sprout to the Bee Level',
+    'Friendly characters — Ivy, Owen & Mia — read every word aloud in real recorded voices',
+    'Miss a word? It shows the correct spelling and exactly where you slipped',
+    'Ranks, stars, badges, and unlockable themes to earn',
+    'Practice packs: compound words, homophones, prefixes & suffixes, and “words I missed”',
+  ];
+
+  readonly buddies = [
+    { name: 'Ivy', src: `${A}/web/buddy-ivy-256.webp` },
+    { name: 'Owen', src: `${A}/web/buddy-owen-256.webp` },
+    { name: 'Mia', src: `${A}/web/buddy-mia-256.webp` },
+  ];
+
+  readonly shots: Shot[] = SHOT_META.map(([file, alt, caption]) => ({
+    src: `${A}/web/${file}-660.webp`,
+    srcset: `${A}/web/${file}-440.webp 440w, ${A}/web/${file}-660.webp 660w`,
+    alt,
+    caption,
+  }));
 }

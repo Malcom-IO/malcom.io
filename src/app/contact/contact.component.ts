@@ -33,6 +33,11 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAADwMRSPJhDBDL3BT';
   imports: [ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
+  // The Turnstile widget (@if isBrowser) renders only in the browser, so the
+  // form's DOM differs between prerender and client. Skip hydration for the
+  // whole component — ngSkipHydration is only valid on a component host, not
+  // on an arbitrary inner element (that raises NG0504).
+  host: { ngSkipHydration: 'true' },
 })
 export class ContactComponent implements AfterViewInit {
   contactForm = new FormGroup({

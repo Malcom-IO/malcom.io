@@ -1,0 +1,33 @@
+<app-quillquest-shell>
+  <section class="qq-doc">
+    <div class="container">
+      <div class="doc-inner">
+        <p class="eyebrow">QuillQuest</p>
+        <h1 class="doc-title display-mono">Support</h1>
+
+        <p class="doc-lead">
+          QuillQuest is a free, offline spelling game for grades 3–8 (roughly ages 8–14). No accounts,
+          no ads, no tracking.
+        </p>
+
+        <h2 class="doc-h">Need help?</h2>
+        <p>
+          Email <a href="mailto:contact@malcom.io">contact&#64;malcom.io</a> and we'll get back to you.
+        </p>
+
+        <h2 class="doc-h">Common questions</h2>
+        <dl class="doc-faq">
+          @for (faq of faqs; track faq.q) {
+            <dt>{{ faq.q }}</dt>
+            <dd>{{ faq.a }}</dd>
+          }
+        </dl>
+
+        <p class="mt-4">
+          For details on what's stored and why, see the
+          <a routerLink="/quillquest/privacy">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</app-quillquest-shell>
