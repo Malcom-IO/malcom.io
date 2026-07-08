@@ -2,24 +2,18 @@
 .qq-hero {
   position: relative;
   overflow: hidden;
-  padding: 9rem 0 5rem;
+  padding: 8rem 0 5rem; // matches the .qq-doc first-section rhythm
   border-bottom: 1px solid var(--line-soft);
   // subtle green glow so the game hero reads distinct from the studio site
   background:
-    radial-gradient(120% 85% at 82% 12%, rgba(40, 167, 69, 0.14), transparent 60%),
+    radial-gradient(
+      120% 85% at 82% 12%,
+      color-mix(in srgb, var(--brand) 14%, transparent),
+      transparent 60%
+    ),
     var(--ground);
 }
-
-// Hero-only eyebrow bump (matches the home hero; global .eyebrow token unchanged).
-.qq-hero .eyebrow {
-  font-size: 0.95rem;
-  letter-spacing: 0.14em;
-  font-weight: 600;
-  color: var(--brand-bright);
-}
-.qq-hero .eyebrow::before {
-  width: 2.2rem;
-}
+// hero eyebrow uses the shared .eyebrow--hero class (styles.scss)
 
 .qq-appicon {
   width: 72px;
@@ -31,7 +25,7 @@
 }
 
 .qq-title {
-  font-size: clamp(3rem, 9vw, 5rem);
+  font-size: clamp(3rem, 9vw, 5.5rem); // match the home hero title cap
   margin: 0 0 1rem;
 }
 
@@ -51,7 +45,7 @@
 .qq-badges li {
   font-family: var(--mono);
   font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em; // matches the .card-eyebrow mono caption scale
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -93,7 +87,7 @@
 }
 .qq-cta-note {
   font-family: var(--mono);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--muted);
   margin: 0;
 }
@@ -105,7 +99,7 @@
   padding-left: 1rem;
   border-left: 2px solid var(--brand);
   font-size: 1.1rem;
-  color: #cdd3d9;
+  color: var(--text-soft);
   font-style: italic;
 }
 
@@ -148,7 +142,7 @@
   display: flex;
   gap: 0.85rem;
   align-items: flex-start;
-  color: #cdd3d9;
+  color: var(--text-soft);
 }
 .qq-perks li i {
   margin-top: 0.28rem;
@@ -223,7 +217,7 @@
 .qq-gallery-item figcaption {
   margin-top: 0.9rem;
   font-family: var(--mono);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--muted);
   text-align: center;
   text-wrap: balance;

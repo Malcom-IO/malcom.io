@@ -20,6 +20,7 @@ $primary: #28a745;
   --line-soft: #2e353d;
   --text: #e9ecef;
   --muted: #98a2ac;
+  --text-soft: #cdd3d9; // between --text and --muted; body/lead copy
   --brand: #28a745;
   --brand-bright: #37c862;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
@@ -89,7 +90,19 @@ body {
 
 .lead-lg {
   font-size: 1.15rem;
-  color: #cdd3d9;
+  color: var(--text-soft);
+}
+
+// Hero-only eyebrow bump (larger + brighter than the global .eyebrow). Shared by
+// the home and QuillQuest heroes so the treatment can't drift between them.
+.eyebrow--hero {
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--brand-bright);
+}
+.eyebrow--hero::before {
+  width: 2.2rem;
 }
 
 .text-muted-2 {
