@@ -103,43 +103,6 @@
   }
 }
 
-// scroll affordance — nested in the container and aligned with the text column's left
-// edge (just below the CTAs) so it stays clear of the right-side motif.
-.hero .container {
-  position: relative;
-}
-.hero-scroll {
-  position: absolute;
-  bottom: -2.75rem;
-  left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
-  display: block;
-  z-index: 1;
-}
-.hero-scroll-track {
-  display: block;
-  width: 1px;
-  height: 46px;
-  background: var(--line);
-  position: relative;
-  overflow: hidden;
-}
-.hero-scroll-thumb {
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 100%;
-  height: 45%;
-  background: var(--brand);
-  animation: hero-scroll 2.2s ease-in-out infinite;
-}
-@keyframes hero-scroll {
-  0% {
-    transform: translateY(-110%);
-  }
-  100% {
-    transform: translateY(230%);
-  }
-}
-
 .hero-inner {
   position: relative;
   z-index: 1;
