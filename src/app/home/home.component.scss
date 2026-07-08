@@ -21,30 +21,21 @@
   width: 2.2rem;
 }
 
-// Oversized brand spiral bleeding off the right edge, slowly drifting.
+// Golden-ratio "x-ray" motif — glowing φ-spiral filaments bleeding off the right.
+// Regenerate with scripts/make-xray.mjs. (Static: the rectangle grid shouldn't rotate.)
 .hero::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: -6%;
-  width: 78vmin;
-  height: 78vmin;
-  max-width: 780px;
-  max-height: 780px;
+  right: -8%;
+  width: 82vmin;
+  height: 82vmin;
+  max-width: 820px;
+  max-height: 820px;
   transform: translateY(-50%);
-  background: url("/assets/img/mark.svg") no-repeat center / contain;
-  opacity: 0.11;
+  background: url("/assets/img/hero-xray.svg") no-repeat center / contain;
+  opacity: 0.5;
   pointer-events: none;
-  animation: hero-spiral 150s linear infinite;
-}
-// slow ambient rotation of the brand spiral (neutralized under reduced-motion)
-@keyframes hero-spiral {
-  from {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  to {
-    transform: translateY(-50%) rotate(360deg);
-  }
 }
 
 // scroll affordance at the base of the hero

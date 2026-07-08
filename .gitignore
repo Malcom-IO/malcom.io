@@ -63,3 +63,7 @@ awsconfiguration.json
 # Cloudflare Worker local dev (never commit)
 .dev.vars
 .wrangler/
+
+# local logo review scratch page
+/logo-explorations.html
+/logo-mockup.html
