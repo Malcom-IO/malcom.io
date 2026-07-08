@@ -59,29 +59,46 @@
   }
 }
 
-// Below Bootstrap `lg` the text column goes ~full-width; shrink the motif and raise it
-// into the top-right corner so it stays clear of the lead copy + CTAs (clipped by
-// overflow:hidden). Reposition via top/right/width only (never transform/opacity —
-// those are animated); dim via the --xray-op-* custom props.
+// Narrower than a wide desktop the text column takes more of the width, so the full
+// right-half motif starts to collide with the copy. Step it down in tiers. Reposition
+// via top/right/width only (never transform/opacity — those are animated); dim via the
+// --xray-op-* custom props. Narrower queries come last so they win the cascade.
+
+// iPad / small laptop (992–1199): shrink + raise into the upper-right so the spiral
+// stays fully visible and clears the lead paragraph.
+@media (max-width: 1199.98px) {
+  .hero::before {
+    top: 40%;
+    right: -7%;
+    width: 46vw;
+    max-width: 520px;
+    --xray-op-lo: 0.44;
+    --xray-op-hi: 0.58;
+  }
+}
+// Tablet portrait (768–991): raised into the upper-right corner, clear of the copy.
 @media (max-width: 991.98px) {
   .hero::before {
-    top: 26%;
-    right: -8%;
-    width: 64vw;
-    max-width: 620px;
+    top: 28%;
+    right: -6%;
+    width: 54vw;
+    max-width: 470px;
     --xray-op-lo: 0.4;
     --xray-op-hi: 0.54;
   }
 }
+// Phone (<768): a landscape strip in the corner reads as a smudge, so instead let the
+// whole spiral fill the lower half of the hero (using the otherwise-empty space below
+// the CTAs) as a large, faint backdrop. Anchor to the bottom; static (no pulse).
 @media (max-width: 767.98px) {
   .hero::before {
-    top: 14%;
-    right: -14%;
-    width: 92vw;
-    max-width: 460px;
+    top: auto;
+    bottom: -8%;
+    right: -12%;
+    width: 148vw;
+    max-width: none;
+    transform: none;
     --xray-op-lo: 0.3;
-    // static on phones: a small pulsing corner element reads as a glitch, and it
-    // spares the battery/CPU. With the animation off, the base `opacity` applies.
     animation: none;
   }
 }
