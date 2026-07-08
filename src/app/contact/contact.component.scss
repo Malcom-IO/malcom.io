@@ -48,4 +48,8 @@
 
 .cf-turnstile-host {
   min-height: 65px;
+  // Turnstile renders a fixed 300px iframe; contain it so it can't cause
+  // horizontal overflow on very narrow (<~324px) viewports.
+  max-width: 100%;
+  overflow: hidden;
 }

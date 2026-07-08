@@ -11,7 +11,7 @@ export const QUILLQUEST_FAQS: QuillquestFaq[] = [
   { q: 'Does it work offline?', a: 'Yes — fully offline, no internet needed to play.' },
   {
     q: "No sound, or a word won't play aloud?",
-    a: "Audio is the heart of the game, so start with the device: flip the silent/ring switch off and turn the volume up. You can always tap the speaker to hear a word again, and each level's read-aloud voice can be changed in Settings.",
+    a: "Audio is the heart of the game, so start with the device: make sure it isn't on silent — flip the side Ring/Silent switch so no orange is showing — and turn the volume up. You can always tap the speaker to hear a word again, and each level's read-aloud voice can be changed in Settings.",
   },
   {
     q: 'Does it collect any data?',

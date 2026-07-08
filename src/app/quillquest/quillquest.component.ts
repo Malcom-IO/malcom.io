@@ -37,7 +37,8 @@ const SHOT_META: [string, string, string][] = [
 })
 export class QuillquestComponent {
   // TODO (launch day): set to the App Store listing URL once the app is live;
-  // both CTAs flip from "Coming soon" to a real download link automatically.
+  // the CTAs then flip from the pre-launch state ("Email me at launch" /
+  // "Coming to the App Store — 2026") to a real download button automatically.
   readonly appStoreUrl: string | null = null;
 
   // Lightweight "notify me" fallback while the listing isn't live yet.
