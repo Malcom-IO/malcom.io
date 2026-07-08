@@ -22,8 +22,8 @@
 
 .form-control {
   background-color: var(--surface);
-  // raised from --line (1.36:1) to meet WCAG 1.4.11 non-text contrast (~3:1 on ground)
-  border-color: #5c6672;
+  // >= 3:1 non-text contrast against both the page ground and the input fill (WCAG 1.4.11)
+  border-color: #6b7682;
   color: var(--text);
 }
 .form-control:focus {

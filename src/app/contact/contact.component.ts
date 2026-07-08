@@ -101,7 +101,11 @@ export class ContactComponent implements AfterViewInit {
     }
     if (!this.turnstileToken) {
       this.toast.error('Please complete the verification check below.', 'Almost there');
-      this.turnstileEl?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const reduce = !!this.doc.defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.turnstileEl?.nativeElement.scrollIntoView({
+        behavior: reduce ? 'auto' : 'smooth',
+        block: 'center',
+      });
       return;
     }
 

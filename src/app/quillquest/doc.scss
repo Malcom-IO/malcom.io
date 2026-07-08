@@ -63,11 +63,10 @@
   color: var(--text-soft);
 }
 
+// Inline links inside body text carry a persistent underline (not color alone) so
+// they're distinguishable without relying on hue — WCAG 1.4.1 Use of Color.
 .doc-inner a {
   color: var(--brand-bright);
-  text-decoration: none;
-}
-.doc-inner a:hover {
   text-decoration: underline;
 }
 

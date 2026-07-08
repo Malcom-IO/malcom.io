@@ -86,10 +86,10 @@
     }
 
     <div class="col-12">
-      <button
-        type="submit"
-        class="btn btn-primary btn-lg"
-        [disabled]="!turnstileToken || sending">
+      <!-- Enabled even before Turnstile resolves: submit() guards on the token and
+           guides the user (toast + focus to the widget). Disabling it removes it from
+           the tab order and makes that guidance unreachable (WCAG 3.3.1 / 4.1.2). -->
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="sending">
         {{ sending ? 'Sending…' : 'Send message' }}
         <i class="fas fa-paper-plane ms-2" aria-hidden="true"></i>
       </button>
