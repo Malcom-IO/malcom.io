@@ -21,27 +21,27 @@
   width: 2.2rem;
 }
 
-// Golden-ratio "x-ray" motif — glowing φ-spiral filaments in the right half of the hero.
-// Regenerate with scripts/make-xray.mjs. (Static: the rectangle grid shouldn't rotate.)
+// Golden-ratio "x-ray" motif — full φ construction (golden rectangle + nested squares
+// + spiral), a glowing landscape raster on a pure-black bg. `mix-blend-mode: screen`
+// drops the black and blends only the green light onto the hero. Master (transparent)
+// lives in assets/generated/. (hero-xray.svg is kept as an alternate procedural motif.)
 .hero::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: -8%;
-  width: 82vmin;
-  height: 82vmin;
-  max-width: 820px;
-  max-height: 820px;
-  // Default φ-spiral orientation: the "eye" sits lower-left and the arcs sweep up
-  // into the upper-right, filling the corner (outer filaments trail off the right
-  // edge). Reads more anchored than a flipped/rotated version.
+  right: -2%;
+  width: 56vw;
+  max-width: 920px;
+  aspect-ratio: 3 / 2; // the source is landscape 3:2
   transform: translateY(-50%);
-  background: url("/assets/img/hero-xray.svg") no-repeat center / contain;
+  background: url("/assets/img/hero-fib.webp") no-repeat center / contain;
+  // black background is removed by the blend; only the glow adds onto #0f1216.
+  mix-blend-mode: screen;
   // Opacity is driven by the breathe keyframes through these custom props. Responsive
   // tiers dim the motif by overriding the props (NOT `opacity` directly — the running
   // animation would clobber a plain `opacity` override each tick and cause a flicker).
-  --xray-op-lo: 0.42;
-  --xray-op-hi: 0.56;
+  --xray-op-lo: 0.6;
+  --xray-op-hi: 0.76;
   opacity: var(--xray-op-lo);
   pointer-events: none;
   animation: hero-xray-breathe 8s ease-in-out infinite;
@@ -55,37 +55,33 @@
   }
   50% {
     opacity: var(--xray-op-hi);
-    transform: translateY(-50%) scale(1.025);
+    transform: translateY(-50%) scale(1.015);
   }
 }
 
-// Below Bootstrap `lg` the text column goes ~full-width and the empty right half that
-// the motif lived in collapses. Push it up into the top-right corner and dim it so it
-// stays clear of the lead copy + CTAs (clipped by .hero's overflow:hidden). Reposition
-// via top/right/width only (never transform/opacity — those are animated); dim via the
-// --xray-op-* custom props.
+// Below Bootstrap `lg` the text column goes ~full-width; shrink the motif and raise it
+// into the top-right corner so it stays clear of the lead copy + CTAs (clipped by
+// overflow:hidden). Reposition via top/right/width only (never transform/opacity —
+// those are animated); dim via the --xray-op-* custom props.
 @media (max-width: 991.98px) {
   .hero::before {
-    top: 24%;
-    right: -18%;
-    width: 62vmin;
-    max-width: 520px;
-    max-height: 520px;
-    --xray-op-lo: 0.3;
-    --xray-op-hi: 0.42;
+    top: 26%;
+    right: -8%;
+    width: 64vw;
+    max-width: 620px;
+    --xray-op-lo: 0.4;
+    --xray-op-hi: 0.54;
   }
 }
 @media (max-width: 767.98px) {
   .hero::before {
     top: 14%;
-    right: -28%;
-    width: 66vmin;
-    max-width: 360px;
-    max-height: 360px;
-    --xray-op-lo: 0.24;
+    right: -14%;
+    width: 92vw;
+    max-width: 460px;
+    --xray-op-lo: 0.3;
     // static on phones: a small pulsing corner element reads as a glitch, and it
-    // spares the battery/CPU. With the animation off, the base `opacity` (the lo
-    // prop) applies directly.
+    // spares the battery/CPU. With the animation off, the base `opacity` applies.
     animation: none;
   }
 }
