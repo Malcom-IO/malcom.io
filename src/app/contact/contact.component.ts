@@ -59,8 +59,26 @@ export class ContactComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.isBrowser) {
+      this.loadTurnstileScript();
       this.renderTurnstile();
     }
+  }
+
+  /**
+   * Inject the Cloudflare Turnstile script only when the contact form mounts
+   * (it lives on the home page). Keeps the third-party request off every other
+   * route. renderTurnstile() polls for the global until it finishes loading.
+   */
+  private loadTurnstileScript(): void {
+    const src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    if (this.doc.querySelector(`script[src="${src}"]`)) {
+      return;
+    }
+    const script = this.doc.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    this.doc.head.appendChild(script);
   }
 
   /** Render the Turnstile widget, waiting for its async script to load. */
