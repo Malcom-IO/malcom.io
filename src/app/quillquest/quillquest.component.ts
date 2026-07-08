@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from './quillquest-shell.component';
 import { RevealDirective } from '../shared/reveal.directive';
+import { IconComponent } from '../shared/icon.component';
 
 const A = '/assets/quillquest';
 
@@ -30,7 +31,7 @@ const SHOT_META: [string, string, string][] = [
 
 @Component({
   selector: 'app-quillquest',
-  imports: [QuillquestShellComponent, RouterLink, RevealDirective],
+  imports: [QuillquestShellComponent, RouterLink, RevealDirective, IconComponent],
   templateUrl: './quillquest.component.html',
   styleUrl: './quillquest.component.scss',
 })
@@ -53,22 +54,22 @@ export class QuillquestComponent {
 
   readonly trust: Trust[] = [
     {
-      icon: 'fa-shield-halved',
+      icon: 'shield-halved',
       title: 'Truly private',
       body: 'Plays fully offline, collects nothing, and sends nothing anywhere. No ads, trackers, accounts, or chat.',
     },
     {
-      icon: 'fa-graduation-cap',
+      icon: 'graduation-cap',
       title: 'Actually teaches',
       body: 'A graded curriculum, mastery-based levels, and spaced-repetition review of the words your kid misses.',
     },
     {
-      icon: 'fa-heart',
+      icon: 'heart',
       title: 'Healthy by design',
       body: 'Optional reminders (off by default) and streaks that reward just showing up — no nagging.',
     },
     {
-      icon: 'fa-people-roof',
+      icon: 'people-roof',
       title: 'For the whole family',
       body: 'Each kid gets their own profile, buddy, and avatar.',
     },

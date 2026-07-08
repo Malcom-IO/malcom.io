@@ -12,6 +12,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from '../shared/toast.service';
+import { IconComponent } from '../shared/icon.component';
 
 declare const turnstile: {
   render: (el: HTMLElement, opts: Record<string, unknown>) => string;
@@ -24,7 +25,7 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAADwMRSPJhDBDL3BT';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, IconComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
   // The Turnstile widget (@if isBrowser) renders only in the browser, so the

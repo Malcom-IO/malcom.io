@@ -32,7 +32,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "ignore": [
+                  "assets/quillquest/icon.png",
+                  "assets/quillquest/buddy-*.png",
+                  "assets/quillquest/screenshots/**"
+                ]
               }
             ],
             "styles": [
