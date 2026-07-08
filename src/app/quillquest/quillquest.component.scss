@@ -103,11 +103,9 @@
   font-style: italic;
 }
 
+// persistent underline so inline links aren't distinguished by color alone (WCAG 1.4.1)
 .qq-inline-link {
   color: var(--brand-bright);
-  text-decoration: none;
-}
-.qq-inline-link:hover {
   text-decoration: underline;
 }
 .qq-inline-link:focus-visible {
