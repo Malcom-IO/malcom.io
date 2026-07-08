@@ -16,7 +16,9 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
   html,body{width:1200px;height:630px;overflow:hidden}
   body{background:radial-gradient(130% 100% at 80% 50%, rgba(40,167,69,.12), transparent 62%), #10141a;
     color:#e9ecef;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;position:relative;-webkit-font-smoothing:antialiased}
-  .xr{position:absolute;right:-70px;top:50%;transform:translateY(-50%);width:740px;height:740px;opacity:.6}
+  /* same orientation as the hero + nav mark: mirrored + rotated so the eye sits
+     upper-right and the tail sweeps to the lower-left (the "comma" lean). */
+  .xr{position:absolute;right:10px;top:50%;transform:translateY(-50%) scaleX(-1) rotate(90deg);width:660px;height:660px;opacity:.6}
   .xr svg{width:100%;height:100%;display:block}
   .left{position:absolute;left:76px;top:0;height:100%;display:flex;flex-direction:column;justify-content:center;z-index:2;max-width:640px}
   .wm{font-family:ui-monospace,Menlo,monospace;font-size:27px;font-weight:700;letter-spacing:-1px;margin-bottom:22px}
