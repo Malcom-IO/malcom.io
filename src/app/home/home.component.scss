@@ -51,41 +51,41 @@
 // via top/right/width only (never transform/opacity — those are animated); dim via the
 // --xray-op-* custom props. Narrower queries come last so they win the cascade.
 
-// iPad / small laptop (992–1199): shrink + raise into the upper-right so the spiral
-// stays fully visible and clears the lead paragraph.
+// iPad / small laptop (992–1199): keep the spiral prominent in the upper-right,
+// clear of the lead paragraph. (Sized larger than a naive shrink because this
+// image carries generous internal margin — it renders smaller than its box.)
 @media (max-width: 1199.98px) {
   .hero::before {
+    top: 42%;
+    right: -16%;
+    width: 70vw;
+    max-width: 820px;
+    --xray-op-lo: 0.5;
+    --xray-op-hi: 0.62;
+  }
+}
+// Tablet portrait (768–991): a touch larger still, upper-right, clear of the copy.
+@media (max-width: 991.98px) {
+  .hero::before {
     top: 40%;
-    right: -7%;
-    width: 46vw;
-    max-width: 520px;
-    --xray-op-lo: 0.44;
+    right: -16%;
+    width: 78vw;
+    max-width: 680px;
+    --xray-op-lo: 0.46;
     --xray-op-hi: 0.58;
   }
 }
-// Tablet portrait (768–991): raised into the upper-right corner, clear of the copy.
-@media (max-width: 991.98px) {
-  .hero::before {
-    top: 28%;
-    right: -6%;
-    width: 54vw;
-    max-width: 470px;
-    --xray-op-lo: 0.4;
-    --xray-op-hi: 0.54;
-  }
-}
-// Phone (<768): a landscape strip in the corner reads as a smudge, so instead let the
-// whole spiral fill the lower half of the hero (using the otherwise-empty space below
-// the CTAs) as a large, faint backdrop. Anchor to the bottom; static (no pulse).
+// Phone (<768): let the whole spiral fill the lower hero (using the otherwise-empty
+// space below the CTAs) as a large backdrop. Anchor to the bottom; static (no pulse).
 @media (max-width: 767.98px) {
   .hero::before {
     top: auto;
-    bottom: -8%;
-    right: -12%;
-    width: 148vw;
+    bottom: -12%;
+    right: -16%;
+    width: 185vw;
     max-width: none;
     transform: none;
-    --xray-op-lo: 0.3;
+    --xray-op-lo: 0.38;
     animation: none;
   }
 }
