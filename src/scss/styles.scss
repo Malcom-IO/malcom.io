@@ -165,10 +165,11 @@ section[id] {
   font-weight: 600;
 }
 .btn-outline-light {
-  --bs-btn-border-color: var(--line);
+  // >= 3:1 non-text contrast so the outline is visible on the ground and over the hero motif (WCAG 1.4.11)
+  --bs-btn-border-color: #6b7682;
   --bs-btn-color: var(--text);
   --bs-btn-hover-bg: var(--surface-2);
-  --bs-btn-hover-border-color: #4c5762;
+  --bs-btn-hover-border-color: #808b98;
   --bs-btn-hover-color: var(--text);
 }
 
