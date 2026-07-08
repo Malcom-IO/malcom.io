@@ -7,10 +7,6 @@ $primary: #28a745;
 
 @import "colors";
 
-// FontAwesome 7 — the build resolves the webfonts and emits them (hashed) to /media
-@import "@fortawesome/fontawesome-free/scss/fontawesome";
-@import "@fortawesome/fontawesome-free/scss/solid";
-@import "@fortawesome/fontawesome-free/scss/brands";
 
 :root {
   --ground: #20242a;

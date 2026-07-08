@@ -33,18 +33,18 @@
             @if (appStoreUrl) {
               <div class="qq-cta">
                 <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                  <i class="fab fa-apple me-2" aria-hidden="true"></i> Download on the App Store
+                  <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
                 </a>
               </div>
             } @else {
               <!-- TODO (launch day): set appStoreUrl to show a real App Store download button -->
               <div class="qq-cta">
                 <a class="btn btn-primary btn-lg" [href]="notifyMailto">
-                  <i class="fas fa-bell me-2" aria-hidden="true"></i> Email me at launch
+                  <app-icon name="bell" class="me-2"></app-icon> Email me at launch
                 </a>
               </div>
               <p class="qq-status-chip">
-                <i class="fab fa-apple" aria-hidden="true"></i> Coming to the App Store — 2026
+                <app-icon name="apple"></app-icon> Coming to the App Store — 2026
               </p>
             }
             <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
@@ -79,7 +79,7 @@
         @for (t of trust; track t.title) {
           <div class="col-md-6 col-xl-3">
             <div class="brand-card">
-              <i class="fas {{ t.icon }} fa-xl green-text d-block mt-1 mb-3" aria-hidden="true"></i>
+              <app-icon [name]="t.icon" size="xl" class="green-text d-block mt-1 mb-3"></app-icon>
               <h3 class="h5 fw-semibold">{{ t.title }}</h3>
               <p class="text-muted-2 mb-0">{{ t.body }}</p>
             </div>
@@ -103,7 +103,7 @@
           <h2 class="h-section">A real quest, built on real spelling</h2>
           <ul class="qq-perks">
             @for (perk of perks; track perk) {
-              <li><i class="fas fa-check green-text" aria-hidden="true"></i><span>{{ perk }}</span></li>
+              <li><app-icon name="check" class="green-text"></app-icon><span>{{ perk }}</span></li>
             }
           </ul>
         </div>
@@ -161,17 +161,17 @@
         @if (appStoreUrl) {
           <div class="qq-cta justify-content-center">
             <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-              <i class="fab fa-apple me-2" aria-hidden="true"></i> Download on the App Store
+              <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
             </a>
           </div>
         } @else {
           <div class="qq-cta justify-content-center">
             <a class="btn btn-primary btn-lg" [href]="notifyMailto">
-              <i class="fas fa-bell me-2" aria-hidden="true"></i> Email me at launch
+              <app-icon name="bell" class="me-2"></app-icon> Email me at launch
             </a>
           </div>
           <p class="qq-status-chip">
-            <i class="fab fa-apple" aria-hidden="true"></i> Coming to the App Store — 2026
+            <app-icon name="apple"></app-icon> Coming to the App Store — 2026
           </p>
         }
         <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
