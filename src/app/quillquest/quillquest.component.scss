@@ -28,6 +28,13 @@
   font-size: clamp(3rem, 9vw, 5.5rem); // match the home hero title cap
   margin: 0 0 1rem;
 }
+// "QuillQuest" is one long unbreakable word; shrink it on very narrow phones so
+// it can't clip against .qq-hero's overflow:hidden.
+@media (max-width: 360px) {
+  .qq-title {
+    font-size: 2.5rem;
+  }
+}
 
 .qq-tagline {
   max-width: 34rem;
@@ -175,15 +182,44 @@
 
 // horizontal scroll strip with snap; keeps the page body from scrolling sideways
 .qq-gallery {
+  // the strip is full-bleed but its first item must line up with the section
+  // heading (which sits in Bootstrap's .container) — so inset by the live
+  // container width per breakpoint, not a single hardcoded 1140px.
+  --qq-container: 100vw;
   display: flex;
   gap: 1.25rem;
   overflow-x: auto;
   max-width: 100%;
   scroll-snap-type: x mandatory;
   scroll-padding-left: 1.5rem;
-  padding: 2rem max(1.5rem, calc((100vw - 1140px) / 2 + 12px)) 1rem;
+  padding: 2rem max(1.5rem, calc((100vw - var(--qq-container)) / 2 + 12px)) 1rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+}
+@media (min-width: 576px) {
+  .qq-gallery {
+    --qq-container: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .qq-gallery {
+    --qq-container: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .qq-gallery {
+    --qq-container: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .qq-gallery {
+    --qq-container: 1140px;
+  }
+}
+@media (min-width: 1400px) {
+  .qq-gallery {
+    --qq-container: 1320px;
+  }
 }
 .qq-gallery:focus-visible {
   outline: 2px solid var(--brand-bright);

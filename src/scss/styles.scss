@@ -116,6 +116,12 @@ body {
 section[id] {
   scroll-margin-top: 5rem;
 }
+// the fixed navbar wraps to two rows below lg, so anchored headings need more offset
+@media (max-width: 991.98px) {
+  section[id] {
+    scroll-margin-top: 7rem;
+  }
+}
 
 // ----------------------------------------------------------------- cards
 .brand-card {
