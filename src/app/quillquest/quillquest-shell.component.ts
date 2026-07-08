@@ -20,9 +20,9 @@ import { LogoComponent } from '../shared/logo.component';
         aria-label="Primary"
       >
         <div class="container">
-          <a class="navbar-brand" routerLink="/home"><app-logo></app-logo></a>
+          <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
           <ul class="navbar-nav ms-auto flex-row gap-4">
-            <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -32,6 +32,9 @@ import { LogoComponent } from '../shared/logo.component';
                 [routerLinkActiveOptions]="{ exact: false }"
                 >QuillQuest</a
               >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/']" fragment="contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -44,11 +47,11 @@ import { LogoComponent } from '../shared/logo.component';
       <div
         class="container py-4 d-flex flex-wrap justify-content-between align-items-center gap-3"
       >
-        <a routerLink="/home" class="text-decoration-none"><app-logo></app-logo></a>
+        <a routerLink="/" class="text-decoration-none"><app-logo></app-logo></a>
         <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
-          <a routerLink="/home">Home</a>
+          <a routerLink="/">Home</a>
           <a routerLink="/quillquest">QuillQuest</a>
-          <a [routerLink]="['/home']" fragment="contact">Contact</a>
+          <a [routerLink]="['/']" fragment="contact">Contact</a>
           <a routerLink="/quillquest/support">Support</a>
           <a routerLink="/quillquest/privacy">Privacy</a>
         </nav>
