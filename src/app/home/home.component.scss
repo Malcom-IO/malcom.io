@@ -8,19 +8,6 @@
   border-bottom: 1px solid var(--line-soft);
 }
 
-// Hero-only eyebrow: a step up in scale/presence so it doesn't read as a tiny
-// caption under the huge display headline. The global .eyebrow token stays as-is
-// (it labels ~11 restrained section headers elsewhere).
-.hero .eyebrow {
-  font-size: 0.95rem;
-  letter-spacing: 0.14em;
-  font-weight: 600;
-  color: var(--brand-bright);
-}
-.hero .eyebrow::before {
-  width: 2.2rem;
-}
-
 // Golden-ratio "x-ray" motif — full φ construction (golden rectangle + nested squares
 // + spiral), a glowing landscape raster on a pure-black bg. `mix-blend-mode: screen`
 // drops the black and blends only the green light onto the hero. Master (transparent)
