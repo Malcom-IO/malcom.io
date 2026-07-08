@@ -16,7 +16,7 @@ const ORG = {
   '@type': 'Organization',
   name: 'Malcom IO',
   url: 'https://www.malcom.io/',
-  logo: 'https://www.malcom.io/apple-touch-icon.png',
+  logo: 'https://www.malcom.io/assets/img/logo.png',
   email: 'contact@malcom.io',
   description:
     'Malcom IO builds custom software — medical software, health interoperability, ' +
@@ -40,7 +40,14 @@ const QUILLQUEST_APP = {
   image: QQ_OG_IMAGE,
   description: 'A free, offline spelling game for grades 3–8 — no ads, no tracking, no accounts.',
   audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  // Pre-launch: mark the free offer as PreOrder so the markup matches the page's
+  // "Coming to the App Store — 2026" state (not "available now").
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/PreOrder',
+  },
   publisher: { '@type': 'Organization', name: 'Malcom IO' },
 };
 
@@ -59,30 +66,33 @@ function quillquestBreadcrumb(name: string, path: string) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.malcom.io/' },
       {
         '@type': 'ListItem',
-        position: 1,
+        position: 2,
         name: 'QuillQuest',
         item: 'https://www.malcom.io/quillquest/',
       },
-      { '@type': 'ListItem', position: 2, name, item: `https://www.malcom.io${path}` },
+      { '@type': 'ListItem', position: 3, name, item: `https://www.malcom.io${path}` },
     ],
   };
 }
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
-    path: 'home',
+    // Serve the homepage at the ROOT so the bare domain (the URL people share)
+    // prerenders to dist/browser/index.html with real title/description/OG/JSON-LD
+    // instead of a blank "Redirecting" stub. (description omitted → canonical
+    // DEFAULT_DESCRIPTION from the SEO strategy.)
+    path: '',
     component: HomeComponent,
     title: 'Malcom IO — Building Better',
     data: {
-      description:
-        'Malcom IO builds custom software — medical software, health interoperability, ' +
-        'and the QuillQuest mobile game — with a passion for improving the world.',
       jsonLd: [ORG, WEBSITE],
     } satisfies SeoData,
   },
+  // Keep the old /home URL working — it redirects to the canonical root.
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
   {
     path: 'quillquest',
     component: QuillquestComponent,
@@ -123,5 +133,5 @@ export const routes: Routes = [
       jsonLd: [FAQ_PAGE, quillquestBreadcrumb('Support', '/quillquest/support/')],
     } satisfies SeoData,
   },
-  { path: '**', redirectTo: '/home' },
+  { path: '**', redirectTo: '' },
 ];
