@@ -19,14 +19,14 @@ interface Shot {
   caption: string;
 }
 
-// [file stem, alt text, gallery caption] — order matches the App Store listing,
-// and covers both realms (spelling + times tables) plus the shared systems.
+// [file stem, alt text, gallery caption] — covers both realms (spelling + times
+// tables) plus the shared systems. The Quest Map shot leads (it shows both realm
+// tabs and the level trail), then a spelling pair, a times pair, and players.
 const SHOT_META: [string, string, string][] = [
-  ['qq-iphone-1-home', 'QuillQuest home screen — pick Spelling or Times Tables', 'Two ways to play, one adventure'],
+  ['qq-iphone-1-home', 'QuillQuest Quest Map — pick Spelling or Times Tables, then climb the level trail', 'Two ways to play, one adventure'],
   ['qq-iphone-2-spelling', 'Spelling a word by ear during a round', 'Hear it. Spell it. Nail it.'],
   ['qq-iphone-3-reveal', 'Answer reveal showing the correct spelling and where you slipped', 'Feedback that actually teaches'],
   ['qq-iphone-4-times', 'Answering a times-tables fact on the number pad', 'Times tables that feel like a game'],
-  ['qq-iphone-5-trail', 'The times-tables trail from Trailhead to Summit', 'An adventure map to every level'],
   ['qq-iphone-6-summary', 'End-of-stage summary with stars and XP', 'Every answer is a win'],
   ['qq-iphone-7-players', 'Multiple player profiles', 'One app, every kid'],
 ];
