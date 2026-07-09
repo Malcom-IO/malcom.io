@@ -42,7 +42,7 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
     <img class="icon" src="${iconData}" alt="">
     <div>
       <div class="title">QuillQuest</div>
-      <div class="tagline">A spelling adventure for kids.</div>
+      <div class="tagline">Spelling &amp; times tables for kids.</div>
       <div class="badges"><b>Free</b> &nbsp;·&nbsp; Offline &nbsp;·&nbsp; No ads &nbsp;·&nbsp; No in-app purchases</div>
     </div>
   </div>
