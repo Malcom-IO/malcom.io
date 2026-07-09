@@ -15,7 +15,10 @@
             fetchpriority="high" />
           <p class="eyebrow eyebrow--hero">A Malcom IO game</p>
           <h1 class="display-mono qq-title">QuillQuest</h1>
-          <p class="lead-lg qq-tagline">A spelling adventure that grows with your kid. Fun, not childish.</p>
+          <p class="lead-lg qq-tagline">
+            Two ways to play — spelling and times tables — in one adventure that grows with your kid.
+            Fun, not childish.
+          </p>
           <ul class="qq-badges" aria-label="At a glance">
             <li>Free</li>
             <li>Offline</li>
@@ -25,9 +28,10 @@
             <li>No accounts</li>
           </ul>
           <p class="text-muted-2 qq-hero-sub">
-            Hear a word, spell it out, climb the ranks. QuillQuest turns spelling into a quest — and
-            builds real skill along the way. Great for grades 3–8 (roughly ages 8–14); it places every
-            kid by level, so younger and older spellers fit right in too.
+            Pick a realm: hear a word and spell it out, or race the times-tables trail on a number pad.
+            QuillQuest turns practice into a quest — and builds real skill along the way. Great for
+            grades 3–8 (roughly ages 8–14); it places every kid by level, so younger and older learners
+            fit right in too.
           </p>
           <div class="qq-cta-block">
             @if (appStoreUrl) {
@@ -73,7 +77,7 @@
       <p class="eyebrow">Why parents trust it</p>
       <h2 class="h-section">Private by design, and it really teaches</h2>
       <p class="qq-parent-note">
-        Made by a parent who wanted spelling practice their own kids would actually choose.
+        Made by a parent who wanted practice their own kids would actually choose.
       </p>
       <div class="row g-4 mt-3">
         @for (t of trust; track t.title) {
@@ -100,7 +104,7 @@
       <div class="row gy-5 gx-4 gx-lg-5 align-items-center">
         <div class="col-lg-7">
           <p class="eyebrow">What kids get</p>
-          <h2 class="h-section">A real quest, built on real spelling</h2>
+          <h2 class="h-section">Two realms, one real quest</h2>
           <ul class="qq-perks">
             @for (perk of perks; track perk) {
               <li><app-icon name="check" class="green-text"></app-icon><span>{{ perk }}</span></li>
@@ -117,7 +121,7 @@
             }
           </div>
           <p class="text-muted-2 small font-monospace text-center mb-0 mt-2">
-            Ivy, Owen &amp; Mia read every word aloud.
+            Ivy, Owen &amp; Mia read every spelling word aloud.
           </p>
         </div>
       </div>
@@ -155,7 +159,7 @@
       <h2 class="h-section">Get QuillQuest free</h2>
       <p class="lead-lg text-muted-2 mx-auto" style="max-width: 48ch">
         Free, offline, and private — no ads, no in-app purchases, no tracking, no accounts.
-        Just spelling worth leveling up.
+        Spelling and times tables, worth leveling up.
       </p>
       <div class="qq-cta-block qq-cta-block--center mt-4">
         @if (appStoreUrl) {

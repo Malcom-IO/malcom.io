@@ -19,14 +19,16 @@ interface Shot {
   caption: string;
 }
 
-// [file stem, alt text, gallery caption] — order matches the App Store listing.
+// [file stem, alt text, gallery caption] — order matches the App Store listing,
+// and covers both realms (spelling + times tables) plus the shared systems.
 const SHOT_META: [string, string, string][] = [
-  ['qq-iphone-1-home', 'QuillQuest home screen', 'Spelling worth leveling up'],
-  ['qq-iphone-2-trail', 'The QuillQuest adventure trail', 'An adventure map to every word'],
-  ['qq-iphone-3-round', 'Spelling a word during a round', 'Hear it. Spell it. Nail it.'],
-  ['qq-iphone-4-reveal', 'Answer reveal with feedback', 'Feedback that actually teaches'],
-  ['qq-iphone-5-summary', 'End-of-round summary', 'Every word is a win'],
-  ['qq-iphone-6-players', 'Multiple player profiles', 'One app, every kid'],
+  ['qq-iphone-1-home', 'QuillQuest home screen — pick Spelling or Times Tables', 'Two ways to play, one adventure'],
+  ['qq-iphone-2-spelling', 'Spelling a word by ear during a round', 'Hear it. Spell it. Nail it.'],
+  ['qq-iphone-3-reveal', 'Answer reveal showing the correct spelling and where you slipped', 'Feedback that actually teaches'],
+  ['qq-iphone-4-times', 'Answering a times-tables fact on the number pad', 'Times tables that feel like a game'],
+  ['qq-iphone-5-trail', 'The times-tables trail from Trailhead to Summit', 'An adventure map to every level'],
+  ['qq-iphone-6-summary', 'End-of-stage summary with stars and XP', 'Every answer is a win'],
+  ['qq-iphone-7-players', 'Multiple player profiles', 'One app, every kid'],
 ];
 
 @Component({
@@ -62,7 +64,7 @@ export class QuillquestComponent {
     {
       icon: 'graduation-cap',
       title: 'Actually teaches',
-      body: 'A graded curriculum, mastery-based levels, and spaced-repetition review of the words your kid misses.',
+      body: 'A graded curriculum in both subjects, mastery-based levels, and spaced-repetition review of whatever your kid misses.',
     },
     {
       icon: 'heart',
@@ -77,11 +79,12 @@ export class QuillquestComponent {
   ];
 
   readonly perks: string[] = [
-    '10 levels of hand-graded words (~3,500), from Sprout to the Bee Level',
-    'Friendly characters — Ivy, Owen & Mia — read every word aloud in real recorded voices',
-    'Miss a word? It shows the correct spelling and exactly where you slipped',
-    'Ranks, stars, badges, and unlockable themes to earn',
-    'Practice packs: compound words, homophones, prefixes & suffixes, and “words I missed”',
+    'Two realms on one engine — spell words by ear, or race the times-tables trail',
+    'Spelling: hear each word in a real recorded voice (Ivy, Owen & Mia), then spell it out — 10 levels of hand-graded words from Sprout to the Bee Level',
+    'Times Tables: type every answer on a number pad — no multiple-choice — climbing 10 steps from Trailhead to Summit',
+    'Miss one? Spelling shows the correct spelling and where you slipped; Times Tables shows the product with a skip-count',
+    'Master a level to unlock the next — never by grinding points — and whatever you miss comes back on a smart review schedule',
+    'One “you” across both realms: XP, ranks, badges, six themes, and a daily streak',
   ];
 
   readonly buddies = [
