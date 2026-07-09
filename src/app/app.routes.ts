@@ -38,7 +38,9 @@ const QUILLQUEST_APP = {
   applicationCategory: 'EducationalApplication',
   url: 'https://www.malcom.io/quillquest/',
   image: QQ_OG_IMAGE,
-  description: 'A free, offline spelling game for grades 3–8 — no ads, no tracking, no accounts.',
+  description:
+    'A free, offline learning game for grades 3–8 — spelling and times tables in one app, ' +
+    'with no ads, no tracking, and no accounts.',
   audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
   // Pre-launch: mark the free offer as PreOrder so the markup matches the page's
   // "Coming to the App Store — 2026" state (not "available now").
@@ -96,14 +98,14 @@ export const routes: Routes = [
   {
     path: 'quillquest',
     component: QuillquestComponent,
-    title: 'QuillQuest — A spelling adventure for kids | Malcom IO',
+    title: 'QuillQuest — Spelling & times tables for kids | Malcom IO',
     data: {
       ogTitle: 'QuillQuest',
       description:
-        'QuillQuest is a free, offline spelling game for grades 3–8 — no ads, no tracking, ' +
-        'no accounts. Hear a word, spell it, and climb the ranks.',
+        'QuillQuest is a free, offline learning game for grades 3–8 — spelling and times tables ' +
+        'in one app. No ads, no tracking, no accounts. Pick a realm and climb the ranks.',
       ogImage: QQ_OG_IMAGE,
-      ogImageAlt: 'QuillQuest — a spelling adventure for kids',
+      ogImageAlt: 'QuillQuest — spelling and times tables for kids',
       jsonLd: QUILLQUEST_APP,
     } satisfies SeoData,
   },
@@ -127,7 +129,7 @@ export const routes: Routes = [
     data: {
       ogTitle: 'QuillQuest — Support',
       description:
-        'Help and FAQ for QuillQuest, the free offline spelling game for kids. ' +
+        'Help and FAQ for QuillQuest, the free offline spelling & times-tables game for kids. ' +
         'Questions? Email contact@malcom.io.',
       ogImage: QQ_OG_IMAGE,
       jsonLd: [FAQ_PAGE, quillquestBreadcrumb('Support', '/quillquest/support/')],
