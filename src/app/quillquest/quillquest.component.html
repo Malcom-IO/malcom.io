@@ -34,24 +34,32 @@
             fit right in too.
           </p>
           <div class="qq-cta-block">
-            @if (appStoreUrl) {
+            @if (appStoreUrl || googlePlayUrl) {
               <div class="qq-cta">
-                <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                  <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
-                </a>
+                @if (appStoreUrl) {
+                  <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
+                    <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
+                  </a>
+                }
+                @if (googlePlayUrl) {
+                  <a [href]="googlePlayUrl" class="btn btn-primary btn-lg">
+                    <app-icon name="google-play" class="me-2"></app-icon> Get it on Google Play
+                  </a>
+                }
               </div>
             } @else {
-              <!-- TODO (launch day): set appStoreUrl to show a real App Store download button -->
+              <!-- TODO (launch day): set appStoreUrl / googlePlayUrl to show real download buttons -->
               <div class="qq-cta">
                 <a class="btn btn-primary btn-lg" [href]="notifyMailto">
                   <app-icon name="bell" class="me-2"></app-icon> Email me at launch
                 </a>
               </div>
               <p class="qq-status-chip">
-                <app-icon name="apple"></app-icon> Coming to the App Store — 2026
+                <app-icon name="apple"></app-icon> Coming to the App Store &amp;
+                <app-icon name="google-play"></app-icon> Google Play — 2026
               </p>
             }
-            <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
+            <p class="qq-cta-note">Free on iPhone, iPad &amp; Android — no ads, no in-app purchases.</p>
           </div>
         </div>
 
@@ -162,11 +170,18 @@
         Spelling and times tables, worth leveling up.
       </p>
       <div class="qq-cta-block qq-cta-block--center mt-4">
-        @if (appStoreUrl) {
+        @if (appStoreUrl || googlePlayUrl) {
           <div class="qq-cta justify-content-center">
-            <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-              <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
-            </a>
+            @if (appStoreUrl) {
+              <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
+                <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
+              </a>
+            }
+            @if (googlePlayUrl) {
+              <a [href]="googlePlayUrl" class="btn btn-primary btn-lg">
+                <app-icon name="google-play" class="me-2"></app-icon> Get it on Google Play
+              </a>
+            }
           </div>
         } @else {
           <div class="qq-cta justify-content-center">
@@ -175,10 +190,11 @@
             </a>
           </div>
           <p class="qq-status-chip">
-            <app-icon name="apple"></app-icon> Coming to the App Store — 2026
+            <app-icon name="apple"></app-icon> Coming to the App Store &amp;
+            <app-icon name="google-play"></app-icon> Google Play — 2026
           </p>
         }
-        <p class="qq-cta-note">Free on iPhone &amp; iPad — no ads, no in-app purchases.</p>
+        <p class="qq-cta-note">Free on iPhone, iPad &amp; Android — no ads, no in-app purchases.</p>
       </div>
     </div>
   </section>

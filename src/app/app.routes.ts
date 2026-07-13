@@ -34,7 +34,7 @@ const QUILLQUEST_APP = {
   '@context': 'https://schema.org',
   '@type': 'MobileApplication',
   name: 'QuillQuest',
-  operatingSystem: 'iOS',
+  operatingSystem: 'iOS, Android',
   applicationCategory: 'EducationalApplication',
   url: 'https://www.malcom.io/quillquest/',
   image: QQ_OG_IMAGE,
@@ -43,7 +43,7 @@ const QUILLQUEST_APP = {
     'with no ads, no tracking, and no accounts.',
   audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
   // Pre-launch: mark the free offer as PreOrder so the markup matches the page's
-  // "Coming to the App Store — 2026" state (not "available now").
+  // "Coming to the App Store & Google Play — 2026" state (not "available now").
   offers: {
     '@type': 'Offer',
     price: '0',
