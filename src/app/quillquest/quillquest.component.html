@@ -47,8 +47,18 @@
                   </a>
                 }
               </div>
+              <!-- Whichever store isn't live yet still reads "coming soon". -->
+              @if (!appStoreUrl || !googlePlayUrl) {
+                <p class="qq-status-chip">
+                  @if (!googlePlayUrl) {
+                    <app-icon name="google-play"></app-icon> Coming soon to Google Play
+                  } @else {
+                    <app-icon name="apple"></app-icon> Coming soon to the App Store
+                  }
+                </p>
+              }
             } @else {
-              <!-- TODO (launch day): set appStoreUrl / googlePlayUrl to show real download buttons -->
+              <!-- TODO (launch day): set googlePlayUrl to add the Google Play button -->
               <div class="qq-cta">
                 <a class="btn btn-primary btn-lg" [href]="notifyMailto">
                   <app-icon name="bell" class="me-2"></app-icon> Email me at launch
@@ -183,6 +193,15 @@
               </a>
             }
           </div>
+          @if (!appStoreUrl || !googlePlayUrl) {
+            <p class="qq-status-chip">
+              @if (!googlePlayUrl) {
+                <app-icon name="google-play"></app-icon> Coming soon to Google Play
+              } @else {
+                <app-icon name="apple"></app-icon> Coming soon to the App Store
+              }
+            </p>
+          }
         } @else {
           <div class="qq-cta justify-content-center">
             <a class="btn btn-primary btn-lg" [href]="notifyMailto">

@@ -42,8 +42,8 @@ export class QuillquestComponent {
   // the CTAs then flip from the pre-launch state ("Email me at launch" /
   // "Coming to the App Store & Google Play — 2026") to real download buttons
   // automatically. iOS and Android flip independently (whichever launches first).
-  readonly appStoreUrl: string | null = null;
-  readonly googlePlayUrl: string | null = null;
+  readonly appStoreUrl: string | null = 'https://apps.apple.com/app/id6788993070'; // LIVE 2026-07-15
+  readonly googlePlayUrl: string | null = null; // Android still in Google review — keep "coming soon"
 
   // Lightweight "notify me" fallback while the listing isn't live yet.
   readonly notifyMailto =
