@@ -61,7 +61,7 @@ export class QuillquestComponent {
     {
       icon: 'shield-halved',
       title: 'Truly private',
-      body: 'Plays fully offline, collects nothing, and sends nothing anywhere. No ads, trackers, accounts, or chat.',
+      body: 'Plays offline — no internet needed to play. Collects nothing, and shares no personal data with anyone. No ads, trackers, accounts, or chat.',
     },
     {
       icon: 'graduation-cap',
