@@ -20,7 +20,10 @@ export const QUILLQUEST_FAQS: QuillquestFaq[] = [
     q: 'Do you drill the ×0 and ×1 tables?',
     a: 'No — ×0 and ×1 are taught once as a quick warm-up rule (anything ×0 is 0, and ×1 is itself), then the game focuses on the facts that actually take practice.',
   },
-  { q: 'Does it work offline?', a: 'Yes — fully offline, no internet needed to play.' },
+  {
+    q: 'Does it work offline?',
+    a: 'Yes — the core game plays offline, no internet needed to play. Optional extras (additional voices and the recorded "use it in a sentence" clips) download once from a content host and are then saved on the device.',
+  },
   {
     q: "No sound in Spelling, or a word won't play aloud?",
     a: "Audio is the heart of Spelling (Times Tables is silent by design), so start with the device: make sure it isn't on silent — flip the side Ring/Silent switch so no orange is showing — and turn the volume up. You can always tap the speaker to hear a word again, and each level's read-aloud voice can be changed in Settings.",
