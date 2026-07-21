@@ -47,7 +47,7 @@
                   </a>
                 }
               </div>
-              <!-- Whichever store isn't live yet still reads "coming soon". -->
+              <!-- Both stores are live; this chip only returns if a URL is set back to null. -->
               @if (!appStoreUrl || !googlePlayUrl) {
                 <p class="qq-status-chip">
                   @if (!googlePlayUrl) {
@@ -58,7 +58,6 @@
                 </p>
               }
             } @else {
-              <!-- TODO (launch day): set googlePlayUrl to add the Google Play button -->
               <div class="qq-cta">
                 <a class="btn btn-primary btn-lg" [href]="notifyMailto">
                   <app-icon name="bell" class="me-2"></app-icon> Email me at launch

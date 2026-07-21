@@ -42,7 +42,7 @@ const QUILLQUEST_APP = {
     'A free, offline learning game for grades 3–8 — spelling and times tables in one app, ' +
     'with no ads, no tracking, and no accounts.',
   audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
-  // iOS is live on the App Store (2026-07-15); Android is still "coming soon".
+  // Live on both stores — App Store (2026-07-15) + Google Play (2026-07-21).
   // InStock reflects that the app is now downloadable.
   offers: {
     '@type': 'Offer',

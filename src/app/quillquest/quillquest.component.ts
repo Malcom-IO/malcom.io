@@ -38,12 +38,11 @@ const SHOT_META: [string, string, string][] = [
   styleUrl: './quillquest.component.scss',
 })
 export class QuillquestComponent {
-  // TODO (launch day): set each to its store listing URL once that app is live;
-  // the CTAs then flip from the pre-launch state ("Email me at launch" /
-  // "Coming to the App Store & Google Play — 2026") to real download buttons
-  // automatically. iOS and Android flip independently (whichever launches first).
+  // Live on both stores — the CTAs render a real download button for each. Each
+  // flips independently: setting one back to null reverts that store to its
+  // "coming soon" chip (both null → the "Email me at launch" pre-launch state).
   readonly appStoreUrl: string | null = 'https://apps.apple.com/app/id6788993070'; // LIVE 2026-07-15
-  readonly googlePlayUrl: string | null = null; // Android still in Google review — keep "coming soon"
+  readonly googlePlayUrl: string | null = 'https://play.google.com/store/apps/details?id=io.malcom.quillquest'; // LIVE 2026-07-21
 
   // Lightweight "notify me" fallback while the listing isn't live yet.
   readonly notifyMailto =
