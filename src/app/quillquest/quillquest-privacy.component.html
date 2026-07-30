@@ -1,99 +1,93 @@
+<!--
+  GENERATED FILE — DO NOT EDIT BY HAND.
+
+  Source of truth: quillquest/docs/shipping/privacy-policy.md
+  Regenerate:      cd ../quillquest && npm run privacy:build
+
+  Edits made here are lost on the next run, and worse, they make the published policy
+  disagree with the one the app is built against. Change the markdown instead.
+-->
 <app-quillquest-shell>
   <section class="qq-doc">
     <div class="container">
       <div class="doc-inner">
         <p class="eyebrow">QuillQuest</p>
         <h1 class="doc-title display-mono">Privacy Policy</h1>
-        <p class="doc-meta text-muted-2">Effective date: July 16, 2026</p>
-
+        <p class="doc-meta text-muted-2">Effective date: July 30, 2026</p>
         <p class="lead-lg doc-lead">
-          QuillQuest is a spelling &amp; times-tables game for kids, built to be private by design.
-          <strong>QuillQuest does not collect, store, or transmit any personal information.</strong>
+          QuillQuest is a spelling, times-tables and typing game for kids. We built it to be private by design. <strong>QuillQuest does not collect, store, or transmit any personal information.</strong>
         </p>
 
         <h2 class="doc-h">The short version</h2>
         <ul class="doc-list">
-          <li><strong>No accounts.</strong> No sign-up, no login, no name or email required.</li>
-          <li>
-            <strong>The game plays without a network.</strong> The full game — every level, both
-            subjects, your default voice — works with no internet. Optionally, extra voices and
-            recorded example-sentence audio download <strong>once</strong> from a content host and are
-            then saved on the device; that request carries <strong>no personal information</strong>.
-          </li>
-          <li>
-            <strong>No ads. No tracking. No analytics.</strong> No ad networks, no third-party
-            trackers, no cookies.
-          </li>
-          <li>
-            <strong>No personal data goes to anyone.</strong> We don't collect or share personal
-            information. The optional audio download is an ordinary request for an audio file — the
-            same file for everyone — that identifies no one.
-          </li>
+          <li><strong>No accounts, ever.</strong> You don't sign up, log in, or give us a name or email. There is no login and no user record — not for you, not for your child.</li>
+          <li><strong>If you turn on syncing, the only thing that syncs is game progress</strong> — levels, stars, XP, badges, streaks and practiced words, stored under an anonymous code. No name, no age, no email. It's off unless a grown-up switches it on (see "Syncing across devices").</li>
+          <li><strong>The game plays without a network.</strong> The full game — every level, both subjects, your default voice — works with no internet. Optionally, extra voices and recorded example-sentence audio download <strong>once</strong> from a content host and are then saved on the device (see "The optional audio download" below). That request carries <strong>no personal information</strong> and nothing about what your child does in the app.</li>
+          <li><strong>No ads. No tracking. No analytics.</strong> There are no advertising networks, no third-party trackers, no analytics SDKs, and no cookies.</li>
+          <li><strong>No personal data goes to anyone.</strong> We don't collect or share personal information. The optional audio download is an ordinary request for an audio file — the same file for everyone — that identifies no one.</li>
         </ul>
 
-        <h2 class="doc-h">What's stored on your device — and nowhere else</h2>
-        <p>To run the game, QuillQuest saves the following locally, and never uploads it:</p>
+        <h2 class="doc-h">What's stored on your device (and only your device)</h2>
+        <p>To make the game work, QuillQuest saves the following <strong>locally on the device</strong>, using the operating system's on-device storage. <strong>None of it is uploaded</strong> unless a grown-up turns on syncing, and even then only the game progress goes — never the age or the name:</p>
         <ul class="doc-list">
-          <li>A player's <strong>age</strong> (used only to pick a starting level).</li>
-          <li>An optional <strong>first name</strong> and <strong>avatar</strong> you choose.</li>
-          <li><strong>Game progress</strong> — levels, stars, XP, badges, streaks, words practiced.</li>
-          <li><strong>Settings</strong> — theme, voice, sound, and reminder preferences.</li>
+          <li>A player's chosen <strong>age</strong> (used only to pick a starting level).</li>
+          <li>An optional <strong>first name</strong> and <strong>avatar</strong> (emoji, color, accessory) you choose.</li>
+          <li><strong>Game progress</strong> — levels, stars, XP, badges, streaks, and which words were practiced.</li>
+          <li><strong>Settings</strong> — theme, voice, sound/haptics, and reminder preferences.</li>
         </ul>
-        <p>Erase it anytime in <strong>Settings → Reset all progress</strong>, or by deleting the app.</p>
+        <p>You can erase all of this at any time in <strong>Settings → Reset all progress</strong>, or by deleting the app.</p>
 
         <h2 class="doc-h">The optional audio download</h2>
-        <p>
-          The core game is built into the app and needs no network. To keep the initial download
-          small, some <strong>extra audio</strong> — additional voices, and the recorded "use it in a
-          sentence" clips — is fetched <strong>once, on demand,</strong> from a content-delivery host
-          (Cloudflare) and then <strong>cached on the device</strong>, so each clip downloads only a
-          single time.
-        </p>
+        <p>The core game is built into the app and needs no network. To keep the initial download small, some <strong>extra audio</strong> — additional voices, and the recorded "use it in a sentence" clips — is fetched <strong>once, on demand,</strong> from a content-delivery host (Cloudflare R2) and then <strong>cached on the device</strong>, so each clip downloads only a single time.</p>
         <ul class="doc-list">
-          <li>
-            The request is a plain fetch of an audio file. It carries <strong>no name, no account, no
-            advertising identifier, no identifier for your child, and nothing about which words,
-            levels, or answers they practice.</strong>
-          </li>
-          <li>
-            If the device is offline, the game simply uses the device's built-in voice for that clip
-            instead — nothing breaks.
-          </li>
-          <li>
-            The host serves the file over a standard, <strong>cookie-free</strong> request — no ad
-            network, no analytics SDK, and no advertising or per-child identifier, just a request for
-            the audio file.
-          </li>
+          <li>The request is a plain fetch of an audio file. It carries <strong>no name, no account, no advertising identifier, no identifier for your child, and nothing about which words, levels, or answers they practice.</strong></li>
+          <li>If the device is offline, the game simply uses the device's built-in voice for that clip instead — nothing breaks.</li>
+          <li>The host (Cloudflare) serves the file over a standard, <strong>cookie-free</strong> request. There is <strong>no ad network, no analytics SDK, and no advertising or per-child identifier</strong> involved — just a request for the audio file.</li>
         </ul>
-        <p>
-          Because these files are identical for every user and contain no personal data, this is
-          <strong>content delivery, not data collection</strong> — nothing about your child is
-          gathered, stored, or shared.
-        </p>
+        <p>Because these files are identical for every user and contain no personal data, this is <strong>content delivery, not data collection</strong> — nothing about your child is gathered, stored, or shared.</p>
+
+        <h2 class="doc-h">Playing in a web browser</h2>
+        <p>QuillQuest is also playable in a web browser. The browser version is the same game with the same rules: <strong>no accounts, no ads, no tracking, no analytics, no cookies.</strong> Progress is saved in your browser's local storage on your own device, exactly as the app saves it on a phone or tablet, and it is not uploaded unless syncing is switched on.</p>
+        <p>Two things are unavoidably different when a game is served over the web, and we would rather say so plainly than imply the browser version is identical:</p>
+        <ul class="doc-list">
+          <li><strong>A web host serves the page.</strong> Loading a website means a server sends it to you, and like every web server it records ordinary technical request logs — IP address, time, browser type. We do not use these to build a profile, they are not linked to any player, and there is no account for them to be linked to. They are a by-product of the web working at all; an installed app has no equivalent.</li>
+          <li><strong>Recorded audio is fetched from a content host</strong> the first time it is needed, as described above, and then cached by your browser. The request is for a plain audio file, identical for every player, and carries nothing about your child.</li>
+        </ul>
+        <p>Speech spoken by your browser's built-in voice is restricted to voices your device synthesizes <strong>locally</strong>, so practice words and sentences are not sent to a cloud speech service.</p>
+        <p>Clearing your browser data clears the saved progress, since that is where it lives.</p>
 
         <h2 class="doc-h">Notifications</h2>
-        <p>
-          The daily reminder is <strong>off by default</strong> and optional. If a parent turns it on,
-          it schedules a single <strong>local</strong> notification on the device — no servers, no push
-          tokens.
-        </p>
+        <p>The daily "come practice" reminder is <strong>off by default</strong> and <strong>optional</strong>. If a parent turns it on, it schedules a single <strong>local</strong> notification on the device at a chosen time. It uses no servers and no push tokens — nothing about it leaves the device.</p>
+
+        <h2 class="doc-h">Syncing across devices</h2>
+        <p><strong>There is no account and no login.</strong> We never ask for a name, an email or a password, and there is nothing to sign into. The only thing that syncs is <strong>game progress</strong> — the same progress listed above, nothing else.</p>
+        <p><strong>Syncing is off unless a grown-up turns it on</strong>, in Settings, behind a question a young child can't answer. Your child is never asked about it and never sees it.</p>
+        <p>When it's on, the device stores that player's game progress under an <strong>8-character code</strong> so another device can pick it up. What that means precisely:</p>
+        <ul class="doc-list">
+          <li><strong>What's stored:</strong> levels, stars, XP, badges, streak days, and which words are being practiced — the same game progress listed above.</li>
+          <li><strong>What is never stored:</strong> no name, no age, no email, no password, no phone number, no location. There is <strong>no account and no user record.</strong> We cannot tell who a save belongs to, and we have no way to contact you.
+            <ul class="doc-list">
+              <li>The player's <strong>avatar</strong> (a cartoon buddy) is included so a parent can confirm they're connecting the right child's progress before anything is combined. A chosen first name is <strong>not</strong> included, and never leaves the device.</li>
+              <li>A child's <strong>age is never sent.</strong> Only the starting level it implies is sent.</li>
+            </ul>
+          </li>
+          <li><strong>The code itself is not stored.</strong> The server keeps a one-way scramble (a hash) of it, so even we cannot list codes or read a save without being given the code.</li>
+          <li><strong>Nothing about a save is logged.</strong></li>
+          <li><strong>Saves are deleted after a year</strong> with no activity.</li>
+          <li><strong>Turning sync off</strong> in Settings stops it immediately. The device keeps everything it has.</li>
+          <li>Sync is never required. The full game still plays with no internet.</li>
+        </ul>
+        <p>We use <strong>Cloudflare Workers KV</strong> to store saves. Cloudflare processes the request on our behalf and receives no personal information from us.</p>
 
         <h2 class="doc-h">Children's privacy</h2>
-        <p>
-          QuillQuest is designed for children (grades 3–8, roughly ages 8–14). The app
-          <strong>collects no personal information</strong> — and the only thing it ever sends is an
-          anonymous request for an audio file that identifies no one — so there is no personal data to
-          collect from a child. We do not knowingly collect information from anyone.
-        </p>
+        <p>QuillQuest is designed for children (roughly ages 8–14, grades 3–8). The app <strong>collects no personal information about a child</strong> — no name, no age, no email, no phone number, no location, no advertising identifier — and there is <strong>no account</strong>, so there is nothing that identifies a child to attach anything to.</p>
+        <p>Two things leave the device, and neither identifies anyone: an anonymous request for an audio file, and — only if a grown-up switches syncing on — that player's game progress under an anonymous code. We cannot tell whose progress a save is, and we have no way to contact you. We do not knowingly collect personal information from children or anyone else.</p>
 
-        <h2 class="doc-h">Changes</h2>
-        <p>Any update to this policy will be posted here with a new effective date.</p>
+        <h2 class="doc-h">Changes to this policy</h2>
+        <p>If this policy ever changes, the updated version will be posted at this URL with a new effective date. The commitments that won't change: <strong>no accounts, no ads, no tracking, no analytics</strong>, and nothing collected that identifies a child.</p>
 
         <h2 class="doc-h">Contact</h2>
-        <p>
-          Questions? Email <a href="mailto:contact@malcom.io">contact&#64;malcom.io</a>. You can also
-          read our <a routerLink="/quillquest/support">support page</a>.
-        </p>
+        <p>Questions? Email <a href="mailto:contact&#64;malcom.io">contact&#64;malcom.io</a>. You can also read our <a routerLink="/quillquest/support">support page</a>.</p>
       </div>
     </div>
   </section>
