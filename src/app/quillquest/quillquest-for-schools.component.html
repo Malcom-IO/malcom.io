@@ -1,0 +1,96 @@
+<!--
+  GENERATED FILE — DO NOT EDIT BY HAND.
+
+  Source of truth: quillquest/docs/shipping/for-schools.md
+  Regenerate:      cd ../quillquest && npm run site:build
+
+  Edits made here are lost on the next run, and worse, they make the published page
+  disagree with the product it describes. Change the markdown instead.
+-->
+<app-quillquest-shell>
+  <section class="qq-doc">
+    <div class="container">
+      <div class="doc-inner">
+        <p class="eyebrow">QuillQuest</p>
+        <h1 class="doc-title display-mono">For Schools</h1>
+        <p class="doc-meta text-muted-2">Last reviewed: July 31, 2026</p>
+        <p class="lead-lg doc-lead">
+          QuillQuest is spelling, times-tables and touch-typing practice for children aged about 8 to 14 (US grades 3–8). It is free, has no advertising, and requires no account of any kind.
+        </p>
+
+        <h2 class="doc-h">The short answer for IT</h2>
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead>
+            <tr>
+              <th>District rubric question</th>
+              <th>QuillQuest</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Student accounts required?</td>
+              <td><strong>No.</strong> There is no sign-up, no login, no password, no email.</td>
+            </tr>
+            <tr>
+              <td>Personal information collected?</td>
+              <td><strong>None.</strong> No name, age, email, phone or precise location leaves the device. As with any internet service, our servers see the requesting IP address, which we use only for rate-limiting and never store with a save.</td>
+            </tr>
+            <tr>
+              <td>Advertising or marketing?</td>
+              <td><strong>None.</strong> No ad networks, no sponsored content, no upsells, no in-app purchases.</td>
+            </tr>
+            <tr>
+              <td>Analytics or tracking SDKs?</td>
+              <td><strong>None.</strong> No cookies, no trackers, no behavioural analytics, no fingerprinting.</td>
+            </tr>
+            <tr>
+              <td>Data sold or shared?</td>
+              <td><strong>Never.</strong> There is nothing to sell, and no third party receives student data.</td>
+            </tr>
+            <tr>
+              <td>Works offline?</td>
+              <td><strong>The iPad/iPhone and Android apps: yes</strong> — the full game runs with no network. <strong>The browser version: the page must load once per session</strong>, then practice itself needs no round-trips; spoken words stream from our CDN.</td>
+            </tr>
+            <tr>
+              <td>Age range</td>
+              <td>Roughly 8–14 (grades 3–8); the app places each learner by level and adapts.</td>
+            </tr>
+            <tr>
+              <td>Cost</td>
+              <td>Free. No paid tier, no trial, nothing to procure.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="doc-h">What is stored, and where</h2>
+        <p><strong>On the child's device only:</strong> their progress (levels, stars, XP, streaks, which words they practised), an optional first name and cartoon avatar they choose, a chosen age used solely to pick a starting level, and their settings. On a school device this lives in the browser's local storage and is cleared when browser data is cleared.</p>
+        <p><strong>On our server — only if a grown-up switches syncing on:</strong> that learner's game progress, stored under an anonymous 8-character code. No name, no age, no email, no password, no location. There is no account and no user record; we cannot tell whose progress a save is, and we have no way to contact anyone. The code itself is stored only as a one-way hash, so even we cannot list codes or read a save without being given the code. Syncing is <strong>off by default</strong> and is never offered to the child.</p>
+        <p><strong>Retention:</strong> device data stays until erased by the user. A synced save is deleted automatically after one year with no activity. Nothing else is retained, because nothing else is collected.</p>
+
+        <h2 class="doc-h">Compliance</h2>
+        <ul class="doc-list">
+          <li><strong>COPPA.</strong> QuillQuest collects no personal information from children, so no verifiable parental consent surface arises. Our privacy notice includes the data-retention policy required by the amended COPPA Rule in effect since 22 April 2026.</li>
+          <li><strong>SOPIPA and equivalent state laws.</strong> We do not use student data for targeted advertising, do not build student profiles for non-educational purposes, and do not sell student data. We hold no education records, so <strong>FERPA is not engaged</strong>.</li>
+          <li><strong>CIPA.</strong> QuillQuest contains no user-generated content, no chat, no messaging, no external links reachable by a child, and no imagery beyond its own cartoon characters. There is no channel through which a child can encounter another user or outside content.</li>
+          <li><strong>Data processing agreements.</strong> We will sign the SDPC <strong>National Data Privacy Agreement (NDPA)</strong> if your district requires one. Please get in touch.</li>
+        </ul>
+
+        <h2 class="doc-h">Content and safeguarding</h2>
+        <p>Every word, sentence and definition a child sees is reviewed for age-appropriateness before it ships. Two automated checks run over the whole catalogue as part of our release process — one proving no profanity or blocklisted term appears anywhere in the app, one auditing every entry against 22 content rules — and both must pass with zero blocking findings.</p>
+        <p>The words, definitions and practice sentences are <strong>written for this purpose</strong> rather than reused from a general corpus. We made that decision after finding that a general corpus, however well filtered, produced sentences no child should be asked to read.</p>
+        <p>There is no way for a child to enter free text that another person will see, because no such channel exists.</p>
+
+        <h2 class="doc-h">Using it in a classroom</h2>
+        <p>Open the site and play. There is nothing to install, no roster to build, no codes to distribute and no accounts to manage or later delete.</p>
+        <p><strong>Shared devices:</strong> because progress is stored in the browser, a shared Chromebook will return the next learner to the previous learner's progress unless browser data is cleared between users. We are building an explicit "who's playing?" handoff for this.</p>
+        <p><strong>Sound matters.</strong> Spelling practice requires <em>hearing</em> the word, so headphones are recommended. Times-tables and typing work fine silently.</p>
+        <p><strong>We do not offer Google, Clever or ClassLink sign-in</strong>, and that is deliberate: single sign-on would require us to hold student identities, which is precisely what this page says we do not do.</p>
+
+        <h2 class="doc-h">Contact</h2>
+        <p>Questions from teachers, IT or district privacy officers: <a href="mailto:contact&#64;malcom.io">contact&#64;malcom.io</a>. Our full privacy policy is at <a href="https://www.malcom.io/quillquest/privacy">malcom.io/quillquest/privacy</a>. Our <a routerLink="/quillquest/privacy">privacy policy</a> has the full detail.</p>
+      </div>
+    </div>
+  </section>
+</app-quillquest-shell>

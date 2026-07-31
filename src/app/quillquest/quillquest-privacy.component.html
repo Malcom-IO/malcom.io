@@ -2,10 +2,10 @@
   GENERATED FILE — DO NOT EDIT BY HAND.
 
   Source of truth: quillquest/docs/shipping/privacy-policy.md
-  Regenerate:      cd ../quillquest && npm run privacy:build
+  Regenerate:      cd ../quillquest && npm run site:build
 
-  Edits made here are lost on the next run, and worse, they make the published policy
-  disagree with the one the app is built against. Change the markdown instead.
+  Edits made here are lost on the next run, and worse, they make the published page
+  disagree with the product it describes. Change the markdown instead.
 -->
 <app-quillquest-shell>
   <section class="qq-doc">
@@ -15,14 +15,15 @@
         <h1 class="doc-title display-mono">Privacy Policy</h1>
         <p class="doc-meta text-muted-2">Effective date: July 30, 2026</p>
         <p class="lead-lg doc-lead">
-          QuillQuest is a spelling and times-tables game for kids. We built it to be private by design. <strong>QuillQuest does not collect, store, or transmit any personal information.</strong>
+          QuillQuest is a learning game for kids. We built it to be private by design. <strong>There is no account, no login, and nothing that identifies your child.</strong> We do not collect names, ages, email addresses, phone numbers or precise location — none of that ever leaves the device.
         </p>
+        <p>If a grown-up switches on syncing, game progress is stored on our server so a second device can pick it up. That is the only thing that is ever uploaded, and it is off by default. The details are in <strong>Syncing across devices</strong> below.</p>
 
         <h2 class="doc-h">The short version</h2>
         <ul class="doc-list">
           <li><strong>No accounts, ever.</strong> You don't sign up, log in, or give us a name or email. There is no login and no user record — not for you, not for your child.</li>
           <li><strong>If you turn on syncing, the only thing that syncs is game progress</strong> — levels, stars, XP, badges, streaks and practiced words, stored under an anonymous code. No name, no age, no email. It's off unless a grown-up switches it on (see "Syncing across devices").</li>
-          <li><strong>The game plays without a network.</strong> The full game — every level, both subjects, your default voice — works with no internet. Optionally, extra voices and recorded example-sentence audio download <strong>once</strong> from a content host and are then saved on the device (see "The optional audio download" below). That request carries <strong>no personal information</strong> and nothing about what your child does in the app.</li>
+          <li><strong>The game plays without a network.</strong> The full game — every level, every subject, your default voice — works with no internet. Optionally, extra voices and recorded example-sentence audio download <strong>once</strong> from a content host and are then saved on the device (see "The optional audio download" below). That request carries <strong>no personal information</strong> and nothing about what your child does in the app.</li>
           <li><strong>No ads. No tracking. No analytics.</strong> There are no advertising networks, no third-party trackers, no analytics SDKs, and no cookies.</li>
           <li><strong>No personal data goes to anyone.</strong> We don't collect or share personal information. The optional audio download is an ordinary request for an audio file — the same file for everyone — that identifies no one.</li>
         </ul>
@@ -35,7 +36,12 @@
           <li><strong>Game progress</strong> — levels, stars, XP, badges, streaks, and which words were practiced.</li>
           <li><strong>Settings</strong> — theme, voice, sound/haptics, and reminder preferences.</li>
         </ul>
-        <p>You can erase all of this at any time in <strong>Settings → Reset all progress</strong>, or by deleting the app.</p>
+        <p>How to erase it:</p>
+        <ul class="doc-list">
+          <li><strong>Settings → Reset all progress</strong> clears that player's game progress, and disconnects syncing so the progress cannot come back from another device. It also deletes that player's synced save from our server. It does not remove the player's name, avatar or settings.</li>
+          <li><strong>Settings → Manage players → Remove player</strong> deletes that player completely — name, avatar, settings and progress.</li>
+          <li><strong>Deleting the app</strong> removes everything on the device.</li>
+        </ul>
 
         <h2 class="doc-h">The optional audio download</h2>
         <p>The core game is built into the app and needs no network. To keep the initial download small, some <strong>extra audio</strong> — additional voices, and the recorded "use it in a sentence" clips — is fetched <strong>once, on demand,</strong> from a content-delivery host (Cloudflare R2) and then <strong>cached on the device</strong>, so each clip downloads only a single time.</p>
@@ -62,7 +68,7 @@
         <h2 class="doc-h">Syncing across devices</h2>
         <p><strong>There is no account and no login.</strong> We never ask for a name, an email or a password, and there is nothing to sign into. The only thing that syncs is <strong>game progress</strong> — the same progress listed above, nothing else.</p>
         <p><strong>Syncing is off unless a grown-up turns it on</strong>, in Settings, behind a question a young child can't answer. Your child is never asked about it and never sees it.</p>
-        <p>When it's on, the device stores that player's game progress under an <strong>8-character code</strong> so another device can pick it up. What that means precisely:</p>
+        <p>When it's on, the device stores that player's game progress under a short <strong>sync code</strong> (ten characters, shown grouped like <code>K7M2-QX9F-4K</code>) so another device can pick it up. What that means precisely:</p>
         <ul class="doc-list">
           <li><strong>What's stored:</strong> levels, stars, XP, badges, streak days, and which words are being practiced — the same game progress listed above.</li>
           <li><strong>What is never stored:</strong> no name, no age, no email, no password, no phone number, no location. There is <strong>no account and no user record.</strong> We cannot tell who a save belongs to, and we have no way to contact you.
@@ -72,12 +78,19 @@
             </ul>
           </li>
           <li><strong>The code itself is not stored.</strong> The server keeps a one-way scramble (a hash) of it, so even we cannot list codes or read a save without being given the code.</li>
-          <li><strong>Nothing about a save is logged.</strong></li>
+          <li><strong>A save also carries two random identifiers</strong> — one for the player's save and one for each device writing to it. They exist so two devices can be told apart and merged correctly. They are random, are not derived from anything about your child or your hardware, and are meaningless outside QuillQuest.</li>
+          <li><strong>The contents of a save are never logged.</strong> As with any internet service, our server sees the IP address a request comes from; it is used only to limit how often a code can be tried, and it is never stored alongside a save.</li>
           <li><strong>Saves are deleted after a year</strong> with no activity.</li>
-          <li><strong>Turning sync off</strong> in Settings stops it immediately. The device keeps everything it has.</li>
+          <li><strong>Turning sync off</strong> in Settings stops it immediately. The device keeps everything it has, and the stored save stops being updated.</li>
+          <li><strong>Deleting a synced save:</strong> <strong>Settings → Reset all progress</strong> removes it from our server.</li>
           <li>Sync is never required. The full game still plays with no internet.</li>
         </ul>
         <p>We use <strong>Cloudflare Workers KV</strong> to store saves. Cloudflare processes the request on our behalf and receives no personal information from us.</p>
+
+        <h2 class="doc-h">How long anything is kept</h2>
+        <p><strong>On the device:</strong> progress stays until you erase it — <strong>Settings → Reset all progress</strong>, <strong>Remove player</strong>, or by deleting the app. In a browser, clearing your browser data clears it, because that is where it lives. We set no expiry, because it isn't ours to expire.</p>
+        <p><strong>On the sync server</strong> (only if a grown-up turned syncing on): a save is deleted automatically after <strong>one year</strong> with no activity. Turning syncing off stops the device writing to it; the copy then ages out on that same one-year clock.</p>
+        <p><strong>Everything else: nothing is kept, because nothing is collected.</strong> There are no accounts, no profiles on our systems, no analytics records, no logs of what your child practised, and no backups of any of it.</p>
 
         <h2 class="doc-h">Children's privacy</h2>
         <p>QuillQuest is designed for children (roughly ages 8–14, grades 3–8). The app <strong>collects no personal information about a child</strong> — no name, no age, no email, no phone number, no location, no advertising identifier — and there is <strong>no account</strong>, so there is nothing that identifies a child to attach anything to.</p>

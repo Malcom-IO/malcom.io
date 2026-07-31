@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { QuillquestComponent } from './quillquest/quillquest.component';
 import { QuillquestPrivacyComponent } from './quillquest/quillquest-privacy.component';
 import { QuillquestSupportComponent } from './quillquest/quillquest-support.component';
+import { QuillquestForSchoolsComponent } from './quillquest/quillquest-for-schools.component';
 import { SeoData } from './shared/seo-title-strategy';
 import { QUILLQUEST_FAQS } from './quillquest/quillquest-faqs';
 
@@ -107,6 +108,20 @@ export const routes: Routes = [
       ogImage: QQ_OG_IMAGE,
       ogImageAlt: 'QuillQuest — spelling and times tables for kids',
       jsonLd: QUILLQUEST_APP,
+    } satisfies SeoData,
+  },
+  {
+    path: 'quillquest/for-schools',
+    component: QuillquestForSchoolsComponent,
+    title: 'QuillQuest for Schools | Malcom IO',
+    data: {
+      ogTitle: 'QuillQuest for Schools',
+      description:
+        'Everything a district needs to approve QuillQuest: no student accounts, no ads, ' +
+        'no analytics, no cookies, and no personal information collected. COPPA and ' +
+        'SOPIPA statements, retention policy, and SDPC NDPA willingness.',
+      ogImage: QQ_OG_IMAGE,
+      jsonLd: quillquestBreadcrumb('For Schools', '/quillquest/for-schools/'),
     } satisfies SeoData,
   },
   {

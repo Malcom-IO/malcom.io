@@ -73,3 +73,34 @@
 .doc-inner strong {
   color: var(--text);
 }
+
+/* Rubric tables (the For Schools page). Scrolls inside its own container so a phone
+   never scrolls the whole page sideways to read a two-column answer sheet. */
+.doc-table-scroll {
+  overflow-x: auto;
+  margin: 4px 0;
+  border: 1px solid rgba(128, 128, 128, 0.22);
+  border-radius: 8px;
+}
+.doc-table {
+  width: 100%;
+  min-width: 460px;
+  border-collapse: collapse;
+}
+.doc-table th,
+.doc-table td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.18);
+}
+.doc-table th {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+.doc-table tbody tr:last-child td {
+  border-bottom: none;
+}
