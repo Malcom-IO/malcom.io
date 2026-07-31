@@ -15,7 +15,7 @@
         <h1 class="doc-title display-mono">For Schools</h1>
         <p class="doc-meta text-muted-2">Last reviewed: July 31, 2026</p>
         <p class="lead-lg doc-lead">
-          QuillQuest is spelling, times-tables and touch-typing practice for children aged about 8 to 14 (US grades 3–8). It is free, has no advertising, and requires no account of any kind.
+          QuillQuest is spelling and times-tables practice for children aged about 8 to 14 (US grades 3–8). It is free, has no advertising, and requires no account of any kind.
         </p>
 
         <h2 class="doc-h">The short answer for IT</h2>
@@ -50,7 +50,7 @@
             </tr>
             <tr>
               <td>Works offline?</td>
-              <td><strong>The iPad/iPhone and Android apps: yes</strong> — the full game runs with no network. <strong>The browser version: the page must load once per session</strong>, then practice itself needs no round-trips; spoken words stream from our CDN.</td>
+              <td><strong>Yes.</strong> The full game runs with no network. Extra voices and recorded example sentences download once from our content host and are then stored on the device.</td>
             </tr>
             <tr>
               <td>Age range</td>
@@ -66,7 +66,7 @@
 
         <h2 class="doc-h">What is stored, and where</h2>
         <p><strong>On the child's device only:</strong> their progress (levels, stars, XP, streaks, which words they practised), an optional first name and cartoon avatar they choose, a chosen age used solely to pick a starting level, and their settings. On a school device this lives in the browser's local storage and is cleared when browser data is cleared.</p>
-        <p><strong>On our server — only if a grown-up switches syncing on:</strong> that learner's game progress, stored under an anonymous 8-character code. No name, no age, no email, no password, no location. There is no account and no user record; we cannot tell whose progress a save is, and we have no way to contact anyone. The code itself is stored only as a one-way hash, so even we cannot list codes or read a save without being given the code. Syncing is <strong>off by default</strong> and is never offered to the child.</p>
+        <p><strong>On our server — only if a grown-up switches syncing on:</strong> that learner's game progress, stored under a short anonymous sync code (ten characters, shown grouped like <code>K7M2-QX9F-4K</code>). No name, no age, no email, no password, no location. There is no account and no user record; we cannot tell whose progress a save is, and we have no way to contact anyone. The code itself is stored only as a one-way hash, so even we cannot list codes or read a save without being given the code. Syncing is <strong>off by default</strong> and is never offered to the child.</p>
         <p><strong>Retention:</strong> device data stays until erased by the user. A synced save is deleted automatically after one year with no activity. Nothing else is retained, because nothing else is collected.</p>
 
         <h2 class="doc-h">Compliance</h2>
@@ -83,9 +83,10 @@
         <p>There is no way for a child to enter free text that another person will see, because no such channel exists.</p>
 
         <h2 class="doc-h">Using it in a classroom</h2>
-        <p>Open the site and play. There is nothing to install, no roster to build, no codes to distribute and no accounts to manage or later delete.</p>
-        <p><strong>Shared devices:</strong> because progress is stored in the browser, a shared Chromebook will return the next learner to the previous learner's progress unless browser data is cleared between users. We are building an explicit "who's playing?" handoff for this.</p>
-        <p><strong>Sound matters.</strong> Spelling practice requires <em>hearing</em> the word, so headphones are recommended. Times-tables and typing work fine silently.</p>
+        <p>Install the app from the App Store or Google Play. There is nothing to configure, no roster to build, no codes to distribute and no accounts to manage or later delete.</p>
+        <p><strong>A browser version is in development.</strong> It is not open to the public yet, and this page will say so until it is. When it ships it will need no install at all.</p>
+        <p><strong>Shared devices:</strong> on a shared tablet each learner can have their own player, switched from Settings. On a shared Chromebook the browser version will store progress in the browser, so it would return the next learner to the previous learner's progress unless browser data is cleared between users — an explicit "who's playing?" handoff is being built before that version opens.</p>
+        <p><strong>Sound matters.</strong> Spelling practice requires <em>hearing</em> the word, so headphones are recommended. Times-tables works fine silently.</p>
         <p><strong>We do not offer Google, Clever or ClassLink sign-in</strong>, and that is deliberate: single sign-on would require us to hold student identities, which is precisely what this page says we do not do.</p>
 
         <h2 class="doc-h">Contact</h2>
