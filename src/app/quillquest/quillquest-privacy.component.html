@@ -13,7 +13,7 @@
       <div class="doc-inner">
         <p class="eyebrow">QuillQuest</p>
         <h1 class="doc-title display-mono">Privacy Policy</h1>
-        <p class="doc-meta text-muted-2">Effective date: July 31, 2026</p>
+        <p class="doc-meta text-muted-2">Effective date: August 1, 2026</p>
         <p class="lead-lg doc-lead">
           QuillQuest is a learning game for kids. We built it to be private by design. <strong>There is no account, no login, and nothing that identifies your child.</strong> We do not collect names, ages, email addresses, phone numbers or precise location — none of that ever leaves the device.
         </p>
@@ -39,14 +39,15 @@
         <p>How to erase it:</p>
         <ul class="doc-list">
           <li><strong>Settings → Reset all progress</strong> clears that player's game progress, and disconnects syncing so the progress cannot come back from another device. It also deletes that player's synced save from our server. It does not remove the player's name, avatar or settings.</li>
-          <li><strong>Settings → Manage players → Remove player</strong> deletes that player completely — name, avatar, settings and progress.</li>
+          <li><strong>Settings → Manage players → Remove player</strong> deletes that player completely — name, avatar, settings and progress — and deletes their synced save from our server too.</li>
           <li><strong>Deleting the app</strong> removes everything on the device.</li>
         </ul>
 
         <h2 class="doc-h">The optional audio download</h2>
         <p>The core game is built into the app and needs no network. To keep the initial download small, some <strong>extra audio</strong> — additional voices, and the recorded "use it in a sentence" clips — is fetched <strong>once, on demand,</strong> from a content-delivery host (Cloudflare R2) and then <strong>cached on the device</strong>, so each clip downloads only a single time.</p>
         <ul class="doc-list">
-          <li>The request is a plain fetch of an audio file. It carries <strong>no name, no account, no advertising identifier, no identifier for your child, and nothing about which words, levels, or answers they practice.</strong></li>
+          <li>The request is a plain fetch of an audio file. It carries <strong>no name, no account, no advertising identifier, and no identifier for your child</strong>, and it never says whether an answer was right or wrong.</li>
+          <li>Being precise about one thing, because it would be easy to overclaim: each clip is stored under the word it speaks, so the request for a clip <strong>names that word</strong>. On a phone or tablet the extra audio is fetched ahead of time over Wi-Fi, so by the time your child plays there is usually nothing left to request. Until that finishes — and always in the browser version, which streams clips as it needs them — the sequence of requests reflects the words being practised. It never reflects how your child did.</li>
           <li>If the device is offline, the game simply uses the device's built-in voice for that clip instead — nothing breaks.</li>
           <li>The host (Cloudflare) serves the file over a standard, <strong>cookie-free</strong> request. There is <strong>no ad network, no analytics SDK, and no advertising or per-child identifier</strong> involved — just a request for the audio file.</li>
         </ul>
@@ -67,7 +68,7 @@
 
         <h2 class="doc-h">Syncing across devices</h2>
         <p><strong>There is no account and no login.</strong> We never ask for a name, an email or a password, and there is nothing to sign into. The only thing that syncs is <strong>game progress</strong> — the same progress listed above, nothing else.</p>
-        <p><strong>Syncing is off unless a grown-up turns it on</strong>, in Settings, behind a question a young child can't answer. Your child is never asked about it and never sees it.</p>
+        <p><strong>Syncing is off unless a grown-up turns it on</strong>, in Settings, behind a question a young child can't answer. Your child is never asked to set it up and cannot get through that question, though they can see the Settings row like any other.</p>
         <p>When it's on, the device stores that player's game progress under a short <strong>sync code</strong> (ten characters, shown grouped like <code>K7M2-QX9F-4K</code>) so another device can pick it up. What that means precisely:</p>
         <ul class="doc-list">
           <li><strong>What's stored:</strong> levels, stars, XP, badges, streak days, and which words are being practiced — the same game progress listed above.</li>
