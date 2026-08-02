@@ -13,17 +13,17 @@
       <div class="doc-inner">
         <p class="eyebrow">QuillQuest</p>
         <h1 class="doc-title display-mono">Privacy Policy</h1>
-        <p class="doc-meta text-muted-2">Effective date: August 1, 2026</p>
+        <p class="doc-meta text-muted-2">Effective date: August 2, 2026</p>
         <p class="lead-lg doc-lead">
           QuillQuest is a learning game for kids. We built it to be private by design. <strong>There is no account, no login, and nothing that identifies your child.</strong> We do not collect names, ages, email addresses, phone numbers or precise location — none of that ever leaves the device.
         </p>
-        <p>If a grown-up switches on syncing, game progress is stored on our server so a second device can pick it up. That is the only thing that is ever uploaded, and it is off by default. The details are in <strong>Syncing across devices</strong> below.</p>
+        <p>If a grown-up switches on syncing, game progress is stored on our server so a second device can pick it up. That is the only thing we ever <strong>store about your child</strong>, and it is off by default. The details are in <strong>Syncing across devices</strong> below. (Downloading the optional extra audio is a separate thing and stores nothing — see <strong>"The optional audio download"</strong>.)</p>
 
         <h2 class="doc-h">The short version</h2>
         <ul class="doc-list">
           <li><strong>No accounts, ever.</strong> You don't sign up, log in, or give us a name or email. There is no login and no user record — not for you, not for your child.</li>
           <li><strong>If you turn on syncing, the only thing that syncs is game progress</strong> — levels, stars, XP, badges, streaks and practiced words, stored under an anonymous code. No name, no age, no email. It's off unless a grown-up switches it on (see "Syncing across devices").</li>
-          <li><strong>The game plays without a network.</strong> The full game — every level, every subject, your default voice — works with no internet. Optionally, extra voices and recorded example-sentence audio download <strong>once</strong> from a content host and are then saved on the device (see "The optional audio download" below). That request carries <strong>no personal information</strong> and nothing about what your child does in the app.</li>
+          <li><strong>The game plays without a network.</strong> The full game — every level, every subject, your default voice — works with no internet. Optionally, extra voices and recorded example-sentence audio download <strong>once</strong> from a content host and are then saved on the device. That request carries <strong>no personal information</strong> — see <strong>"The optional audio download"</strong> below for exactly what it does and does not reveal.</li>
           <li><strong>No ads. No tracking. No analytics.</strong> There are no advertising networks, no third-party trackers, no analytics SDKs, and no cookies.</li>
           <li><strong>No personal data goes to anyone.</strong> We don't collect or share personal information. The optional audio download is an ordinary request for an audio file — the same file for everyone — that identifies no one.</li>
         </ul>
@@ -51,14 +51,14 @@
           <li>If the device is offline, the game simply uses the device's built-in voice for that clip instead — nothing breaks.</li>
           <li>The host (Cloudflare) serves the file over a standard, <strong>cookie-free</strong> request. There is <strong>no ad network, no analytics SDK, and no advertising or per-child identifier</strong> involved — just a request for the audio file.</li>
         </ul>
-        <p>Because these files are identical for every user and contain no personal data, this is <strong>content delivery, not data collection</strong> — nothing about your child is gathered, stored, or shared.</p>
+        <p>Because these files are identical for every user and contain no personal data, this is <strong>content delivery, not data collection</strong> — nothing about your child is stored or shared, and no profile of any kind is built. The one thing a request does reveal is described above: the word the clip speaks.</p>
 
         <h2 class="doc-h">Playing in a web browser</h2>
         <p>QuillQuest is also playable in a web browser. The browser version is the same game with the same rules: <strong>no accounts, no ads, no tracking, no analytics, no cookies.</strong> Progress is saved in your browser's local storage on your own device, exactly as the app saves it on a phone or tablet, and it is not uploaded unless syncing is switched on.</p>
         <p>Two things are unavoidably different when a game is served over the web, and we would rather say so plainly than imply the browser version is identical:</p>
         <ul class="doc-list">
           <li><strong>A web host serves the page.</strong> Loading a website means a server sends it to you, and like every web server it records ordinary technical request logs — IP address, time, browser type. We do not use these to build a profile, they are not linked to any player, and there is no account for them to be linked to. They are a by-product of the web working at all; an installed app has no equivalent.</li>
-          <li><strong>Recorded audio is fetched from a content host</strong> the first time it is needed, as described above, and then cached by your browser. The request is for a plain audio file, identical for every player, and carries nothing about your child.</li>
+          <li><strong>Recorded audio is fetched from a content host</strong> as it is needed, and then cached by your browser. The request is for a plain audio file, identical for every player, and carries no name, no account and no identifier for your child. Note that the browser version fetches clips <strong>on demand</strong> rather than ahead of time, so — as described under "The optional audio download" — the sequence of requests does reflect the words being practised. It never reflects how your child did, and nothing is stored.</li>
         </ul>
         <p>Speech spoken by your browser's built-in voice is restricted to voices your device synthesizes <strong>locally</strong>, so practice words and sentences are not sent to a cloud speech service.</p>
         <p>Clearing your browser data clears the saved progress, since that is where it lives.</p>
