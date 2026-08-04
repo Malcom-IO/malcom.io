@@ -23,7 +23,7 @@ interface Shot {
 // tables) plus the shared systems. The Quest Map shot leads (it shows both realm
 // tabs and the level trail), then a spelling pair, a times pair, and players.
 const SHOT_META: [string, string, string][] = [
-  ['qq-iphone-1-home', 'QuillQuest Quest Map — pick Spelling or Times Tables, then climb the level trail', 'Two ways to play, one adventure'],
+  ['qq-iphone-1-home', 'QuillQuest Quest Map — pick Spelling or Times Tables, then climb the level trail', 'Three ways to play, one adventure'],
   ['qq-iphone-2-spelling', 'Spelling a word by ear during a round', 'Hear it. Spell it. Nail it.'],
   ['qq-iphone-3-reveal', 'Answer reveal showing the correct spelling and where you slipped', 'Feedback that actually teaches'],
   ['qq-iphone-4-times', 'Answering a times-tables fact on the number pad', 'Times tables that feel like a game'],
@@ -65,7 +65,7 @@ export class QuillquestComponent {
     {
       icon: 'graduation-cap',
       title: 'Actually teaches',
-      body: 'A graded curriculum in both subjects, mastery-based levels, and spaced-repetition review of whatever your kid misses.',
+      body: 'A graded curriculum in every subject, mastery-based levels, and spaced-repetition review of whatever your kid misses.',
     },
     {
       icon: 'heart',
@@ -80,7 +80,7 @@ export class QuillquestComponent {
   ];
 
   readonly perks: string[] = [
-    'Two realms on one engine — spell words by ear, or race the times-tables trail',
+    'Three realms on one engine — spell words by ear, race the times-tables trail, or learn to touch type (browser only — it needs a real keyboard)',
     'Spelling: hear each word in a real recorded voice (Ivy, Owen & Mia), then spell it out — 10 levels of hand-graded words from Sprout to the Bee Level',
     'Times Tables: type every answer on a number pad — no multiple-choice — climbing 10 steps from Trailhead to Summit',
     'Miss one? Spelling shows the correct spelling and where you slipped; Times Tables shows the product with a skip-count',

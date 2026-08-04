@@ -99,14 +99,14 @@ export const routes: Routes = [
   {
     path: 'quillquest',
     component: QuillquestComponent,
-    title: 'QuillQuest — Spelling & times tables for kids | Malcom IO',
+    title: 'QuillQuest — Spelling, times tables & typing | Malcom IO',
     data: {
       ogTitle: 'QuillQuest',
       description:
-        'QuillQuest is a free, offline learning game for grades 3–8 — spelling and times tables ' +
-        'in one app. No ads, no tracking, no accounts. Pick a realm and climb the ranks.',
+        'QuillQuest is a free learning game for grades 3–8 — spelling, times tables and touch ' +
+        'typing. No ads, no tracking, no accounts. Pick a realm and climb the ranks.',
       ogImage: QQ_OG_IMAGE,
-      ogImageAlt: 'QuillQuest — spelling and times tables for kids',
+      ogImageAlt: 'QuillQuest — spelling, times tables and touch typing for kids',
       jsonLd: QUILLQUEST_APP,
     } satisfies SeoData,
   },
@@ -145,7 +145,7 @@ export const routes: Routes = [
     data: {
       ogTitle: 'QuillQuest — Support',
       description:
-        'Help and FAQ for QuillQuest, the free offline spelling & times-tables game for kids. ' +
+        'Help and FAQ for QuillQuest, the free spelling, times-tables and typing game for kids. ' +
         'Questions? Email contact@malcom.io.',
       ogImage: QQ_OG_IMAGE,
       jsonLd: [FAQ_PAGE, quillquestBreadcrumb('Support', '/quillquest/support/')],

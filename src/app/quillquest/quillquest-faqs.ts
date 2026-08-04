@@ -10,7 +10,7 @@ export interface QuillquestFaq {
 export const QUILLQUEST_FAQS: QuillquestFaq[] = [
   {
     q: 'What can kids practice?',
-    a: 'Two subjects in one app — Spelling and Times Tables. Kids pick a realm from the home screen; nothing is ever assigned. XP, ranks, badges, themes, and the daily streak are shared across both.',
+    a: 'Three subjects — Spelling, Times Tables and Touch Typing. Kids pick a realm from the home screen; nothing is ever assigned. XP, ranks, badges, themes, and the daily streak are shared across all of them. Touch Typing needs a physical keyboard, so it appears in the browser version; the iPhone, iPad and Android apps have Spelling and Times Tables.',
   },
   {
     q: 'How do the times tables work?',
