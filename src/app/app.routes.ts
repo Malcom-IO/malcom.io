@@ -132,7 +132,7 @@ export const routes: Routes = [
       ogTitle: 'QuillQuest — Privacy Policy',
       description:
         'QuillQuest collects nothing personal — no ads, tracking, analytics, or accounts. ' +
-        'The full game plays offline; optional extra audio downloads once, carrying no ' +
+        'The apps play the full game offline; optional extra audio downloads once, carrying no ' +
         'personal data. Private by design.',
       ogImage: QQ_OG_IMAGE,
       jsonLd: quillquestBreadcrumb('Privacy Policy', '/quillquest/privacy/'),

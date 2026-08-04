@@ -22,7 +22,7 @@ export const QUILLQUEST_FAQS: QuillquestFaq[] = [
   },
   {
     q: 'Does it work offline?',
-    a: 'Yes — the core game plays offline, no internet needed to play. Optional extras (additional voices and the recorded "use it in a sentence" clips) download once from a content host and are then saved on the device.',
+    a: 'In the apps, yes — the core game plays offline, no internet needed to play. Optional extras (additional voices and the recorded "use it in a sentence" clips) download once from a content host and are then saved on the device. The browser version needs a connection: the page has to load, and it streams the clips as it plays them. Touch Typing is browser-only, so it always needs the network.',
   },
   {
     q: "No sound in Spelling, or a word won't play aloud?",
