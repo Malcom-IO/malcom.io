@@ -10,7 +10,7 @@ export interface QuillquestFaq {
 export const QUILLQUEST_FAQS: QuillquestFaq[] = [
   {
     q: 'What can kids practice?',
-    a: 'Two subjects in one app — Spelling and Times Tables. Kids pick a realm from the home screen; nothing is ever assigned. XP, ranks, badges, themes, and the daily streak are shared across both.',
+    a: 'Three subjects — Spelling, Times Tables and Touch Typing. Kids pick a realm from the home screen; nothing is ever assigned. XP, ranks, badges, themes, and the daily streak are shared across all of them. Touch Typing needs a physical keyboard, so it appears in the browser version; the iPhone, iPad and Android apps have Spelling and Times Tables.',
   },
   {
     q: 'How do the times tables work?',
@@ -22,7 +22,7 @@ export const QUILLQUEST_FAQS: QuillquestFaq[] = [
   },
   {
     q: 'Does it work offline?',
-    a: 'Yes — the core game plays offline, no internet needed to play. Optional extras (additional voices and the recorded "use it in a sentence" clips) download once from a content host and are then saved on the device.',
+    a: 'In the apps, yes — the core game plays offline, no internet needed to play. Optional extras (additional voices and the recorded "use it in a sentence" clips) download once from a content host and are then saved on the device. The browser version needs a connection: the page has to load, and it streams the clips as it plays them. Touch Typing is browser-only, so it always needs the network.',
   },
   {
     q: "No sound in Spelling, or a word won't play aloud?",
