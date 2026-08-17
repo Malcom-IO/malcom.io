@@ -136,7 +136,10 @@ Legend: `[ ]` open · `[~]` decided, not started · `[x]` done · effort **S/M/L
 
 ## Tier C — Smaller polish / nice-to-haves (deferred, low urgency)
 
-### C1 · QuillQuest — parent-trust additions — `[ ]`
+### C1 · QuillQuest — parent-trust additions — `[~]` moved off this site (2026-08-17)
+> Dropped here: `/quillquest` is now a one-page marketing surface that points at
+> **quillquest.malcom.io**, which is where the parent-facing pages live. Everything below is
+> still worth doing — on that site, in the QuillQuest repo, not in this one.
 - **Educational proof (parent P0):** show real sample words per level, an educator/reading-specialist
   quote, and/or a 20–30s silent demo GIF of hear‑it → spell‑it → feedback. _(needs your content.)_ · **M**
 - **"See what my kid would do" (parent P1):** a small grade/age selector revealing sample words +

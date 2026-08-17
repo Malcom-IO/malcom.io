@@ -4,10 +4,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LogoComponent } from '../shared/logo.component';
 
 /**
- * Shared chrome for the three QuillQuest pages (landing / privacy / support):
- * the fixed navbar and the cross-linked footer. Page content is projected
- * into <main> via <ng-content>, so every page stays consistent and the
- * three canonical URLs always cross-link.
+ * Chrome for the QuillQuest marketing page: the fixed navbar and the footer,
+ * matching the studio pages'. Page content is projected into <main> via
+ * <ng-content>.
+ *
+ * It wrapped three pages until 2026-08-17, when privacy / support / For Schools
+ * moved to quillquest.malcom.io; only the landing page uses it now, but it stays
+ * a component so the chrome isn't duplicated inline.
  */
 @Component({
   selector: 'app-quillquest-shell',
@@ -52,8 +55,6 @@ import { LogoComponent } from '../shared/logo.component';
           <a routerLink="/">Home</a>
           <a routerLink="/quillquest">QuillQuest</a>
           <a [routerLink]="['/']" fragment="contact">Contact</a>
-          <a routerLink="/quillquest/support">Support</a>
-          <a routerLink="/quillquest/privacy">Privacy</a>
         </nav>
         <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO</div>
       </div>
