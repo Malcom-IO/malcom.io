@@ -102,6 +102,13 @@ stubs. See `docs/shipping/malcom-io-retirement-spec.md` in the QuillQuest repo f
 Optimized share/screenshot assets live under `public/assets/quillquest/web/`; regenerate them
 with `scripts/optimize-quillquest-images.sh` and the social card with `scripts/make-og-card.mjs`.
 
+The asset set was pruned to what the one-page hero serves (2026-08-17): the app icon and a single
+home-screen shot, plus `og-card.png` — 6.4 MB down to 1.8 MB. The gallery screenshots, the
+Ivy/Owen/Mia mascots and the iPad masters were deleted with the sections that used them. **The
+screenshot masters' source of truth is the QuillQuest repo** (`store/screenshots/iphone-6.9/`);
+the copies here only ever existed to feed the optimizer, so anything needed again comes from
+there.
+
 ## Deployment
 
 Deployed to **GitHub Pages** via [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml):
