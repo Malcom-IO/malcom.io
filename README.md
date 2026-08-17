@@ -9,8 +9,8 @@ mobile game. Hosted on GitHub Pages; the contact form runs on a Cloudflare Worke
 | Area | Choice |
 | --- | --- |
 | Framework | Angular 22 (standalone components, `@angular/build` esbuild builder) |
-| Language | TypeScript 6 |
-| Styling | Bootstrap 5 (dark theme) + FontAwesome 7 (SCSS) |
+| Language | TypeScript 6 — held at `~6.0.x`, which is what Angular 22 supports (`typescript >=6.0 <6.1`) |
+| Styling | Bootstrap 5 (dark theme) + SCSS design tokens; icons are inline SVG (`shared/icon.component.ts`) |
 | Forms / spam | Reactive Forms + [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) |
 | Contact backend | Cloudflare Worker → [Resend](https://resend.com) email — see [`contact-worker/`](./contact-worker) |
 | Notifications | small in-house `ToastService` (`src/app/shared`) |
