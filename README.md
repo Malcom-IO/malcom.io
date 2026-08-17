@@ -46,7 +46,7 @@ src/
   app/
     app.component.*        # root shell: <router-outlet> + <app-toast>
     app.config.ts          # providers (router, http, animations, zone CD, SEO title strategy)
-    app.routes.ts          # '' -> /home, /home, /quillquest, /auth
+    app.routes.ts          # '' (home), /home -> '', /quillquest
     home/                  # landing page (hero, what-we-do, approach, contact)
     contact/              # Turnstile-protected contact form -> Cloudflare Worker
     quillquest/           # QuillQuest mobile-game landing page
@@ -71,9 +71,7 @@ navbar, footer) live in `src/scss/styles.scss`; Bootstrap's dark theme is enable
 | Path | Page |
 | --- | --- |
 | `/home` | Main Malcom IO landing page (default) |
-| `/quillquest` | QuillQuest landing page (iOS spelling game) |
-| `/quillquest/privacy` | QuillQuest privacy policy (App Store requirement) |
-| `/quillquest/support` | QuillQuest support / FAQ (App Store requirement) |
+| `/quillquest` | QuillQuest marketing page — sends readers to quillquest.malcom.io |
 
 ## Contact form
 
@@ -86,16 +84,20 @@ and how secrets/deploys work.
 
 ## QuillQuest
 
-`/quillquest` is a complete, iOS-only landing page (hero, trust cards, character mascots, a
-responsive WebP screenshot gallery, and an "Email me at launch" CTA), plus the
-`/quillquest/privacy` and `/quillquest/support` pages the App Store submission requires. All
-three share `QuillquestShellComponent` (navbar + cross-linked footer).
+**QuillQuest's own site is [quillquest.malcom.io](https://quillquest.malcom.io), built and
+deployed from a separate repo.** It owns the game, support, the privacy policy and For Schools —
+and the live App Store and Google Play listings point at it. Nothing here may change those URLs;
+in particular `quillquest.malcom.io/privacy` must resolve at all times, because Play treats a
+dead privacy URL as a policy violation.
 
-Launch-day TODOs (both clearly marked in code):
+`/quillquest` is what's left here: one light marketing page (app icon, one-line pitch, both store
+buttons, and a call to action to the subdomain) so the product is visibly Malcom IO's. It wraps
+itself in `QuillquestShellComponent` for the navbar and footer.
 
-- Set `appStoreUrl` in `src/app/quillquest/quillquest.component.ts` — the CTA flips from
-  "Coming to the App Store" to a real **Download on the App Store** button automatically.
-- Set the privacy **effective date** in `quillquest-privacy.component.html` if it changes.
+On **2026-08-17** the duplicate `/quillquest/{privacy,support,for-schools}` pages were deleted —
+they had become a second copy of content the subdomain now generates from its own markdown. The
+three paths 404 via the site-wide SPA fallback; that's deliberate, with no redirect or canonical
+stubs. See `docs/shipping/malcom-io-retirement-spec.md` in the QuillQuest repo for the reasoning.
 
 Optimized share/screenshot assets live under `public/assets/quillquest/web/`; regenerate them
 with `scripts/optimize-quillquest-images.sh` and the social card with `scripts/make-og-card.mjs`.

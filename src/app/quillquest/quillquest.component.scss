@@ -1,8 +1,12 @@
+// The page is a single hero — everything below it moved to quillquest.malcom.io,
+// and the styles for those sections (trust cards, perks, buddies, gallery) went
+// with it. Keep this file to what the hero actually uses.
+
 // ---------------------------------------------------------------- hero
 .qq-hero {
   position: relative;
   overflow: hidden;
-  padding: 8rem 0 5rem; // matches the .qq-doc first-section rhythm
+  padding: 8rem 0 6rem;
   border-bottom: 1px solid var(--line-soft);
   // subtle green glow so the game hero reads distinct from the studio site
   background:
@@ -70,44 +74,16 @@
   flex-direction: column;
   gap: 0.85rem;
 }
-.qq-cta-block--center {
-  align-items: center;
-}
 .qq-cta {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-}
-// pre-launch status as a quiet pill, not a fake (disabled) primary button
-.qq-status-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.4rem 0.9rem;
 }
 .qq-cta-note {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--muted);
   margin: 0;
-}
-
-// personal "made by a parent" note under the trust heading
-.qq-parent-note {
-  max-width: 40rem;
-  margin: 0.25rem 0 0;
-  padding-left: 1rem;
-  border-left: 2px solid var(--brand);
-  font-size: 1.1rem;
-  color: var(--text-soft);
-  font-style: italic;
 }
 
 // persistent underline so inline links aren't distinguished by color alone (WCAG 1.4.1)
@@ -133,126 +109,4 @@
   border-radius: 26px;
   border: 1px solid var(--line);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-}
-
-// ---------------------------------------------------------------- what kids get
-.qq-perks {
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0 0;
-  display: grid;
-  gap: 0.9rem;
-}
-.qq-perks li {
-  display: flex;
-  gap: 0.85rem;
-  align-items: flex-start;
-  color: var(--text-soft);
-}
-.qq-perks li i {
-  margin-top: 0.28rem;
-  flex: none;
-}
-
-.qq-buddies {
-  display: flex;
-  justify-content: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-.qq-buddy {
-  margin: 0;
-  text-align: center;
-}
-.qq-buddy img {
-  width: clamp(84px, 12vw, 128px);
-  height: auto;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
-}
-.qq-buddy figcaption {
-  margin-top: 0.35rem;
-}
-
-// ---------------------------------------------------------------- gallery
-// the full-bleed strip scrolls internally; clip the section so it can never
-// widen the page (fixes a small mobile horizontal-overflow jiggle)
-.qq-screens {
-  overflow-x: clip;
-}
-
-// horizontal scroll strip with snap; keeps the page body from scrolling sideways
-.qq-gallery {
-  // the strip is full-bleed but its first item must line up with the section
-  // heading (which sits in Bootstrap's .container) — so inset by the live
-  // container width per breakpoint, not a single hardcoded 1140px.
-  --qq-container: 100vw;
-  display: flex;
-  gap: 1.25rem;
-  overflow-x: auto;
-  max-width: 100%;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 1.5rem;
-  padding: 2rem max(1.5rem, calc((100vw - var(--qq-container)) / 2 + 12px)) 1rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-@media (min-width: 576px) {
-  .qq-gallery {
-    --qq-container: 540px;
-  }
-}
-@media (min-width: 768px) {
-  .qq-gallery {
-    --qq-container: 720px;
-  }
-}
-@media (min-width: 992px) {
-  .qq-gallery {
-    --qq-container: 960px;
-  }
-}
-@media (min-width: 1200px) {
-  .qq-gallery {
-    --qq-container: 1140px;
-  }
-}
-@media (min-width: 1400px) {
-  .qq-gallery {
-    --qq-container: 1320px;
-  }
-}
-.qq-gallery:focus-visible {
-  outline: 2px solid var(--brand-bright);
-  outline-offset: -4px;
-  border-radius: 8px;
-}
-// desktop-only right-edge fade cues that the strip scrolls to more screens
-@media (min-width: 992px) {
-  .qq-gallery {
-    -webkit-mask-image: linear-gradient(to right, #000 90%, transparent);
-    mask-image: linear-gradient(to right, #000 90%, transparent);
-  }
-}
-.qq-gallery-item {
-  flex: 0 0 auto;
-  width: 260px;
-  margin: 0;
-  scroll-snap-align: center;
-}
-.qq-gallery-item img {
-  width: 260px;
-  height: auto;
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-  display: block;
-}
-.qq-gallery-item figcaption {
-  margin-top: 0.9rem;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-align: center;
-  text-wrap: balance;
 }

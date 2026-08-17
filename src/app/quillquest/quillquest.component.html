@@ -1,5 +1,4 @@
 <app-quillquest-shell>
-  <!-- Hero -->
   <section class="qq-hero">
     <div class="container">
       <div class="row align-items-center gy-5 gx-4 gx-lg-5">
@@ -16,58 +15,35 @@
           <p class="eyebrow eyebrow--hero">A Malcom IO game</p>
           <h1 class="display-mono qq-title">QuillQuest</h1>
           <p class="lead-lg qq-tagline">
-            Three ways to play — spelling, times tables and touch typing — in one adventure that grows with your kid.
-            Fun, not childish.
+            A spelling, times-tables and touch-typing game for ages 8–14, built by Malcom IO.
+            Free, with no ads, no accounts and no tracking.
           </p>
           <ul class="qq-badges" aria-label="At a glance">
             <li>Free</li>
             <li>Offline in the apps</li>
             <li>No ads</li>
-            <li>No in-app purchases</li>
-            <li>No tracking</li>
             <li>No accounts</li>
+            <li>No tracking</li>
           </ul>
           <p class="text-muted-2 qq-hero-sub">
-            Pick a realm: hear a word and spell it out, or race the times-tables trail on a number pad.
-            QuillQuest turns practice into a quest — and builds real skill along the way. Great for
-            grades 3–8 (roughly ages 8–14); it places every kid by level, so younger and older learners
-            fit right in too.
+            QuillQuest lives at
+            <a [href]="siteUrl" class="qq-inline-link">quillquest.malcom.io</a> — play it in the
+            browser there, and find support, the privacy policy and the information for schools.
+            Typing runs in the browser only; the iOS and Android apps play spelling and times
+            tables offline.
           </p>
           <div class="qq-cta-block">
-            @if (appStoreUrl || googlePlayUrl) {
-              <div class="qq-cta">
-                @if (appStoreUrl) {
-                  <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                    <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
-                  </a>
-                }
-                @if (googlePlayUrl) {
-                  <a [href]="googlePlayUrl" class="btn btn-primary btn-lg">
-                    <app-icon name="google-play" class="me-2"></app-icon> Get it on Google Play
-                  </a>
-                }
-              </div>
-              <!-- Both stores are live; this chip only returns if a URL is set back to null. -->
-              @if (!appStoreUrl || !googlePlayUrl) {
-                <p class="qq-status-chip">
-                  @if (!googlePlayUrl) {
-                    <app-icon name="google-play"></app-icon> Coming soon to Google Play
-                  } @else {
-                    <app-icon name="apple"></app-icon> Coming soon to the App Store
-                  }
-                </p>
-              }
-            } @else {
-              <div class="qq-cta">
-                <a class="btn btn-primary btn-lg" [href]="notifyMailto">
-                  <app-icon name="bell" class="me-2"></app-icon> Email me at launch
-                </a>
-              </div>
-              <p class="qq-status-chip">
-                <app-icon name="apple"></app-icon> Coming to the App Store &amp;
-                <app-icon name="google-play"></app-icon> Google Play — 2026
-              </p>
-            }
+            <div class="qq-cta">
+              <a [href]="siteUrl" class="btn btn-primary btn-lg">Play it at quillquest.malcom.io</a>
+            </div>
+            <div class="qq-cta">
+              <a [href]="appStoreUrl" class="btn btn-outline-light btn-lg">
+                <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
+              </a>
+              <a [href]="googlePlayUrl" class="btn btn-outline-light btn-lg">
+                <app-icon name="google-play" class="me-2"></app-icon> Get it on Google Play
+              </a>
+            </div>
             <p class="qq-cta-note">Free on iPhone, iPad &amp; Android — no ads, no in-app purchases.</p>
           </div>
         </div>
@@ -84,136 +60,6 @@
               fetchpriority="high" />
           </figure>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why parents trust it -->
-  <section id="parents" class="section section-line" appReveal>
-    <div class="container">
-      <p class="eyebrow">Why parents trust it</p>
-      <h2 class="h-section">Private by design, and it really teaches</h2>
-      <p class="qq-parent-note">
-        Made by a parent who wanted practice their own kids would actually choose.
-      </p>
-      <div class="row g-4 mt-3">
-        @for (t of trust; track t.title) {
-          <div class="col-md-6 col-xl-3">
-            <div class="brand-card">
-              <app-icon [name]="t.icon" size="xl" class="green-text d-block mt-1 mb-3"></app-icon>
-              <h3 class="h5 fw-semibold">{{ t.title }}</h3>
-              <p class="text-muted-2 mb-0">{{ t.body }}</p>
-            </div>
-          </div>
-        }
-      </div>
-      <p class="text-muted-2 mt-4 mb-0">
-        Private by design — read our
-        <a routerLink="/quillquest/privacy" class="qq-inline-link">privacy policy</a>,
-        the <a routerLink="/quillquest/for-schools" class="qq-inline-link">information for schools</a>, or
-        <a routerLink="/quillquest/support" class="qq-inline-link">get support</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- What kids get -->
-  <section id="what-kids-get" class="section section-line" appReveal>
-    <div class="container">
-      <div class="row gy-5 gx-4 gx-lg-5 align-items-center">
-        <div class="col-lg-7">
-          <p class="eyebrow">What kids get</p>
-          <h2 class="h-section">Three realms, one real quest</h2>
-          <ul class="qq-perks">
-            @for (perk of perks; track perk) {
-              <li><app-icon name="check" class="green-text"></app-icon><span>{{ perk }}</span></li>
-            }
-          </ul>
-        </div>
-        <div class="col-lg-5">
-          <div class="qq-buddies">
-            @for (b of buddies; track b.name) {
-              <figure class="qq-buddy">
-                <img [src]="b.src" width="128" height="128" [alt]="b.name + ', a QuillQuest character'" loading="lazy" />
-                <figcaption class="font-monospace small text-muted-2">{{ b.name }}</figcaption>
-              </figure>
-            }
-          </div>
-          <p class="text-muted-2 small font-monospace text-center mb-0 mt-2">
-            Ivy, Owen &amp; Mia read every spelling word aloud.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Screenshot gallery -->
-  <section id="screens" class="section section-line qq-screens" appReveal>
-    <div class="container">
-      <p class="eyebrow">Take a look</p>
-      <h2 class="h-section">Screens from the game</h2>
-      <p class="text-muted-2 small font-monospace d-lg-none mb-0 mt-2">Swipe to see more →</p>
-    </div>
-    <div class="qq-gallery" role="list" tabindex="0" aria-label="Game screenshots — use arrow keys to scroll">
-      @for (shot of shots; track shot.src) {
-        <figure class="qq-gallery-item" role="listitem">
-          <img
-            [src]="shot.src"
-            [srcset]="shot.srcset"
-            sizes="260px"
-            width="260"
-            height="565"
-            [alt]="shot.alt"
-            loading="lazy" />
-          <figcaption>{{ shot.caption }}</figcaption>
-        </figure>
-      }
-    </div>
-  </section>
-
-  <!-- Call to action -->
-  <section class="section section-line text-center" appReveal>
-    <div class="container">
-      <p class="eyebrow justify-content-center">Ready to play?</p>
-      <h2 class="h-section">Get QuillQuest free</h2>
-      <p class="lead-lg text-muted-2 mx-auto" style="max-width: 48ch">
-        Free and private — no ads, no in-app purchases, no tracking, no accounts. The apps play offline.
-        Spelling, times tables and touch typing, worth leveling up.
-      </p>
-      <div class="qq-cta-block qq-cta-block--center mt-4">
-        @if (appStoreUrl || googlePlayUrl) {
-          <div class="qq-cta justify-content-center">
-            @if (appStoreUrl) {
-              <a [href]="appStoreUrl" class="btn btn-primary btn-lg">
-                <app-icon name="apple" class="me-2"></app-icon> Download on the App Store
-              </a>
-            }
-            @if (googlePlayUrl) {
-              <a [href]="googlePlayUrl" class="btn btn-primary btn-lg">
-                <app-icon name="google-play" class="me-2"></app-icon> Get it on Google Play
-              </a>
-            }
-          </div>
-          @if (!appStoreUrl || !googlePlayUrl) {
-            <p class="qq-status-chip">
-              @if (!googlePlayUrl) {
-                <app-icon name="google-play"></app-icon> Coming soon to Google Play
-              } @else {
-                <app-icon name="apple"></app-icon> Coming soon to the App Store
-              }
-            </p>
-          }
-        } @else {
-          <div class="qq-cta justify-content-center">
-            <a class="btn btn-primary btn-lg" [href]="notifyMailto">
-              <app-icon name="bell" class="me-2"></app-icon> Email me at launch
-            </a>
-          </div>
-          <p class="qq-status-chip">
-            <app-icon name="apple"></app-icon> Coming to the App Store &amp;
-            <app-icon name="google-play"></app-icon> Google Play — 2026
-          </p>
-        }
-        <p class="qq-cta-note">Free on iPhone, iPad &amp; Android — no ads, no in-app purchases.</p>
       </div>
     </div>
   </section>
