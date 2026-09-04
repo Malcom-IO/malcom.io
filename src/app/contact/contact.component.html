@@ -4,7 +4,16 @@
   Tell us about your project or idea, and we'll get back to you.
 </p>
 
-<form [formGroup]="contactForm" (ngSubmit)="submitContactForm()" novalidate class="contact-form">
+<!-- Turnstile starts on first interaction, not on mount — see ensureTurnstile().
+     focusin covers tabbing or clicking into any field; pointerdown covers clicking
+     Send on browsers that don't focus a button on click (Safari on macOS). -->
+<form
+  [formGroup]="contactForm"
+  (ngSubmit)="submitContactForm()"
+  (focusin)="ensureTurnstile()"
+  (pointerdown)="ensureTurnstile()"
+  novalidate
+  class="contact-form">
   <div class="row g-3">
     <div class="col-md-6">
       <label for="name" class="form-label required">Your name</label>
@@ -81,6 +90,9 @@
 
     @if (isBrowser) {
       <div class="col-12">
+        <!-- Stays in the DOM before the widget starts: .cf-turnstile-host reserves
+             its height, so the challenge appearing mid-form doesn't shove the Send
+             button down while someone is still typing. -->
         <div #turnstile class="cf-turnstile-host"></div>
       </div>
     }
@@ -88,9 +100,12 @@
     <div class="col-12">
       <!-- Enabled even before Turnstile resolves: submit() guards on the token and
            guides the user (toast + focus to the widget). Disabling it removes it from
-           the tab order and makes that guidance unreachable (WCAG 3.3.1 / 4.1.2). -->
+           the tab order and makes that guidance unreachable (WCAG 3.3.1 / 4.1.2).
+           It stays enabled while the challenge is still solving for the same reason:
+           disabling the focused button drops focus to <body>. submitContactForm()
+           guards its own re-entry instead. -->
       <button type="submit" class="btn btn-primary btn-lg" [disabled]="sending">
-        {{ sending ? 'Sending…' : 'Send message' }}
+        {{ sendLabel }}
         <app-icon name="paper-plane" class="ms-2"></app-icon>
       </button>
     </div>
