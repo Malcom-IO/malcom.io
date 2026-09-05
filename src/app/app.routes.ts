@@ -33,10 +33,11 @@ const QUILLQUEST_APP = {
   name: 'QuillQuest',
   operatingSystem: 'iOS, Android',
   applicationCategory: 'EducationalApplication',
-  // The app's own site, not this page: quillquest.malcom.io has been the product's
-  // canonical home since 2026-08-04, and this page is the studio's marketing surface
-  // for it. (The page's own canonical/og:url still resolve to /quillquest/.)
-  url: 'https://quillquest.malcom.io/',
+  // The app's own site, not this page. The product moved to its own domain,
+  // quillquest.net, on 2026-09-04 (it lived at quillquest.malcom.io from 2026-08-04);
+  // this page is the studio's marketing surface for it. (The page's own
+  // canonical/og:url still resolve to /quillquest/.)
+  url: 'https://quillquest.net/',
   image: QQ_OG_IMAGE,
   description:
     'A free learning game for grades 3–8 — spelling, times tables and touch typing. ' +
@@ -70,9 +71,9 @@ export const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   {
     // The studio's marketing page for QuillQuest. The product's own site is
-    // quillquest.malcom.io (a separate repo) — privacy, support and For Schools
+    // quillquest.net (a separate repo) — privacy, support and For Schools
     // live there and were retired from here on 2026-08-17. Those three paths now
-    // 404 by design: no redirect stubs, the page's copy points at the subdomain.
+    // 404 by design: no redirect stubs, the page's copy points at that domain.
     path: 'quillquest',
     component: QuillquestComponent,
     title: 'QuillQuest — Spelling, times tables & typing | Malcom IO',
@@ -81,7 +82,7 @@ export const routes: Routes = [
       description:
         'QuillQuest is a free learning game for grades 3–8 — spelling, times tables and touch ' +
         'typing. No ads, no tracking, no accounts. Built by Malcom IO; play it at ' +
-        'quillquest.malcom.io.',
+        'quillquest.net.',
       ogImage: QQ_OG_IMAGE,
       ogImageAlt: 'QuillQuest — spelling, times tables and touch typing for kids',
       jsonLd: QUILLQUEST_APP,
