@@ -71,7 +71,7 @@ navbar, footer) live in `src/scss/styles.scss`; Bootstrap's dark theme is enable
 | Path | Page |
 | --- | --- |
 | `/home` | Main Malcom IO landing page (default) |
-| `/quillquest` | QuillQuest marketing page — sends readers to quillquest.malcom.io |
+| `/quillquest` | QuillQuest marketing page — sends readers to quillquest.net |
 
 ## Contact form
 
@@ -84,18 +84,22 @@ and how secrets/deploys work.
 
 ## QuillQuest
 
-**QuillQuest's own site is [quillquest.malcom.io](https://quillquest.malcom.io), built and
+**QuillQuest's own site is [quillquest.net](https://quillquest.net), built and
 deployed from a separate repo.** It owns the game, support, the privacy policy and For Schools —
 and the live App Store and Google Play listings point at it. Nothing here may change those URLs;
-in particular `quillquest.malcom.io/privacy` must resolve at all times, because Play treats a
+in particular `quillquest.net/privacy` must resolve at all times, because Play treats a
 dead privacy URL as a policy violation.
 
+The product moved to its own domain on **2026-09-04**; it lived at `quillquest.malcom.io` from
+2026-08-04, and that host still resolves and canonicalizes to `quillquest.net`, so store listings
+pointing at the old subdomain keep working.
+
 `/quillquest` is what's left here: one light marketing page (app icon, one-line pitch, both store
-buttons, and a call to action to the subdomain) so the product is visibly Malcom IO's. It wraps
+buttons, and a call to action to quillquest.net) so the product is visibly Malcom IO's. It wraps
 itself in `QuillquestShellComponent` for the navbar and footer.
 
 On **2026-08-17** the duplicate `/quillquest/{privacy,support,for-schools}` pages were deleted —
-they had become a second copy of content the subdomain now generates from its own markdown. The
+they had become a second copy of content the QuillQuest site now generates from its own markdown. The
 three paths 404 via the site-wide SPA fallback; that's deliberate, with no redirect or canonical
 stubs. See `docs/shipping/malcom-io-retirement-spec.md` in the QuillQuest repo for the reasoning.
 

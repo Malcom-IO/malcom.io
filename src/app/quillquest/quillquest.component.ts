@@ -7,7 +7,7 @@ const A = '/assets/quillquest';
 /**
  * The studio's marketing page for QuillQuest — deliberately light.
  *
- * QuillQuest's own site is quillquest.malcom.io (built from a separate repo), and
+ * QuillQuest's own site is quillquest.net (built from a separate repo), and
  * it owns everything a player, parent or school actually needs: the game itself,
  * support, the privacy policy, For Schools. This page exists so the product is
  * visibly Malcom IO's, and to send people there.
@@ -20,7 +20,7 @@ const A = '/assets/quillquest';
 })
 export class QuillquestComponent {
   /** The product site. Must stay reachable — the store listings point at it. */
-  readonly siteUrl = 'https://quillquest.malcom.io';
+  readonly siteUrl = 'https://quillquest.net';
 
   readonly appStoreUrl = 'https://apps.apple.com/app/id6788993070'; // LIVE 2026-07-15
   readonly googlePlayUrl = 'https://play.google.com/store/apps/details?id=io.malcom.quillquest'; // LIVE 2026-07-21

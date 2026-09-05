@@ -9,8 +9,8 @@ import { LogoComponent } from '../shared/logo.component';
  * <ng-content>.
  *
  * It wrapped three pages until 2026-08-17, when privacy / support / For Schools
- * moved to quillquest.malcom.io; only the landing page uses it now, but it stays
- * a component so the chrome isn't duplicated inline.
+ * moved to QuillQuest's own site (now quillquest.net); only the landing page uses
+ * it now, but it stays a component so the chrome isn't duplicated inline.
  */
 @Component({
   selector: 'app-quillquest-shell',
