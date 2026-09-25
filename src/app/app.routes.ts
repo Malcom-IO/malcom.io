@@ -30,7 +30,8 @@ const ORG = {
   legalName: 'Malcom IO LLC',
   url: 'https://www.malcom.io/',
   logo: 'https://www.malcom.io/assets/img/logo.png',
-  email: 'contact@malcom.io',
+  // No email here on purpose: the contact form (with Turnstile) is the ask, and
+  // JSON-LD is the most scrapable place on the page to put an address.
   founder: { '@id': PERSON_ID },
   sameAs: ['https://github.com/Malcom-IO'],
   description:
