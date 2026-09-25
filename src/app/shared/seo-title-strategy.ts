@@ -21,9 +21,10 @@ export interface SeoData {
 }
 
 const ORIGIN = 'https://www.malcom.io';
+// Kept under ~155 chars so search results don't truncate it. Mirrored in index.html.
 const DEFAULT_DESCRIPTION =
-  'Malcom IO builds custom software, from medical and healthcare applications to its own products: ' +
-  'Shyre for work and billing, the Shyre Ward Mac security check, and the QuillQuest learning game.';
+  'Malcom IO builds custom software, from medical and healthcare applications to its own ' +
+  'products: Shyre, Shyre Ward and the QuillQuest learning game.';
 const DEFAULT_IMAGE = `${ORIGIN}/assets/img/og-card.png`;
 
 /**

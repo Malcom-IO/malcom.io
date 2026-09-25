@@ -40,7 +40,7 @@ const QUILLQUEST_APP = {
   url: 'https://quillquest.net/',
   image: QQ_OG_IMAGE,
   description:
-    'A free learning game for grades 3–8 — spelling, times tables and touch typing. ' +
+    'A free learning game for grades 3–8 — spelling, times tables, division and touch typing. ' +
     'The iOS and Android apps play offline. No ads, no tracking, and no accounts.',
   audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
   // Live on both stores — App Store (2026-07-15) + Google Play (2026-07-21).
@@ -76,15 +76,15 @@ export const routes: Routes = [
     // 404 by design: no redirect stubs, the page's copy points at that domain.
     path: 'quillquest',
     component: QuillquestComponent,
-    title: 'QuillQuest — Spelling, times tables & typing | Malcom IO',
+    title: 'QuillQuest — Spelling, times tables, division & typing | Malcom IO',
     data: {
       ogTitle: 'QuillQuest',
+      // Kept under ~155 chars so search results don't truncate it.
       description:
-        'QuillQuest is a free learning game for grades 3–8 — spelling, times tables and touch ' +
-        'typing. No ads, no tracking, no accounts. Built by Malcom IO; play it at ' +
-        'quillquest.net.',
+        'A free learning game for grades 3–8: spelling, times tables, division and touch ' +
+        'typing. No ads, no tracking, no accounts. Play it at quillquest.net.',
       ogImage: QQ_OG_IMAGE,
-      ogImageAlt: 'QuillQuest — spelling, times tables and touch typing for kids',
+      ogImageAlt: 'QuillQuest — spelling, times tables, division and touch typing for kids',
       jsonLd: QUILLQUEST_APP,
     } satisfies SeoData,
   },
