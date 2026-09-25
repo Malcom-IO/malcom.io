@@ -96,6 +96,9 @@ body {
   letter-spacing: 0.14em;
   font-weight: 600;
   color: var(--brand-bright);
+  // Phones wrap the home tagline; balance breaks it at the comma instead of
+  // stranding "software" on its own line.
+  text-wrap: balance;
 }
 .eyebrow--hero::before {
   width: 2.2rem;
