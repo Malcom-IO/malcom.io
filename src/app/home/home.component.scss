@@ -7,6 +7,13 @@
   padding: 6rem 0 4.5rem;
   border-bottom: 1px solid var(--line-soft);
 }
+// The fixed navbar wraps to two rows below lg (see styles.scss scroll-margin-top),
+// which put the eyebrow and h1 under it on short phones. Same top padding as .qq-hero.
+@media (max-width: 991.98px) {
+  .hero {
+    padding-top: 8rem;
+  }
+}
 
 // Golden-ratio "x-ray" motif — full φ construction (golden rectangle + nested squares
 // + spiral), a glowing landscape raster on a pure-black bg. `mix-blend-mode: screen`
