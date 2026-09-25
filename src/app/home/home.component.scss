@@ -128,3 +128,52 @@
   margin: 0;
   text-wrap: balance;
 }
+
+.card-list {
+  padding-left: 1.1rem;
+  li + li {
+    margin-top: 0.4rem;
+  }
+}
+
+// Products: the link sits at the bottom of each card whatever the copy length.
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+.product-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.product-status {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+}
+.product-status--live {
+  border-color: var(--brand);
+  color: var(--brand-bright);
+}
+.product-link {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--brand-bright);
+  text-decoration: none;
+}
+.product-link:hover,
+.product-link:focus-visible {
+  text-decoration: underline;
+}
+.product-appicon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 22%;
+}
