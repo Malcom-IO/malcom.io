@@ -129,11 +129,18 @@
 .founder {
   padding: 4.5rem 0;
 }
+// A brand-card, but a static panel: no lift on hover, unlike the link cards.
 .founder-inner {
   display: flex;
   align-items: flex-start;
   gap: 2.5rem;
-  max-width: 54rem;
+  padding: 2.5rem;
+  height: auto;
+  &:hover {
+    transform: none;
+    border-color: var(--line);
+    background: var(--surface);
+  }
 }
 .founder-photo {
   flex: 0 0 auto;
