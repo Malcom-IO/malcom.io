@@ -5,7 +5,7 @@
       <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
       <ul class="navbar-nav ms-auto flex-row gap-4">
         <li class="nav-item"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/quillquest">QuillQuest</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="products">Products</a></li>
         <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="contact">Contact</a></li>
       </ul>
     </div>
@@ -17,15 +17,16 @@
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <p class="eyebrow eyebrow--hero">Custom software studio</p>
+      <p class="eyebrow eyebrow--hero">Software studio</p>
       <h1 class="display-mono hero-title">Building<br />better.</h1>
       <p class="lead-lg hero-lead">
-        We build custom solutions and treat every customer with an individual experience.
-        Our focus is software — but we love building anything interesting that improves the world.
+        We build custom software with real care, from medical and healthcare applications to
+        products of our own. Every customer gets an individual experience, and every project is
+        built to last.
       </p>
       <div class="hero-cta">
         <a [routerLink]="['/']" fragment="what-we-do" class="btn btn-primary btn-lg">See what we do</a>
-        <a [routerLink]="['/']" fragment="contact" class="btn btn-outline-light btn-lg">Get in touch</a>
+        <a [routerLink]="['/']" fragment="products" class="btn btn-outline-light btn-lg">Our products</a>
       </div>
     </div>
   </div>
@@ -37,22 +38,41 @@
     <p class="eyebrow">What we do</p>
     <h2 class="h-section">Software, built with care</h2>
     <p class="lead-lg text-muted-2" style="max-width: 54ch">
-      We put genuine care into building solutions that actually work.
+      Most of our client work is in healthcare, where software has to be right, provable and
+      private. We bring the same standard to everything else we build.
     </p>
 
     <div class="row g-4 mt-3">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card">
           <span class="card-eyebrow">Healthcare</span>
           <app-icon name="suitcase-medical" size="2x" class="blue-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Medical software</h3>
+          <p class="text-muted-2">
+            We build and run production software for clinical research: electronic case report
+            forms, subject and visit tracking, and the submit, review and verify workflow a
+            trial depends on.
+          </p>
+          <ul class="card-list text-muted-2 mb-0">
+            <li>Audit trails built for 21 CFR Part 11: written server-side, never edited or deleted</li>
+            <li>HIPAA-aware cloud backends, encrypted at rest, with point-in-time recovery</li>
+            <li>Health data interoperability and custom patient-facing applications</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="brand-card">
+          <span class="card-eyebrow">Product engineering</span>
+          <app-icon name="code" size="2x" class="blue-text d-block mt-3 mb-3"></app-icon>
+          <h3 class="h5 fw-semibold">Web, mobile &amp; Mac</h3>
           <p class="text-muted-2 mb-0">
-            Health interoperability or a custom application to improve the lives of patients —
-            we have you covered.
+            From first sketch to a shipped product: web applications and SaaS platforms, iOS and
+            Android apps in both stores, and native macOS software. The products below are ours,
+            designed, built and run end to end.
           </p>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card">
           <span class="card-eyebrow">Partnership</span>
           <app-icon name="heart" size="2x" class="red-text d-block mt-3 mb-3"></app-icon>
@@ -62,7 +82,7 @@
           </p>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card">
           <span class="card-eyebrow">Craft</span>
           <app-icon name="hammer" size="2x" class="green-text d-block mt-3 mb-3"></app-icon>
@@ -71,6 +91,69 @@
             We love building things that improve everyday lives. Have a project idea or concept?
             Let us know.
           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Products-->
+<section id="products" class="section section-line" appReveal>
+  <div class="container">
+    <p class="eyebrow">Our products</p>
+    <h2 class="h-section">Things we make and run</h2>
+    <p class="lead-lg text-muted-2" style="max-width: 54ch">
+      Our own products, built to the standard we hold client work to.
+    </p>
+
+    <div class="row g-4 mt-3">
+      <div class="col-md-4">
+        <div class="brand-card product-card">
+          <div class="product-head">
+            <span class="card-eyebrow">Work &amp; billing</span>
+            <span class="product-status">Early access</span>
+          </div>
+          <app-product-mark name="shyre" class="d-block mt-3 mb-3"></app-product-mark>
+          <h3 class="h5 fw-semibold">Shyre</h3>
+          <p class="text-muted-2">
+            One record from the pitch to the payment. Time logs itself as people and their coding
+            agents work, then becomes proposals, invoices and client-signed sign-offs for
+            consultants, and real cost reports for teams.
+          </p>
+          <a href="https://shyre.io" class="product-link">Visit shyre.io <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="brand-card product-card">
+          <div class="product-head">
+            <span class="card-eyebrow">Mac security</span>
+            <span class="product-status">Early access</span>
+          </div>
+          <app-product-mark name="ward" class="d-block mt-3 mb-3"></app-product-mark>
+          <h3 class="h5 fw-semibold">Shyre Ward</h3>
+          <p class="text-muted-2">
+            A read-only compromise check for your Mac. It inventories everything that starts,
+            runs, listens or holds a permission, flags what looks out of place, and changes
+            nothing until you click. Nothing leaves the Mac.
+          </p>
+          <p class="text-muted-2 small">In early access now; availability is expanding soon.</p>
+          <a [routerLink]="['/']" fragment="contact" class="product-link">Ask about early access <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="brand-card product-card">
+          <div class="product-head">
+            <span class="card-eyebrow">Learning game</span>
+            <span class="product-status product-status--live">Free</span>
+          </div>
+          <img class="product-appicon d-block mt-3 mb-3" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
+          <h3 class="h5 fw-semibold">QuillQuest</h3>
+          <p class="text-muted-2">
+            Spelling, times tables and touch typing for grades 3–8, with no ads, no accounts and
+            no tracking. All three play in the browser; the iOS and Android apps play spelling and
+            times tables offline.
+          </p>
+          <a routerLink="/quillquest" class="product-link">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
