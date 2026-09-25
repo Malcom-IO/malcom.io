@@ -22,8 +22,8 @@ export interface SeoData {
 
 const ORIGIN = 'https://www.malcom.io';
 const DEFAULT_DESCRIPTION =
-  'Malcom IO builds custom software — from medical software and health interoperability ' +
-  'to the QuillQuest spelling, times-tables and typing game — with a passion for improving the world.';
+  'Malcom IO builds custom software, from medical and healthcare applications to its own products: ' +
+  'Shyre for work and billing, the Shyre Ward Mac security check, and the QuillQuest learning game.';
 const DEFAULT_IMAGE = `${ORIGIN}/assets/img/og-card.png`;
 
 /**

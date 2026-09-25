@@ -16,8 +16,8 @@ const ORG = {
   logo: 'https://www.malcom.io/assets/img/logo.png',
   email: 'contact@malcom.io',
   description:
-    'Malcom IO builds custom software — medical software, health interoperability, ' +
-    'and the QuillQuest mobile game.',
+    'Malcom IO builds custom software — medical software, health interoperability — ' +
+    'and its own products: Shyre, Shyre Ward and QuillQuest.',
 };
 
 const WEBSITE = {
