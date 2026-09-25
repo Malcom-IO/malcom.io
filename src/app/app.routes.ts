@@ -8,13 +8,31 @@ import { SeoData } from './shared/seo-title-strategy';
 const QQ_OG_IMAGE = 'https://www.malcom.io/assets/quillquest/og-card.png';
 
 // ------------------------------------------------------------------ JSON-LD
+// The founder, linked both ways with ORG. `sameAs` names the canonical profiles so
+// search engines (and anyone checking) can tell the real Marcus from a lookalike.
+const PERSON_ID = 'https://www.malcom.io/#marcus';
+const PERSON = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': PERSON_ID,
+  name: 'Marcus Malcom',
+  jobTitle: 'Founder & Principal Engineer',
+  url: PERSON_ID,
+  image: 'https://www.malcom.io/assets/img/marcus-640.webp',
+  worksFor: { '@type': 'Organization', name: 'Malcom IO LLC', url: 'https://www.malcom.io/' },
+  sameAs: ['https://www.linkedin.com/in/marcusmalcom/', 'https://github.com/Malcom-IO'],
+};
+
 const ORG = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Malcom IO',
+  legalName: 'Malcom IO LLC',
   url: 'https://www.malcom.io/',
   logo: 'https://www.malcom.io/assets/img/logo.png',
   email: 'contact@malcom.io',
+  founder: { '@id': PERSON_ID },
+  sameAs: ['https://github.com/Malcom-IO'],
   description:
     'Malcom IO builds custom software — medical software, health interoperability — ' +
     'and its own products: Shyre, Shyre Ward and QuillQuest.',
@@ -64,7 +82,7 @@ export const routes: Routes = [
     component: HomeComponent,
     title: 'Malcom IO — Building Better',
     data: {
-      jsonLd: [ORG, WEBSITE],
+      jsonLd: [ORG, PERSON, WEBSITE],
     } satisfies SeoData,
   },
   // Keep the old /home URL working — it redirects to the canonical root.

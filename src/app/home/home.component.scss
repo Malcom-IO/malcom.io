@@ -125,6 +125,55 @@
   gap: 1rem;
 }
 
+// Founder strip: photo left, copy right; stacks on phones.
+.founder {
+  padding: 4.5rem 0;
+}
+.founder-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  max-width: 54rem;
+}
+.founder-photo {
+  flex: 0 0 auto;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  object-fit: cover;
+}
+.founder-name {
+  margin-bottom: 0.35rem;
+}
+.founder-title {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--brand-bright);
+  margin-bottom: 1.25rem;
+}
+.founder-bio {
+  max-width: 40rem;
+}
+.founder-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 767.98px) {
+  .founder-inner {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .founder-photo {
+    width: 120px;
+    height: 120px;
+  }
+}
+
 .approach-quote {
   font-family: var(--mono);
   font-size: clamp(1.4rem, 3.2vw, 2.1rem);
