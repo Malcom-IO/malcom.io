@@ -21,6 +21,7 @@ const A = '/assets/quillquest';
 export class QuillquestComponent {
   /** The product site. Must stay reachable — the store listings point at it. */
   readonly siteUrl = 'https://quillquest.net';
+  readonly privacyUrl = 'https://quillquest.net/privacy';
 
   readonly appStoreUrl = 'https://apps.apple.com/app/id6788993070'; // LIVE 2026-07-15
   readonly googlePlayUrl = 'https://play.google.com/store/apps/details?id=io.malcom.quillquest'; // LIVE 2026-07-21
