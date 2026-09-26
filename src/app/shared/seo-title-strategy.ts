@@ -23,8 +23,8 @@ export interface SeoData {
 const ORIGIN = 'https://www.malcom.io';
 // Kept under ~155 chars so search results don't truncate it. Mirrored in index.html.
 const DEFAULT_DESCRIPTION =
-  'Malcom IO builds custom software, from medical and healthcare applications to its own ' +
-  'products: Shyre, Shyre Ward and the QuillQuest learning game.';
+  'Custom healthcare software built to be audited: 21 CFR Part 11 audit trails, HIPAA-aware ' +
+  'backends, eCRF/EDC workflows and health data interoperability.';
 const DEFAULT_IMAGE = `${ORIGIN}/assets/img/og-card.png`;
 
 /**

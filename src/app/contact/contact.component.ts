@@ -13,6 +13,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from '../shared/toast.service';
+import { RouterLink } from '@angular/router';
 import { IconComponent } from '../shared/icon.component';
 
 declare const turnstile: {
@@ -26,7 +27,7 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAADwMRSPJhDBDL3BT';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, IconComponent],
+  imports: [ReactiveFormsModule, RouterLink, IconComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
   // The Turnstile widget (@if isBrowser) renders only in the browser, so the
@@ -270,7 +271,7 @@ export class ContactComponent {
   }
 
   showGenericSuccess(): void {
-    this.toast.success('Thank you for your interest in Malcom IO.', 'Message Sent!');
+    this.toast.success('Thanks. Marcus will reply within one business day.', 'Message sent');
   }
 
   showGenericError(): void {

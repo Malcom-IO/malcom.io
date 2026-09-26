@@ -4,9 +4,9 @@
     <div class="container">
       <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
       <ul class="navbar-nav ms-auto flex-row gap-4">
-        <li class="nav-item"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
+        <li class="nav-item d-none d-sm-block"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
         <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="products">Products</a></li>
-        <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="contact">Contact</a></li>
+        <li class="nav-item"><a class="btn btn-primary btn-sm nav-cta" [routerLink]="['/']" fragment="contact">Start a project</a></li>
       </ul>
     </div>
   </nav>
@@ -18,15 +18,15 @@
   <div class="container">
     <div class="hero-inner">
       <p class="eyebrow eyebrow--hero">Small studio, serious software</p>
-      <h1 class="display-mono hero-title">Building<br />better.</h1>
+      <h1 class="display-mono hero-title">Healthcare software<br />that holds up.</h1>
       <p class="lead-lg hero-lead">
-        We build custom software with real care, from medical and healthcare applications to
-        products of our own. Every customer gets an individual experience, and every project is
-        built to last.
+        We design, build and run custom software for healthcare, where it has to be right,
+        provable and private: 21 CFR Part 11 audit trails, HIPAA-aware backends, eCRF workflows
+        and health data interoperability. We build our own web, mobile and Mac products too.
       </p>
       <div class="hero-cta">
-        <a [routerLink]="['/']" fragment="what-we-do" class="btn btn-primary btn-lg">See what we do</a>
-        <a [routerLink]="['/']" fragment="products" class="btn btn-outline-light btn-lg">Our products</a>
+        <a [routerLink]="['/']" fragment="contact" class="btn btn-primary btn-lg">Start a project</a>
+        <a [routerLink]="['/']" fragment="what-we-do" class="btn btn-outline-light btn-lg">How we build for healthcare</a>
       </div>
     </div>
   </div>
@@ -110,22 +110,24 @@
       </div>
       <div class="col-md-6">
         <div class="brand-card">
-          <span class="card-eyebrow">Partnership</span>
+          <span class="card-eyebrow">How we work</span>
           <app-icon name="heart" size="2x" class="red-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Happiness</h3>
           <p class="text-muted-2 mb-0">
-            Easy to work with — we listen to your needs and come in on budget and on schedule.
+            We start with a short discovery, then show you working software
+            <mark class="fact">every week</mark>. Fixed-bid or time-and-materials, your call. You
+            own the code and the accounts it runs on <mark class="fact">from day one</mark>.
           </p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="brand-card">
-          <span class="card-eyebrow">Craft</span>
+          <span class="card-eyebrow">What we take on</span>
           <app-icon name="hammer" size="2x" class="green-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Adventure</h3>
           <p class="text-muted-2 mb-0">
-            We love building things that improve everyday lives. Have a project idea or concept?
-            Let us know.
+            From a sketch to an app in both stores, or a system that has to hold up at audit. If
+            we can't run it well after launch, we say so before you sign.
           </p>
         </div>
       </div>
@@ -136,30 +138,30 @@
 <!--Products-->
 <section id="products" class="section section-line" appReveal>
   <div class="container">
-    <p class="eyebrow">Our products</p>
-    <h2 class="h-section">Things we make and run</h2>
+    <p class="eyebrow">Built and run by us</p>
+    <h2 class="h-section">Our own software, in production</h2>
     <p class="lead-lg text-muted-2" style="max-width: 54ch">
-      Our own products, built to the standard we hold client work to.
+      Proof of how we'd build yours: we design it, ship it, and answer for it after launch.
     </p>
 
     <div class="row g-4 mt-3">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card product-card">
           <div class="product-head">
             <span class="card-eyebrow">Work &amp; billing</span>
-            <span class="product-status">Early access</span>
+            <span class="product-status product-status--live">$7 / person / month</span>
           </div>
           <app-product-mark name="shyre" class="d-block mt-3 mb-3"></app-product-mark>
           <h3 class="h5 fw-semibold">Shyre</h3>
           <p class="text-muted-2">
-            One record from the pitch to the payment. Time logs itself as people and their coding
-            agents work, then becomes proposals, invoices and client-signed sign-offs for
-            consultants, and real cost reports for teams.
+            One record from pitch to payment. Hours log themselves as people and their coding
+            agents work, then become proposals, invoices and client-signed sign-offs. Fixed-bid,
+            not-to-exceed or time-and-materials. $4 a month at the early-access price.
           </p>
-          <a href="https://shyre.io" class="product-link">Visit shyre.io <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://shyre.io/pricing" class="product-link">See pricing <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card product-card">
           <div class="product-head">
             <span class="card-eyebrow">Mac security</span>
@@ -172,40 +174,63 @@
             runs, listens or holds a permission, flags what looks out of place, and changes
             nothing until you click. Nothing leaves the Mac.
           </p>
-          <p class="text-muted-2 small">In early access now; availability is expanding soon.</p>
-          <a [routerLink]="['/']" fragment="contact" class="product-link">Ask about early access <span aria-hidden="true">&rarr;</span></a>
+          <p class="text-muted-2 small">We're releasing it in stages; availability is expanding soon.</p>
+          <a [routerLink]="['/']" fragment="contact" class="product-link">Request early access <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="brand-card product-card">
-          <div class="product-head">
-            <span class="card-eyebrow">Learning game</span>
-            <span class="product-status product-status--live">Free</span>
+      <div class="col-12">
+        <div class="brand-card product-strip">
+          <img class="product-appicon" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
+          <div>
+            <span class="card-eyebrow">Also ours &middot; Free</span>
+            <p class="text-muted-2 mb-0 mt-1">
+              QuillQuest, a learning game for grades 3–8, live on the App Store and Google Play.
+              Private by design: no ads, no accounts, no tracking.
+            </p>
           </div>
-          <img class="product-appicon d-block mt-3 mb-3" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
-          <h3 class="h5 fw-semibold">QuillQuest</h3>
-          <p class="text-muted-2">
-            Spelling, times tables, division and touch typing for grades 3–8 (about ages 8–14),
-            with no ads, no accounts and no tracking. All four play in the browser; the iOS and
-            Android apps play spelling, times tables and division offline.
-          </p>
-          <a routerLink="/quillquest" class="product-link">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+          <a routerLink="/quillquest" class="product-link ms-md-auto">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!--Approach statement-->
-<section class="section section-line" appReveal>
+<!--Case summary-->
+<section id="case" class="section section-line" appReveal>
   <div class="container">
-    <div class="row justify-content-center text-center">
-      <div class="col-lg-9">
-        <p class="eyebrow justify-content-center">Our approach</p>
-        <p class="approach-quote">
-          Great software is a <span class="green-text">craft</span>, not a commodity —
-          built with care, for people, to last.
+    <p class="eyebrow">In production</p>
+    <h2 class="h-section">Clinical-trial data platform, running since 2019</h2>
+    <div class="row g-4 mt-1">
+      <div class="col-lg-7">
+        <p class="lead-lg text-muted-2">
+          A medical-device sponsor needed trial data captured, reviewed and monitored
+          <mark class="fact">without a heavyweight commercial EDC</mark>. We built and still run
+          it: eCRFs, subject and visit tracking, and a submit &rarr; review &rarr; verify
+          workflow. It has to satisfy 21 CFR Part 11: audit trails are written server-side and
+          never edited or deleted. It runs on a HIPAA-aware AWS backend, encrypted at rest, with
+          point-in-time recovery.
         </p>
+        <p class="lead-lg text-muted-2 mb-0">
+          Today it supports <mark class="fact">[N] studies</mark> across
+          <mark class="fact">[N] sites</mark> and <mark class="fact">[N] subjects</mark>, and has
+          passed <mark class="fact">[N] sponsor audits</mark> with
+          <mark class="fact">[N] findings</mark>.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="brand-card">
+          <span class="card-eyebrow">Compliance &amp; security</span>
+          <ul class="card-list text-muted-2 mt-3 mb-0">
+            <li><mark class="fact">We sign a BAA before any PHI is shared.</mark></li>
+            <li>Audit trails written server-side, never edited or deleted <mark class="fact">[how: append-only tables / hash chain]</mark>.</li>
+            <li>Validation package on request: <mark class="fact">requirements traceability, test protocols, executed evidence</mark>.</li>
+            <li>Hosted on AWS in <mark class="fact">US regions</mark>, encrypted at rest and in transit, point-in-time recovery.</li>
+            <li>Role-based access; MFA <mark class="fact">[enforced for whom]</mark>.</li>
+            <li>Breach notification within <mark class="fact">[N hours]</mark>; support hours <mark class="fact">[hours, response target]</mark>.</li>
+            <li>No SOC 2. Security questionnaire and subprocessor list on request.</li>
+            <li>Continuity: code and runbooks live in your accounts from day one <mark class="fact">[named backup engineer?]</mark>.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -227,6 +252,7 @@
       <a routerLink="/">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
       <a [routerLink]="['/']" fragment="contact">Contact</a>
+      <a routerLink="/privacy">Privacy</a>
     </nav>
     <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO LLC</div>
   </div>

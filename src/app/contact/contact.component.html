@@ -1,113 +1,136 @@
-<p class="eyebrow">Get in touch</p>
-<h2 class="h-section">Let's build something</h2>
-<p class="lead-lg text-muted-2 mb-4" style="max-width: 54ch">
-  Tell us about your project or idea, and we'll get back to you.
-</p>
+<div class="row g-5">
+  <div class="col-lg-7">
+    <p class="eyebrow">Get in touch</p>
+    <h2 class="h-section">Tell us what you're building</h2>
+    <p class="lead-lg text-muted-2 mb-4" style="max-width: 54ch">
+      Tell us what it does, who uses it, when it needs to ship and whether it touches patient
+      data. Marcus reads every message and replies within
+      <mark class="fact">one business day</mark>.
+    </p>
 
-<!-- Turnstile starts on first interaction, not on mount — see ensureTurnstile().
-     focusin covers tabbing or clicking into any field; pointerdown covers clicking
-     Send on browsers that don't focus a button on click (Safari on macOS). -->
-<form
-  [formGroup]="contactForm"
-  (ngSubmit)="submitContactForm()"
-  (focusin)="ensureTurnstile()"
-  (pointerdown)="ensureTurnstile()"
-  novalidate
-  class="contact-form">
-  <div class="row g-3">
-    <div class="col-md-6">
-      <label for="name" class="form-label required">Your name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        formControlName="name"
-        aria-required="true"
-        autocomplete="name"
-        [class.is-invalid]="contactForm.controls.name.invalid && contactForm.controls.name.touched"
-        [attr.aria-invalid]="
-          contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="
-          contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'name-err' : null
-        "
-        class="form-control form-control-lg"
-        placeholder="Name" />
-      <div id="name-err" class="invalid-feedback">Name is required.</div>
-    </div>
+    <!-- Turnstile starts on first interaction, not on mount — see ensureTurnstile().
+         focusin covers tabbing or clicking into any field; pointerdown covers clicking
+         Send on browsers that don't focus a button on click (Safari on macOS). -->
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="submitContactForm()"
+      (focusin)="ensureTurnstile()"
+      (pointerdown)="ensureTurnstile()"
+      novalidate
+      class="contact-form">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="name" class="form-label required">Your name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            formControlName="name"
+            aria-required="true"
+            autocomplete="name"
+            [class.is-invalid]="contactForm.controls.name.invalid && contactForm.controls.name.touched"
+            [attr.aria-invalid]="
+              contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'true' : null
+            "
+            [attr.aria-describedby]="
+              contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'name-err' : null
+            "
+            class="form-control form-control-lg"
+            placeholder="Name" />
+          <div id="name-err" class="invalid-feedback">Name is required.</div>
+        </div>
 
-    <div class="col-md-6">
-      <label for="email" class="form-label required">Your email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        formControlName="email"
-        aria-required="true"
-        autocomplete="email"
-        [class.is-invalid]="contactForm.controls.email.invalid && contactForm.controls.email.touched"
-        [attr.aria-invalid]="
-          contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="
-          contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'email-err' : null
-        "
-        class="form-control form-control-lg"
-        placeholder="you@example.com" />
-      <div id="email-err" class="invalid-feedback">Please enter a valid email address.</div>
-    </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label required">Your email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            formControlName="email"
+            aria-required="true"
+            autocomplete="email"
+            [class.is-invalid]="contactForm.controls.email.invalid && contactForm.controls.email.touched"
+            [attr.aria-invalid]="
+              contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'true' : null
+            "
+            [attr.aria-describedby]="
+              contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'email-err' : null
+            "
+            class="form-control form-control-lg"
+            placeholder="you@example.com" />
+          <div id="email-err" class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
 
-    <div class="col-12">
-      <label for="subject" class="form-label">Subject</label>
-      <input
-        type="text"
-        id="subject"
-        name="subject"
-        formControlName="subject"
-        class="form-control form-control-lg"
-        placeholder="What's this about?" />
-    </div>
+        <div class="col-12">
+          <label for="subject" class="form-label">What's this about?</label>
+          <!-- Same control name as before: the Worker's payload is unchanged. -->
+          <select id="subject" name="subject" formControlName="subject" class="form-select form-select-lg">
+            <option value="">Choose one</option>
+            <option value="A new healthcare project">A new healthcare project</option>
+            <option value="Help with an existing system">Help with an existing system</option>
+            <option value="A web, mobile or Mac product">A web, mobile or Mac product</option>
+            <option value="Shyre or Shyre Ward">Shyre or Shyre Ward</option>
+            <option value="Privacy request">Privacy request</option>
+            <option value="Something else">Something else</option>
+          </select>
+        </div>
 
-    <div class="col-12">
-      <label for="body" class="form-label">Your message</label>
-      <textarea
-        id="body"
-        formControlName="body"
-        class="form-control"
-        rows="6"
-        placeholder="Tell us about your project…"></textarea>
-    </div>
+        <div class="col-12">
+          <label for="body" class="form-label">Your message</label>
+          <textarea
+            id="body"
+            formControlName="body"
+            class="form-control"
+            rows="6"
+            placeholder="What you're building, who it's for, your timeline, and any compliance needs (HIPAA, Part 11)."></textarea>
+        </div>
 
-    <!-- Honeypot: hidden from people; bots that fill it are silently dropped by the Worker -->
-    <input
-      type="text"
-      formControlName="website"
-      name="website"
-      class="hp-field"
-      tabindex="-1"
-      autocomplete="off"
-      aria-hidden="true" />
+        <!-- Honeypot: hidden from people; bots that fill it are silently dropped by the Worker -->
+        <input
+          type="text"
+          formControlName="website"
+          name="website"
+          class="hp-field"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true" />
 
-    @if (isBrowser) {
-      <div class="col-12">
-        <!-- Stays in the DOM before the widget starts: .cf-turnstile-host reserves
-             its height, so the challenge appearing mid-form doesn't shove the Send
-             button down while someone is still typing. -->
-        <div #turnstile class="cf-turnstile-host"></div>
+        @if (isBrowser) {
+          <div class="col-12">
+            <!-- Stays in the DOM before the widget starts: .cf-turnstile-host reserves
+                 its height, so the challenge appearing mid-form doesn't shove the Send
+                 button down while someone is still typing. -->
+            <div #turnstile class="cf-turnstile-host"></div>
+          </div>
+        }
+
+        <div class="col-12">
+          <!-- Enabled even before Turnstile resolves: submit() guards on the token and
+               guides the user (toast + focus to the widget). Disabling it removes it from
+               the tab order and makes that guidance unreachable (WCAG 3.3.1 / 4.1.2).
+               It stays enabled while the challenge is still solving for the same reason:
+               disabling the focused button drops focus to <body>. submitContactForm()
+               guards its own re-entry instead. -->
+          <button type="submit" class="btn btn-primary btn-lg" [disabled]="sending">
+            {{ sendLabel }}
+            <app-icon name="paper-plane" class="ms-2"></app-icon>
+          </button>
+          <p class="text-muted-2 small mt-3 mb-0">
+            We use what you send only to reply. <a routerLink="/privacy" class="contact-privacy-link">Privacy policy</a>.
+          </p>
+        </div>
       </div>
-    }
+    </form>
+  </div>
 
-    <div class="col-12">
-      <!-- Enabled even before Turnstile resolves: submit() guards on the token and
-           guides the user (toast + focus to the widget). Disabling it removes it from
-           the tab order and makes that guidance unreachable (WCAG 3.3.1 / 4.1.2).
-           It stays enabled while the challenge is still solving for the same reason:
-           disabling the focused button drops focus to <body>. submitContactForm()
-           guards its own re-entry instead. -->
-      <button type="submit" class="btn btn-primary btn-lg" [disabled]="sending">
-        {{ sendLabel }}
-        <app-icon name="paper-plane" class="ms-2"></app-icon>
-      </button>
+  <div class="col-lg-5">
+    <div class="brand-card contact-aside">
+      <span class="card-eyebrow">What happens next</span>
+      <ol class="contact-steps text-muted-2 mt-3 mb-0">
+        <li><strong>You send a note.</strong> A few lines is enough. There's no brief to prepare.</li>
+        <li><strong>We talk it through.</strong> A 30-minute video call with Marcus: questions, constraints, what done looks like. No obligation.</li>
+        <li><strong>You get a written proposal.</strong> Scope, timeline and price in writing, fixed bid or time and materials, and you own the code.</li>
+      </ol>
     </div>
   </div>
-</form>
+</div>

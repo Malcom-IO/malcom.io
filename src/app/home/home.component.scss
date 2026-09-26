@@ -241,3 +241,23 @@
   height: 2.75rem;
   border-radius: 22%;
 }
+// QuillQuest: a one-line strip under the two B2B cards, not a peer card.
+.product-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  height: auto;
+  .product-appicon {
+    flex: 0 0 auto;
+  }
+  .product-link {
+    margin-top: 0;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 767.98px) {
+  .product-strip {
+    flex-wrap: wrap;
+  }
+}
