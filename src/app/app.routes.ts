@@ -36,8 +36,8 @@ const ORG = {
   founder: { '@id': PERSON_ID },
   sameAs: ['https://github.com/Malcom-IO'],
   description:
-    'Custom healthcare software built to be audited: 21 CFR Part 11 audit trails, HIPAA-aware ' +
-    'backends, eCRF/EDC workflows and health data interoperability.',
+    'Malcom IO designs, builds and runs custom software: healthcare systems built for 21 CFR ' +
+    'Part 11 and HIPAA, web and mobile apps, and native Mac software.',
 };
 
 const WEBSITE = {
@@ -82,7 +82,7 @@ export const routes: Routes = [
     // DEFAULT_DESCRIPTION from the SEO strategy.)
     path: '',
     component: HomeComponent,
-    title: 'Malcom IO — Custom software for regulated healthcare',
+    title: 'Malcom IO — Custom software, healthcare systems to Mac apps',
     data: {
       jsonLd: [ORG, PERSON, WEBSITE],
     } satisfies SeoData,
