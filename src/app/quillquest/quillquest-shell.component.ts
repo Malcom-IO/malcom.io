@@ -55,7 +55,7 @@ import { LogoComponent } from '../shared/logo.component';
           <a routerLink="/">Home</a>
           <a routerLink="/quillquest">QuillQuest</a>
           <a [routerLink]="['/']" fragment="contact">Contact</a>
-          <a href="https://quillquest.net/privacy">Privacy</a>
+          <a routerLink="/privacy">Privacy</a>
         </nav>
         <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO LLC</div>
       </div>

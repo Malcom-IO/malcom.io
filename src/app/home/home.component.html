@@ -4,9 +4,9 @@
     <div class="container">
       <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
       <ul class="navbar-nav ms-auto flex-row gap-4">
-        <li class="nav-item"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
+        <li class="nav-item d-none d-sm-block"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
         <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="products">Products</a></li>
-        <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="contact">Contact</a></li>
+        <li class="nav-item"><a class="btn btn-primary btn-sm nav-cta" [routerLink]="['/']" fragment="contact">Start a project</a></li>
       </ul>
     </div>
   </nav>
@@ -18,28 +18,97 @@
   <div class="container">
     <div class="hero-inner">
       <p class="eyebrow eyebrow--hero">Small studio, serious software</p>
-      <h1 class="display-mono hero-title">Building<br />better.</h1>
+      <h1 class="display-mono hero-title">Software that<br />holds up.</h1>
       <p class="lead-lg hero-lead">
-        We build custom software with real care, from medical and healthcare applications to
-        products of our own. Every customer gets an individual experience, and every project is
-        built to last.
+        We design, build and run custom software: healthcare systems that have to pass an
+        audit, web and mobile apps in both stores, and native Mac software. One studio, end to
+        end, and you work with the engineer who builds it.
       </p>
       <div class="hero-cta">
-        <a [routerLink]="['/']" fragment="what-we-do" class="btn btn-primary btn-lg">See what we do</a>
-        <a [routerLink]="['/']" fragment="products" class="btn btn-outline-light btn-lg">Our products</a>
+        <a [routerLink]="['/']" fragment="contact" class="btn btn-primary btn-lg">Start a project</a>
+        <a [routerLink]="['/']" fragment="healthcare" class="btn btn-outline-light btn-lg">Our healthcare work</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Founder-->
+<section id="marcus" class="section founder" appReveal>
+  <div class="container">
+    <div class="brand-card founder-inner">
+      <img
+        class="founder-photo"
+        src="/assets/img/marcus-320.webp"
+        srcset="/assets/img/marcus-320.webp 320w, /assets/img/marcus-640.webp 640w"
+        sizes="160px"
+        width="160"
+        height="160"
+        alt="Marcus Malcom"
+        loading="lazy" />
+      <div>
+        <p class="eyebrow">Who you'll work with</p>
+        <h2 class="h-section founder-name">Marcus Malcom</h2>
+        <p class="founder-title">Founder &amp; Principal Engineer &middot; Portland, Oregon</p>
+        <p class="lead-lg text-muted-2 founder-bio">
+          Twenty-seven years building software, most of it in healthcare: health information
+          exchange at OCHIN, secure clinical messaging at Mirth, and since 2019 the data-capture
+          and monitoring tools behind medical-device clinical trials. Oregon State, computer
+          science.
+        </p>
+        <p class="lead-lg founder-bio">
+          You work with me directly. I scope it, I build it, and I run it after launch.
+        </p>
+        <div class="founder-links">
+          <a [routerLink]="['/']" fragment="contact" class="btn btn-primary">Start a project</a>
+          <a href="https://www.linkedin.com/in/marcusmalcom/" rel="me" class="product-link">LinkedIn <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://github.com/Malcom-IO" rel="me" class="product-link">GitHub <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Healthcare-->
+<section id="healthcare" class="section section-line" appReveal>
+  <div class="container">
+    <p class="eyebrow">Healthcare</p>
+    <h2 class="h-section">Where software has to be right, provable and private</h2>
+    <p class="lead-lg text-muted-2" style="max-width: 54ch">
+      Most of our client work is in healthcare, built by an engineer who has shipped it to
+      production and still runs it.
+    </p>
+    <div class="row g-4 mt-1">
+      <div class="col-lg-7">
+        <h3 class="h5 fw-semibold mt-2">Clinical-trial data platform, in production since 2019</h3>
+        <p class="lead-lg text-muted-2 mb-0">
+          Built for a medical-device sponsor and still run by us: electronic case report forms,
+          subject and visit tracking, and the submit, review and verify workflow a trial depends
+          on. Audit trails are written server-side and never edited or deleted, as 21 CFR Part
+          11 requires.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="brand-card">
+          <span class="card-eyebrow">What you can expect</span>
+          <ul class="card-list text-muted-2 mt-3 mb-0">
+            <li>Audit trails built for 21 CFR Part 11</li>
+            <li>HIPAA-aware AWS backends, encrypted at rest, with point-in-time recovery</li>
+            <li>HL7 interfaces and health data exchange</li>
+            <li>Validation documentation and security questionnaires on request</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!--What we do-->
-<section id="what-we-do" class="section" appReveal>
+<section id="what-we-do" class="section section-line" appReveal>
   <div class="container">
     <p class="eyebrow">What we do</p>
     <h2 class="h-section">Software, built with care</h2>
     <p class="lead-lg text-muted-2" style="max-width: 54ch">
-      Most of our client work is in healthcare, where software has to be right, provable and
-      private. We bring the same standard to everything else we build.
+      The standard healthcare demands, brought to everything else we build.
     </p>
 
     <div class="row g-4 mt-3">
@@ -74,22 +143,23 @@
       </div>
       <div class="col-md-6">
         <div class="brand-card">
-          <span class="card-eyebrow">Partnership</span>
+          <span class="card-eyebrow">How we work</span>
           <app-icon name="heart" size="2x" class="red-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Happiness</h3>
           <p class="text-muted-2 mb-0">
-            Easy to work with — we listen to your needs and come in on budget and on schedule.
+            We start with a short discovery, then show you working software as it takes shape.
+            Fixed-bid or time-and-materials, your call. You own the code.
           </p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="brand-card">
-          <span class="card-eyebrow">Craft</span>
+          <span class="card-eyebrow">What we take on</span>
           <app-icon name="hammer" size="2x" class="green-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Adventure</h3>
           <p class="text-muted-2 mb-0">
-            We love building things that improve everyday lives. Have a project idea or concept?
-            Let us know.
+            From a sketch to an app in both stores, or a system that has to hold up at audit. If
+            we can't run it well after launch, we say so before you sign.
           </p>
         </div>
       </div>
@@ -100,30 +170,30 @@
 <!--Products-->
 <section id="products" class="section section-line" appReveal>
   <div class="container">
-    <p class="eyebrow">Our products</p>
-    <h2 class="h-section">Things we make and run</h2>
+    <p class="eyebrow">Built and run by us</p>
+    <h2 class="h-section">Our own software, in production</h2>
     <p class="lead-lg text-muted-2" style="max-width: 54ch">
-      Our own products, built to the standard we hold client work to.
+      Proof of how we'd build yours: we design it, ship it, and answer for it after launch.
     </p>
 
     <div class="row g-4 mt-3">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card product-card">
           <div class="product-head">
             <span class="card-eyebrow">Work &amp; billing</span>
-            <span class="product-status">Early access</span>
+            <span class="product-status product-status--live">$7 / person / month</span>
           </div>
           <app-product-mark name="shyre" class="d-block mt-3 mb-3"></app-product-mark>
           <h3 class="h5 fw-semibold">Shyre</h3>
           <p class="text-muted-2">
-            One record from the pitch to the payment. Time logs itself as people and their coding
-            agents work, then becomes proposals, invoices and client-signed sign-offs for
-            consultants, and real cost reports for teams.
+            One record from pitch to payment. Hours log themselves as people and their coding
+            agents work, then become proposals, invoices and client-signed sign-offs. Fixed-bid,
+            not-to-exceed or time-and-materials. $4 a month at the early-access price.
           </p>
-          <a href="https://shyre.io" class="product-link">Visit shyre.io <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://shyre.io/pricing" class="product-link">See pricing <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="brand-card product-card">
           <div class="product-head">
             <span class="card-eyebrow">Mac security</span>
@@ -136,40 +206,22 @@
             runs, listens or holds a permission, flags what looks out of place, and changes
             nothing until you click. Nothing leaves the Mac.
           </p>
-          <p class="text-muted-2 small">In early access now; availability is expanding soon.</p>
-          <a [routerLink]="['/']" fragment="contact" class="product-link">Ask about early access <span aria-hidden="true">&rarr;</span></a>
+          <p class="text-muted-2 small">We're releasing it in stages; availability is expanding soon.</p>
+          <a [routerLink]="['/']" fragment="contact" class="product-link">Request early access <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="brand-card product-card">
-          <div class="product-head">
-            <span class="card-eyebrow">Learning game</span>
-            <span class="product-status product-status--live">Free</span>
+      <div class="col-12">
+        <div class="brand-card product-strip">
+          <img class="product-appicon" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
+          <div>
+            <span class="card-eyebrow">Also ours &middot; Free</span>
+            <p class="text-muted-2 mb-0 mt-1">
+              QuillQuest, a learning game for grades 3–8, live on the App Store and Google Play.
+              Private by design: no ads, no accounts, no tracking.
+            </p>
           </div>
-          <img class="product-appicon d-block mt-3 mb-3" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
-          <h3 class="h5 fw-semibold">QuillQuest</h3>
-          <p class="text-muted-2">
-            Spelling, times tables, division and touch typing for grades 3–8 (about ages 8–14),
-            with no ads, no accounts and no tracking. All four play in the browser; the iOS and
-            Android apps play spelling, times tables and division offline.
-          </p>
-          <a routerLink="/quillquest" class="product-link">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+          <a routerLink="/quillquest" class="product-link ms-md-auto">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--Approach statement-->
-<section class="section section-line" appReveal>
-  <div class="container">
-    <div class="row justify-content-center text-center">
-      <div class="col-lg-9">
-        <p class="eyebrow justify-content-center">Our approach</p>
-        <p class="approach-quote">
-          Great software is a <span class="green-text">craft</span>, not a commodity —
-          built with care, for people, to last.
-        </p>
       </div>
     </div>
   </div>
@@ -191,6 +243,7 @@
       <a routerLink="/">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
       <a [routerLink]="['/']" fragment="contact">Contact</a>
+      <a routerLink="/privacy">Privacy</a>
     </nav>
     <div class="text-muted-2 font-monospace small">© {{ currentDate | date: 'yyyy' }} Malcom IO LLC</div>
   </div>
