@@ -18,7 +18,7 @@ import { QuillquestShellComponent } from '../quillquest/quillquest-shell.compone
             <p class="eyebrow">Malcom IO LLC &middot; Portland, Oregon</p>
             <h1 class="h-section">Privacy policy</h1>
             <p class="text-muted-2 font-monospace small">
-              Effective <mark class="fact">[date]</mark>
+              Effective September 29, 2026
             </p>
 
             <p>
@@ -40,7 +40,7 @@ import { QuillquestShellComponent } from '../quillquest/quillquest-shell.compone
               using the form. Turnstile checks that you are a person, and to do that Cloudflare
               processes your IP address and browser signals. Your message is then sent to us by
               email through Resend, our email delivery provider. We keep messages in our business
-              email for <mark class="fact">[retention period]</mark>, then delete them.
+              email for two years after our last exchange, then delete them.
             </p>
 
             <h2 class="h5 fw-semibold mt-4">What we don't do</h2>
@@ -54,7 +54,7 @@ import { QuillquestShellComponent } from '../quillquest/quillquest-shell.compone
             <p>
               To see, correct or delete what you've sent us, use the
               <a [routerLink]="['/']" fragment="contact">contact form</a> and choose the subject
-              "Privacy request." We'll respond within <mark class="fact">30</mark> days. You
+              "Privacy request." We'll respond within 30 days. You
               don't need an account, and we'll never ask for more than what's needed to find
               your message.
             </p>

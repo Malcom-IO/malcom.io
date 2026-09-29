@@ -108,15 +108,6 @@ body {
   color: var(--muted) !important;
 }
 
-// PREVIEW ONLY: a fact Marcus must confirm or supply before the copy ships.
-// Grep for `class="fact"` — none may remain in a merged PR.
-mark.fact {
-  background: rgba(245, 158, 11, 0.22);
-  color: #fbd38d;
-  padding: 0 0.25em;
-  border-radius: 3px;
-}
-
 // The nav's primary action: a compact button beside the text links.
 .nav-cta {
   align-self: center;
