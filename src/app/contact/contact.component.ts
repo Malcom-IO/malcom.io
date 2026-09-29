@@ -271,7 +271,7 @@ export class ContactComponent {
   }
 
   showGenericSuccess(): void {
-    this.toast.success('Thanks. Marcus will reply within one business day.', 'Message sent');
+    this.toast.success('Thanks. Marcus will reply himself.', 'Message sent');
   }
 
   showGenericError(): void {
