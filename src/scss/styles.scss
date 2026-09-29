@@ -108,6 +108,11 @@ body {
   color: var(--muted) !important;
 }
 
+// The nav's primary action: a compact button beside the text links.
+.nav-cta {
+  align-self: center;
+}
+
 // ----------------------------------------------------------------- layout
 .section {
   padding: 6rem 0;

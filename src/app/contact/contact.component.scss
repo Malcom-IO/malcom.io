@@ -2,10 +2,6 @@
   display: block;
 }
 
-.contact-form {
-  max-width: 660px;
-}
-
 .form-label {
   font-family: var(--mono);
   font-size: 0.75rem;
@@ -52,4 +48,41 @@
   // horizontal overflow on very narrow (<~324px) viewports.
   max-width: 100%;
   overflow: hidden;
+}
+
+// The subject <select> matches the text inputs.
+.form-select {
+  background-color: var(--surface);
+  border-color: #6b7682;
+  color: var(--text);
+}
+.form-select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+// Right column: what happens after someone writes.
+.contact-aside {
+  height: auto;
+  &:hover {
+    transform: none;
+    border-color: var(--line);
+    background: var(--surface);
+  }
+}
+.contact-steps {
+  padding-left: 1.25rem;
+  li {
+    margin-bottom: 0.85rem;
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+}
+.contact-privacy-link {
+  color: var(--brand-bright);
 }

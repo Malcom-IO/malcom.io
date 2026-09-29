@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { QuillquestComponent } from './quillquest/quillquest.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 import { SeoData } from './shared/seo-title-strategy';
 
 // Purpose-built 1200×630 share card (twitter:card is summary_large_image, so a
@@ -8,16 +9,35 @@ import { SeoData } from './shared/seo-title-strategy';
 const QQ_OG_IMAGE = 'https://www.malcom.io/assets/quillquest/og-card.png';
 
 // ------------------------------------------------------------------ JSON-LD
+// The founder, linked both ways with ORG. `sameAs` names the canonical profiles so
+// search engines (and anyone checking) can tell the real Marcus from a lookalike.
+const PERSON_ID = 'https://www.malcom.io/#marcus';
+const PERSON = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': PERSON_ID,
+  name: 'Marcus Malcom',
+  jobTitle: 'Founder & Principal Engineer',
+  url: PERSON_ID,
+  image: 'https://www.malcom.io/assets/img/marcus-640.webp',
+  worksFor: { '@type': 'Organization', name: 'Malcom IO LLC', url: 'https://www.malcom.io/' },
+  sameAs: ['https://www.linkedin.com/in/marcusmalcom/', 'https://github.com/Malcom-IO'],
+};
+
 const ORG = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Malcom IO',
+  legalName: 'Malcom IO LLC',
   url: 'https://www.malcom.io/',
   logo: 'https://www.malcom.io/assets/img/logo.png',
-  email: 'contact@malcom.io',
+  // No email here on purpose: the contact form (with Turnstile) is the ask, and
+  // JSON-LD is the most scrapable place on the page to put an address.
+  founder: { '@id': PERSON_ID },
+  sameAs: ['https://github.com/Malcom-IO'],
   description:
-    'Malcom IO builds custom software — medical software, health interoperability — ' +
-    'and its own products: Shyre, Shyre Ward and QuillQuest.',
+    'Malcom IO designs, builds and runs custom software: healthcare systems built for 21 CFR ' +
+    'Part 11 and HIPAA, web and mobile apps, and native Mac software.',
 };
 
 const WEBSITE = {
@@ -62,9 +82,9 @@ export const routes: Routes = [
     // DEFAULT_DESCRIPTION from the SEO strategy.)
     path: '',
     component: HomeComponent,
-    title: 'Malcom IO — Building Better',
+    title: 'Malcom IO — Custom software, healthcare systems to Mac apps',
     data: {
-      jsonLd: [ORG, WEBSITE],
+      jsonLd: [ORG, PERSON, WEBSITE],
     } satisfies SeoData,
   },
   // Keep the old /home URL working — it redirects to the canonical root.
@@ -72,8 +92,9 @@ export const routes: Routes = [
   {
     // The studio's marketing page for QuillQuest. The product's own site is
     // quillquest.net (a separate repo) — privacy, support and For Schools
-    // live there and were retired from here on 2026-08-17. Those three paths now
-    // 404 by design: no redirect stubs, the page's copy points at that domain.
+    // live there and were retired from here on 2026-08-17; /support and /for-schools
+    // 404 by design, no redirect stubs. /privacy is the STUDIO's own policy now (see
+    // below) and links to quillquest.net/privacy for anyone who lands on it for the game.
     path: 'quillquest',
     component: QuillquestComponent,
     title: 'QuillQuest — Spelling, times tables, division & typing | Malcom IO',
@@ -86,6 +107,18 @@ export const routes: Routes = [
       ogImage: QQ_OG_IMAGE,
       ogImageAlt: 'QuillQuest — spelling, times tables, division and touch typing for kids',
       jsonLd: QUILLQUEST_APP,
+    } satisfies SeoData,
+  },
+  {
+    // The studio's own policy (contact form only). QuillQuest's policy stays on
+    // quillquest.net; this page links to it for anyone who lands here looking for it.
+    path: 'privacy',
+    component: PrivacyComponent,
+    title: 'Privacy policy | Malcom IO',
+    data: {
+      description:
+        'What www.malcom.io collects (only what you type into the contact form), how the form ' +
+        'works, and how to ask for your message to be deleted.',
     } satisfies SeoData,
   },
   { path: '**', redirectTo: '' },
