@@ -1,0 +1,984 @@
+<app-quillquest-shell>
+  <!-- ================================================================ hero -->
+  <section class="uhp-hero">
+    <div class="container">
+      <div class="uhp-narrow">
+        <p class="eyebrow eyebrow--hero">Oregon &middot; plain-language explainer</p>
+        <h1 class="uhp-title">What Oregon's Universal Health Plan would actually do</h1>
+        <p class="lead-lg">
+          A state board has spent three years designing one public health plan for everyone who
+          lives in Oregon, paid for with taxes instead of premiums. Its report runs 77 pages. This
+          page is the short version: what you would get, what you would pay, and what nobody has
+          decided yet.
+        </p>
+        <p class="uhp-status">
+          <strong>It is a proposal, not law.</strong> Nothing changes unless the Legislature acts,
+          starting in 2027.
+        </p>
+        <p class="text-muted-2 font-monospace small mb-0">
+          Updated {{ updated }} &middot; from the board's October 2026 draft report
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= short version -->
+  <section class="section" id="short-version">
+    <div class="container">
+      <h2 class="h-section">The short version</h2>
+      <div class="uhp-facts">
+        <div class="uhp-fact">
+          <h3>Who is covered</h3>
+          <p class="uhp-fact-lead">Everyone in Oregon</p>
+          <p>Coverage would not depend on your job, age or income.</p>
+        </div>
+        <div class="uhp-fact">
+          <h3>What you pay at the doctor</h3>
+          <p class="uhp-fact-lead">No premiums</p>
+          <p>The board's goal is no copays or deductibles either, but that part is not final.</p>
+        </div>
+        <div class="uhp-fact">
+          <h3>What you pay instead</h3>
+          <p class="uhp-fact-lead">Two new taxes</p>
+          <p>One on household income above a set level, and a payroll tax paid by employers with more than $500,000 in payroll.</p>
+        </div>
+        <div class="uhp-fact uhp-fact--open">
+          <h3>How much</h3>
+          <p class="uhp-fact-lead">Not decided</p>
+          <p>The board sent five tax models, with top household rates between 7.7% and 14.3%, and did not recommend one.</p>
+        </div>
+        <div class="uhp-fact uhp-fact--open">
+          <h3>Who comes out ahead</h3>
+          <p class="uhp-fact-lead">Depends on your income</p>
+          <p>In the board's examples, lower and middle incomes mostly pay less than today and higher incomes pay more. The model and your employer matter a lot.</p>
+        </div>
+        <div class="uhp-fact uhp-fact--open">
+          <h3>When</h3>
+          <p class="uhp-fact-lead">2032 at the earliest</p>
+          <p>No start date is set. That is the first year the board's actuaries think the plan could be fully running.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== timeline -->
+  <section class="section section-line" id="status">
+    <div class="container">
+      <div class="uhp-narrow">
+        <h2 class="h-section">Where it stands</h2>
+        <ol class="uhp-timeline">
+          <li>
+            <span class="uhp-when">2023</span>
+            <span>
+              Senate Bill 1089 creates the Universal Health Plan Governance Board: nine
+              volunteers appointed by the governor and confirmed by the Senate.
+            </span>
+          </li>
+          <li>
+            <span class="uhp-when">Oct 2026</span>
+            <span>
+              The board takes up its draft report to the Legislature. It lays out the plan's
+              design and five ways to fund it.
+            </span>
+          </li>
+          <li class="uhp-now">
+            <span class="uhp-when">Dec 1, 2026</span>
+            <span>The final report is due to the Legislature.</span>
+          </li>
+          <li>
+            <span class="uhp-when">2027</span>
+            <span>
+              Lawmakers decide whether to act, whether to do it in one bill or two, and whether
+              to send any of it to voters. The board is asking for funding to keep working on the
+              design through 2029.
+            </span>
+          </li>
+          <li>
+            <span class="uhp-when">2032</span>
+            <span>The earliest year the board's cost estimates assume full operation.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== coverage -->
+  <section class="section section-line" id="coverage">
+    <div class="container">
+      <h2 class="h-section">What the plan would cover</h2>
+      <p class="uhp-narrow uhp-body">
+        Benefits are modeled on the plan Oregon's public employees have today, with broader
+        mental health coverage added.
+      </p>
+      <ul class="uhp-promises">
+        <li>Any qualified provider who takes the plan</li>
+        <li>No restrictive networks</li>
+        <li>No bills beyond what the plan pays</li>
+      </ul>
+
+      <h3 class="uhp-band uhp-band--yes">Covered</h3>
+      <ul class="uhp-covered">
+        @for (c of covered; track c.title) {
+          <li>
+            <strong>{{ c.title }}</strong>
+            <span>{{ c.detail }}</span>
+          </li>
+        }
+      </ul>
+
+      <h3 class="uhp-band uhp-band--caution">Limits worth knowing</h3>
+      <ul class="uhp-limits">
+        <li>
+          <strong>Long-term care</strong>
+          <span>Not included, unless you already qualify for it through Medicaid.</span>
+        </li>
+        <li>
+          <strong>Your first six months</strong>
+          <span>
+            Primary, behavioral health, emergency and medically necessary care start right away.
+            Elective outpatient procedures and fertility services start after six months.
+          </span>
+        </li>
+        <li>
+          <strong>Care outside Oregon</strong>
+          <span>Covered, but may come with some cost sharing.</span>
+        </li>
+        <li>
+          <strong>Copays</strong>
+          <span>
+            The board is still weighing limited copays for some high-cost drugs and elective
+            services.
+          </span>
+        </li>
+      </ul>
+
+      <h3 class="uhp-sub">If you already have coverage</h3>
+      <div class="uhp-existing">
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--caution">Your employer decides</span>
+          <h4>Insurance through work</h4>
+          <p>
+            Federal law keeps the state from ending employer plans, so your employer could keep
+            its plan or drop it. Whether the state plan would pay first or second when you have
+            both is undecided.
+          </p>
+        </div>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--info">Stays</span>
+          <h4>Medicare</h4>
+          <p>
+            Current law gives Oregon no way to fold Medicare into a state plan. The board
+            recommends the plan pay your Part B premium, pending more study.
+          </p>
+        </div>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--yes">Kept in full</span>
+          <h4>Oregon Health Plan</h4>
+          <p>You would keep every benefit Medicaid requires, including long-term care.</p>
+        </div>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill">Stays separate</span>
+          <h4>VA, TRICARE, federal employee and Tribal health</h4>
+          <p>Members of federally recognized Tribes could choose to join the state plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ funding -->
+  <section class="section section-line" id="funding">
+    <div class="container">
+      <h2 class="h-section">How it would be paid for</h2>
+      <p class="uhp-narrow uhp-body">
+        The idea is to replace what households and employers already spend on premiums,
+        deductibles and copays with two taxes. Existing federal and state health funding would
+        keep flowing and cover more than half the cost. That leaves $30 billion to $39 billion
+        a year for new state taxes to raise.
+      </p>
+
+      <div
+        class="uhp-share"
+        role="img"
+        aria-label="Where the new money would come from: employer payroll tax 51 to 55 percent, household contribution 40 to 43 percent, business taxes about 5 percent"
+      >
+        <span>Employer payroll tax &middot; 51 to 55%</span>
+        <span>Household contribution &middot; 40 to 43%</span>
+        <span>5%</span>
+      </div>
+      <div class="row g-4 uhp-fund">
+        <div class="col-lg-4">
+          <div class="brand-card h-100 p-4">
+            <p class="uhp-kicker">A little more than half</p>
+            <h3 class="uhp-card-title">Employer payroll tax</h3>
+            <p class="uhp-body mb-0">
+              Paid by employers, not deducted from paychecks. The first $500,000 of a firm's
+              yearly payroll is exempt. Above that the rate is 9.6%, and in four of the five
+              models it rises to 14% on payroll above $10 million.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="brand-card h-100 p-4">
+            <p class="uhp-kicker">About 40%</p>
+            <h3 class="uhp-card-title">Household contribution</h3>
+            <p class="uhp-body mb-0">
+              Collected through your Oregon income tax return. Income up to twice the federal
+              poverty level is exempt in three models ($31,920 for one person, $66,000 for a
+              family of four). Income above that is taxed at the model's rate.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="brand-card h-100 p-4">
+            <p class="uhp-kicker">About 5%</p>
+            <h3 class="uhp-card-title">Business taxes</h3>
+            <p class="uhp-body mb-0">
+              Add-ons to the corporate income tax (4.25%) and the Corporate Activity Tax
+              (0.12%). One model adds a small statewide lodging tax to help cover care for
+              visitors.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="uhp-sub">The five models</h3>
+      <p class="uhp-narrow uhp-body">
+        All five raise roughly the same money. They differ in who it comes from, and three
+        choices drive the difference.
+      </p>
+      <div class="uhp-dials">
+        <div>
+          <h4>A credit for workers, or not</h4>
+          <p>
+            With the credit, half of the payroll tax your employer paid on your wages comes off
+            your own bill. Fewer people pay, and those who do pay a higher rate.
+          </p>
+        </div>
+        <div>
+          <h4>How much income is exempt</h4>
+          <p>
+            Either $66,000 or $45,540 for a family of four. The higher exemption spares more
+            lower earners and pushes the rate up for everyone else.
+          </p>
+        </div>
+        <div>
+          <h4>One rate, or steps</h4>
+          <p>
+            One rate is simple to explain. Stepped rates, like income tax brackets, move more of
+            the cost onto the highest earners.
+          </p>
+        </div>
+      </div>
+
+      <div class="uhp-models">
+        <div class="uhp-model uhp-model--head" aria-hidden="true">
+          <span></span>
+          @for (m of modelMetrics; track m.key) {
+            <span>{{ m.label }}</span>
+          }
+        </div>
+        @for (m of models; track m.id) {
+          <article class="uhp-model">
+            <div class="uhp-model-what">
+              <h4>
+                <span class="uhp-model-num">Model {{ m.id }}</span>
+                {{ m.name }}
+              </h4>
+              <p>{{ m.blurb }}</p>
+              <ul class="uhp-chips">
+                <li [class.on]="m.creditShare">
+                  {{ m.creditShare ? 'Worker credit' : 'No worker credit' }}
+                </li>
+                <li>First {{ usd(m.exemptFamilyOf4) }} exempt</li>
+                <li>{{ rateLadder(m) }}</li>
+              </ul>
+            </div>
+            @for (k of modelMetrics; track k.key) {
+              <div class="uhp-metric">
+                <span class="uhp-metric-label">{{ k.label }}</span>
+                <span class="uhp-metric-track" aria-hidden="true">
+                  <span [style.width.%]="k.width(m)"></span>
+                </span>
+                <span class="uhp-metric-value">{{ k.value(m) }}</span>
+              </div>
+            }
+          </article>
+        }
+      </div>
+      <p class="uhp-note">
+        The names are ours; the board only numbers its models. Exemptions are shown for a family
+        of four and equal 200% or 138% of the federal poverty level. "Tax filers" are Oregon
+        resident tax returns. The middle-income figure is the average rate, after any credit,
+        for the middle fifth of incomes. The board calls every figure here illustrative, not
+        final.
+      </p>
+      <p class="uhp-note">
+        Top rates are from the report's appendix, where all five models are set to raise the
+        same money on 2022 tax data. The report's summary table lists lower figures for three
+        of them: 12.0% for Model 1, from a 2032 projection that also raises the payroll tax
+        to 9.89%, and 11.7% and 10.4% for Models 4 and 5, which match the average rate paid by
+        the top 1% and not the top rate. The board's own examples confirm 13.5% for Model 1
+        and 14.3% for Model 4. None of them reaches Model 5's top bracket, so its 12% rests on
+        the appendix alone.
+      </p>
+
+      <details class="uhp-details uhp-details--table">
+        <summary>Show every figure as a table</summary>
+        <div class="uhp-scroll" tabindex="0" role="region" aria-label="The five revenue models">
+          <table class="uhp-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Employer payroll tax</th>
+                <th scope="col" class="num">Credit for workers</th>
+                <th scope="col" class="num">Income exempt</th>
+                <th scope="col" class="num">Rate steps</th>
+                <th scope="col" class="num">Top household rate</th>
+                <th scope="col" class="num">Tax returns owing $0</th>
+                <th scope="col" class="num">Middle-income average</th>
+                <th scope="col" class="num">Paid by top 1%</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of models; track m.id) {
+                <tr>
+                  <th scope="row">{{ m.id }}</th>
+                  <td>{{ m.employerTax }}</td>
+                  <td class="num">{{ m.creditShare ? '50%' : 'None' }}</td>
+                  <td class="num">{{ m.exemption }}</td>
+                  <td class="num">{{ m.brackets === 2 ? 'One rate' : m.brackets }}</td>
+                  <td class="num">{{ pct(m.topRate, 2) }}</td>
+                  <td class="num">{{ pct(m.returnsOwingNothing) }}</td>
+                  <td class="num">{{ pct(m.middleFifthRate) }}</td>
+                  <td class="num">{{ pct(m.top1Share) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ========================================================= calculator -->
+  <section class="section section-line" id="calculator">
+    <div class="container">
+      <h2 class="h-section">What would your household pay?</h2>
+      <p class="uhp-narrow uhp-body">
+        An estimate under all five models, using the bracket schedules in the report's
+        appendix. Enter what you really spend on health care now; that comparison is the whole
+        point.
+      </p>
+
+      <div class="uhp-calc">
+        <form class="uhp-inputs" (submit)="$event.preventDefault()">
+          <fieldset>
+            <legend>Household size</legend>
+            <div class="uhp-seg">
+              @for (n of sizes; track n) {
+                <button
+                  type="button"
+                  [class.active]="size() === n"
+                  [attr.aria-pressed]="size() === n"
+                  (click)="size.set(n)"
+                >
+                  {{ n }}
+                </button>
+              }
+            </div>
+            <p class="uhp-hint">
+              Models 1 to 3 exempt the first {{ usd(exemption()) }} of income. Models 4 and 5
+              exempt less.
+            </p>
+          </fieldset>
+
+          <div class="uhp-field">
+            <label for="uhp-income">Household income per year</label>
+            <div class="uhp-money">
+              <span aria-hidden="true">$</span>
+              <input
+                id="uhp-income"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                [value]="income().toLocaleString('en-US')"
+                (change)="setIncome($any($event.target).value, $any($event.target))"
+              />
+            </div>
+            <input
+              type="range"
+              min="0"
+              [max]="incomeMax"
+              step="1000"
+              aria-label="Household income per year"
+              [value]="income()"
+              (input)="setIncome($any($event.target).value)"
+            />
+          </div>
+
+          <div class="uhp-field">
+            <label for="uhp-employer">Where your pay comes from</label>
+            <select
+              id="uhp-employer"
+              class="form-select"
+              (change)="setEmployer($any($event.target).value)"
+            >
+              @for (e of employers; track e.kind) {
+                <option [value]="e.kind" [selected]="employer() === e.kind">{{ e.label }}</option>
+              }
+            </select>
+            <p class="uhp-hint">{{ employerDetail() }}</p>
+          </div>
+
+          <div class="uhp-field">
+            <label for="uhp-now">What you pay for health care now, per year</label>
+            <div class="uhp-money">
+              <span aria-hidden="true">$</span>
+              <input
+                id="uhp-now"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                [value]="currentCost().toLocaleString('en-US')"
+                (change)="setCurrentCost($any($event.target).value, $any($event.target))"
+              />
+            </div>
+            <p class="uhp-hint">
+              Your share of premiums plus deductibles, copays and prescriptions. The board's
+              example for a couple with employer coverage is $4,700.
+            </p>
+          </div>
+        </form>
+
+        <div class="uhp-results">
+          <div class="uhp-bills" aria-live="polite">
+            @for (b of bills(); track b.model.id; let i = $index) {
+              <div class="uhp-bill">
+                <p class="uhp-bill-name">
+                  <span class="uhp-key" [style.background]="series[i]"></span>
+                  Model {{ b.model.id }}
+                  <span class="text-muted-2">
+                    &middot; {{ b.model.rates.length > 1 ? 'up to ' : '' }}{{ pct(b.model.topRate, 2) }}
+                  </span>
+                </p>
+                <p class="uhp-bill-kind">{{ b.model.name }}</p>
+                <p class="uhp-bill-amount">
+                  {{ usd(b.household) }}<span class="uhp-per"> / year</span>
+                </p>
+                <p class="uhp-verdict" [attr.data-tone]="verdict(b.household).tone">
+                  {{ verdict(b.household).text }}
+                </p>
+                @if (b.employer > 0) {
+                  <p class="uhp-hint mb-0">Your employer would pay {{ usd(b.employer) }}.</p>
+                }
+              </div>
+            }
+          </div>
+
+          <figure class="uhp-figure">
+            <figcaption>
+              <strong>Household contribution by income</strong>
+              <span class="text-muted-2">
+                Household of {{ size() }}, {{ usd(currentCost()) }} a year today
+              </span>
+            </figcaption>
+
+            <ul class="uhp-legend" aria-hidden="true">
+              @for (l of lines(); track l.id) {
+                <li><span class="uhp-key" [style.background]="l.color"></span>Model {{ l.id }}</li>
+              }
+              <li><span class="uhp-key uhp-key--now"></span>What you pay now</li>
+            </ul>
+
+            <div class="uhp-plot" #plot>
+              <svg
+                [attr.viewBox]="'0 0 ' + width() + ' ' + height"
+                [attr.height]="height"
+                width="100%"
+                role="img"
+                [attr.aria-label]="
+                  'Line chart of the yearly household contribution under all five models for incomes up to ' +
+                  usd(xMax()) +
+                  '. Open the table below for the figures.'
+                "
+                (pointermove)="onPointer($event)"
+                (pointerdown)="onPointer($event)"
+                (pointerleave)="onPointerLeave($event)"
+              >
+                @for (t of yTicks(); track t.label) {
+                  <line class="grid" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="t.y" [attr.y2]="t.y" />
+                  <text class="tick" [attr.x]="pad().left - 8" [attr.y]="t.y + 4" text-anchor="end">
+                    {{ t.label }}
+                  </text>
+                }
+                @for (t of xTicks(); track t.label) {
+                  <text class="tick" [attr.x]="t.x" [attr.y]="plotBottom() + 20" text-anchor="middle">
+                    {{ t.label }}
+                  </text>
+                }
+
+                <line class="now" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="nowY()" [attr.y2]="nowY()" />
+
+                @for (l of lines(); track l.id) {
+                  <path class="series" [attr.d]="l.d" [attr.stroke]="l.color" />
+                }
+
+                @if (!narrow()) {
+                  @for (label of endLabels(); track label.text) {
+                    <text class="end" [attr.x]="plotRight() + 8" [attr.y]="label.y + 4">
+                      {{ label.text }}
+                    </text>
+                  }
+                }
+
+                <line class="you" [attr.x1]="youX()" [attr.x2]="youX()" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
+                <text class="you-label" [attr.x]="youX()" [attr.y]="pad().top - 5" text-anchor="middle">You</text>
+                @for (d of youDots(); track $index) {
+                  <circle class="dot" [attr.cx]="youX()" [attr.cy]="d.y" r="5" [attr.fill]="d.color" />
+                }
+
+                @if (hover(); as h) {
+                  <line class="cross" [attr.x1]="h.x" [attr.x2]="h.x" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
+                  @for (r of h.rows; track r.id) {
+                    <circle class="dot" [attr.cx]="h.x" [attr.cy]="r.y" r="4" [attr.fill]="r.color" />
+                  }
+                }
+              </svg>
+
+              @if (hover(); as h) {
+                <div class="uhp-tip" aria-hidden="true" [style.left.px]="h.left">
+                  <strong>{{ usd(h.income) }} income</strong>
+                  @for (r of h.rows; track r.id) {
+                    <span>
+                      <span class="uhp-key" [style.background]="r.color"></span>Model {{ r.id }}
+                      <b>{{ usd(r.value) }}</b>
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+
+            <details class="uhp-details">
+              <summary>Show these figures as a table</summary>
+              <div class="uhp-scroll" tabindex="0" role="region" aria-label="Chart data">
+                <table class="uhp-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Income</th>
+                      @for (l of lines(); track l.id) {
+                        <th scope="col" class="num">Model {{ l.id }}</th>
+                      }
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of tableRows(); track row.income) {
+                      <tr>
+                        <th scope="row">{{ usd(row.income) }}</th>
+                        @for (v of row.values; track $index) {
+                          <td class="num">{{ usd(v) }}</td>
+                        }
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </figure>
+        </div>
+      </div>
+
+      <p class="uhp-callout">
+        <strong>One big assumption: your pay stays the same.</strong>
+        The report says an employer that stops paying premiums will not necessarily raise wages.
+      </p>
+      <details class="uhp-details uhp-method">
+        <summary>How this is calculated, and what it leaves out</summary>
+        <ul class="uhp-list uhp-body">
+          <li>
+            Each slice of your income above the exemption is charged at that slice's rate, the
+            worker credit is subtracted, and the result is never less than zero. This matches
+            the board's own example tables to within $4 for all five models.
+          </li>
+          <li>
+            The rates and brackets come from Appendix FR of the draft report. Its dollar
+            brackets are in 2022 dollars; we bring them to 2026 by the growth in the
+            one-person poverty level, which is what reproduces the board's examples.
+          </li>
+          <li>
+            If you have an employer, all your income is treated as wages. Investment, rental or
+            business income would raise your bill, because the credit only applies to wages.
+          </li>
+          <li>
+            These rates were set on 2022 tax data. The Legislative Revenue Office's 2032
+            projection for Model 1 uses 12.0% instead of 13.5%, with the employer payroll tax
+            raised to 9.89%, so expect all five to move.
+          </li>
+          <li>
+            Household size stands in for the number of exemptions on your tax return, as the
+            appendix intends. Married couples filing separately have their own schedule, which
+            is not modeled here.
+          </li>
+          <li>Poverty-level figures are for 2026. Nothing you enter leaves your browser.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- =========================================================== examples -->
+  <section class="section section-line" id="examples">
+    <div class="container">
+      <h2 class="h-section">The board's own examples</h2>
+      <p class="uhp-narrow uhp-body">
+        These four households come straight from the report, covering all five models. A marked
+        cell means that household would pay less than it does today.
+      </p>
+
+      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Example household">
+        @for (s of scenarios; track s.id) {
+          <button
+            type="button"
+            [class.active]="scenarioId() === s.id"
+            [attr.aria-pressed]="scenarioId() === s.id"
+            (click)="scenarioId.set(s.id)"
+          >
+            {{ s.tab }}
+          </button>
+        }
+      </div>
+
+      <p class="uhp-body mb-1 mt-3">
+        <strong>{{ scenario().who }}</strong>
+      </p>
+      <p class="uhp-body">{{ scenario().today }}</p>
+
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Board example figures">
+        <table class="uhp-table">
+          <thead>
+            <tr>
+              <th scope="col">Income</th>
+              <th scope="col" class="num">Pays today</th>
+              @for (m of models; track m.id) {
+                <th scope="col" class="num">Model {{ m.id }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of scenario().rows; track row.income) {
+              <tr>
+                <th scope="row">{{ usd(row.income) }}</th>
+                <td class="num">{{ usd(row.now) }}</td>
+                @for (v of row.models; track $index) {
+                  <td class="num" [class.less]="v < row.now">
+                    @if (v < row.now) {
+                      <span class="visually-hidden">Less than today: </span>
+                    }
+                    {{ usd(v) }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        Yearly household cost, from Tables S1 to S4 of the draft report. Employer costs are not
+        shown. In the private-employer example the employer's cost drops from $16,700 to $7,200
+        at an $85,000 income and rises to $18,000 at $220,000.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================================== unsettled -->
+  <section class="section section-line" id="open-questions">
+    <div class="container">
+      <div>
+        <h2 class="h-section">What is not settled</h2>
+        <p class="uhp-narrow uhp-body">
+          The report is candid about how much is open. These are the ones most likely to change
+          what you would pay or get.
+        </p>
+        <ul class="uhp-open">
+          <li>
+            <strong>The tax rates</strong> No model is recommended, and the board says the
+            rates must be recalculated with current data before the plan is implemented. All
+            five were set on 2022 tax data. Only Model 1 has a 2032 projection so far: a
+            12.0% household rate instead of 13.5%, with a higher payroll tax.
+          </li>
+          <li>
+            <strong>Your wages</strong> The report's words: replacing an employer's insurance
+            cost with a payroll tax "will likely keep wages at a lower level because nothing
+            will force wages up when the premium cost goes away."
+          </li>
+          <li>
+            <strong>The wider economy</strong> The tax estimates assume nobody changes behavior.
+            A study of effects on wages, prices, jobs and migration has not been done.
+          </li>
+          <li>
+            <strong>Start-up money</strong> Start-up costs have not been estimated. The plan
+            would also need about $21 billion in reserves, with no settled way to raise it.
+          </li>
+          <li>
+            <strong>Employer plans</strong> About two-thirds of workers with job-based coverage
+            are in plans the state cannot regulate. How many employers would switch is unknown.
+          </li>
+          <li>
+            <strong>Federal approval</strong> Keeping Medicaid and Marketplace money requires
+            federal waivers. Medicare cannot be folded in under current law.
+          </li>
+          <li>
+            <strong>Copays</strong> The board prefers none but has not set a final policy.
+          </li>
+          <li>
+            <strong>Timing and a public vote</strong> There is no launch date, the plan may
+            phase in by population, and lawmakers could refer it to voters.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ the sum -->
+  <section class="section section-line" id="total-cost">
+    <div class="container">
+      <h2 class="h-section">The statewide math</h2>
+      <p class="uhp-narrow uhp-body">
+        The report's headline is that Oregon could cover everyone for about what the current
+        system would cost. On Milliman's best estimate, that depends mostly on one assumption:
+        resetting what providers are paid. Here is how the numbers fit together. Figures marked
+        <span class="uhp-ours">our math</span> are our own arithmetic on the report's tables,
+        not numbers the board published.
+      </p>
+
+      <div class="uhp-stats">
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">Health spending in 2032 under the current system</p>
+          <p class="uhp-stat-value">$73 to $78 billion</p>
+          <p class="uhp-hint">
+            About {{ usd100(perPerson(low.statusQuo)) }} to {{ usd100(perPerson(best.statusQuo)) }}
+            per Oregonian. <span class="uhp-ours">our math</span>
+          </p>
+        </div>
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">The same year under the plan</p>
+          <p class="uhp-stat-value">$66 to $78 billion</p>
+          <p class="uhp-hint">
+            With about 348,000 more people covered and little or no cost sharing.
+          </p>
+        </div>
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">New state taxes needed each year</p>
+          <p class="uhp-stat-value">$30 to $39 billion</p>
+          <p class="uhp-hint">
+            About {{ usd100(perPerson(target.board)) }} to {{ usd100(perPerson(target.best)) }} per
+            Oregonian, replacing roughly ${{ round(privateToday.board) }} to
+            ${{ round(privateToday.best) }} billion that employers and households pay now.
+            <span class="uhp-ours">our math</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------------- the bridge -->
+      <h3 class="uhp-sub">How covering everyone could cost about the same</h3>
+      <p class="uhp-narrow uhp-body">
+        Covering more people with broader benefits costs more. The plan gets back to the current
+        system's total by spending less on administration and billing, and by paying providers
+        lower rates in exchange for full, reliable payment.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>From the current system to the plan</strong>
+          <span class="text-muted-2">Milliman's best estimate for 2032, billions of dollars</span>
+        </figcaption>
+        <ul class="uhp-legend" aria-hidden="true">
+          <li><span class="uhp-key uhp-key--up"></span>Adds cost</li>
+          <li><span class="uhp-key uhp-key--down"></span>Saves cost</li>
+          <li><span class="uhp-key uhp-key--cond"></span>Saves cost only if provider rates are reset</li>
+        </ul>
+        <ol class="uhp-bridge">
+          @for (s of bridge; track s.label) {
+            <li [class.total]="s.total !== undefined">
+              <span class="uhp-bridge-label">{{ s.label }}</span>
+              <span class="uhp-bridge-track" aria-hidden="true">
+                @if (s.delta !== undefined) {
+                  <span
+                    class="uhp-bridge-bar"
+                    [class.up]="s.delta > 0"
+                    [class.down]="s.delta < 0"
+                    [class.cond]="s.conditional"
+                    [style.width.%]="barPct(s.delta)"
+                  ></span>
+                }
+              </span>
+              <span class="uhp-bridge-value">
+                {{ s.total !== undefined ? bn(s.total) : signed(s.delta!) }}
+              </span>
+            </li>
+          }
+        </ol>
+      </figure>
+      <p class="uhp-note">
+        The last two savings, $7.8 billion together, depend on the plan setting payment rates
+        about {{ pct(rateReset.best, 0) }} below what it would otherwise pay providers.
+        <span class="uhp-ours">our math</span> The reasoning: providers would collect every
+        dollar billed and need less billing staff, so lower rates would leave them "paid
+        approximately the same as they are now." The report adds: "If those renegotiations do
+        not occur, these savings cannot be realized."
+      </p>
+      <p class="uhp-note">
+        The report's current-system figure counts dental care but not what people spend today on
+        vision, hearing aids or fertility care, so the third row overstates the added cost.
+        Steps may not add exactly because the report rounds each figure.
+      </p>
+
+      <!-- ---------------------------------------------------- the scenarios -->
+      <h3 class="uhp-sub">It hinges on provider rates and cost growth</h3>
+      <p class="uhp-narrow uhp-body">
+        Depending on the assumptions, the plan ranges from about 9% more than the current system
+        would cost in 2032 to about 9% less.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>The plan compared with the current system</strong>
+          <span class="text-muted-2">2032, billions of dollars a year</span>
+        </figcaption>
+        <ul class="uhp-diverge">
+          @for (s of statewide; track s.label) {
+            <li>
+              <span class="uhp-diverge-label">
+                <strong>
+                  {{ s.label }}
+                  @if (!s.published) {
+                    <span class="uhp-ours">our math</span>
+                  }
+                </strong>
+                <span>{{ s.detail }}</span>
+              </span>
+              <span class="uhp-diverge-track" aria-hidden="true">
+                <span
+                  class="uhp-diverge-bar"
+                  [class.up]="s.delta > 0"
+                  [class.down]="s.delta < 0"
+                  [style.width.%]="barPct(s.delta) / 2"
+                ></span>
+              </span>
+              <span class="uhp-diverge-value">
+                {{ moreLess(s.delta) }}
+                <span class="text-muted-2">({{ pct(abs(s.delta) / s.baseline, 0) }})</span>
+              </span>
+            </li>
+          }
+        </ul>
+      </figure>
+      <p class="uhp-note">
+        Milliman's rows are measured against a current system costing $78.3 billion. The board's
+        rows assume slower cost growth for both the plan and the current system ($72.8 billion),
+        so part of the gap between the two pairs is the growth rate, not the plan. The report
+        rounds the board's figure to "roughly 8% lower." It says board members discussed that
+        administration at 3% of spending "could be considered an ambitiously low estimate" and
+        concluded it "is believed to be attainable."
+      </p>
+
+      <!-- ------------------------------------------------------- who pays -->
+      <h3 class="uhp-sub">What Oregon employers and households would pay</h3>
+      <p class="uhp-narrow uhp-body">
+        The new taxes are large because they replace spending of about the same size by
+        employers, including public employers, and households. The report assumes federal and
+        state health funding of $40 to $42 billion continues either way, which depends on
+        federal waivers.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>Raised from Oregon employers and households</strong>
+          <span class="text-muted-2">2032, billions of dollars a year</span>
+        </figcaption>
+        <ul class="uhp-legend" aria-hidden="true">
+          <li>
+            <span class="uhp-key" [style.background]="series[0]"></span>Premiums and
+            out-of-pocket costs today; new state taxes under the plan
+          </li>
+          <li><span class="uhp-key" [style.background]="series[2]"></span>Medicare Part B premiums</li>
+        </ul>
+        @for (g of raisedGroups; track g.title) {
+          <p class="uhp-raised-title">
+            {{ g.title }}
+            @if ($first) {
+              <span class="uhp-ours">our math</span>
+            }
+          </p>
+          <div class="uhp-stack-rows">
+            @for (r of g.rows; track r.name) {
+              <div class="uhp-stack-row">
+                <span class="uhp-stack-name">{{ r.name }}</span>
+                <span class="uhp-raised" aria-hidden="true">
+                  <span [style.width.%]="r.mainPct" [style.background]="series[0]">
+                    {{ bn(r.main) }}
+                  </span>
+                  <span [style.width.%]="r.partBPct" [style.background]="series[2]">
+                    {{ bn(r.partB) }}
+                  </span>
+                </span>
+                <span class="uhp-stack-total">
+                  <span class="visually-hidden">
+                    {{ bn(r.main) }} plus {{ bn(r.partB) }} of Part B premiums, total
+                  </span>
+                  {{ bn(r.total) }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </figure>
+      <p class="uhp-note">
+        "Today" is <span class="uhp-ours">our math</span>: the report's current-system total
+        less the public funding it expects to continue. The report's own summary adds the $3.5
+        billion of Part B premiums to the plan's side only, because the state would have to
+        raise that money, and shows the plan $2.9 billion above the current system. Medicare
+        enrollees or their former employers pay those premiums today. Counted on both sides, the
+        plan comes out about $0.6 billion lower on Milliman's estimate, the same gap the report
+        shows before Part B.
+      </p>
+      <p class="uhp-note">
+        All figures come from Tables E2 to E11 of the draft report, for a plan fully running in
+        2032. They leave out start-up costs, about $21 billion in reserves, and long-term care.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ sources -->
+  <section class="section section-line" id="sources">
+    <div class="container">
+      <div class="uhp-narrow">
+        <h2 class="h-section">Sources</h2>
+        <ul class="uhp-list uhp-body">
+          <li>
+            <a [href]="sources.report" rel="noopener">Draft legislative report</a>, Universal
+            Health Plan Governance Board, dated October 13, 2026 (77 pages)
+          </li>
+          <li>
+            <a [href]="sources.brief" rel="noopener">Legislative brief</a>, posted for the
+            October 15, 2026 meeting (16 pages)
+          </li>
+          <li>
+            <a [href]="sources.appendix" rel="noopener">Appendix FR: expenditure and revenue</a>,
+            draft dated October 13, 2026 (48 pages), with each model's bracket schedule
+          </li>
+          <li>
+            <a [href]="sources.econw" rel="noopener">ECOnorthwest finance and revenue report</a>,
+            June 2026
+          </li>
+          <li>
+            <a [href]="sources.board" rel="noopener">The board's website</a> and
+            <a [href]="sources.meetings" rel="noopener">2026 meeting materials</a>
+          </li>
+        </ul>
+        <p class="uhp-note">
+          This page is an independent summary by Marcus Malcom of Malcom IO. It is not
+          affiliated with the board or the State of Oregon, takes no position on the plan, and
+          is not tax or insurance advice. The source documents are drafts and their numbers will
+          change. Spot an error?
+          <a [routerLink]="['/']" fragment="contact">Tell us</a> and we will fix it.
+        </p>
+      </div>
+    </div>
+  </section>
+</app-quillquest-shell>
