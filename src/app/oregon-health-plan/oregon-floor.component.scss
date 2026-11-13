@@ -1,0 +1,57 @@
+// Only what the floor-and-top-up page needs beyond the explainer's and the
+// opinion page's stylesheets, which it shares.
+
+// Three cards across, where the opinion page's stat rows hold four.
+.fl-stats3 {
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+// A bar whose label has a second line and whose value is a range.
+.op-evidence .op-bar.fl-bar {
+  grid-template-columns: 13rem minmax(0, 1fr) 8.5rem;
+
+  small {
+    display: block;
+    color: var(--text-muted-2, var(--text-soft));
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
+  .op-bar-value {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 640px) {
+  .op-evidence .op-bar.fl-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'label label' 'track value';
+    gap: 0.25rem 0.75rem;
+
+    .op-bar-label {
+      grid-area: label;
+    }
+    .op-bar-track {
+      grid-area: track;
+    }
+    .op-bar-value {
+      grid-area: value;
+    }
+  }
+}
+
+// The two warnings at the top are stacked and set off in red.
+.fl-warning {
+  margin-bottom: 0.6rem;
+  border-left-color: #c0392b;
+}
+
+// The method notes read as a list, in the note's own type.
+.fl-method {
+  margin-top: 0.25rem;
+  padding-left: 1.1rem;
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+}

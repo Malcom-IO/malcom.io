@@ -156,5 +156,20 @@ export const routes: Routes = [
         "with the board's third model, changed three ways, and ask for proof at sign-up.",
     } satisfies SeoData,
   },
+  {
+    // An idea Marcus priced and does not recommend: a thinner public plan with a private
+    // top-up. Unlisted on purpose: not linked from any page, not in the sitemap, noindex.
+    path: 'oregon-universal-health-plan/floor-and-top-up',
+    loadComponent: () =>
+      import('./oregon-health-plan/oregon-floor.component').then((m) => m.OregonFloorComponent),
+    title: 'Floor and top-up: an idea I ran the numbers on, and why I would not do it | Malcom IO',
+    data: {
+      ogTitle: 'Floor and top-up: an idea I ran the numbers on, and why I would not do it',
+      description:
+        "An idea I looked at, not a recommendation: a thinner public plan for Oregon's " +
+        'Universal Health Plan with a private top-up, roughly priced, and why it falls short.',
+      robots: 'noindex',
+    } satisfies SeoData,
+  },
   { path: '**', redirectTo: '' },
 ];
