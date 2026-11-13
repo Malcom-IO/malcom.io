@@ -45,12 +45,13 @@
 
 @mixin light-tokens {
   color-scheme: light;
-  --ground: #f6f7f8;
+  // A soft sage paper rather than a neutral gray, which read as drab.
+  --ground: #f1f6f0;
   --surface: #ffffff;
-  --surface-2: #f0f2f4;
-  --line: #d3d9df;
-  --line-soft: #e3e7eb;
-  --line-strong: #aab3bc;
+  --surface-2: #eaf1e9;
+  --line: #cfdacf;
+  --line-soft: #dfe8de;
+  --line-strong: #a3b3a5;
   --control-border: #7b8691;
   --control-border-hover: #5c6670;
   --placeholder: #6a747e;
@@ -62,7 +63,7 @@
   --brand: #1a7f37;
   --brand-bright: #146c2e;
   --on-brand: #ffffff;
-  --nav-bg: rgba(246, 247, 248, 0.86);
+  --nav-bg: rgba(241, 246, 240, 0.86);
   --shadow: rgba(23, 27, 32, 0.16);
 
   // Same hues as dark; every slot clears 3:1 on white.

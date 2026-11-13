@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 /** localStorage key; the inline script in index.html reads the same one. */
 export const THEME_KEY = 'theme';
 /** Browser-chrome color per theme; matches --ground in _tokens.scss. */
-export const THEME_COLORS = { dark: '#20242a', light: '#f6f7f8' } as const;
+export const THEME_COLORS = { dark: '#20242a', light: '#f1f6f0' } as const;
 export type Theme = keyof typeof THEME_COLORS;
 
 /**
