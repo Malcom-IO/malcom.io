@@ -195,12 +195,22 @@ async function main() {
       // Two frames, so the chart has resized itself to the paper's width.
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       await new Promise((r) => setTimeout(r, 300));
-      return { details: details.length, links, theme: document.documentElement.dataset.theme };
+      return {
+        details: details.length,
+        links,
+        theme: document.documentElement.dataset.theme,
+        // "© 2026 Malcom IO LLC" from the page's own footer, so the stamp cannot disagree with it.
+        copyright: document.querySelector('.page-footer .text-muted-2')?.textContent.trim() ?? '',
+      };
     })()`);
     if (counts.theme !== 'light') throw new Error(`Expected the light theme, got "${counts.theme}".`);
 
+    if (!/^© \d{4} Malcom IO LLC$/.test(counts.copyright)) {
+      throw new Error(`No copyright line found in the page footer (got "${counts.copyright}").`);
+    }
+    // Stamped on every page.
     const footer = `<div style="width:100%;padding:0 0.5in;font:8px system-ui,sans-serif;color:#59636d;display:flex;justify-content:space-between">
-      <span>www.malcom.io/oregon-universal-health-plan</span>
+      <span>${counts.copyright} &nbsp;·&nbsp; www.malcom.io/oregon-universal-health-plan</span>
       <span><span class="pageNumber"></span> / <span class="totalPages"></span></span>
     </div>`;
     const { data } = await send('Page.printToPDF', {

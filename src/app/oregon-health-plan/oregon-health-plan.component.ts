@@ -134,6 +134,8 @@ interface EndLabel {
 })
 export class OregonHealthPlanComponent {
   readonly updated = 'November 12, 2026';
+  /** Copyright year: the year of the last update, not of the visit. */
+  readonly year = this.updated.slice(-4);
   readonly sources = {
     report: `${BASE}/Documents/board-meetings/2026/20261015/20261015-legislative-report-draft.pdf`,
     brief: `${BASE}/Documents/board-meetings/2026/20261015/legislative-brief-10142026.pdf`,

@@ -1999,13 +1999,53 @@ $warn: var(--warn);
   summary::-webkit-details-marker {
     display: none;
   }
+  // Nothing boxed is cut in two by a page edge: every card, each model, each
+  // form field, each figure and each table moves to the next page whole.
   .brand-card,
   .uhp-fact,
   .uhp-est-card,
   .uhp-figure,
+  .uhp-model,
+  .uhp-field,
+  .uhp-callout,
+  .uhp-band,
+  .uhp-status,
+  .uhp-official,
+  .uhp-table,
   .uhp-timeline li,
+  .uhp-list li,
+  .uhp-open > *,
+  .uhp-covered > *,
+  .uhp-limits > *,
+  .uhp-promises > *,
+  .uhp-steps > *,
+  .uhp-existing > *,
+  .uhp-bills > *,
+  .uhp-sq > *,
+  .uhp-est > *,
+  .uhp-dials > *,
+  .uhp-fund > *,
+  .uhp-stack-row,
+  .uhp-bridge li,
+  .uhp-diverge li,
+  .uhp-raised > *,
   tr {
     break-inside: avoid;
+  }
+  // A heading or label stays with what it introduces.
+  .h-section,
+  .uhp-sub,
+  .uhp-kicker,
+  .uhp-card-title,
+  summary,
+  figcaption,
+  .uhp-legend {
+    break-after: avoid;
+  }
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
   }
   .uhp-scroll {
     overflow: visible;
