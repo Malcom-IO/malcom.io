@@ -12,8 +12,8 @@
           <span class="uhp-ours">my math</span> are mine, not the board's.
         </p>
         <p class="lead-lg mb-0">
-          Everyone would get the same coverage. In the draft, many households would pay nothing
-          for it and a few would pay without limit.
+          Everyone would get the same coverage. In the draft, many households would owe no
+          household contribution and a few would pay without limit.
         </p>
       </div>
     </div>
@@ -24,9 +24,9 @@
     <div class="container">
       <div class="op-stats">
         <div class="brand-card glow glow-amber edge-top op-stat">
-          <p class="op-stat-label">Tax filers who would owe nothing</p>
+          <p class="op-stat-label">Tax returns owing no household contribution</p>
           <p class="op-stat-big">{{ pct(owingNothing.low) }} to {{ pct(owingNothing.high) }}</p>
-          <p class="op-stat-foot">Depending on the model (report)</p>
+          <p class="op-stat-foot">By model. Employers would still pay payroll tax on their wages (report)</p>
         </div>
         <div class="brand-card glow glow-teal glow-bl edge-top op-stat">
           <p class="op-stat-label">A median family of four, today and in the draft</p>
@@ -131,7 +131,10 @@
         ({{ usd(povertyFour) }} for four people). The soft cap halves every dollar of contribution
         above the plan's average cost for the household, {{ usd100(costPerPerson) }} a person
         (Milliman, 2032). Both numbers are illustrations; neither is priced, and the board's
-        documents specify neither.
+        documents specify neither. None of the twelve pays nothing today. Households that do,
+        including many on the Oregon Health Plan, would pay more than today with a floor: in the
+        board's own examples, about $81 a year for a single person at $20,000 and $367 for a
+        couple at $40,000.
       </p>
     </div>
   </section>
@@ -153,7 +156,7 @@
         }
       </div>
 
-      <h3 class="uhp-sub">The middle: a little, and still far less than today</h3>
+      <h3 class="uhp-sub">The middle: a little more than the draft, and mostly less than today</h3>
       <div class="op-bargrid">
         @for (group of middleBars(); track group.title) {
           <div class="brand-card op-bargroup">
@@ -169,8 +172,8 @@
         }
       </div>
       <p class="uhp-note">
-        One household here does not fit the heading: with a floor the single public employee
-        pays more than today under every model.
+        The exception: the single public employee, who already pays more than today under
+        Models 1, 3 and 5 in the draft, would also pay more under Models 2 and 4.
       </p>
 
       <h3 class="uhp-sub">The top: still rising, half as fast</h3>
@@ -275,7 +278,7 @@
             <div><dt>$1M and $2M pay</dt><dd>Different amounts</dd></div>
             <div><dt>The middle pays</dt><dd>A little more</dd></div>
             <div><dt>Revenue</dt><dd>Gains below, gives up above; not priced</dd></div>
-            <div><dt>Board's view</dt><dd>Soft cap left out as less progressive; a floor is not in its documents</dd></div>
+            <div><dt>Board's view</dt><dd>Soft cap left out as less progressive; no minimum in its documents</dd></div>
           </dl>
         </div>
         <div class="brand-card glow glow-blue glow-tl edge-top op-option">
@@ -289,7 +292,7 @@
           <dl class="op-facts">
             <div><dt>$1M and $2M pay</dt><dd>Different amounts</dd></div>
             <div><dt>The middle pays</dt><dd>The same</dd></div>
-            <div><dt>Revenue</dt><dd>Gives up some, with nothing to offset it</dd></div>
+            <div><dt>Revenue</dt><dd>Gives up some; not priced</dd></div>
             <div><dt>Board's view</dt><dd>Left out: less progressive</dd></div>
           </dl>
         </div>
@@ -370,7 +373,7 @@
           <span class="card-eyebrow">Against</span>
           <ul class="op-list">
             <li>A floor takes money from households the draft deliberately charges nothing, to slow the bill for the highest earners. That is less progressive at both ends.</li>
-            <li>The single public employee in the table goes from saving to paying more than today.</li>
+            <li>Households that pay nothing today, including many on the Oregon Health Plan, would pay more than today. So would the single public employee in the table, under Models 2 and 4.</li>
             <li>Neither number is priced. The floor may not cover what the soft cap gives up.</li>
             <li>The board left a soft cap out because it makes the structure less progressive, and its committee said avoidance "may be limited for most households."</li>
           </ul>
@@ -378,7 +381,7 @@
         <div class="brand-card glow glow-teal glow-tl edge-top">
           <span class="card-eyebrow">For</span>
           <ul class="op-list">
-            <li>Everyone covered pays something, and in the examples all but one still pay far less than today.</li>
+            <li>Everyone above the poverty line pays something, and the working households in the examples still pay far less than today, with one exception.</li>
             <li>A household at $2,000,000 still pays more than one at $1,000,000. It is not a cap.</li>
             <li>A plan for everyone should not lean this hard on about 1 in 100 filers staying put.</li>
             <li>The committee weighed a soft cap to avoid a schedule that "could be perceived as punitive relative to current health care payments."</li>
