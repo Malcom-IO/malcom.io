@@ -33,6 +33,10 @@
           <strong>It is a proposal, not law.</strong> Nothing changes unless the Legislature acts,
           starting in 2027.
         </p>
+        <p class="uhp-independent">
+          An independent summary by Malcom IO. Not affiliated with the board or the State of
+          Oregon.
+        </p>
       </div>
       </div>
       <!-- Full width, under both columns, so each stays on one line on desktop. -->
@@ -52,8 +56,7 @@
         </p>
         <p class="uhp-print-only uhp-print-note">
           &copy; {{ year }} Malcom IO LLC. Printed from www.malcom.io/oregon-universal-health-plan,
-          where the calculators take your own numbers. The figures here use the page's example
-          household and employer.
+          where two calculators work out the cost for your own household or business.
         </p>
       </div>
     </div>
@@ -92,7 +95,7 @@
           <h3>How much</h3>
           <p class="uhp-fact-lead">Not decided</p>
           <p>
-            The board sent five tax models and did not recommend one. A middle-income household
+            The board's draft lays out five tax models and recommends none. A middle-income household
             would pay under 1% to 2.5% of its income, or 8% to 10% counting the payroll tax on
             its wages.
           </p>
@@ -467,39 +470,40 @@
         average rate paid by the top 1% and not the top rate. The board's own examples are
         consistent with 13.5% for Model 1 and 14.3% for Model 4. None of them reaches Model 5's top bracket, so
         its 12% rests on the appendix alone. Both documents are drafts. The one 2032 projection
-        is sized to the board's own $30 billion estimate; if Milliman's $39 billion is closer,
+        is sized to the board's own $30 billion estimate; if the $39 billion from Milliman, the
+        board's actuary, is closer,
         the taxes would have to raise about 30% more. <span class="uhp-ours">our math</span>
       </p>
 
       <details class="uhp-details uhp-details--table">
         <summary>Show every figure as a table</summary>
         <div class="uhp-scroll" tabindex="0" role="region" aria-label="The five revenue models">
-          <table class="uhp-table">
-            <thead>
-              <tr>
-                <th scope="col">Model</th>
-                <th scope="col">Employer payroll tax</th>
-                <th scope="col" class="num">Credit for workers</th>
-                <th scope="col" class="num">Income exempt</th>
-                <th scope="col" class="num">Rates above the exemption</th>
-                <th scope="col" class="num">Top household rate</th>
-                <th scope="col" class="num">Tax returns owing $0</th>
-                <th scope="col" class="num">Middle-income average</th>
-                <th scope="col" class="num">Paid by top 1%</th>
+          <table class="uhp-table" role="table">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">Model</th>
+                <th role="columnheader" scope="col">Employer payroll tax</th>
+                <th role="columnheader" scope="col" class="num">Credit for workers</th>
+                <th role="columnheader" scope="col" class="num">Income exempt</th>
+                <th role="columnheader" scope="col" class="num">Rates above the exemption</th>
+                <th role="columnheader" scope="col" class="num">Top household rate</th>
+                <th role="columnheader" scope="col" class="num">Tax returns owing $0</th>
+                <th role="columnheader" scope="col" class="num">Middle-income average</th>
+                <th role="columnheader" scope="col" class="num">Paid by top 1%</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               @for (m of models; track m.id) {
-                <tr>
-                  <th scope="row">{{ m.id }}</th>
-                  <td>{{ m.employerTax }}</td>
-                  <td class="num">{{ m.creditShare ? '50%' : 'None' }}</td>
-                  <td class="num">{{ m.exemption }}</td>
-                  <td class="num">{{ m.rates.length === 1 ? 'One' : m.rates.length }}</td>
-                  <td class="num">{{ pct(m.topRate, 2) }}</td>
-                  <td class="num">{{ pct(m.returnsOwingNothing) }}</td>
-                  <td class="num">{{ pct(m.middleFifthRate) }}</td>
-                  <td class="num">{{ pct(m.top1Share) }}</td>
+                <tr role="row">
+                  <th role="rowheader" scope="row">{{ m.id }}</th>
+                  <td role="cell">{{ m.employerTax }}</td>
+                  <td role="cell" class="num">{{ m.creditShare ? '50%' : 'None' }}</td>
+                  <td role="cell" class="num">{{ m.exemption }}</td>
+                  <td role="cell" class="num">{{ m.rates.length === 1 ? 'One' : m.rates.length }}</td>
+                  <td role="cell" class="num">{{ pct(m.topRate, 2) }}</td>
+                  <td role="cell" class="num">{{ pct(m.returnsOwingNothing) }}</td>
+                  <td role="cell" class="num">{{ pct(m.middleFifthRate) }}</td>
+                  <td role="cell" class="num">{{ pct(m.top1Share) }}</td>
                 </tr>
               }
             </tbody>
@@ -517,21 +521,21 @@
         spending."
       </p>
       <div class="uhp-scroll" tabindex="0" role="region" aria-label="Combined rate by income group">
-        <table class="uhp-table uhp-table--bars uhp-table--stack">
-          <thead>
-            <tr>
-              <th scope="col">Share of income, household contribution plus payroll tax</th>
+        <table class="uhp-table uhp-table--bars uhp-table--stack" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Share of income, household contribution plus payroll tax</th>
               @for (m of models; track m.id) {
-                <th scope="col">Model {{ m.id }}</th>
+                <th role="columnheader" scope="col">Model {{ m.id }}</th>
               }
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             @for (f of fifths; track f; let i = $index) {
-              <tr>
-                <th scope="row">{{ f }}</th>
+              <tr role="row">
+                <th role="rowheader" scope="row">{{ f }}</th>
                 @for (m of models; track m.id) {
-                  <td [attr.data-label]="'Model ' + m.id">
+                  <td role="cell" [attr.data-label]="'Model ' + m.id">
                     <span class="uhp-cellbar" aria-hidden="true">
                       <span [style.width.%]="(m.combinedByFifth[i] / 0.14) * 100"></span>
                     </span>
@@ -558,9 +562,16 @@
   <section class="section section-line" id="calculator">
     <div class="container">
       <h2 class="h-section">What would your household pay?</h2>
-      <p class="uhp-narrow uhp-body">
+      <p class="uhp-print-only uhp-web-note">
+        <strong>The calculator is on the web page.</strong> Enter your household size, income
+        and employer at
+        <a href="https://www.malcom.io/oregon-universal-health-plan#calculator">www.malcom.io/oregon-universal-health-plan</a>
+        to see your contribution under all five models, beside what you pay today. The table
+        below runs twelve example households through the same schedules.
+      </p>
+      <p class="uhp-narrow uhp-body uhp-screen-only">
         An estimate of your household contribution, the income-based tax that would replace
-        premiums, under all five models. It uses the bracket schedules in the report's
+        premiums, under all five models. It uses the rate tables in the report's
         appendix. The payroll tax your employer would pay on your wages is shown beside each
         result for reference; it is not part of your bill.
       </p>
@@ -827,21 +838,21 @@
             <details class="uhp-details">
               <summary>Show these figures as a table</summary>
               <div class="uhp-scroll" tabindex="0" role="region" aria-label="Chart data">
-                <table class="uhp-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Income</th>
+                <table class="uhp-table" role="table">
+                  <thead role="rowgroup">
+                    <tr role="row">
+                      <th role="columnheader" scope="col">Income</th>
                       @for (l of lines(); track l.id) {
-                        <th scope="col" class="num">Model {{ l.id }}</th>
+                        <th role="columnheader" scope="col" class="num">Model {{ l.id }}</th>
                       }
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody role="rowgroup">
                     @for (row of tableRows(); track row.income) {
-                      <tr>
-                        <th scope="row">{{ usd(row.income) }}</th>
+                      <tr role="row">
+                        <th role="rowheader" scope="row">{{ usd(row.income) }}</th>
                         @for (v of row.values; track $index) {
-                          <td class="num">{{ usd(v) }}</td>
+                          <td role="cell" class="num">{{ usd(v) }}</td>
                         }
                       </tr>
                     }
@@ -852,6 +863,80 @@
           </figure>
         </div>
       </div>
+
+      <h3 class="uhp-sub" id="households">Example households, side by side</h3>
+      <p class="uhp-narrow uhp-body">
+        The same schedules, run for twelve households. Each row is the household contribution
+        for a year under each model, beside what that household pays for health care now.
+        &darr; marks a model that costs it less than today, &uarr; one that costs more.
+      </p>
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Example households">
+        <table class="uhp-table uhp-table--stack uhp-households" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Household</th>
+              <th role="columnheader" scope="col" class="num">Pays today</th>
+              @for (m of models; track m.id) {
+                <th role="columnheader" scope="col" class="num">Model {{ m.id }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            @for (row of households; track $index) {
+              <tr role="row">
+                <th role="rowheader" scope="row">
+                  {{ row.who }}, {{ usd(row.income) }}
+                  <span class="uhp-household-detail">{{ row.detail }}</span>
+                </th>
+                <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
+                @for (v of row.models; track $index) {
+                  <td role="cell"
+                    class="num"
+                    [class.less]="v < row.now - 0.5"
+                    [class.more]="v > row.now + 0.5"
+                    [attr.data-label]="'Model ' + ($index + 1)"
+                  >
+                    <span class="visually-hidden">{{ v < row.now - 0.5 ? 'Less than today: ' : v > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(v) }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">our math</span> The households are our choice; the board's
+        examples stop at $220,000. What each pays today, and how much of its income is wages,
+        come from the board: report Tables S1, S2 and S4 for the self-employed person, the couple
+        and the Medicare couple, and Appendix FR Figures AFR4Fb and AFR4Fc for the rest. (For
+        the couple, the wages are the $80,000 that reproduce the board's figures.) The
+        appendix's figures stop at $400,000, so the two highest rows keep its last figure for a
+        family buying its own plan. "Median" and "percentile" are the appendix's, for tax
+        returns with that many people. About 4% of Oregonians buy their own plan; those rows
+        are over-represented here to show the top of the range. One cell differs from the
+        board's table: the report prints $3,699 for Model 5 at $90,000 where its own schedule
+        gives $3,669.
+      </p>
+      <p class="uhp-note">
+        The private-employer rows use the 9% payroll tax of the board's example employer, with
+        an $8.5 million payroll, and assume it drops its plan and pay stays the same. At a
+        smaller employer the worker credit is smaller, and under $500,000 of payroll there is
+        none: the single worker would then owe $1,766, $1,576 and $1,474 under Models 1, 2 and
+        4 instead of $0. The employer's own payroll tax on those wages (9% private, 9.6% to
+        14% public) is not shown. The appendix's own tables use each model's average payroll
+        rate, about 10%, so its private-employer figures run about $500 to $1,000 lower under
+        Models 2 and 4; on that basis the $220,000 family pays $9,445 under Model 2, slightly
+        less than today. The Medicare row assumes the plan pays the Part B premium;
+        Medigap and Part D are not addressed.
+      </p>
+      <p class="uhp-note">
+        At high incomes the contribution works as an income tax: it is set by income, not by
+        the care a household uses, so most of the difference from today is not health
+        spending. None of the five schedules in Appendix FR has an upper limit, so the
+        contribution keeps rising with income. The board's finance committee considered a
+        "soft cap" for the highest incomes and did not recommend one, leaving it as an option
+        for the board (ECOnorthwest report). The rates are the draft's and will change.
+      </p>
 
       <details class="uhp-details uhp-method">
         <summary>How this is calculated, and what it leaves out</summary>
@@ -918,57 +1003,73 @@
     <div class="container">
       <h2 class="h-section">The board's own examples</h2>
       <p class="uhp-narrow uhp-body">
-        These four households come straight from the report, covering all five models. A marked
-        cell means that household would pay less than it does today. The board's summary is that
+        These four households come straight from the report, covering all five models. &darr;
+        marks a model that costs the household less than it pays today, &uarr; one that costs
+        more. The board's summary is that
         "the majority of people living in Oregon will pay the same amount or less." It calls its
         figures group averages and says more study is needed of who pays more.
       </p>
 
-      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Example household">
-        @for (s of scenarios; track s.id) {
-          <button
-            type="button"
-            [class.active]="scenarioId() === s.id"
-            [attr.aria-pressed]="scenarioId() === s.id"
-            (click)="scenarioId.set(s.id)"
-          >
-            {{ s.tab }}
-          </button>
-        }
-      </div>
-
-      <p class="uhp-body mb-1 mt-3">
-        <strong>{{ scenario().who }}</strong>
-      </p>
-      <p class="uhp-body">{{ scenario().today }}</p>
-      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Board example figures">
-        <table class="uhp-table uhp-table--stack">
-          <thead>
-            <tr>
-              <th scope="col">{{ scenario().id === 'medicare' ? 'Income, not counting Social Security' : 'Income' }}</th>
-              <th scope="col" class="num">Pays today</th>
-              @for (m of models; track m.id) {
-                <th scope="col" class="num">Model {{ m.id }}</th>
-              }
-            </tr>
-          </thead>
-          <tbody>
-            @for (row of scenario().rows; track row.income) {
-              <tr>
-                <th scope="row">{{ usd(row.income) }}</th>
-                <td class="num" data-label="Pays today">{{ usd(row.now) }}</td>
-                @for (v of row.models; track $index) {
-                  <td class="num" [class.less]="v < row.now" [attr.data-label]="'Model ' + ($index + 1)">
-                    @if (v < row.now) {
-                      <span class="visually-hidden">Less than today: </span>
-                    }
-                    {{ usd(v) }}
-                  </td>
+      <ng-template #boardTable let-sc>
+        <p class="uhp-body mb-1 mt-3">
+          <strong>{{ sc.who }}</strong>
+        </p>
+        <p class="uhp-body">{{ sc.today }}</p>
+        <div class="uhp-scroll" tabindex="0" role="region" [attr.aria-label]="'Board example figures: ' + sc.tab">
+          <table class="uhp-table uhp-table--stack" role="table">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">{{ sc.id === 'medicare' ? 'Income, not counting Social Security' : 'Income' }}</th>
+                <th role="columnheader" scope="col" class="num">Pays today</th>
+                @for (m of models; track m.id) {
+                  <th role="columnheader" scope="col" class="num">Model {{ m.id }}</th>
                 }
               </tr>
-            }
-          </tbody>
-        </table>
+            </thead>
+            <tbody role="rowgroup">
+              @for (row of sc.rows; track row.income) {
+                <tr role="row">
+                  <th role="rowheader" scope="row">{{ usd(row.income) }}</th>
+                  <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
+                  @for (v of row.models; track $index) {
+                    <td role="cell"
+                      class="num"
+                      [class.less]="v < row.now"
+                      [class.more]="v > row.now"
+                      [attr.data-label]="'Model ' + ($index + 1)"
+                    >
+                      <span class="visually-hidden">{{ v < row.now ? 'Less than today: ' : v > row.now ? 'More than today: ' : '' }}</span>{{ usd(v) }}
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+
+      <div class="uhp-screen-only">
+        <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Example household">
+          @for (s of scenarios; track s.id) {
+            <button
+              type="button"
+              [class.active]="scenarioId() === s.id"
+              [attr.aria-pressed]="scenarioId() === s.id"
+              (click)="scenarioId.set(s.id)"
+            >
+              {{ s.tab }}
+            </button>
+          }
+        </div>
+        <ng-container *ngTemplateOutlet="boardTable; context: { $implicit: scenario() }"></ng-container>
+      </div>
+      <!-- Paper has no tabs: all four, one after another. -->
+      <div class="uhp-print-only">
+        @for (s of scenarios; track s.id) {
+          <div class="uhp-board-example">
+            <ng-container *ngTemplateOutlet="boardTable; context: { $implicit: s }"></ng-container>
+          </div>
+        }
       </div>
       <p class="uhp-note">
         Yearly household cost, from Tables S1 to S4 of the draft report. Employer costs are not
@@ -991,7 +1092,14 @@
         owes nothing. Above that, each added dollar of payroll costs 9.6 cents (14 cents above
         $10 million in Models 2 to 5), and a business that offers no coverage today has nothing
         to offset it. Profitable companies would also pay
-        the corporate tax add-ons described above, which this comparison leaves out.
+        the corporate tax add-ons described above, which the figures here leave out.
+      </p>
+      <p class="uhp-print-only uhp-web-note">
+        <strong>The employer calculator is on the web page.</strong> Enter your own payroll and
+        benefit spending at
+        <a href="https://www.malcom.io/oregon-universal-health-plan#employers">www.malcom.io/oregon-universal-health-plan</a>.
+        The table below shows the tax at five payroll sizes. To compare by hand, divide what you
+        spend on health benefits by your payroll and set it beside the percentage in the table.
       </p>
 
       <div class="uhp-calc">
@@ -1031,7 +1139,9 @@
               />
             </div>
             <p class="uhp-hint">
-              The figure shown is an example. Enter 0 if you do not offer coverage.
+              The figure shown is an example. Count the employer's share only: premiums, or
+              if you are self-funded, claims, stop-loss and administration, less what employees
+              pay in. Enter 0 if you do not offer coverage.
             </p>
           </div>
         </form>
@@ -1053,33 +1163,29 @@
           </div>
           <div class="uhp-callout uhp-callout--top">
             <p class="mb-0">
-              <strong>The comparison assumes you drop your plan.</strong> The board's consultants
+              <strong>These figures assume you drop your plan.</strong> The board's consultants
               say that to survive federal law the tax must apply to every employer whether or
               not it offers coverage. No offset for keeping a plan has been proposed, and the
               brief lists the treatment of employers that keep one as still to be decided. Our
               reading: keeping a plan would mean paying for both.
-              @if (bizKind() === 'public') {
-                Public employers would pay the top rate from the first dollar of payroll, with
-                no $500,000 exemption.
-              }
             </p>
           </div>
 
           <div class="uhp-scroll" tabindex="0" role="region" aria-label="Payroll tax by payroll size">
-            <table class="uhp-table uhp-table--stack">
-              <thead>
-                <tr>
-                  <th scope="col">Private employer's yearly payroll</th>
-                  <th scope="col" class="num">Model 1</th>
-                  <th scope="col" class="num">Models 2 to 5</th>
+            <table class="uhp-table uhp-table--stack" role="table">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col">Private employer's yearly payroll</th>
+                  <th role="columnheader" scope="col" class="num">Model 1</th>
+                  <th role="columnheader" scope="col" class="num">Models 2 to 5</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody role="rowgroup">
                 @for (e of bizExamples; track e.payroll) {
-                  <tr>
-                    <th scope="row">{{ usd(e.payroll) }}</th>
-                    <td class="num" data-label="Model 1">{{ usd(e.one) }} ({{ pct(e.one / e.payroll) }})</td>
-                    <td class="num" data-label="Models 2 to 5">{{ usd(e.rest) }} ({{ pct(e.rest / e.payroll) }})</td>
+                  <tr role="row">
+                    <th role="rowheader" scope="row">{{ usd(e.payroll) }}</th>
+                    <td role="cell" class="num" data-label="Model 1">{{ usd(e.one) }} ({{ pct1(e.one / e.payroll) }})</td>
+                    <td role="cell" class="num" data-label="Models 2 to 5">{{ usd(e.rest) }} ({{ pct1(e.rest / e.payroll) }})</td>
                   </tr>
                 }
               </tbody>
@@ -1088,7 +1194,9 @@
           <p class="uhp-note">
             Yearly payroll tax and its share of payroll, at 9.6% above $500,000 and, in Models 2
             to 5, 14% above $10 million. <span class="uhp-ours">our math</span> The one 2032
-            projection so far raises the 9.6% to 9.89%.
+            projection so far, for Model 1, raises the 9.6% to 9.89%. The appendix intends public
+            employers to pay the top rate from the first dollar, with no $500,000 exemption: 9.6%
+            of payroll under Model 1 and 14% under the others.
           </p>
         </div>
       </div>
@@ -1102,9 +1210,9 @@
         </li>
         <li>
           <strong>Your workers' credit depends on your size</strong>
-          In the models with a worker credit, employees get back half of the tax you paid on
-          their wages. A small firm pays little or none, so its employees get little or no
-          credit.
+          In the models with a worker credit, employees can take up to half of the tax you paid
+          on their wages off their own contribution; it is not a refund. A small firm pays
+          little or none, so its employees get little or no credit.
         </li>
         <li>
           <strong>Tax treatment</strong>
@@ -1124,7 +1232,7 @@
           or contractor payments are treated, and the appendix expects that without a worker
           credit both sides would have a reason to shift to contractor arrangements. The
           appendix intends the tax to be figured each pay period, not once a year, but does not
-          say how the $500,000 is spread across pay periods; this calculator uses yearly
+          say how the $500,000 is spread across pay periods; the figures here use yearly
           totals. The board has not studied workers paid on a 1099.
         </li>
         <li>
@@ -1209,7 +1317,7 @@
         </li>
         <li>
           <strong>More patients, same workforce</strong>
-          More insured people, pent-up demand and little or no cost sharing would mean more
+          More insured people, pent-up demand and few or no copays and deductibles would mean more
           demand: $5.7 to $8.7 billion a year of added care in the estimates. The report flags staffing shortages and
           thin margins as a risk but does not estimate whether there are enough clinicians.
         </li>
@@ -1359,7 +1467,7 @@
         <li>
           <strong>The same or less for most people</strong>
           <span>
-            With little or no cost sharing and no surprise bills. The report calls its figures
+            With few or no copays and deductibles, and no surprise bills. The report calls its figures
             group averages.
           </span>
         </li>
@@ -1441,8 +1549,8 @@
         }
       </div>
       <p class="uhp-note">
-        Yearly figures for 2032, with about 348,000 more people covered and little or no cost
-        sharing. "Payments that would end" is <span class="uhp-ours">our math</span>: the
+        Yearly figures for 2032, with about 348,000 more people covered and few or no copays and
+        deductibles. "Payments that would end" is <span class="uhp-ours">our math</span>: the
         current-system total less the public funding the report expects to continue, plus Part
         B premiums. The totals are statewide; some households and employers would pay more than
         today and others less. Both estimates assume provider payment rates are reset, as
@@ -1660,7 +1768,11 @@
           affiliated with the board or the State of Oregon, takes no position on the plan, and
           is not tax or insurance advice. The source documents are drafts and their numbers will
           change. Where this page differs from the report, it says so and shows why. Spot an error?
-          <a [routerLink]="['/']" fragment="contact">Tell us</a> and we will fix it.
+          <a [routerLink]="['/']" fragment="contact">Tell us</a> and we will fix it<span class="uhp-print-only-inline">, through the contact form at www.malcom.io</span>.
+        </p>
+        <p class="uhp-note uhp-print-only">
+          Every source document is on the board's site, oregon.gov/uhpgb, under Board Meetings,
+          2026. On screen, the titles above are links.
         </p>
       </div>
     </div>

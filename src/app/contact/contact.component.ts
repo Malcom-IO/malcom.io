@@ -126,7 +126,8 @@ export class ContactComponent {
     try {
       turnstile.render(this.turnstileEl.nativeElement, {
         sitekey: TURNSTILE_SITE_KEY,
-        theme: 'dark',
+        // Match the page; a dark widget in a light form reads as a broken embed.
+        theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
         callback: (token: string) => this.zone.run(() => (this.turnstileToken = token)),
         'error-callback': () => this.zone.run(() => (this.turnstileToken = null)),
         'expired-callback': () => this.zone.run(() => (this.turnstileToken = null)),
@@ -276,7 +277,7 @@ export class ContactComponent {
 
   showGenericError(): void {
     const msg =
-      'Looks like something went wrong, we apologize for any inconvenience. Please try again later.';
-    this.toast.error(msg, 'Message Not Sent.');
+      'Something went wrong on our side. Please try again in a minute, or reach Marcus on LinkedIn (linked near the top of this page).';
+    this.toast.error(msg, 'Message not sent');
   }
 }

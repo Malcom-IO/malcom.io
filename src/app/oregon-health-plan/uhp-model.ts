@@ -82,7 +82,7 @@ export const MODELS: readonly RevenueModel[] = [
     id: 1,
     name: 'One rate, single payroll tier',
     blurb:
-      "One household rate above the exemption and one payroll rate above $500,000, with the worker credit. The board calls it the simplest to explain and the least progressive.",
+      "One household rate above the exemption and one payroll rate above $500,000, with the worker credit. The board calls it the simplest to explain and the least progressive, meaning it asks the least of high earners relative to the others.",
     combinedByFifth: [0.076, 0.061, 0.081, 0.104, 0.135],
     top1Share: 0.307,
     exemptFamilyOf4: 66_000,
