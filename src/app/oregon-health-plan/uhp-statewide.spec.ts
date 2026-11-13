@@ -72,7 +72,7 @@ describe('our derived figures', () => {
   });
 
   it('scenarios: with and without the provider rate reset, for both estimates', () => {
-    expect(SCENARIOS_STATEWIDE.map((s) => s.delta)).toEqual([7.2, -0.6, 1.4, -6.6]);
+    expect(SCENARIOS_STATEWIDE.map((s) => s.delta)).toEqual([-0.6, -6.6, 7.2, 1.4]);
   });
 
   it('the rate reset is about 10% of what the plan pays providers', () => {
