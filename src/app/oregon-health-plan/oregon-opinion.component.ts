@@ -14,7 +14,6 @@ import { QuillquestShellComponent } from '../quillquest/quillquest-shell.compone
 import { EmployerKind, FPL_200 } from './uhp-model';
 import {
   CHANGES,
-  COST_PER_PERSON,
   CREDIT,
   FIVE_MODELS,
   PLUS_ROWS,
@@ -22,12 +21,19 @@ import {
   bill,
   creditRate,
   creditRateRange,
-  rateCoveringSoftCap,
+  crossover,
+  proposalRate,
+  proposalRateRange,
   ratesAtBothTargets,
-  softCapYardstick,
+  slowerClimbDollars,
   threshold,
   thresholdIncome,
 } from './uhp-model3-plus';
+
+/** "11.4–13.4%": a range in one unbroken piece. */
+function span(range: { low: number; high: number }): string {
+  return `${(range.low * 100).toFixed(1)}–${(range.high * 100).toFixed(1)}%`;
+}
 
 const USD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -62,39 +68,42 @@ interface Line {
   styleUrls: ['./oregon-health-plan.component.scss', './oregon-opinion.component.scss'],
 })
 export class OregonOpinionComponent {
+  private row(who: string, income: number) {
+    return PLUS_ROWS.find((r) => r.who === who && r.income === income)!;
+  }
   readonly updated = 'November 13, 2026';
   readonly year = 2026;
   /** Built after each site build by scripts/make-uhp-pdf.mjs. */
   readonly pdf = '/oregon-universal-health-plan-opinion.pdf';
   readonly changes = CHANGES;
   readonly credit = CREDIT;
-  /** The household rate with change 1: the middle of the range, and the range. */
+  /** The household rate with change 1 alone: the middle of its range, and the range. */
   readonly rate = creditRate();
   readonly rateRange = creditRateRange();
-  /** The range in one unbroken piece for the tile: "9.9–10.4%". */
-  readonly rateSpan = `${(this.rateRange.low * 100).toFixed(1)}–${(this.rateRange.high * 100).toFixed(1)}%`;
-  readonly costPerPerson = COST_PER_PERSON;
+  /** The household rate with both changes, the slower climb paid for by the rate. */
+  readonly proposal = proposalRate();
+  readonly proposalSpan = span(proposalRateRange());
+  readonly climbDollars = slowerClimbDollars();
+  readonly thresholds = { one: threshold(1), four: threshold(4) };
   readonly familyThreshold = threshold(4);
   readonly thresholdIncomes = { one: thresholdIncome(1), four: thresholdIncome(4) };
   readonly wageGap = WAGE_GAP;
-  readonly yardstick = softCapYardstick();
-  readonly rateIfCapCostAll = rateCoveringSoftCap();
   readonly targets = ratesAtBothTargets();
   readonly rows = PLUS_ROWS;
-  /** Who pays for change 2: the median family and the three self-employed families. */
-  readonly catchRows = PLUS_ROWS.filter(
-    (r) =>
-      r.who === 'Family of four, self-employed' ||
-      (r.who === 'Family of four, private employer' && r.income === 110_000),
-  );
-  /**
-   * The income above which a self-employed family of four pays less with both
-   * changes than under Model 3: where half the higher rate, plus half the
-   * threshold, meets Model 3's rate.
-   */
+  /** Who pays for change 2: six households, from the middle to the top. */
+  readonly payRows = [
+    this.row('Single public employee', 80_000),
+    this.row('Family of four, private employer', 110_000),
+    this.row('Family of four, private employer', 220_000),
+    this.row('Family of four, self-employed', 400_000),
+    this.row('Family of four, self-employed', 1_000_000),
+    this.row('Family of four, self-employed', 2_000_000),
+  ];
+  /** Where the proposal crosses Model 3, to the nearest $10,000. */
   readonly topCrossover =
-    Math.round((FPL_200[4] + threshold(4) / 2 / (creditRate(0) - creditRate() / 2)) / 100_000) *
-    100_000;
+    Math.round(crossover(4, 'none', 0, 450_000, 2_000_000) / 10_000) * 10_000;
+  readonly employedCrossover =
+    Math.round(crossover(4, 'private', 0.9, 70_000, 400_000) / 10_000) * 10_000;
 
   // ------------------------------------------------------------ why Model 3
   /** Two households under the five draft models, as bars on one scale each. */
@@ -109,9 +118,6 @@ export class OregonOpinionComponent {
   })();
 
   // ---------------------------------------------------------- before / after
-  private row(who: string, income: number) {
-    return PLUS_ROWS.find((r) => r.who === who && r.income === income)!;
-  }
   /** Four households that show who gains and who pays. */
   readonly moves = [
     { label: 'Single public employee, $80,000', row: this.row('Single public employee', 80_000) },
@@ -142,8 +148,8 @@ export class OregonOpinionComponent {
       bill(income, income * s.wageShare, 4, s.employer, { credit, softCap });
     return [
       { id: 'm3', label: 'Draft, Model 3', value: (i: number) => at(i, 0, false) },
-      { id: 'c1', label: 'With change 1', value: (i: number) => at(i, CREDIT, false) },
-      { id: 'c2', label: 'With changes 1 and 2', value: (i: number) => at(i, CREDIT, true) },
+      { id: 'c1', label: 'Change 1 alone', value: (i: number) => at(i, CREDIT, false) },
+      { id: 'c2', label: 'My proposal', value: (i: number) => at(i, CREDIT, true) },
     ];
   });
   readonly seriesLabels = computed(() => this.series().map((s) => s.label));

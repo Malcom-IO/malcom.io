@@ -51,7 +51,7 @@
         </figure>
         <figure class="uhp-figure">
           <figcaption>
-            <strong>And it shows the middle a real bill, which change 1 trims</strong>
+            <strong>And it shows the middle a real bill, which my changes trim a little</strong>
             <span class="text-muted-2">Median family of four, private employer, own bill</span>
           </figcaption>
           <div class="op-evidence">
@@ -68,8 +68,8 @@
       <p class="uhp-note">
         From the explainer's table of example households, which uses the board's schedules. Both
         households pay about $10,000 to $23,000 a year for health care today. The last bar in
-        each is where my changes land: in plain terms, halfway between the board's Models 2 and
-        3, plus a soft cap. <span class="uhp-ours">my math</span>
+        each is my proposal: a worker credit half the size of Model 2's, and a slower climb at
+        the top that a higher household rate pays for. <span class="uhp-ours">my math</span>
       </p>
     </div>
   </section>
@@ -143,7 +143,7 @@
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Household rate, same exemption</p>
-          <p class="op-rate-big"><span>7.7%</span> &rarr; <b class="op-nowrap">{{ rateSpan }}</b></p>
+          <p class="op-rate-big"><span>7.7%</span> &rarr; <b class="op-nowrap">{{ proposalSpan }}</b></p>
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Slower climb starts, family of four</p>
@@ -159,11 +159,22 @@
         same exemption, same payroll tax, a 12.05% rate against 7.69%. Halfway between them is
         {{ pct1(rateRange.low) }}, and that is the low end: a credit cannot exceed the bill it
         comes off, and a smaller credit runs into that limit less often, so more of it gets used.
-        If all of it were used the rate would be {{ pct1(rateRange.high) }}. The figures below use
-        the middle, {{ pct1(rate) }}. It is a range from two of the board's own models, not an
-        actuary's figure. A family of four reaches {{ usd(familyThreshold) }} of contribution at
-        about {{ usd1000(thresholdIncomes.four) }} of income; one person reaches
-        {{ usd(costPerPerson) }} at about {{ usd1000(thresholdIncomes.one) }}.
+        If all of it were used the rate would be {{ pct1(rateRange.high) }}. So change 1 alone
+        puts the rate near {{ pct1(rate) }}. It is a range from two of the board's own models,
+        not an actuary's figure.
+      </p>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> The slower climb starts at twice what a household
+        buying its own coverage pays today in the board's examples: {{ usd(thresholds.one) }} for
+        one person (twice $6,900) and {{ usd(thresholds.four) }} for a family of four (twice
+        $22,871). Above that, a quarter of each further dollar is still paid. It moves roughly
+        ${{ climbDollars.low }} billion to ${{ climbDollars.high }} billion a year off the top, and
+        I have the household rate make that up, which takes it to somewhere in
+        {{ proposalSpan }}. The figures below use {{ pct1(proposal) }}. This part is rough: the
+        documents give each income group's share of the contribution, not bills by household, so
+        I assume 60% to 90% of what the top 1% pay sits above the start, and up to 20% of what the
+        next 4% pay. A self-employed family of four reaches the start at about
+        {{ usd1000(thresholdIncomes.four) }} of income.
       </p>
     </div>
   </section>
@@ -214,8 +225,8 @@
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(rate) }} rate, the middle
-        of the range. "Pays today" and Model 3 are the explainer's and
+        <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(proposal) }} rate, the
+        middle of the range, with the slower climb paid for. "Pays today" and Model 3 are the explainer's and
         count the household's own bill only. The last column is not paid by the household: it is
         the payroll tax its employer pays on its wages (the board's 9% example for a private
         employer, 14% for a public one), and it is what the credit is a quarter of. It is the
@@ -223,41 +234,42 @@
         nothing, so its workers get a smaller credit or none.
       </p>
 
-      <h3 class="uhp-sub">The catch: change 2 has to be paid for</h3>
+      <h3 class="uhp-sub">Who pays for the slower climb</h3>
       <p class="uhp-narrow uhp-body">
-        The slower climb collects less from the top, and that money has to come from somewhere.
-        The table above assumes it comes from outside the household rate. If instead everyone's
-        household rate goes up to cover it, this is what happens.
+        Collecting less from the top means a higher rate for everyone below the start of the
+        climb. Here is each change on its own.
       </p>
-      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Four households, by who pays for change 2">
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Six households under Model 3, with change 1 alone, and with both changes">
         <table class="uhp-table uhp-table--stack" role="table">
           <thead role="rowgroup">
             <tr role="row">
               <th role="columnheader" scope="col">Household</th>
+              <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
-              <th role="columnheader" scope="col" class="num op-col-pick">My proposal: paid for elsewhere ({{ pct1(rate) }} rate)</th>
-              <th role="columnheader" scope="col" class="num">Paid for by a higher household rate ({{ pct1(rateIfCapCostAll) }})</th>
+              <th role="columnheader" scope="col" class="num">Change 1 alone ({{ pct1(rate) }} rate)</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">My proposal: both ({{ pct1(proposal) }} rate)</th>
             </tr>
           </thead>
           <tbody role="rowgroup">
-            @for (row of catchRows; track $index) {
+            @for (row of payRows; track $index) {
               <tr role="row">
                 <th role="rowheader" scope="row">{{ row.who }}, {{ usd(row.income) }}</th>
+                <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
                 <td role="cell" class="num" data-label="Draft, Model 3">{{ usd(row.model3) }}</td>
-                <td role="cell" class="num op-col-pick" data-label="My proposal: paid for elsewhere">{{ usd(row.withBoth) }}</td>
-                <td role="cell" class="num" data-label="Paid for by a higher household rate">{{ usd(row.withBothPaidFor) }}</td>
+                <td role="cell" class="num" data-label="Change 1 alone">{{ usd(row.withCredit) }}</td>
+                <td role="cell" class="num op-col-pick" data-label="My proposal: both">{{ usd(row.withBoth) }}</td>
               </tr>
             }
           </tbody>
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> Paid for that way, the family at $2,000,000 is back
-        where Model 3 had it, and every household below it pays more than under my proposal. The
-        cap mostly cancels itself out. So change
-        2 is worth doing only if its cost comes from somewhere else: the payroll tax, the business
-        taxes or the plan's budget. {{ pct1(rateIfCapCostAll) }} is a rough figure, from the
-        yardstick below.
+        <span class="uhp-ours">my math</span> Adding the slower climb takes about $1,000 a year
+        more from the median family and the single public employee than change 1 alone, and both
+        still pay less than under Model 3. The family pays far less than today; the public
+        employee still pays more than today. The households it costs most are the ones just under
+        the start: the family at $220,000 and the self-employed family at $400,000 pay more than
+        under Model 3 and more than today. That is the price of the two rows below them.
       </p>
     </div>
   </section>
@@ -274,7 +286,7 @@
           </div>
         }
       </div>
-      <p class="uhp-note">Own bill under Model 3, then with changes 1 and 2.</p>
+      <p class="uhp-note">Own bill under Model 3, then under my proposal.</p>
 
       <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Which household the chart follows">
         <button type="button" [class.active]="who() === 'self'" [attr.aria-pressed]="who() === 'self'" (click)="who.set('self')">
@@ -291,10 +303,10 @@
         </figcaption>
         <ul class="uhp-legend" aria-hidden="true">
           <li><span class="uhp-key op-key--m3"></span>Draft, Model 3</li>
-          <li><span class="uhp-key op-key--c1"></span>With change 1 (mine)</li>
-          <li><span class="uhp-key op-key--c2"></span>With changes 1 and 2 (mine)</li>
+          <li><span class="uhp-key op-key--c1"></span>Change 1 alone (mine)</li>
+          <li><span class="uhp-key op-key--c2"></span>My proposal: both changes</li>
           @if (thresholdY() !== null) {
-            <li><span class="uhp-key uhp-key--now"></span>Plan's average cost for four (2032, Milliman)</li>
+            <li><span class="uhp-key uhp-key--now"></span>Twice what a family of four buying its own plan pays today</li>
           }
         </ul>
         <div class="uhp-plot" #plot>
@@ -305,8 +317,8 @@
             role="img"
             [attr.aria-label]="
               who() === 'self'
-                ? 'Line chart for a self-employed family of four by income. With change 1 the line is above Model 3. With changes 1 and 2 it bends at the plan cost for four and ends below Model 3 at two million dollars. The table below has the figures.'
-                : 'Line chart for a family of four with a private employer by income. With the changes the line is below Model 3 throughout. The table below has the figures.'
+                ? 'Line chart for a self-employed family of four by income. With change 1 alone the line is above Model 3 throughout. My proposal rises fastest at first, bends at twice what the family pays today, and from under one million dollars is below Model 3. The table below has the figures.'
+                : 'Line chart for a family of four with a private employer by income. Change 1 alone is below Model 3 throughout. My proposal is below Model 3 up to a little past the median income and above it beyond. The table below has the figures.'
             "
           >
             @for (t of yTicks(); track t.label) {
@@ -354,8 +366,7 @@
         </details>
       </figure>
       <p class="uhp-note">
-        Contributions are in today's dollars; the cost of coverage is the 2032 estimate. The
-        private-employer family is drawn with nine tenths of its income as wages at the 9%
+        The private-employer family is drawn with nine tenths of its income as wages at the 9%
         example rate.
       </p>
 
@@ -363,18 +374,18 @@
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Pays more than under Model 3</span>
           <ul class="op-list">
-            <li><strong>Anyone with no employer behind their income:</strong> the self-employed, retirees with income, investors. The rate on that income goes from 7.7% to somewhere between {{ pct1(rateRange.low) }} and {{ pct1(rateRange.high) }}, at every income.</li>
+            <li><strong>Households with no employer behind their income, below the top:</strong> the self-employed, retirees with income, investors. Their rate goes from 7.7% to about {{ pct1(proposal) }}, and a self-employed family of four pays more than under Model 3 up to about {{ usd(topCrossover) }}.</li>
+            <li><strong>Higher earners with an employer.</strong> A family of four with a private employer pays more than under Model 3 above about {{ usd(employedCrossover) }}: the credit no longer covers the higher rate.</li>
             <li><strong>Workers at employers under $500,000 of payroll.</strong> No payroll tax is paid on their wages, so there is no credit, and their rate still rises.</li>
-            <li><strong>Whoever makes up the soft cap.</strong> It is not priced. A rough yardstick is ${{ yardstick.low }} billion to ${{ yardstick.high }} billion a year. If the household rate alone covered that, it would be {{ pct1(rateIfCapCostAll) }}, not {{ pct1(rate) }}, and the cap would mostly cancel itself out. So I would only do it with money from the payroll tax, the business taxes or the plan's budget.</li>
-            <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2.</li>
+            <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2, and it is the point of it.</li>
           </ul>
         </div>
         <div class="brand-card glow glow-teal glow-tl edge-top">
           <span class="card-eyebrow">Pays less than under Model 3</span>
           <ul class="op-list">
-            <li><strong>Every example household with an employer,</strong> public employees most of all.</li>
-            <li><strong>Households at the very top,</strong> above about {{ usd100(topCrossover) }} for a self-employed family of four. Below that they pay more.</li>
-            <li><strong>The plan itself,</strong> if the appendix is right that without a credit there is "a large financial incentive" to turn employees into contractors.</li>
+            <li><strong>Most workers up to about the middle,</strong> public employees most of all. A family of four with a private employer pays less up to about {{ usd(employedCrossover) }}. Not all: the couple at $85,000 pays about $150 more.</li>
+            <li><strong>Households at the top,</strong> above about {{ usd(topCrossover) }} for a self-employed family of four.</li>
+            <li><strong>The plan itself,</strong> if the appendix is right that without a credit there is "a large financial incentive" to turn employees into contractors, and if fewer of the highest earners leave.</li>
           </ul>
         </div>
       </div>
@@ -396,7 +407,7 @@
             <tr role="row">
               <th role="columnheader" scope="col">Sized to raise</th>
               <th role="columnheader" scope="col" class="num">Household rate, Model 3</th>
-              <th role="columnheader" scope="col" class="num op-col-pick">Household rate, with change 1 (mine)</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Household rate, my proposal</th>
               <th role="columnheader" scope="col" class="num">Payroll tax above $500,000</th>
               <th role="columnheader" scope="col" class="num">Payroll tax above $10 million</th>
             </tr>
@@ -405,14 +416,14 @@
             <tr role="row">
               <th role="rowheader" scope="row">${{ targets.board.target }} billion, the board's estimate</th>
               <td role="cell" class="num" data-label="Household rate, Model 3">{{ pct1(targets.board.household) }}</td>
-              <td role="cell" class="num op-col-pick" data-label="Household rate, with change 1 (mine)">{{ pct1(targets.board.householdWithCredit) }}</td>
+              <td role="cell" class="num op-col-pick" data-label="Household rate, my proposal">{{ pct1(targets.board.householdProposal) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $500,000">{{ pct1(targets.board.payrollLow) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $10 million">{{ pct1(targets.board.payrollHigh) }}</td>
             </tr>
             <tr role="row">
               <th role="rowheader" scope="row">${{ targets.actuary.target }} billion, Milliman's estimate</th>
               <td role="cell" class="num" data-label="Household rate, Model 3">{{ pct1(targets.actuary.household) }}</td>
-              <td role="cell" class="num op-col-pick" data-label="Household rate, with change 1 (mine)">{{ pct1(targets.actuary.householdWithCredit) }}</td>
+              <td role="cell" class="num op-col-pick" data-label="Household rate, my proposal">{{ pct1(targets.actuary.householdProposal) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $500,000">{{ pct1(targets.actuary.payrollLow) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $10 million">{{ pct1(targets.actuary.payrollHigh) }}</td>
             </tr>
@@ -475,10 +486,9 @@
 
       <p class="uhp-status op-ask">
         <strong>What I would ask for:</strong> have the board's actuaries price Model 3 with a
-        worker credit at a few levels, at both cost estimates, and show who pays more and who
-        pays less, before the Legislature picks a model. That change is the core. Then price a
-        soft cap at a few thresholds, paid for from outside the household rate. If it can only be
-        paid for by raising that rate, drop it.
+        worker credit at a few levels and a slower climb at a few starting points, at both cost
+        estimates, and show who pays more and who pays less, before the Legislature picks a
+        model. My figures for the slower climb are rough; theirs would not be.
       </p>
       <p class="uhp-note op-end">
         Written {{ updated }} by Marcus Malcom, who built the
