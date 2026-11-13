@@ -330,7 +330,14 @@ a {
   }
   .less::before {
     content: '\2193\00a0';
+    content: '\2193\00a0' / '';
     color: var(--brand-bright);
+  }
+  // "Pays more than today": a mark only, no tint, so neither direction shouts.
+  .more::before {
+    content: '\2191\00a0';
+    content: '\2191\00a0' / '';
+    color: var(--caution);
   }
 }
 
@@ -378,7 +385,7 @@ a {
   }
   .form-select {
     background-color: var(--ground);
-    border-color: var(--line);
+    border-color: var(--control-border); // >= 3:1 boundary (WCAG 1.4.11)
     color: var(--text);
   }
 }
@@ -388,7 +395,7 @@ a {
   gap: 0.4rem;
   padding: 0 0.85rem;
   background: var(--ground);
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-border);
   border-radius: 0.5rem;
   color: var(--muted);
 
@@ -417,7 +424,7 @@ a {
     min-width: 2.75rem;
     padding: 0.45rem 0.85rem;
     background: var(--ground);
-    border: 1px solid var(--line);
+    border: 1px solid var(--control-border);
     border-radius: 0.5rem;
     color: var(--text-soft);
     font-weight: 600;
@@ -827,7 +834,7 @@ $down: var(--s3);
     line-height: 30px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
   }
   > span:first-child {
@@ -880,7 +887,7 @@ $down: var(--s3);
     line-height: 30px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
   }
   > span:first-child {
@@ -1276,7 +1283,7 @@ $info: var(--info);
     line-height: 34px;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -1678,8 +1685,19 @@ $info: var(--info);
     }
     td.less::after {
       content: '\2193';
+      content: '\2193' / '';
       order: 3;
       color: var(--brand-bright);
+    }
+    td.more::before {
+      content: attr(data-label);
+      color: var(--text-soft);
+    }
+    td.more::after {
+      content: '\2191';
+      content: '\2191' / '';
+      order: 3;
+      color: var(--caution);
     }
     .uhp-cellbar {
       flex: 1;
@@ -1986,6 +2004,91 @@ $warn: var(--warn);
   .uhp-print-only {
     display: block;
   }
+  .uhp-print-only-inline {
+    display: inline !important;
+  }
+  // "Show ... as a table" is a control; on paper the table is simply there.
+  .uhp-details > summary {
+    display: none;
+  }
+  // The calculator note and the households table start a page together, and
+  // each of the board's four example tables stays whole.
+  // These sections open with a heading, a line of text and one block that
+  // cannot split; started mid-page they strand the heading.
+  #calculator,
+  #status-quo,
+  #total-cost {
+    break-before: page;
+  }
+  .uhp-board-example,
+  #employers .uhp-results {
+    break-inside: avoid;
+  }
+  // A calculator cannot work on paper. Each one is replaced by a pointer to
+  // the web page; the static tables around it stay.
+  #calculator .uhp-calc,
+  #calculator .uhp-method,
+  #employers .uhp-inputs,
+  #employers .uhp-bills {
+    display: none !important;
+  }
+  #employers .uhp-calc {
+    display: block;
+  }
+  .uhp-web-note {
+    max-width: 46rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--brand) 35%, var(--line));
+    border-left: 3px solid var(--brand);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--surface);
+    break-inside: avoid;
+  }
+  // Page breaks and grids. A grid whose background shows through its gaps
+  // paints an empty block when its last row moves to the next page, and a
+  // flex row cannot be split at all without its cards spilling, so on paper
+  // the short grids are kept whole and drawn with plain borders.
+  .uhp-facts {
+    gap: 0.75rem;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .uhp-fact {
+    // Sides only: the top edge keeps its own color (green, or amber for open items).
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    border-radius: 0.5rem;
+  }
+  .uhp-fund {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+
+    > * {
+      width: auto;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+    .brand-card {
+      height: auto !important;
+    }
+  }
+  .uhp-fund,
+  .uhp-share,
+  .uhp-bills,
+  .uhp-sq,
+  .uhp-est,
+  .uhp-dials,
+  .uhp-steps,
+  .uhp-existing,
+  .uhp-chips {
+    break-inside: avoid;
+  }
   .uhp-print-note {
     margin: 0.75rem 0 0;
     font-size: 0.85rem;
@@ -2032,6 +2135,26 @@ $warn: var(--warn);
   tr {
     break-inside: avoid;
   }
+  // The households table is nearly a page tall: let it run on from under its
+  // heading and break between rows instead of jumping to a fresh page.
+  .uhp-households {
+    break-inside: auto;
+
+    th,
+    td {
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
+  }
+  // Fine diagonal stripes do not survive every PDF renderer (one bar came out
+  // empty), so on paper a conditional bar is a pale fill inside its outline.
+  .uhp-key--cond,
+  .uhp-bridge-bar.cond {
+    background: color-mix(in srgb, var(--s3) 30%, #fff);
+  }
+  .uhp-diverge-bar.up {
+    background: color-mix(in srgb, var(--s2) 30%, #fff);
+  }
   // A heading or label stays with what it introduces.
   .h-section,
   .uhp-sub,
@@ -2040,6 +2163,11 @@ $warn: var(--warn);
   summary,
   figcaption,
   .uhp-legend {
+    break-after: avoid;
+  }
+  // ...including the paragraph between a heading and its figure or cards.
+  .h-section + p,
+  .uhp-sub + p {
     break-after: avoid;
   }
   p,
@@ -2070,5 +2198,33 @@ $warn: var(--warn);
   .uhp-hero-foot .uhp-jump a,
   .uhp-hero-foot > p:first-of-type {
     white-space: nowrap;
+  }
+}
+
+// Example households: a name with its particulars underneath.
+.uhp-household-detail {
+  display: block;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+// Independence, stated beside the proposal line rather than only in the sources.
+.uhp-independent {
+  margin: -0.5rem 0 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.uhp-print-only-inline {
+  display: none;
+}
+.uhp-board-example + .uhp-board-example {
+  margin-top: 1.75rem;
+}
+
+// Room for a household's name on one line, so twelve rows stay compact.
+@media (min-width: 768px) {
+  .uhp-households th[scope='row'] {
+    min-width: 21rem;
   }
 }

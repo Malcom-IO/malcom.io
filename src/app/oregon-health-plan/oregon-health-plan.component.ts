@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from '../quillquest/quillquest-shell.component';
 import {
@@ -26,6 +27,7 @@ import {
   payrollTax,
 } from './uhp-model';
 
+import { HOUSEHOLD_ROWS } from './uhp-households';
 import { SLIDER_POSITIONS, incomeAt, positionOf } from './income-scale';
 import {
   BEST,
@@ -127,13 +129,13 @@ interface EndLabel {
  */
 @Component({
   selector: 'app-oregon-health-plan',
-  imports: [RouterLink, QuillquestShellComponent],
+  imports: [NgTemplateOutlet, RouterLink, QuillquestShellComponent],
   templateUrl: './oregon-health-plan.component.html',
   styleUrl: './oregon-health-plan.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OregonHealthPlanComponent {
-  readonly updated = 'November 12, 2026';
+  readonly updated = 'November 13, 2026';
   /** Copyright year: the year of the last update, not of the visit. */
   readonly year = this.updated.slice(-4);
   readonly sources = {
@@ -294,6 +296,8 @@ export class OregonHealthPlanComponent {
   readonly coverage = signal<CoverageKind>('employer');
   readonly scenarioId = signal(SCENARIOS[1].id);
 
+  /** Fixed example households for the side-by-side table. */
+  readonly households = HOUSEHOLD_ROWS;
   readonly coverages = COVERAGES;
   readonly coverageInfo = computed(() => COVERAGES.find((c) => c.kind === this.coverage())!);
 
@@ -420,7 +424,10 @@ export class OregonHealthPlanComponent {
     const { step } = this.yStep();
     const ticks: { y: number; label: string }[] = [];
     for (let v = 0; v <= this.yMax(); v += step) {
-      ticks.push({ y: this.y(v), label: v === 0 ? '$0' : `$${v / 1000}K` });
+      ticks.push({
+        y: this.y(v),
+        label: v === 0 ? '$0' : v >= 1_000_000 ? `$${v / 1_000_000}M` : `$${v / 1000}K`,
+      });
     }
     return ticks;
   });
@@ -494,7 +501,7 @@ export class OregonHealthPlanComponent {
 
   /** The same data as the chart, at round incomes, for the table view. */
   readonly tableRows = computed(() =>
-    [50_000, 100_000, 150_000, 200_000, 250_000].map((income) => ({
+    [0.2, 0.4, 0.6, 0.8, 1].map((share) => Math.round((this.xMax() * share) / 1_000) * 1_000).map((income) => ({
       income,
       values: MODELS.map((_, i) => this.billAt(i, income)),
     })),
@@ -623,6 +630,11 @@ export class OregonHealthPlanComponent {
   // ------------------------------------------------------------ formatting
   usd(value: number): string {
     return USD.format(Math.round(value));
+  }
+
+  /** Always one decimal, so 9.0% sits beside 9.4% without looking like a different kind of number. */
+  pct1(value: number): string {
+    return `${(value * 100).toFixed(1)}%`;
   }
 
   pct(value: number, digits = 1): string {

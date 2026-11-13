@@ -1,10 +1,11 @@
 import { SLIDER_INCOME_MAX, SLIDER_POSITIONS, incomeAt, positionOf } from './income-scale';
 
 describe('income slider scale', () => {
-  it('runs from $0 to $2 million', () => {
+  it('runs from $0 to $4 million', () => {
     expect(incomeAt(0)).toBe(0);
-    expect(incomeAt(SLIDER_POSITIONS)).toBe(2_000_000);
-    expect(SLIDER_INCOME_MAX).toBe(2_000_000);
+    expect(incomeAt(SLIDER_POSITIONS)).toBe(4_000_000);
+    expect(SLIDER_INCOME_MAX).toBe(4_000_000);
+    expect(incomeAt(300)).toBe(2_000_000);
   });
 
   it('moves in $1,000 steps up to $200,000, then coarser', () => {
@@ -35,6 +36,6 @@ describe('income slider scale', () => {
 
   it('clamps positions outside the track', () => {
     expect(incomeAt(-5)).toBe(0);
-    expect(incomeAt(9_999)).toBe(2_000_000);
+    expect(incomeAt(9_999)).toBe(4_000_000);
   });
 });
