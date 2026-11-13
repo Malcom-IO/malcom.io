@@ -66,8 +66,9 @@
   --nav-bg: rgba(241, 246, 240, 0.86);
   --shadow: rgba(23, 27, 32, 0.16);
 
-  // Same hues as dark; every slot clears 3:1 on white.
-  --s1: #2a78d6;
+  // Same steps as dark: every slot clears 3:1 on white, and dark ink on each
+  // fill clears 4.5:1 for the labels inside bars.
+  --s1: #3987e5;
   --s2: #d95926;
   --s3: #199e70;
   --s4: #c98500;

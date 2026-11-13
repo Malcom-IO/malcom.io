@@ -49,9 +49,17 @@ export class ThemeToggleComponent {
   readonly dark = signal<boolean | null>(null);
 
   constructor() {
-    afterNextRender(() =>
-      this.dark.set(this.doc.documentElement.getAttribute('data-theme') !== 'light'),
-    );
+    afterNextRender(() => {
+      const read = () =>
+        this.dark.set(this.doc.documentElement.getAttribute('data-theme') !== 'light');
+      read();
+      // The inline script restamps the theme when the system setting changes and
+      // nothing is saved; keep the pressed state in step. It runs first, having
+      // registered first.
+      this.doc.defaultView
+        ?.matchMedia?.('(prefers-color-scheme: light)')
+        .addEventListener?.('change', read);
+    });
   }
 
   toggle(): void {

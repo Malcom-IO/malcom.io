@@ -9,7 +9,7 @@ import { EmployerKind, MODELS, contribution, employerRate } from './uhp-model';
  * pays today, and how much of its income is wages, come from the board's own
  * examples (report Tables S1, S2 and S4) or from Appendix FR Figures AFR4Fb
  * (household of one) and AFR4Fc (household of four). Above the appendix's top
- * income of $380,000 we hold its last status-quo figure.
+ * income of $400,000 we hold its last status-quo figure.
  */
 export interface HouseholdExample {
   who: string;
@@ -36,7 +36,7 @@ const FAMILY_MARKET = 22_871;
 export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   {
     who: 'Single worker, private employer',
-    detail: '1 person, $45,000, about the median for one person',
+    detail: '1 person, about the median for one',
     size: 1,
     income: 45_000,
     wages: 42_300,
@@ -46,7 +46,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Single public employee',
-    detail: '1 person, $80,000, school district or other public employer',
+    detail: '1 person, school district or other public employer, about the 80th percentile for one',
     size: 1,
     income: 80_000,
     wages: 73_300,
@@ -56,7 +56,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Self-employed, buys own plan',
-    detail: '1 person, $90,000',
+    detail: '1 person, above the 80th percentile for one',
     size: 1,
     income: 90_000,
     wages: 0,
@@ -66,7 +66,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Couple, private employer',
-    detail: '2 people, $85,000, the median for two',
+    detail: '2 people, the median for two',
     size: 2,
     income: 85_000,
     wages: 80_000,
@@ -76,7 +76,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Retired couple on Medicare',
-    detail: '2 people, $75,000 not counting Social Security',
+    detail: '2 people, income not counting Social Security',
     size: 2,
     income: 75_000,
     wages: 0,
@@ -86,7 +86,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, private employer',
-    detail: '4 people, $70,000, below the median for four',
+    detail: '4 people, below the median for four',
     size: 4,
     income: 70_000,
     wages: 65_000,
@@ -96,7 +96,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, private employer',
-    detail: '4 people, $110,000, the median for four',
+    detail: '4 people, the median for four',
     size: 4,
     income: 110_000,
     wages: 99_000,
@@ -106,7 +106,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, public employer',
-    detail: '4 people, $110,000, the median for four',
+    detail: '4 people, the median for four',
     size: 4,
     income: 110_000,
     wages: 99_000,
@@ -116,7 +116,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, private employer',
-    detail: '4 people, $220,000, about the 80th percentile for four',
+    detail: '4 people, about the 80th percentile for four',
     size: 4,
     income: 220_000,
     wages: 180_000,
@@ -126,7 +126,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, self-employed',
-    detail: '4 people, $400,000, buying their own plan',
+    detail: '4 people, buying their own plan, between the 80th and 95th percentile',
     size: 4,
     income: 400_000,
     wages: 0,
@@ -136,7 +136,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, self-employed',
-    detail: '4 people, $1,000,000, above the 95th percentile ($500,000)',
+    detail: '4 people, buying their own plan, above the 95th percentile ($500,000)',
     size: 4,
     income: 1_000_000,
     wages: 0,
@@ -146,7 +146,7 @@ export const HOUSEHOLD_EXAMPLES: readonly HouseholdExample[] = [
   },
   {
     who: 'Family of four, self-employed',
-    detail: '4 people, $2,000,000, above the 95th percentile ($500,000)',
+    detail: '4 people, buying their own plan, above the 95th percentile ($500,000)',
     size: 4,
     income: 2_000_000,
     wages: 0,

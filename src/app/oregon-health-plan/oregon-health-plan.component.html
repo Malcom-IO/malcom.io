@@ -885,7 +885,7 @@
             @for (row of households; track $index) {
               <tr role="row">
                 <th role="rowheader" scope="row">
-                  {{ row.who }}
+                  {{ row.who }}, {{ usd(row.income) }}
                   <span class="uhp-household-detail">{{ row.detail }}</span>
                 </th>
                 <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
@@ -908,10 +908,14 @@
         <span class="uhp-ours">our math</span> The households are our choice; the board's
         examples stop at $220,000. What each pays today, and how much of its income is wages,
         come from the board: report Tables S1, S2 and S4 for the self-employed person, the couple
-        and the Medicare couple, and Appendix FR Figures AFR4Fb and AFR4Fc for the rest. The
-        appendix's figures stop at $380,000, so the three highest rows keep its last figure for
-        a family buying its own plan. "Median" and "percentile" are the appendix's, for tax
-        returns with that many people.
+        and the Medicare couple, and Appendix FR Figures AFR4Fb and AFR4Fc for the rest. (For
+        the couple, the wages are the $80,000 that reproduce the board's figures.) The
+        appendix's figures stop at $400,000, so the two highest rows keep its last figure for a
+        family buying its own plan. "Median" and "percentile" are the appendix's, for tax
+        returns with that many people. About 4% of Oregonians buy their own plan; those rows
+        are over-represented here to show the top of the range. One cell differs from the
+        board's table: the report prints $3,699 for Model 5 at $90,000 where its own schedule
+        gives $3,669.
       </p>
       <p class="uhp-note">
         The private-employer rows use the 9% payroll tax of the board's example employer, with
@@ -919,7 +923,10 @@
         smaller employer the worker credit is smaller, and under $500,000 of payroll there is
         none: the single worker would then owe $1,766, $1,576 and $1,474 under Models 1, 2 and
         4 instead of $0. The employer's own payroll tax on those wages (9% private, 9.6% to
-        14% public) is not shown. The Medicare row assumes the plan pays the Part B premium;
+        14% public) is not shown. The appendix's own tables use each model's average payroll
+        rate, about 10%, so its private-employer figures run about $500 to $1,000 lower under
+        Models 2 and 4; on that basis the $220,000 family pays $9,445 under Model 2, slightly
+        less than today. The Medicare row assumes the plan pays the Part B premium;
         Medigap and Part D are not addressed.
       </p>
       <p class="uhp-note">
@@ -1542,8 +1549,8 @@
         }
       </div>
       <p class="uhp-note">
-        Yearly figures for 2032, with about 348,000 more people covered and little or no cost
-        sharing. "Payments that would end" is <span class="uhp-ours">our math</span>: the
+        Yearly figures for 2032, with about 348,000 more people covered and few or no copays and
+        deductibles. "Payments that would end" is <span class="uhp-ours">our math</span>: the
         current-system total less the public funding the report expects to continue, plus Part
         B premiums. The totals are statewide; some households and employers would pay more than
         today and others less. Both estimates assume provider payment rates are reset, as
@@ -1765,7 +1772,7 @@
         </p>
         <p class="uhp-note uhp-print-only">
           Every source document is on the board's site, oregon.gov/uhpgb, under Board Meetings,
-          2026. In the PDF, the titles above are links.
+          2026. On screen, the titles above are links.
         </p>
       </div>
     </div>

@@ -329,11 +329,13 @@ a {
     color: var(--text);
   }
   .less::before {
+    content: '\2193\00a0';
     content: '\2193\00a0' / '';
     color: var(--brand-bright);
   }
   // "Pays more than today": a mark only, no tint, so neither direction shouts.
   .more::before {
+    content: '\2191\00a0';
     content: '\2191\00a0' / '';
     color: var(--caution);
   }
@@ -1682,6 +1684,7 @@ $info: var(--info);
       color: var(--text-soft);
     }
     td.less::after {
+      content: '\2193';
       content: '\2193' / '';
       order: 3;
       color: var(--brand-bright);
@@ -1691,6 +1694,7 @@ $info: var(--info);
       color: var(--text-soft);
     }
     td.more::after {
+      content: '\2191';
       content: '\2191' / '';
       order: 3;
       color: var(--caution);
@@ -2001,7 +2005,7 @@ $warn: var(--warn);
     display: block;
   }
   .uhp-print-only-inline {
-    display: inline;
+    display: inline !important;
   }
   // "Show ... as a table" is a control; on paper the table is simply there.
   .uhp-details > summary {
@@ -2135,6 +2139,12 @@ $warn: var(--warn);
   // heading and break between rows instead of jumping to a fresh page.
   .uhp-households {
     break-inside: auto;
+
+    th,
+    td {
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
   }
   // Fine diagonal stripes do not survive every PDF renderer (one bar came out
   // empty), so on paper a conditional bar is a pale fill inside its outline.
@@ -2210,4 +2220,11 @@ $warn: var(--warn);
 }
 .uhp-board-example + .uhp-board-example {
   margin-top: 1.75rem;
+}
+
+// Room for a household's name on one line, so twelve rows stay compact.
+@media (min-width: 768px) {
+  .uhp-households th[scope='row'] {
+    min-width: 21rem;
+  }
 }
