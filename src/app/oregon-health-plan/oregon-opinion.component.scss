@@ -803,11 +803,11 @@ $payroll: var(--s4);
 .op-key--m7 {
   background: var(--s3);
 }
-// Phones: keep rate figures on one line and the mix labels inside their bars.
+// Phones: smaller rate figures (they may wrap at the arrow, never inside a
+// range) and the mix labels inside their bars.
 @media (max-width: 575.98px) {
   .op-rate-big {
     font-size: 1.15rem;
-    white-space: nowrap;
   }
   .op-rates {
     grid-template-columns: minmax(0, 1fr);
