@@ -25,7 +25,7 @@
   border-radius: 18px;
   display: block;
   margin-bottom: 1.5rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 30px var(--shadow);
 }
 
 .qq-title {
@@ -108,5 +108,5 @@
   height: auto;
   border-radius: 26px;
   border: 1px solid var(--line);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 60px var(--shadow);
 }

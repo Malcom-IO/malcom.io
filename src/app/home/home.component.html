@@ -1,12 +1,13 @@
 <!--Navbar-->
 <header id="header">
-  <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" data-bs-theme="dark" aria-label="Primary">
+  <nav class="navbar navbar-expand-lg fixed-top malcom-navbar" aria-label="Primary">
     <div class="container">
       <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
-      <ul class="navbar-nav ms-auto flex-row gap-4">
+      <ul class="navbar-nav ms-auto flex-row align-items-center gap-3 gap-sm-4">
         <li class="nav-item d-none d-sm-block"><a class="nav-link active" routerLink="/" aria-current="page">Home</a></li>
         <li class="nav-item"><a class="nav-link" [routerLink]="['/']" fragment="products">Products</a></li>
         <li class="nav-item"><a class="btn btn-primary btn-sm nav-cta" [routerLink]="['/']" fragment="contact">Start a project</a></li>
+        <li class="nav-item d-flex"><app-theme-toggle></app-theme-toggle></li>
       </ul>
     </div>
   </nav>

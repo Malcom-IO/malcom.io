@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 /**
  * The Shyre family marks, inlined. Paths are copied from the products' own
  * sources: the tree on two hills from Shyre's src/app/icon.svg, and the
- * shield-framed tree from Shyre Ward's Resources/AppIcon.svg. The fill is the
- * green Shyre Ward uses on a dark ground. Decorative only — always aria-hidden.
+ * shield-framed tree from Shyre Ward's Resources/AppIcon.svg. The fill comes
+ * from the --mark token, so it holds up on either theme. Decorative only — always aria-hidden.
  */
 @Component({
   selector: 'app-product-mark',
@@ -16,18 +16,18 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     focusable="false">
     @if (name === 'ward') {
       <clipPath [attr.id]="clipId"><path [attr.d]="shield" /></clipPath>
-      <path [attr.d]="shield" fill="#333f33" />
+      <path [attr.d]="shield" class="mark-ground" />
       <g [attr.clip-path]="'url(#' + clipId + ')'">
         <g transform="translate(2.3 4.0) scale(0.86)">
           @for (d of tree; track d) {
-            <path [attr.d]="d" fill="#5cbe61" />
+            <path [attr.d]="d" class="mark-ink" />
           }
         </g>
       </g>
-      <path [attr.d]="shield" fill="none" stroke="#5cbe61" stroke-width="1.3" stroke-linejoin="round" />
+      <path [attr.d]="shield" class="mark-line" fill="none" stroke-width="1.3" stroke-linejoin="round" />
     } @else {
       @for (d of tree; track d) {
-        <path [attr.d]="d" fill="#5cbe61" />
+        <path [attr.d]="d" class="mark-ink" />
       }
     }
   </svg>`,
@@ -37,6 +37,15 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
         width: 2.75rem;
         height: 2.75rem;
         display: block;
+      }
+      .mark-ink {
+        fill: var(--mark);
+      }
+      .mark-line {
+        stroke: var(--mark);
+      }
+      .mark-ground {
+        fill: color-mix(in srgb, var(--mark) 18%, var(--surface));
       }
     `,
   ],

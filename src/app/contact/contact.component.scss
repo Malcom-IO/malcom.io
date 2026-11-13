@@ -19,17 +19,17 @@
 .form-control {
   background-color: var(--surface);
   // >= 3:1 non-text contrast against both the page ground and the input fill (WCAG 1.4.11)
-  border-color: #6b7682;
+  border-color: var(--control-border);
   color: var(--text);
 }
 .form-control:focus {
   background-color: var(--surface);
   border-color: var(--brand);
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--brand) 25%, transparent);
   color: var(--text);
 }
 .form-control::placeholder {
-  color: #8a94a0; // >=4.5:1 on the input surface (WCAG 1.4.3)
+  color: var(--placeholder); // >=4.5:1 on the input surface (WCAG 1.4.3)
 }
 
 // Honeypot — visually removed, still submitted; bots fill it, humans don't.
@@ -53,12 +53,12 @@
 // The subject <select> matches the text inputs.
 .form-select {
   background-color: var(--surface);
-  border-color: #6b7682;
+  border-color: var(--control-border);
   color: var(--text);
 }
 .form-select:focus {
   border-color: var(--brand);
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--brand) 25%, transparent);
 }
 
 // Right column: what happens after someone writes.

@@ -40,6 +40,12 @@ jobs:
       - name: Build (prerendered static site)
         run: npm run build
 
+      # The Oregon health plan page offers itself as a PDF, rendered from this
+      # build with the runner's Chrome so the two cannot drift apart.
+      - name: Render the Oregon health plan PDF
+        timeout-minutes: 5
+        run: npm run pdf
+
       # Serve the client-render shell for any unknown URL (SPA fallback on 404)
       - name: Add 404 fallback
         run: cp dist/browser/index.csr.html dist/browser/404.html
