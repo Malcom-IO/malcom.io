@@ -372,3 +372,10 @@ path[class*='op-line--'] {
     grid-template-columns: 6.5rem minmax(0, 1fr) 5rem;
   }
 }
+
+// The employer's side of the bill: present, but visibly not the household's.
+.uhp-table td.op-payroll,
+.uhp-table th:last-child {
+  border-left: 1px solid var(--line);
+  color: var(--text-soft);
+}

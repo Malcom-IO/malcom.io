@@ -24,8 +24,8 @@ import {
   povertyLine,
   softCapped,
 } from './uhp-ceiling';
-import { HOUSEHOLD_ROWS } from './uhp-households';
-import { MODELS, contribution } from './uhp-model';
+import { BOARD_PRIVATE_RATE, HOUSEHOLD_ROWS } from './uhp-households';
+import { MODELS, contribution, employerRate } from './uhp-model';
 
 /** The draft as written, or one of the ideas applied on top of it. */
 type View = 'draft' | 'pick' | 'soft' | 'ceiling';
@@ -109,7 +109,16 @@ export class OregonOpinionComponent {
           flipped: draft < h.now && value > h.now,
         };
       });
-      return { ...h, cells, changed: cells.some((c) => c.changed) };
+      // What the employer would pay in payroll tax on this household's wages: the
+      // other half of the bill, which the household's own figure leaves out.
+      const rates =
+        h.employer === 'private'
+          ? [BOARD_PRIVATE_RATE]
+          : h.employer === 'public'
+            ? MODELS.map((m) => employerRate('public', m.id))
+            : [0];
+      const payroll = { low: Math.min(...rates) * h.wages, high: Math.max(...rates) * h.wages };
+      return { ...h, cells, payroll, changed: cells.some((c) => c.changed) };
     }),
   );
   /** How many of the twelve pay more, less, or the same as the draft asks, in any model. */

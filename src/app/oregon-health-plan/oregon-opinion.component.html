@@ -90,6 +90,7 @@
               @for (m of models; track m.id) {
                 <th role="columnheader" scope="col" class="num">Model {{ m.id }}</th>
               }
+              <th role="columnheader" scope="col" class="num">Employer's payroll tax</th>
             </tr>
           </thead>
           <tbody role="rowgroup">
@@ -116,11 +117,26 @@
                     }
                   </td>
                 }
+                <td role="cell" class="num op-payroll" data-label="Employer's payroll tax">
+                  @if (row.payroll.high < 1) {
+                    None
+                  } @else if (row.payroll.high - row.payroll.low < 1) {
+                    + {{ usd100(row.payroll.low) }}
+                  } @else {
+                    + {{ usd100(row.payroll.low) }} to {{ usd100(row.payroll.high) }}
+                  }
+                </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
+      <p class="uhp-note">
+        <strong>The model columns are the household's own bill only.</strong> The last column is
+        what its employer would also pay in payroll tax on the same wages, which the appendix
+        assumes comes out of pay over time. "Pays today" likewise leaves out what the employer
+        pays in premiums now.
+      </p>
       <ul class="uhp-legend op-table-key" aria-hidden="true">
         <li><span class="uhp-key op-key--up"></span>Pays more than the draft asks</li>
         <li><span class="uhp-key op-key--down"></span>Pays less than the draft asks</li>
