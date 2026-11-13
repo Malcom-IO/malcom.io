@@ -67,15 +67,22 @@ export interface RevenueModel {
   blurb: string;
   /** Income exempt for a family of four, in dollars (Table R2). */
   exemptFamilyOf4: number;
+  /**
+   * Average COMBINED rate (household contribution plus the employer payroll tax
+   * attributed to wages) for each fifth of incomes, lowest first
+   * (Appendix FR Figure AFR4Fi; report Table R8).
+   */
+  combinedByFifth: readonly [number, number, number, number, number];
 }
 
 /** Report Tables R3, R4 and R7; brief pages 8-9. */
 export const MODELS: readonly RevenueModel[] = [
   {
     id: 1,
-    name: 'Simple flat rate',
+    name: 'One rate, flat payroll tax',
     blurb:
-      'One rate on everything above the exemption, for employers and households alike. The board calls it the simplest to explain and the least progressive.',
+      "One household rate above the exemption and one payroll rate above $500,000, with the worker credit. The board calls it the simplest to explain and the least progressive.",
+    combinedByFifth: [0.076, 0.061, 0.081, 0.104, 0.135],
     top1Share: 0.307,
     exemptFamilyOf4: 66_000,
     employerTax: '9.6% of payroll above $500,000',
@@ -90,9 +97,10 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 2,
-    name: 'Flat rate, big employers pay more',
+    name: 'One rate, worker credit',
     blurb:
-      "Model 1 with a higher payroll tax on the largest employers. That raises more from big firms, so the household rate comes down.",
+      "Model 1 plus a 14% payroll tier above $10 million, which Models 3 to 5 share. More comes from the largest payrolls, so the household rate is lower.",
+    combinedByFifth: [0.097, 0.078, 0.089, 0.105, 0.13],
     top1Share: 0.339,
     exemptFamilyOf4: 66_000,
     employerTax: '9.6% above $500,000, 14% above $10 million',
@@ -106,9 +114,10 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 3,
-    name: 'Lowest rate, more people pay',
+    name: 'One rate, no credit',
     blurb:
-      'No credit for workers, so more households pay than under Models 1 and 2, and the rate drops to the lowest of the five.',
+      "Model 2 without the worker credit. The household rate is the lowest of the five, but more households pay it, and the middle fifth pays the most of any model.",
+    combinedByFifth: [0.097, 0.081, 0.104, 0.114, 0.122],
     top1Share: 0.253,
     exemptFamilyOf4: 66_000,
     employerTax: '9.6% above $500,000, 14% above $10 million',
@@ -122,9 +131,10 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 4,
-    name: 'Stepped rates, fewest pay',
+    name: 'Stepped rates, worker credit',
     blurb:
-      'Taxes start at a lower income and rise in steps to the highest top rate of the five, with the worker credit. The most filers owe nothing, and the top 1% carry the largest share.',
+      "The contribution starts at a lower income and rises in steps to the highest top rate of the five, with the worker credit. The most filers owe nothing, and the top 1% carry the largest share.",
+    combinedByFifth: [0.097, 0.078, 0.086, 0.097, 0.135],
     top1Share: 0.399,
     exemptFamilyOf4: 45_540,
     employerTax: '9.6% above $500,000, 14% above $10 million',
@@ -139,9 +149,10 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 5,
-    name: 'Stepped rates, most pay',
+    name: 'Stepped rates, no credit',
     blurb:
-      'Six steps, a lower exemption and no worker credit. The board calls it the most progressive and the most complicated. About 7 in 10 filers would pay something.',
+      "Six steps, the lower exemption and no worker credit. The board calls it the most progressive and the most complicated. About 7 in 10 filers would pay something.",
+    combinedByFifth: [0.097, 0.082, 0.099, 0.104, 0.128],
     top1Share: 0.356,
     exemptFamilyOf4: 45_540,
     employerTax: '9.6% above $500,000, 14% above $10 million',
@@ -157,44 +168,52 @@ export const MODELS: readonly RevenueModel[] = [
 ];
 
 /**
- * Who pays you. It decides the payroll tax your employer would owe on your
- * wages, which is what the 50% credit in Models 1, 2 and 4 is based on.
+ * Who pays the household's wages. It decides the payroll tax an employer would
+ * owe on those wages, which is what the 50% credit in Models 1, 2 and 4 is based on.
  */
-export type EmployerKind = 'none' | 'midsize' | 'large';
+export type EmployerKind = 'none' | 'private' | 'public';
 
 export interface EmployerOption {
   kind: EmployerKind;
   label: string;
-  detail: string;
 }
 
 export const EMPLOYERS: readonly EmployerOption[] = [
-  {
-    kind: 'none',
-    label: 'Self-employed, small employer, or no wages',
-    detail: 'Payroll under $500,000 a year is exempt, so there is no payroll tax and no credit.',
-  },
-  {
-    kind: 'midsize',
-    label: 'Mid-size private employer',
-    detail: "The board's example: an $8.5 million payroll, which works out to 9.0% of wages.",
-  },
-  {
-    kind: 'large',
-    label: 'Public employer',
-    detail:
-      "The board's example: 9.6% of wages under Model 1, 14% under the others. A large private firm would land between this and mid-size.",
-  },
+  { kind: 'private', label: 'A private employer' },
+  { kind: 'public', label: 'A public employer (state, city, school district, university)' },
+  { kind: 'none', label: 'Self-employed, or no wages' },
 ];
 
+/** Payroll below this is untaxed in every model. */
+export const PAYROLL_EXEMPT = 500_000;
+/** Payroll above this is taxed at 14% in Models 2 to 5. */
+export const PAYROLL_UPPER_TIER = 10_000_000;
+
 /**
- * Effective employer payroll tax rate on a worker's wages, as the board's
- * scenarios apply it (report pages 43-45).
+ * Employer payroll tax on a year's payroll. Marginal: only payroll above
+ * $500,000 is taxed, so there is no cliff (Appendix FR: rates are marginal "to
+ * avoid fiscal cliffs"). Model 1 has one rate; Models 2 to 5 add a 14% tier
+ * above $10 million (report Table R4).
  */
-export function employerRate(kind: EmployerKind, model: ModelId): number {
+export function payrollTax(payroll: number, model: ModelId): number {
+  const lower = Math.max(0, Math.min(payroll, PAYROLL_UPPER_TIER) - PAYROLL_EXEMPT) * 0.096;
+  const upper = Math.max(0, payroll - PAYROLL_UPPER_TIER) * (model === 1 ? 0.096 : 0.14);
+  return lower + upper;
+}
+
+/**
+ * Effective employer payroll tax rate on a worker's wages.
+ *
+ * Private: the firm's tax divided by its payroll. At the board's $8.5 million
+ * example this is 9.04%, which the report rounds to 9.0%.
+ * Public: the top rate from the first dollar. The appendix says "for public
+ * employers, the first dollar of payroll is subject to the highest EPT marginal
+ * rate", which is 9.6% in Model 1 and 14% in the others (report page 45).
+ */
+export function employerRate(kind: EmployerKind, model: ModelId, payroll = 0): number {
   if (kind === 'none') return 0;
-  if (kind === 'midsize') return 0.09;
-  return model === 1 ? 0.096 : 0.14;
+  if (kind === 'public') return model === 1 ? 0.096 : 0.14;
+  return payroll > 0 ? payrollTax(payroll, model) / payroll : 0;
 }
 
 export interface BillInput {
@@ -277,22 +296,30 @@ export interface Bill {
   model: RevenueModel;
   /** What the household would owe per year. */
   household: number;
+  /** The contribution before the worker credit. */
+  gross: number;
+  /** The worker credit actually used (never more than the gross contribution). */
+  credit: number;
   /** What the employer would pay in payroll tax on this household's wages. */
   employer: number;
 }
 
 /**
  * A household's yearly bill under one model, treating all income as wages when
- * there is an employer.
+ * there is an employer. `payroll` is the private employer's total yearly payroll.
  */
-export function bill(model: RevenueModel, income: number, size: number, kind: EmployerKind): Bill {
-  const eRate = employerRate(kind, model.id);
+export function bill(
+  model: RevenueModel,
+  income: number,
+  size: number,
+  kind: EmployerKind,
+  payroll = 0,
+): Bill {
+  const eRate = employerRate(kind, model.id, payroll);
   const wages = kind === 'none' ? 0 : income;
-  return {
-    model,
-    household: contribution(model, income, wages, size, eRate),
-    employer: eRate * wages,
-  };
+  const gross = grossContribution(income, schedule(model, size));
+  const household = contribution(model, income, wages, size, eRate);
+  return { model, household, gross, credit: gross - household, employer: eRate * wages };
 }
 
 // ------------------------------------------------------- the board's examples
@@ -321,7 +348,8 @@ export const SCENARIOS: readonly Scenario[] = [
     id: 'self',
     tab: 'Self-employed',
     who: 'One 45-year-old, self-employed or at a small firm, buying their own insurance.',
-    today: 'Today: individual-market premiums and out-of-pocket costs that vary with income.',
+    today:
+      "Today: a silver marketplace plan at a 45-year-old's price, after subsidies, plus out-of-pocket costs. Older buyers pay more than this today. If you are uninsured, your cost today is whatever you pay for care.",
     rows: [
       { income: 20_000, now: 0, models: [0, 0, 0, 0, 0] },
       { income: 45_000, now: 5_211, models: [1_766, 1_576, 1_006, 1_474, 823] },

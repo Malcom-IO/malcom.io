@@ -14,11 +14,16 @@ import { QuillquestShellComponent } from '../quillquest/quillquest-shell.compone
 import {
   EMPLOYERS,
   EmployerKind,
+  FPL_138,
   FPL_200,
   MODELS,
+  PAYROLL_EXEMPT,
+  Bill,
   RevenueModel,
   SCENARIOS,
   bill,
+  employerRate,
+  payrollTax,
 } from './uhp-model';
 
 import {
@@ -29,9 +34,64 @@ import {
   RATE_RESET,
   REVENUE_TARGET,
   RAISED_IN_OREGON,
+  HIGH_PLAN,
   SCENARIOS_STATEWIDE,
   perPerson,
 } from './uhp-statewide';
+
+export type CoverageKind = 'employer' | 'own' | 'medicare' | 'ohp' | 'none';
+
+interface CoverageOption {
+  kind: CoverageKind;
+  label: string;
+  /** The board's example figure for what such a household pays today. */
+  typicalCost: number;
+  /** Set when the choice implies who pays the wages. */
+  employer?: EmployerKind;
+  /** Shown under "what you pay now". */
+  hint: string;
+  /** Shown above the results when there is something this reader must know. */
+  note?: string;
+}
+
+/** Figures are the board's own "status quo" examples (report Tables S1 to S4). */
+const COVERAGES: readonly CoverageOption[] = [
+  {
+    kind: 'employer',
+    label: 'Through a job',
+    typicalCost: 4_700,
+    hint: "Your share of premiums plus deductibles, copays and prescriptions. Leave out what your employer pays. The board's example for a couple is $4,700.",
+  },
+  {
+    kind: 'own',
+    label: 'I buy my own plan',
+    typicalCost: 6_900,
+    employer: 'none',
+    hint: "Your premiums after any subsidy, plus deductibles, copays and prescriptions. The board's example, a 45-year-old with a silver plan, is $6,900; older buyers pay more.",
+  },
+  {
+    kind: 'medicare',
+    label: 'Medicare',
+    typicalCost: 9_600,
+    employer: 'none',
+    hint: "Part B premiums plus Medigap, Part D and what you pay out of pocket. The board's example for a couple is $9,600.",
+    note: 'Leave Social Security out of your income; it does not count toward the contribution. The figures assume the plan pays your Part B premium, which the board recommends but calls unfinished. The report does not say what happens to Medigap or Part D.',
+  },
+  {
+    kind: 'ohp',
+    label: 'Oregon Health Plan',
+    typicalCost: 0,
+    hint: 'Most Oregon Health Plan members pay nothing today, so this is $0.',
+    note: 'You would keep your coverage. The board says most people who qualify for the Oregon Health Plan by income would have no health care costs under the plan.',
+  },
+  {
+    kind: 'none',
+    label: 'No insurance',
+    typicalCost: 0,
+    hint: 'Enter what you spend on care in a typical year, or leave it at $0.',
+    note: 'You would be covered. The amounts below are what you would pay toward the plan; in return, care would be covered with no premium and, if the board keeps its goal, no deductible or copay.',
+  },
+];
 
 /** Longest bar in the statewide charts, in billions; bars scale against it. */
 const BAR_MAX = 8;
@@ -105,7 +165,8 @@ export class OregonHealthPlanComponent {
   ];
 
   // ------------------------------------------------------- the five models
-  /** The four measures drawn as bars beside each model, each on its own scale. */
+  /** The measures drawn as bars beside each model, each on its own scale. */
+  readonly fifths = ['Lowest fifth', 'Second fifth', 'Middle fifth', 'Fourth fifth', 'Top fifth'];
   readonly modelMetrics: readonly {
     key: string;
     label: string;
@@ -126,9 +187,15 @@ export class OregonHealthPlanComponent {
     },
     {
       key: 'middle',
-      label: 'What a middle-income household pays',
+      label: 'Household contribution, middle fifth',
       width: (m) => (m.middleFifthRate / 0.03) * 100,
       value: (m) => `${this.pct(m.middleFifthRate)} of income`,
+    },
+    {
+      key: 'combined',
+      label: 'With the payroll tax, middle fifth',
+      width: (m) => (m.combinedByFifth[2] / 0.12) * 100,
+      value: (m) => `${this.pct(m.combinedByFifth[2])} of income`,
     },
     {
       key: 'top1',
@@ -146,6 +213,7 @@ export class OregonHealthPlanComponent {
   readonly rateReset = RATE_RESET;
   readonly bridge = BRIDGE;
   readonly statewide = SCENARIOS_STATEWIDE;
+  readonly highPlan = HIGH_PLAN;
   readonly perPerson = perPerson;
   readonly abs = Math.abs;
   readonly round = Math.round;
@@ -187,19 +255,74 @@ export class OregonHealthPlanComponent {
   // ------------------------------------------------------------ calculator
   readonly size = signal(2);
   readonly income = signal(85_000);
-  readonly employer = signal<EmployerKind>('midsize');
+  readonly employer = signal<EmployerKind>('private');
+  /** The private employer's total yearly payroll; sets the worker credit. */
+  readonly payroll = signal(8_500_000);
   readonly currentCost = signal(4_700);
+  readonly coverage = signal<CoverageKind>('employer');
   readonly scenarioId = signal(SCENARIOS[1].id);
 
+  readonly coverages = COVERAGES;
+  readonly coverageInfo = computed(() => COVERAGES.find((c) => c.kind === this.coverage())!);
+
   readonly exemption = computed(() => FPL_200[this.size()]);
-  readonly employerDetail = computed(
-    () => EMPLOYERS.find((e) => e.kind === this.employer())!.detail,
-  );
+  readonly exemptionLow = computed(() => FPL_138[this.size()]);
   readonly scenario = computed(() => SCENARIOS.find((s) => s.id === this.scenarioId())!);
 
+  /** What the chosen pay source means for the payroll tax and the worker credit. */
+  readonly employerHint = computed(() => {
+    switch (this.employer()) {
+      case 'none':
+        return 'No employer pays payroll tax on this income, so there is no worker credit. In the models with the credit, the appendix says self-employed people would pay more than most employees with the same income.';
+      case 'public':
+        return 'Public employers would pay the top payroll rate from the first dollar: 9.6% of wages under Model 1 and 14% under the others.';
+      default: {
+        const one = employerRate('private', 1, this.payroll());
+        const rest = employerRate('private', 2, this.payroll());
+        if (this.payroll() <= PAYROLL_EXEMPT) {
+          return 'A payroll of $500,000 or less owes no payroll tax, so there is no worker credit.';
+        }
+        return one === rest
+          ? `On that payroll the tax works out to ${this.pct(one)} of wages in every model.`
+          : `On that payroll the tax works out to ${this.pct(one)} of wages under Model 1 and ${this.pct(rest)} under the others.`;
+      }
+    }
+  });
+
   readonly bills = computed(() =>
-    MODELS.map((m) => bill(m, this.income(), this.size(), this.employer())),
+    MODELS.map((m) => bill(m, this.income(), this.size(), this.employer(), this.payroll())),
   );
+
+  /** Lowest and highest bill across the five models. */
+  readonly range = computed(() => {
+    const amounts = this.bills().map((b) => b.household);
+    return { low: Math.min(...amounts), high: Math.max(...amounts) };
+  });
+
+  // ------------------------------------------------------- employer calculator
+  readonly bizKind = signal<'private' | 'public'>('private');
+  readonly bizPayroll = signal(1_100_000);
+  readonly bizSpend = signal(110_000);
+
+  /** Model 1 has one payroll rate; Models 2 to 5 share a second, higher tier. */
+  readonly bizRows = computed(() =>
+    ([
+      { label: 'Model 1', id: 1 },
+      { label: 'Models 2 to 5', id: 2 },
+    ] as const).map(({ label, id }) => {
+      const payroll = this.bizPayroll();
+      const tax =
+        this.bizKind() === 'public' ? employerRate('public', id) * payroll : payrollTax(payroll, id);
+      return { label, tax, rate: payroll > 0 ? tax / payroll : 0, diff: tax - this.bizSpend() };
+    }),
+  );
+
+  /** The payroll tax at a few payroll sizes, for firms that do not want to type. */
+  readonly bizExamples = [420_000, 1_100_000, 8_500_000, 20_000_000, 190_000_000].map((payroll) => ({
+    payroll,
+    one: payrollTax(payroll, 1),
+    rest: payrollTax(payroll, 2),
+  }));
 
   // ----------------------------------------------------------------- chart
   private readonly plotEl = viewChild<ElementRef<HTMLElement>>('plot');
@@ -221,7 +344,8 @@ export class OregonHealthPlanComponent {
   );
 
   private billAt(modelIndex: number, income: number): number {
-    return bill(MODELS[modelIndex], income, this.size(), this.employer()).household;
+    return bill(MODELS[modelIndex], income, this.size(), this.employer(), this.payroll())
+      .household;
   }
 
   private readonly yStep = computed(() => {
@@ -386,6 +510,40 @@ export class OregonHealthPlanComponent {
     this.employer.set(kind as EmployerKind);
   }
 
+  setPayroll(raw: string, box?: HTMLInputElement): void {
+    const value = this.parseDollars(raw, 100_000_000_000);
+    if (value !== null) this.payroll.set(value);
+    if (box) box.value = this.payroll().toLocaleString('en-US');
+  }
+
+  /**
+   * Choosing how you are covered today fills in the board's example figure for
+   * "what you pay now" and, where it is unambiguous, who pays your wages.
+   */
+  setCoverage(kind: string): void {
+    const info = COVERAGES.find((c) => c.kind === kind);
+    if (!info) return;
+    this.coverage.set(info.kind);
+    this.currentCost.set(info.typicalCost);
+    if (info.employer) this.employer.set(info.employer);
+  }
+
+  setBizKind(kind: string): void {
+    this.bizKind.set(kind === 'public' ? 'public' : 'private');
+  }
+
+  setBizPayroll(raw: string, box?: HTMLInputElement): void {
+    const value = this.parseDollars(raw, 100_000_000_000);
+    if (value !== null) this.bizPayroll.set(value);
+    if (box) box.value = this.bizPayroll().toLocaleString('en-US');
+  }
+
+  setBizSpend(raw: string, box?: HTMLInputElement): void {
+    const value = this.parseDollars(raw, 100_000_000_000);
+    if (value !== null) this.bizSpend.set(value);
+    if (box) box.value = this.bizSpend().toLocaleString('en-US');
+  }
+
   onPointer(event: PointerEvent): void {
     const svg = event.currentTarget as SVGSVGElement;
     const rect = svg.getBoundingClientRect();
@@ -414,12 +572,38 @@ export class OregonHealthPlanComponent {
     return `${Number((value * 100).toFixed(digits))}%`;
   }
 
-  /** "$1,200 less than you pay now" and the like. */
-  verdict(household: number): { text: string; tone: 'less' | 'more' | 'same' } {
-    const diff = Math.round(household - this.currentCost());
+  /**
+   * The line under each bill. An uninsured household is not told it "pays more":
+   * it pays nothing for coverage today because it has none.
+   */
+  verdict(b: Bill): { text: string; tone: 'less' | 'more' | 'same' | 'info' } {
+    const now = this.currentCost();
+    if (this.coverage() === 'none') {
+      return b.household < 1
+        ? { text: 'You would owe nothing and be covered', tone: 'less' }
+        : { text: 'You would pay this and be covered', tone: 'info' };
+    }
+    if (b.household < 1 && now < 1) return { text: 'You would owe nothing', tone: 'same' };
+    const diff = Math.round(b.household - now);
     if (Math.abs(diff) < 1) return { text: 'About what you pay now', tone: 'same' };
     return diff < 0
       ? { text: `${this.usd(-diff)} less than you pay now`, tone: 'less' }
       : { text: `${this.usd(diff)} more than you pay now`, tone: 'more' };
   }
+
+  /** Why a bill is $0, so it is not mistaken for a promise. */
+  zeroReason(b: Bill): string | null {
+    if (b.household >= 1) return null;
+    return b.gross < 1
+      ? 'Your income is within this model\'s exemption.'
+      : 'The worker credit covers the whole bill.';
+  }
+
+  /** "$7,400 less" or "$52,400 more" than the employer spends today. */
+  bizVerdict(diff: number): string {
+    const amount = this.usd(Math.abs(diff));
+    if (Math.abs(diff) < 1) return 'about the same as you spend now';
+    return diff < 0 ? `${amount} less than you spend now` : `${amount} more than you spend now`;
+  }
+
 }
