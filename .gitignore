@@ -67,3 +67,6 @@ awsconfiguration.json
 # local logo review scratch page
 /logo-explorations.html
 /logo-mockup.html
+
+# Local notes and drafts, never committed
+.notes/

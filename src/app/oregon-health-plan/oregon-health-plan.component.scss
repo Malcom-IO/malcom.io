@@ -1395,7 +1395,8 @@ $info: var(--info);
   }
 }
 
-// Sign-up steps: numbered, three across.
+// Sign-up steps: three glow cards, each with a figure and a small picture,
+// then a strip that lays the same dates out on one line.
 .uhp-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -1403,26 +1404,127 @@ $info: var(--info);
   margin: 1rem 0 0;
   padding: 0;
   list-style: none;
-  counter-reset: step;
 
   li {
     display: grid;
     gap: 0.2rem;
     align-content: start;
-    padding: 1rem 1.2rem;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 0.6rem;
-    counter-increment: step;
+    height: auto;
+    padding: 1.2rem 1.35rem 1.3rem;
+
+    &:hover {
+      transform: none;
+    }
   }
-  strong::before {
-    content: counter(step) '. ';
-    color: var(--brand-bright);
+  strong {
+    margin-top: 0.7rem;
+    font-weight: 650;
+  }
+  svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    fill: none;
+    stroke: color-mix(in srgb, var(--g) 70%, var(--text));
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+.uhp-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.uhp-step-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.uhp-step-fig {
+  font-family: var(--mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.uhp-step-unit {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.uhp-step-text {
+  color: var(--text-soft);
+  font-size: 0.925rem;
+  line-height: 1.45;
+}
+// The bar is 180 days long: the first third is the 60 days before proof is due.
+.uhp-clock-bar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 0.6rem;
+  gap: 3px;
+  height: 0.6rem;
+  margin: 0.9rem 0 0.6rem;
+
+  span {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--brand) 35%, var(--surface));
+  }
+  span:nth-child(2) {
+    background: color-mix(in srgb, var(--brand) 65%, var(--surface));
+  }
+  span:nth-child(3) {
+    background: var(--brand);
+  }
+}
+.uhp-clock-marks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: grid;
+    gap: 0.1rem;
+    align-content: start;
+  }
+  li:last-child {
+    text-align: right;
+  }
+  strong {
+    font-family: var(--mono);
+    font-size: 0.85rem;
   }
   span {
     color: var(--text-soft);
-    font-size: 0.925rem;
-    line-height: 1.45;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+}
+@media (max-width: 575.98px) {
+  .uhp-clock-bar {
+    display: none;
+  }
+  .uhp-clock-marks {
+    grid-template-columns: 1fr;
+    margin-top: 0.75rem;
+
+    li,
+    li:last-child {
+      padding-left: 0.8rem;
+      border-left: 3px solid color-mix(in srgb, var(--brand) 35%, var(--surface));
+      text-align: left;
+    }
+    li:nth-child(2) {
+      border-left-color: color-mix(in srgb, var(--brand) 65%, var(--surface));
+    }
+    li:last-child {
+      border-left-color: var(--brand);
+    }
   }
 }
 
