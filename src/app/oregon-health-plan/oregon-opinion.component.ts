@@ -23,6 +23,8 @@ import {
   householdBill,
   model6,
   model6Rows,
+  model7,
+  model7Rows,
   payrollLowWithReserve,
   softCapYardstick,
 } from './uhp-model6';
@@ -65,6 +67,19 @@ export class OregonOpinionComponent {
   readonly proposed = PROPOSED;
   readonly model6Info = PROPOSED[0];
   readonly model7Info = PROPOSED[1];
+  // ---------------------------------------------------------------- Model 7
+  /** Model 7 at the board's own lower exemption, and with no exemption at all. */
+  readonly m7 = model7(1.38);
+  readonly m7Floor = model7(0);
+  readonly m7Rows = model7Rows(1.38);
+  /** How much less the $1,000,000 family pays under Model 7 than under Model 3. */
+  readonly m7TopCut = (() => {
+    const row = this.m7Rows.find((r) => r.income === 1_000_000)!;
+    return { low: 1 - row.ownHigh / row.model3, high: 1 - row.ownLow / row.model3 };
+  })();
+  /** The same cut if there were no exemption at all: the most any version could do. */
+  readonly m7MaxCut = 1 - this.m7Floor.rate / BASE.topRate;
+
   /**
    * What the board's own models show about a smaller exemption. Its two models
    * with no worker credit differ in where the tax starts: Model 3 at 200% of
@@ -276,6 +291,7 @@ export class OregonOpinionComponent {
   pct(value: number): string {
     return `${Math.round(value * 100)}%`;
   }
+  readonly abs = Math.abs;
   pct1(value: number): string {
     return `${(value * 100).toFixed(1)}%`;
   }

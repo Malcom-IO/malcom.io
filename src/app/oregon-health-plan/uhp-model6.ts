@@ -1,6 +1,6 @@
 import { COST_PER_PERSON, softCapped } from './uhp-ceiling';
 import { BOARD_PRIVATE_RATE, HOUSEHOLD_ROWS } from './uhp-households';
-import { EmployerKind, MODELS, contribution, employerRate } from './uhp-model';
+import { EmployerKind, FPL_200, MODELS, contribution, employerRate } from './uhp-model';
 import { REVENUE_TARGET } from './uhp-statewide';
 
 /**
@@ -22,8 +22,8 @@ export const BASE = MODELS[2];
 
 /**
  * The models this page proposes. Like the board's five, each has a number, a
- * short name of ours and a one-paragraph description. Model 6 is priced below;
- * Model 7 cannot be priced without the state's tax-return data.
+ * short name of ours and a one-paragraph description. Model 6 is priced
+ * exactly; Model 7 is priced as a range, from one table in the appendix.
  */
 export interface ProposedModel {
   id: 6 | 7;
@@ -31,7 +31,10 @@ export interface ProposedModel {
   description: string;
   /** One line: what it changes in the board's Model 3. */
   change: string;
+  /** True when the page gives one set of rates; false when it gives a range. */
   priced: boolean;
+  /** The badge beside the model's number. */
+  status: string;
   /** What it does for the two things this page cares about, and to revenue. */
   middle: string;
   top: string;
@@ -46,9 +49,10 @@ export const PROPOSED: readonly ProposedModel[] = [
       "The board's Model 3 with money moved from the employer payroll tax to the household contribution. Households see more of what the plan costs them, and employers pay less.",
     change: 'Payroll tax down, household rate up, by the same dollars',
     priced: true,
+    status: 'Priced on this page',
     middle: 'More, on a bill it can see',
-    top: 'More, unless softened',
-    revenue: 'Same as Model 3',
+    top: 'More; a soft cap takes part of it off',
+    revenue: 'Same as Model 3, if nobody changes what they do',
   },
   {
     id: 7,
@@ -57,9 +61,10 @@ export const PROPOSED: readonly ProposedModel[] = [
       "The board's Model 3 with a smaller exempt amount and a lower household rate. More households pay something, each at a lower rate, and the payroll tax is left as the board has it.",
     change: 'Exemption down, household rate down, payroll tax unchanged',
     priced: false,
+    status: 'Priced as a range',
     middle: 'More, at a lower rate',
-    top: 'Less',
-    revenue: 'Meant to match Model 3; needs pricing',
+    top: 'About a tenth less',
+    revenue: 'Same as Model 3, within the range shown',
   },
 ];
 
@@ -163,4 +168,73 @@ export function model6Rows(householdShare = DEFAULT_HOUSEHOLD_SHARE, softCap = f
 export function payrollLowWithReserve(householdShare = DEFAULT_HOUSEHOLD_SHARE): number {
   const reserve = householdShare * BASE.top1Share * 0.5;
   return 0.096 * ((model6(householdShare).shares.payroll + reserve) / BASE_SHARES.payroll);
+}
+
+// ================================================================= Model 7
+/**
+ * Model 7 is Model 3 with a smaller exemption and whatever lower rate raises
+ * the same money. Pricing it needs to know how much income a lower exemption
+ * brings into the tax, and the appendix gives enough to bound that.
+ *
+ * Appendix FR page 33, Model 3 on 2022 tax data: the household contribution
+ * raises $8,171 million, which is 5.0% of all adjusted gross income ("net rate
+ * of HHCC ... total"). So:
+ *   total income           = 8,171 / 5.0%  = about $163 billion
+ *   income taxed at 7.69%  = 8,171 / 7.69% = about $106 billion
+ *   income under the exemption             = about $57 billion
+ */
+export const MODEL3_2022 = { householdRevenue: 8_171, netRateOnAllIncome: 0.05 };
+const TOTAL_INCOME = MODEL3_2022.householdRevenue / MODEL3_2022.netRateOnAllIncome;
+const TAXED_AT_200 = MODEL3_2022.householdRevenue / BASE.topRate;
+const EXEMPT_AT_200 = TOTAL_INCOME - TAXED_AT_200;
+
+/** Share of income the bottom two fifths of Oregonians have (appendix page 33). */
+const BOTTOM_TWO_FIFTHS_INCOME = 0.004 + 0.079;
+
+export interface Model7 {
+  /** The exemption, as a share of the poverty line (Model 3's is 2.0). */
+  exemption: number;
+  /**
+   * The lowest the rate could be. Exact: lowering the exemption by a share can
+   * bring in at most that share of the income now exempt.
+   */
+  rateLow: number;
+  /**
+   * A likelier, higher figure: households that owe nothing under Model 3 gain
+   * little from a lower exemption, so only the rest of the exempt income
+   * counts. Estimated by taking the bottom two fifths' income out.
+   */
+  rateHigh: number;
+  /** The middle of the two, used for the example households. */
+  rate: number;
+}
+
+/** Model 7 at a given exemption (1.38 = 138% of the poverty line; 0 = none). */
+export function model7(exemption = 1.38): Model7 {
+  const cut = 1 - exemption / 2;
+  const mostNewIncome = EXEMPT_AT_200 * cut;
+  const likelyNewIncome = (EXEMPT_AT_200 - TOTAL_INCOME * BOTTOM_TWO_FIFTHS_INCOME) * cut;
+  const rateLow = MODEL3_2022.householdRevenue / (TAXED_AT_200 + mostNewIncome);
+  // With no exemption every dollar is taxed and there is nothing to estimate.
+  const rateHigh =
+    exemption === 0 ? rateLow : MODEL3_2022.householdRevenue / (TAXED_AT_200 + likelyNewIncome);
+  return { exemption, rateLow, rateHigh, rate: (rateLow + rateHigh) / 2 };
+}
+
+/** A household's own bill under Model 7. The payroll tax is Model 3's, unchanged. */
+export function model7Bill(income: number, size: number, exemption = 1.38, rate?: number): number {
+  const exempt = (FPL_200[size] / 2) * exemption;
+  return Math.max(0, income - exempt) * (rate ?? model7(exemption).rate);
+}
+
+/** The twelve example households under Model 3 and under Model 7. */
+export function model7Rows(exemption = 1.38) {
+  const m = model7(exemption);
+  return HOUSEHOLD_ROWS.map((h) => ({
+    ...h,
+    model3: h.models[BASE.id - 1],
+    own: model7Bill(h.income, h.size, exemption, m.rate),
+    ownLow: model7Bill(h.income, h.size, exemption, m.rateLow),
+    ownHigh: model7Bill(h.income, h.size, exemption, m.rateHigh),
+  }));
 }

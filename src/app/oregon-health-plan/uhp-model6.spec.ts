@@ -1,5 +1,17 @@
 import { HOUSEHOLD_ROWS } from './uhp-households';
-import { BASE, BASE_SHARES, householdBill, model6, model6Rows, payrollOnWages, softCapYardstick } from './uhp-model6';
+import {
+  BASE,
+  BASE_SHARES,
+  MODEL3_2022,
+  householdBill,
+  model6,
+  model6Rows,
+  model7,
+  model7Bill,
+  model7Rows,
+  payrollOnWages,
+  softCapYardstick,
+} from './uhp-model6';
 
 describe('Model 6 (opinion page sketch)', () => {
   it('is the board\'s Model 3 when nothing is moved', () => {
@@ -78,5 +90,50 @@ describe('Model 6 (opinion page sketch)', () => {
   it('sizes the soft cap yardstick at half the top 1% share of the household money', () => {
     // 60% x 25.3% x 1/2 of $30 billion and of $39 billion.
     expect(softCapYardstick(0.6)).toEqual({ low: 2.3, high: 3 });
+  });
+});
+
+describe('Model 7 (opinion page sketch)', () => {
+  it('is Model 3 when the exemption is not lowered', () => {
+    const m = model7(2);
+    expect(m.rateLow).toBeCloseTo(0.0769, 6);
+    expect(m.rateHigh).toBeCloseTo(0.0769, 6);
+    for (const h of HOUSEHOLD_ROWS) {
+      expect(model7Bill(h.income, h.size, 2)).toBeCloseTo(h.models[BASE.id - 1], 6);
+    }
+  });
+
+  // The hard floor: tax every dollar of income and the rate is the appendix's
+  // own "net rate of HHCC" on all income, 5.0%. No exemption can beat that.
+  it('cannot take the rate below 5.0%, even with no exemption at all', () => {
+    const none = model7(0);
+    expect(none.rateLow).toBeCloseTo(MODEL3_2022.netRateOnAllIncome, 6);
+    expect(none.rateHigh).toBeCloseTo(MODEL3_2022.netRateOnAllIncome, 6);
+    for (const exemption of [0.5, 1, 1.38, 1.75]) {
+      expect(model7(exemption).rateLow).toBeGreaterThan(MODEL3_2022.netRateOnAllIncome);
+    }
+  });
+
+  it('at 138% of poverty: a rate between about 6.6% and 6.8%', () => {
+    const m = model7(1.38);
+    expect(m.rateLow).toBeCloseTo(0.0659, 3);
+    expect(m.rateHigh).toBeCloseTo(0.0683, 3);
+    expect(m.rateLow).toBeLessThan(m.rateHigh);
+    expect(m.rateHigh).toBeLessThan(0.0769);
+  });
+
+  it('asks more of the middle and less of the top than Model 3, and never caps', () => {
+    const rows = model7Rows(1.38);
+    const median = rows.find((r) => r.size === 4 && r.income === 110_000 && r.employer === 'private')!;
+    const one = rows.find((r) => r.income === 1_000_000)!;
+    const two = rows.find((r) => r.income === 2_000_000)!;
+    expect(median.own).toBeGreaterThan(median.model3);
+    expect(median.own).toBeLessThan(median.now);
+    expect(one.own).toBeLessThan(one.model3);
+    expect(two.own).toBeGreaterThan(one.own);
+    // The cut at the top is modest: between a tenth and a seventh.
+    const cut = 1 - one.own / one.model3;
+    expect(cut).toBeGreaterThan(0.09);
+    expect(cut).toBeLessThan(0.15);
   });
 });

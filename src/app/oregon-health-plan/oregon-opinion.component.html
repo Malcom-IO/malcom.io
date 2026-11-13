@@ -54,15 +54,15 @@
       <h2 class="h-section">The two models</h2>
       <p class="uhp-narrow uhp-body">
         Both start from the board's Model 3. I want two things the draft does not give: a middle
-        that pays a share it can see, and a top that is not charged without limit. Neither model
-        does both for certain.
+        that pays a share it can see, and a top that carries less of the load. Model 6 does the
+        first and moves the second the wrong way. Model 7 does both, modestly.
       </p>
       <div class="op-models">
         @for (m of proposed; track m.id) {
           <div class="brand-card glow edge-top op-model" [class.glow-blue]="m.id === 6" [class.glow-amber]="m.id === 7" [class.glow-tl]="m.id === 7">
             <div class="op-model-head">
-              <span class="card-eyebrow">Model {{ m.id }}</span>
-              <span class="op-badge" [class.op-badge--open]="!m.priced">{{ m.priced ? 'Priced on this page' : 'Not priced' }}</span>
+              <span class="card-eyebrow">Model {{ m.id }} &middot; mine</span>
+              <span class="op-badge" [class.op-badge--open]="!m.priced">{{ m.status }}</span>
             </div>
             <h3 class="op-model-name">{{ m.name }}</h3>
             <p class="op-option-what">{{ m.description }}</p>
@@ -94,10 +94,11 @@
   <!-- ============================================================ model 6 -->
   <section class="section section-line" id="model-6">
     <div class="container">
-      <p class="uhp-kicker">Model 6 &middot; priced on this page</p>
+      <p class="uhp-kicker">Model 6 &middot; mine &middot; priced on this page</p>
       <h2 class="h-section">{{ model6Info.name }}</h2>
       <p class="uhp-narrow uhp-body">
-        {{ model6Info.description }} It raises the same state revenue as Model 3.
+        {{ model6Info.description }} It raises the same state revenue as Model 3, if nobody
+        changes what they do.
       </p>
 
       <div class="op-mix" aria-label="Where the new revenue comes from">
@@ -373,18 +374,89 @@
   <!-- ============================================================ model 7 -->
   <section class="section section-line" id="model-7">
     <div class="container">
-      <p class="uhp-kicker">Model 7 &middot; not priced</p>
+      <p class="uhp-kicker">Model 7 &middot; mine &middot; priced as a range</p>
       <h2 class="h-section">{{ model7Info.name }}</h2>
       <p class="uhp-narrow uhp-body">
-        {{ model7Info.description }} This is the one I think would do both things. I have no
-        figures for it: what the lower rate has to be depends on how much income sits between the
-        old exemption and the new one, and that is in the state's tax returns, not in the report.
+        {{ model7Info.description }} It does both things I want, modestly. One table in the
+        appendix is enough to put a range on it.
+      </p>
+
+      <div class="op-rates">
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Where the tax starts, for a family of four</p>
+          <p class="op-rate-big"><span>$66,000</span> &rarr; $45,540</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Household rate</p>
+          <p class="op-rate-big"><span>{{ pct1(baseRate) }}</span> &rarr; {{ pct1(m7.rateLow) }} to {{ pct1(m7.rateHigh) }}</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Bill at $1,000,000, against Model 3</p>
+          <p class="op-rate-big">{{ pct(m7TopCut.low) }} to {{ pct(m7TopCut.high) }} less</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">The limit: with no exemption at all</p>
+          <p class="op-rate-big">{{ pct1(m7Floor.rate) }} <span>at best</span></p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> Appendix FR page 33: under Model 3 the household
+        contribution raises $8,171 million on 2022 tax data, which the appendix gives as 5.0% of
+        all income. So about $163 billion of income, of which about $106 billion is taxed at
+        7.69% and about $57 billion sits under the exemption. Lowering the exemption by 31%
+        brings in at most 31% of that $57 billion, which sets the lowest possible rate. The
+        higher figure leaves out the income of the bottom two fifths, who mostly owe nothing
+        either way. Taxing every dollar would make the rate exactly 5.0%; no version of this
+        model can go lower. Same static caveat as Model 6.
+      </p>
+
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households under Model 7">
+        <table class="uhp-table uhp-table--stack uhp-households" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Household</th>
+              <th role="columnheader" scope="col" class="num">Pays today</th>
+              <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Model 7 (mine)</th>
+              <th role="columnheader" scope="col" class="num op-col-payroll">Change from Model 3</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            @for (row of m7Rows; track $index) {
+              <tr role="row">
+                <th role="rowheader" scope="row">
+                  {{ row.who }}, {{ usd(row.income) }}
+                  <span class="uhp-household-detail">{{ row.detail }}</span>
+                </th>
+                <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
+                <td role="cell" class="num" data-label="Draft, Model 3">{{ usd(row.model3) }}</td>
+                <td
+                  role="cell"
+                  class="num op-col-pick"
+                  [class.less]="row.own < row.now - 0.5"
+                  [class.more]="row.own > row.now + 0.5"
+                  data-label="Model 7 (mine)"
+                >
+                  <span class="visually-hidden">{{ row.own < row.now - 0.5 ? 'Less than today: ' : row.own > row.now + 0.5 ? 'More than today: ' : '' }}</span>about {{ usd100(row.own) }}
+                </td>
+                <td role="cell" class="num op-col-payroll" data-label="Change from Model 3">
+                  {{ row.own > row.model3 ? '+' : '−' }}{{ usd100(abs(row.own - row.model3)) }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        At the middle of the range, {{ pct1(m7.rate) }}. &darr; less than the household pays
+        today, &uarr; more. What is collected through employers is the same as under Model 3, so
+        it is not shown.
       </p>
 
       <div class="op-two op-two--even">
         <figure class="uhp-figure">
           <figcaption>
-            <strong>What the board's own models show</strong>
+            <strong>How many more would pay: the board's figures</strong>
             <span class="text-muted-2">Tax returns owing no household contribution</span>
           </figcaption>
           <div class="op-evidence">
@@ -398,8 +470,8 @@
           </div>
           <p class="uhp-note mb-0">
             From the report. These are the board's two models with no worker credit. Starting the
-            tax lower brings about 9 in 100 more tax returns in. Model 5 also uses stepped rates,
-            so the two differ in more than the exemption.
+            tax lower brings about 9 in 100 more tax returns in. They say nothing about how far
+            the rate could fall; that is the range above.
           </p>
         </figure>
 
@@ -413,7 +485,7 @@
             <li><span class="uhp-key op-key--m3"></span>Model 7</li>
             <li><span class="uhp-key uhp-key--now"></span>Draft, Model 3</li>
           </ul>
-          <p class="uhp-note mb-0">A sketch with no scale. Where the lines cross is exactly what needs pricing.</p>
+          <p class="uhp-note mb-0">A sketch, not to scale. Higher in the middle, lower at the top, and still rising.</p>
         </div>
       </div>
 
@@ -422,14 +494,14 @@
           <span class="card-eyebrow">Behind</span>
           <ul class="op-list">
             <li><strong>Households just above the lower exemption.</strong> A family of four between $45,540 and $66,000 pays nothing under Model 3 and would pay something here.</li>
-            <li><strong>Lower and middle incomes generally,</strong> as a share of income. It is less progressive than Model 3, by design.</li>
+            <li><strong>Lower and middle incomes generally,</strong> as a share of income. It is less progressive than Model 3, by design, and Model 3 is already the draft model that asks the most of the middle fifth.</li>
             <li><strong>The board's own direction.</strong> It recommended the 200% exemption in January 2026 after public comment on exactly this.</li>
           </ul>
         </div>
         <div class="brand-card glow glow-teal glow-tl edge-top">
           <span class="card-eyebrow">Ahead</span>
           <ul class="op-list">
-            <li><strong>High earners,</strong> through a lower rate that still rises with income. No cap, so $2,000,000 still pays more than $1,000,000.</li>
+            <li><strong>High earners, a little:</strong> about a tenth off, and no version of this can take off more than about {{ pct(m7MaxCut) }}. No cap, so $2,000,000 still pays more than $1,000,000.</li>
             <li><strong>The plan's footing.</strong> Less of the money would rest on the top 1%, the opposite of Model 6.</li>
             <li><strong>Federal tax treatment.</strong> The payroll tax is untouched, so nothing moves out of untaxed payroll, again unlike Model 6.</li>
             <li><strong>Simplicity.</strong> One rate, one exemption, no cap to explain.</li>
@@ -471,9 +543,10 @@
       </div>
 
       <p class="uhp-status op-ask">
-        <strong>What I would ask for:</strong> have the board's actuaries price both, Model 6
-        with and without a soft cap and Model 7 at a few exemption levels, and show who pays more
-        and who pays less under each, before the Legislature picks one.
+        <strong>What I would ask for:</strong> have the board's actuaries price both properly,
+        Model 6 with and without a soft cap and with what it would cost Oregonians in federal
+        tax, and Model 7 at a few exemption levels, and show who pays more and who pays less
+        under each, before the Legislature picks one.
       </p>
       <p class="uhp-note op-end">
         Written {{ updated }} by Marcus Malcom, who built the
