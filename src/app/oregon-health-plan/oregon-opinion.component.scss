@@ -380,6 +380,81 @@ path[class*='op-line--'] {
   color: var(--text-soft);
 }
 
+// ================================================= Model 3 with three changes
+// Why Model 3: two bar charts side by side, Model 3's bar picked out.
+.op-why5 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+
+  .uhp-figure {
+    margin-top: 0;
+  }
+}
+.op-evidence .op-bar {
+  grid-template-columns: 4.5rem minmax(0, 1fr) 5.5rem;
+}
+.op-fill {
+  background: var(--line-strong);
+}
+.op-fill--pick {
+  background: var(--brand);
+}
+.op-bar--pick .op-bar-label,
+.op-bar--pick .op-bar-value {
+  color: var(--text);
+  font-weight: 700;
+}
+.op-changes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-fixes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+
+  .op-stat-big {
+    margin-top: 0;
+  }
+  .op-option-what {
+    margin: 0;
+  }
+}
+.op-chart {
+  margin-top: 1rem;
+}
+.op-line--c1 {
+  stroke: var(--s2);
+}
+.op-key--c1 {
+  background: var(--s2);
+}
+.op-line--c2 {
+  stroke: var(--s1);
+}
+.op-key--c2 {
+  background: var(--s1);
+}
+@media (max-width: 991.98px) {
+  .op-why5,
+  .op-changes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-fixes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .op-fixes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 // ======================================================== the two models
 .op-models {
   display: grid;

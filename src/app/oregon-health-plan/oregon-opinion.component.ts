@@ -11,24 +11,22 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from '../quillquest/quillquest-shell.component';
-import { COST_PER_PERSON, OWING_NOTHING, TOP1_STAKE, ceiling } from './uhp-ceiling';
-import { HOUSEHOLD_ROWS } from './uhp-households';
-import { MODELS, contribution, payrollTax } from './uhp-model';
-import { REVENUE_TARGET } from './uhp-statewide';
+import { EmployerKind, FPL_200 } from './uhp-model';
 import {
-  BASE,
-  BASE_SHARES,
-  DEFAULT_HOUSEHOLD_SHARE,
-  PROPOSED,
-  householdBill,
-  model6,
-  model6Rows,
-  model7,
-  model7Bill,
-  model7Rows,
-  payrollLowWithReserve,
+  CHANGES,
+  COST_PER_PERSON,
+  CREDIT,
+  FIVE_MODELS,
+  PLUS_ROWS,
+  WAGE_GAP,
+  bill,
+  creditRate,
+  rateCoveringSoftCap,
+  ratesAtBothTargets,
   softCapYardstick,
-} from './uhp-model6';
+  threshold,
+  thresholdIncome,
+} from './uhp-model3-plus';
 
 const USD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -36,18 +34,24 @@ const USD = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 });
 
-/** Top of the chart's income axis. */
-const X_MAX = 2_000_000;
+/** Which household the chart follows as income rises. */
+type Who = 'self' | 'private';
+
+interface Line {
+  id: string;
+  label: string;
+  d: string;
+  endY: number;
+}
 
 /**
  * Marcus's own view of how the plan is paid for. Deliberately a separate page:
  * the explainer at /oregon-universal-health-plan takes no position, and this
  * one does. It is labeled as opinion at the top and says so again at the end.
  *
- * It proposes a sixth model (uhp-model6.ts): the board's Model 3 with money
- * moved from the employer payroll tax to the household contribution, and an
- * optional soft cap at the top. Built like the explainer, to be read as tables
- * and pictures; it shares the explainer's stylesheet for those pieces.
+ * Its position: of the board's five models pick Model 3, with three changes
+ * (uhp-model3-plus.ts). Built like the explainer, to be read as tables and
+ * pictures; it shares the explainer's stylesheet for those pieces.
  */
 @Component({
   selector: 'app-oregon-opinion',
@@ -58,185 +62,87 @@ const X_MAX = 2_000_000;
 })
 export class OregonOpinionComponent {
   readonly updated = 'November 13, 2026';
+  readonly changes = CHANGES;
+  readonly credit = CREDIT;
+  readonly rate = creditRate();
   readonly costPerPerson = COST_PER_PERSON;
-  readonly familyCeiling = ceiling(4);
-  readonly stake = TOP1_STAKE;
-  readonly owingNothing = OWING_NOTHING;
-  readonly baseShares = BASE_SHARES;
-  readonly baseRate = BASE.topRate;
-  /** The two models this page proposes, each with a name and a description. */
-  readonly proposed = PROPOSED;
-  readonly model6Info = PROPOSED[0];
-  readonly model7Info = PROPOSED[1];
-  // ---------------------------------------------------------------- Model 7
-  /** Model 7 at the board's own lower exemption, and with no exemption at all. */
-  readonly m7 = model7(1.38);
-  readonly m7Floor = model7(0);
-  readonly m7Rows = model7Rows(1.38);
-  /** How much less the $1,000,000 family pays under Model 7 than under Model 3. */
-  readonly m7TopCut = (() => {
-    const row = this.m7Rows.find((r) => r.income === 1_000_000)!;
-    return { low: 1 - row.ownHigh / row.model3, high: 1 - row.ownLow / row.model3 };
-  })();
+  readonly familyThreshold = threshold(4);
+  readonly thresholdIncomes = { one: thresholdIncome(1), four: thresholdIncome(4) };
+  readonly wageGap = WAGE_GAP;
+  readonly yardstick = softCapYardstick();
+  readonly rateIfCapCostAll = rateCoveringSoftCap();
+  readonly targets = ratesAtBothTargets();
+  readonly rows = PLUS_ROWS;
   /**
-   * Who Model 7 moves money between, in dollars a year against Model 3: the
-   * below-median family of four pays more, the family at $2,000,000 pays less.
+   * The income above which a self-employed family of four pays less with both
+   * changes than under Model 3: where half the higher rate, plus half the
+   * threshold, meets Model 3's rate.
    */
-  readonly m7Shift = (() => {
-    const lower = this.m7Rows.find((r) => r.size === 4 && r.income === 70_000)!;
-    const top = this.m7Rows.find((r) => r.income === 2_000_000)!;
-    return { more: lower.own - lower.model3, less: top.model3 - top.own };
-  })();
-  /** The board's Table S2 couple at $40,000, who pay nothing today. */
-  readonly m7PaysNothingToday = model7Bill(40_000, 2, 1.38, this.m7.rate);
-  /** The same cut if there were no exemption at all: the most any version could do. */
-  readonly m7MaxCut = 1 - this.m7Floor.rate / BASE.topRate;
+  readonly topCrossover =
+    Math.round((FPL_200[4] + threshold(4) / 2 / (creditRate(0) - creditRate() / 2)) / 100_000) *
+    100_000;
 
-  /**
-   * What the board's own models show about a smaller exemption. Its two models
-   * with no worker credit differ in where the tax starts: Model 3 at 200% of
-   * poverty, Model 5 at 138%.
-   */
-  readonly exemptionEvidence = [
-    { label: 'Model 3: starts at 200% of poverty ($66,000 for four)', value: MODELS[2].returnsOwingNothing },
-    { label: 'Model 5: starts at 138% of poverty ($45,540 for four)', value: MODELS[4].returnsOwingNothing },
+  // ------------------------------------------------------------ why Model 3
+  /** Two households under the five draft models, as bars on one scale each. */
+  readonly why = (() => {
+    const topMax = Math.max(...FIVE_MODELS.map((m) => m.top));
+    const medianMax = Math.max(...FIVE_MODELS.map((m) => m.median));
+    return FIVE_MODELS.map((m) => ({
+      ...m,
+      topPct: (m.top / topMax) * 100,
+      medianPct: (m.median / medianMax) * 100,
+    }));
+  })();
+
+  // ---------------------------------------------------------- before / after
+  private row(who: string, income: number) {
+    return PLUS_ROWS.find((r) => r.who === who && r.income === income)!;
+  }
+  /** Four households that show who gains and who pays. */
+  readonly moves = [
+    { label: 'Single public employee, $80,000', row: this.row('Single public employee', 80_000) },
+    { label: 'Median family of four, private employer', row: this.row('Family of four, private employer', 110_000) },
+    { label: 'Self-employed family of four, $1,000,000', row: this.row('Family of four, self-employed', 1_000_000) },
+    { label: 'Self-employed family of four, $2,000,000', row: this.row('Family of four, self-employed', 2_000_000) },
   ];
 
-  /** The median family of four in the explainer's table. */
-  private readonly medianRow = HOUSEHOLD_ROWS.find(
-    (h) => h.size === 4 && h.income === 110_000 && h.employer === 'private',
-  )!;
-  readonly median = {
-    now: this.medianRow.now,
-    low: Math.min(...this.medianRow.models),
-    high: Math.max(...this.medianRow.models),
-  };
-
-  // --------------------------------------------------------------- controls
-  /**
-   * Share of the new revenue that comes from households rather than payroll.
-   * Fixed: a named model is one definite thing. (It was a slider at first, and
-   * a control at the top of a page that changes things far below was confusing.)
-   */
-  readonly share = signal(DEFAULT_HOUSEHOLD_SHARE).asReadonly();
-  /** Off by default: with it off, Model 6 raises what Model 3 raises. */
-  readonly softCap = signal(false);
-
-  readonly m6 = computed(() => model6(this.share()));
-  readonly yardstick = computed(() => softCapYardstick(this.share()));
-  readonly reservePayroll = computed(() => payrollLowWithReserve(this.share()));
-
-
-  /** The revenue mix as three bar segments, for the draft and for Model 6. */
-  readonly mix = computed(() => {
-    const s = this.m6().shares;
-    return [
-      { label: 'Draft, Model 3', household: BASE_SHARES.household, payroll: BASE_SHARES.payroll, business: BASE_SHARES.business },
-      { label: 'Model 6 (mine)', household: s.household, payroll: s.payroll, business: s.business },
-    ];
-  });
-
-  // ------------------------------------------------------------------ table
-  readonly rows = computed(() => model6Rows(this.share(), this.softCap()));
-  readonly tally = computed(() => {
-    const rows = this.rows();
-    return {
-      less: rows.filter((r) => r.own < r.now - 0.5).length,
-      more: rows.filter((r) => r.own > r.now + 0.5).length,
-      total: rows.length,
-    };
-  });
-
-  /** Dollars a year that move from the payroll tax to household payments, in billions. */
-  readonly moved = computed(() => {
-    const delta = this.share() - BASE_SHARES.household;
-    return { low: REVENUE_TARGET.board * delta, high: REVENUE_TARGET.best * delta };
-  });
-  /**
-   * The top 1%'s share of ALL the new revenue: under Model 3, and under Model 6
-   * before any soft cap. Their share of the household contribution does not
-   * change when the rate is scaled; the household contribution's size does.
-   */
-  readonly top1OfAll = computed(() => ({
-    draft: BASE_SHARES.household * BASE.top1Share,
-    model6: this.share() * BASE.top1Share,
-  }));
-  /** The $1,000,000 family: Model 3 against Model 6 as currently set. */
-  readonly million = computed(() => this.rows().find((r) => r.income === 1_000_000)!);
-
-  /** The example the page names when it says who comes out behind. */
-  readonly publicSingle = computed(() => this.rows().find((r) => r.who === 'Single public employee')!);
-  /** Two employers, a small one and a large one: payroll tax under Model 3 and under Model 6. */
-  readonly employers = computed(() =>
-    [1_100_000, 190_000_000].map((payroll) => {
-      const draft = payrollTax(payroll, BASE.id);
-      return { payroll, draft, model6: draft * this.m6().payrollScale };
-    }),
-  );
-  bn(billions: number): string {
-    return `$${billions.toFixed(1)} billion`;
-  }
-  /** Compact dollars for large figures: "$16.6 million", "$36,700". */
-  big(value: number): string {
-    return value >= 1_000_000 ? `$${(value / 1_000_000).toFixed(1)} million` : this.usd100(value);
-  }
-  /** How much less payroll tax employers pay under Model 6, as a share. */
-  readonly payrollCut = computed(() => 1 - this.m6().payrollScale);
-
-  // ------------------------------------------------------------- middle bars
-  /** Households with an employer: own bill plus payroll tax, draft against Model 6. */
-  readonly middleBars = computed(() =>
-    this.rows()
-      .filter((r) => r.employer !== 'none' && r.income <= 220_000)
-      .map((r) => {
-        const scale = Math.max(r.total.draft, r.total.model6, 1);
-        const bar = (label: string, own: number, payroll: number) => ({
-          label,
-          own,
-          payroll,
-          ownPct: (own / scale) * 100,
-          payrollPct: (payroll / scale) * 100,
-        });
-        return {
-          title: `${r.who}, ${USD.format(r.income)}`,
-          now: r.now,
-          bars: [
-            bar('Draft, Model 3', r.model3, r.payroll.draft),
-            bar('Model 6', r.own, r.payroll.model6),
-          ],
-        };
-      }),
-  );
-
   // ------------------------------------------------------------------ chart
+  readonly who = signal<Who>('self');
   private readonly plotEl = viewChild<ElementRef<HTMLElement>>('plot');
   readonly width = signal(720);
   readonly height = 320;
   readonly narrow = computed(() => this.width() < 520);
-  readonly pad = computed(() => ({ left: 52, right: this.narrow() ? 12 : 132, top: 16, bottom: 34 }));
+  readonly pad = computed(() => ({ left: 52, right: this.narrow() ? 12 : 138, top: 16, bottom: 34 }));
 
-  /** A family of four with no employer, by income: two draft models and Model 6. */
-  private readonly series = computed(() => [
-    { id: 'm1', label: 'Draft, Model 1', value: (income: number) => contribution(MODELS[0], income, 0, 4, 0) },
-    { id: 'm3', label: 'Draft, Model 3', value: (income: number) => contribution(BASE, income, 0, 4, 0) },
-    {
-      id: 'm6',
-      label: this.softCap() ? 'Model 6, soft cap' : 'Model 6 (mine)',
-      value: (income: number) => householdBill(income, 4, this.share(), this.softCap()),
-    },
-    {
-      id: 'm7',
-      label: 'Model 7 (mine)',
-      value: (income: number) => model7Bill(income, 4, 1.38, this.m7.rate),
-    },
-  ]);
+  /** The household followed, and how far along the income axis the chart runs. */
+  private readonly subject = computed(() =>
+    this.who() === 'self'
+      ? { employer: 'none' as EmployerKind, wageShare: 0, xMax: 2_000_000, caption: 'Family of four, self-employed, per year' }
+      : { employer: 'private' as EmployerKind, wageShare: 0.9, xMax: 400_000, caption: 'Family of four, private employer, per year' },
+  );
+  readonly caption = computed(() => this.subject().caption);
+
+  private readonly series = computed(() => {
+    const s = this.subject();
+    const at = (income: number, credit: number, softCap: boolean) =>
+      bill(income, income * s.wageShare, 4, s.employer, { credit, softCap });
+    return [
+      { id: 'm3', label: 'Draft, Model 3', value: (i: number) => at(i, 0, false) },
+      { id: 'c1', label: 'With change 1', value: (i: number) => at(i, CREDIT, false) },
+      { id: 'c2', label: 'With changes 1 and 2', value: (i: number) => at(i, CREDIT, true) },
+    ];
+  });
+  readonly seriesLabels = computed(() => this.series().map((s) => s.label));
+
   private readonly yMax = computed(() => {
-    const top = Math.max(...this.series().map((s) => s.value(X_MAX)));
-    return Math.ceil(top / 50_000) * 50_000;
+    const x = this.subject().xMax;
+    const top = Math.max(...this.series().map((s) => s.value(x)));
+    const step = top > 150_000 ? 50_000 : top > 30_000 ? 10_000 : 5_000;
+    return Math.ceil(top / step) * step;
   });
   private x(income: number): number {
     const p = this.pad();
-    return p.left + (income / X_MAX) * (this.width() - p.left - p.right);
+    return p.left + (income / this.subject().xMax) * (this.width() - p.left - p.right);
   }
   private y(dollars: number): number {
     const p = this.pad();
@@ -244,27 +150,35 @@ export class OregonOpinionComponent {
   }
   readonly plotRight = computed(() => this.width() - this.pad().right);
   readonly plotBottom = computed(() => this.height - this.pad().bottom);
-  readonly xTicks = computed(() =>
-    (this.narrow() ? [0, 1_000_000, 2_000_000] : [0, 500_000, 1_000_000, 1_500_000, 2_000_000]).map(
-      (v) => ({ x: this.x(v), label: v === 0 ? '$0' : v >= 1_000_000 ? `$${v / 1_000_000}M` : `$${v / 1000}K` }),
-    ),
-  );
+
+  private money(v: number): string {
+    return v === 0 ? '$0' : v >= 1_000_000 ? `$${v / 1_000_000}M` : `$${v / 1000}K`;
+  }
+  readonly xTicks = computed(() => {
+    const max = this.subject().xMax;
+    const parts = this.narrow() ? 2 : 4;
+    return Array.from({ length: parts + 1 }, (_, n) => (max * n) / parts).map((v) => ({
+      x: this.x(v),
+      label: this.money(v),
+    }));
+  });
   readonly yTicks = computed(() => {
-    const step = this.yMax() <= 150_000 ? 50_000 : 100_000;
+    const max = this.yMax();
+    const step = max / (max % 4 === 0 ? 4 : 5);
     const ticks: { y: number; label: string }[] = [];
-    for (let v = 0; v <= this.yMax(); v += step) {
-      ticks.push({ y: this.y(v), label: v === 0 ? '$0' : `$${v / 1000}K` });
-    }
+    for (let v = 0; v <= max + 1; v += step) ticks.push({ y: this.y(v), label: this.money(v) });
     return ticks;
   });
-  readonly lines = computed(() => {
+
+  readonly lines = computed<Line[]>(() => {
+    const max = this.subject().xMax;
     const drawn = this.series().map((s) => {
       const pts: string[] = [];
       for (let n = 0; n <= 200; n++) {
-        const income = (X_MAX * n) / 200;
+        const income = (max * n) / 200;
         pts.push(`${n ? 'L' : 'M'}${this.x(income).toFixed(1)},${this.y(s.value(income)).toFixed(1)}`);
       }
-      return { id: s.id, label: s.label, d: pts.join(' '), endY: this.y(s.value(X_MAX)) };
+      return { id: s.id, label: s.label, d: pts.join(' '), endY: this.y(s.value(max)) };
     });
     // Keep end labels a text-height apart where two lines finish close together.
     const byY = [...drawn].sort((a, b) => a.endY - b.endY);
@@ -273,14 +187,17 @@ export class OregonOpinionComponent {
     }
     return drawn;
   });
-  readonly ceilingY = computed(() => this.y(this.familyCeiling));
-  readonly chartTable = computed(() =>
-    [250_000, 500_000, 1_000_000, 1_500_000, 2_000_000].map((income) => ({
-      income,
-      values: this.series().map((s) => s.value(income)),
-    })),
+  /** The soft cap's threshold, drawn only where the chart reaches it. */
+  readonly thresholdY = computed(() =>
+    this.familyThreshold <= this.yMax() ? this.y(this.familyThreshold) : null,
   );
-  readonly seriesLabels = computed(() => this.series().map((s) => s.label));
+  readonly chartTable = computed(() => {
+    const max = this.subject().xMax;
+    return [0.25, 0.5, 0.75, 1].map((share) => {
+      const income = max * share;
+      return { income, values: this.series().map((s) => s.value(income)) };
+    });
+  });
 
   constructor() {
     const host = inject(ElementRef<HTMLElement>);
@@ -296,6 +213,12 @@ export class OregonOpinionComponent {
     });
   }
 
+  // ------------------------------------------------------------- smaller fixes
+  /** Two single filers exempt more income than a married couple: the cost of marrying. */
+  readonly marriagePenalty = (2 * FPL_200[1] - FPL_200[2]) * creditRate(0);
+  /** What a second legal entity saves in payroll tax: the exemption, at 9.6%. */
+  readonly splitSaving = 500_000 * 0.096;
+
   // ------------------------------------------------------------- formatting
   usd(value: number): string {
     return USD.format(Math.round(value));
@@ -304,16 +227,14 @@ export class OregonOpinionComponent {
   usd100(value: number): string {
     return USD.format(Math.round(value / 100) * 100);
   }
+  /** Rounded to the nearest thousand, for the largest figures. */
+  usd1000(value: number): string {
+    return USD.format(Math.round(value / 1_000) * 1_000);
+  }
   pct(value: number): string {
     return `${Math.round(value * 100)}%`;
   }
-  readonly abs = Math.abs;
   pct1(value: number): string {
     return `${(value * 100).toFixed(1)}%`;
-  }
-  range(r: { low: number; high: number }): string {
-    const low = this.usd100(r.low);
-    const high = this.usd100(r.high);
-    return low === high ? low : `${low} to ${high}`;
   }
 }
