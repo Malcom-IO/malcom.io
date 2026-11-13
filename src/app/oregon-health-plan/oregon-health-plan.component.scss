@@ -261,7 +261,9 @@ a {
   margin-top: 2rem;
   align-items: start;
 }
-@media (max-width: 991.98px) {
+// Stack below xl: side by side, the result cards get too narrow to hold a dollar
+// figure on one line.
+@media (max-width: 1199.98px) {
   .uhp-calc {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -356,10 +358,25 @@ a {
   margin-top: 1.25rem;
 }
 
-.uhp-bills {
+// Fixed columns, not auto-fit: three calculated models in one row, the two
+// uncalculated ones in a row of their own, so a card is never orphaned.
+.uhp-bills,
+.uhp-unknowns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
   gap: 1rem;
+}
+.uhp-bills {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.uhp-unknowns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+@media (max-width: 767.98px) {
+  .uhp-bills,
+  .uhp-unknowns {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .uhp-bill {
   padding: 1.1rem 1.25rem;
@@ -369,12 +386,13 @@ a {
 }
 // Models the report does not give enough detail to calculate: present, but quieter.
 .uhp-bill--unknown {
+  padding: 0.85rem 1.25rem;
   background: transparent;
   border-style: dashed;
 }
 .uhp-bill-unknown {
-  margin: 0.45rem 0 0.35rem;
-  font-size: 1.15rem;
+  margin: 0.2rem 0 0.1rem;
+  font-size: 1rem;
   font-weight: 650;
   color: var(--text-soft);
 }
@@ -385,6 +403,7 @@ a {
 }
 .uhp-bill-amount {
   margin: 0.2rem 0 0.1rem;
+  white-space: nowrap;
   font-size: 1.9rem;
   font-weight: 700;
   letter-spacing: -0.02em;

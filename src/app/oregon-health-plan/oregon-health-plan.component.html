@@ -389,6 +389,9 @@
                 }
               </div>
             }
+          </div>
+
+          <div class="uhp-unknowns">
             @for (u of unpublished(); track u.model.id) {
               <div class="uhp-bill uhp-bill--unknown">
                 <p class="uhp-bill-name">
@@ -403,9 +406,8 @@
                 } @else {
                   <p class="uhp-bill-unknown">Can't be calculated</p>
                   <p class="uhp-hint mb-0">
-                    The report gives this model {{ u.model.brackets }} brackets on income above
-                    {{ usd(u.exemption) }} and a top rate of {{ pct(u.model.topRate, 2) }}, but
-                    not the rates or income ranges in between.
+                    The report gives {{ u.model.brackets }} brackets on income above
+                    {{ usd(u.exemption) }} and a top rate, but not the rates in between.
                   </p>
                 }
               </div>
