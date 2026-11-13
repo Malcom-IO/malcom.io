@@ -141,19 +141,19 @@ export const routes: Routes = [
     } satisfies SeoData,
   },
   {
-    // Marcus's own view of the plan's financing. A separate page on purpose:
+    // Marcus's own view of the plan's financing and of how people sign up. A separate page on purpose:
     // the explainer above takes no position, and this one is labeled opinion.
     path: 'oregon-universal-health-plan/opinion',
     loadComponent: () =>
       import('./oregon-health-plan/oregon-opinion.component').then(
         (m) => m.OregonOpinionComponent,
       ),
-    title: "Opinion: how to pay for Oregon's Universal Health Plan | Malcom IO",
+    title: "Opinion: two things I would change in Oregon's Universal Health Plan | Malcom IO",
     data: {
-      ogTitle: "Opinion: pick Model 3, with three changes, to pay for Oregon's Universal Health Plan",
+      ogTitle: "Opinion: two things I would change in Oregon's Universal Health Plan",
       description:
-        "One person's view of how Oregon's proposed Universal Health Plan is paid for: a " +
-        "the board's third model, with a worker credit, a soft cap and rates at both estimates.",
+        "One person's view of two parts of Oregon's proposed Universal Health Plan: pay for it " +
+        "with the board's third model, changed three ways, and ask for proof at sign-up.",
     } satisfies SeoData,
   },
   { path: '**', redirectTo: '' },
