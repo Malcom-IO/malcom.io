@@ -1,0 +1,398 @@
+<app-quillquest-shell>
+  <!-- ================================================================ hero -->
+  <section class="uhp-hero op-hero">
+    <div class="container">
+      <div class="uhp-narrow">
+        <p class="eyebrow eyebrow--hero">An idea I looked at &middot; Marcus Malcom</p>
+        <h1 class="uhp-title">Floor and top-up: an idea I ran the numbers on, and why I would not do it</h1>
+        <p class="op-label fl-warning">
+          <strong>Warning: I do not recommend this.</strong> It is not the board's plan and it
+          is not part of my own proposal. A friend suggested a smaller public plan at a lower
+          tax, with private insurance for the rest. I worked out what it would do, and I do not
+          like the answer. This page shows the work.
+        </p>
+        <p class="op-label fl-warning">
+          <strong>Warning: the numbers are rough.</strong> Every figure marked
+          <span class="uhp-ours">my math</span> is my own estimate from the board's documents,
+          resting on assumptions I name. No actuary has priced this.
+        </p>
+        <p class="text-muted-2 font-monospace small mt-3 mb-0">
+          Written {{ updated }}
+          <span class="uhp-screen-only">
+            &middot; <a routerLink="/oregon-universal-health-plan">The explainer</a>
+            &middot; <a routerLink="/oregon-universal-health-plan/opinion">What I do propose</a>
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ verdict -->
+  <section class="section" id="verdict">
+    <div class="container">
+      <h2 class="h-section">Why I do not like it</h2>
+      <div class="op-stats">
+        <div class="brand-card glow glow-rose edge-top op-stat">
+          <p class="op-stat-label">A small cut for what it gives up</p>
+          <p class="op-stat-big">{{ pctSpan(cut.actuary) }}</p>
+          <p class="op-stat-foot">Off the new taxes, by my rough math: a household rate of {{ rateSpan(atActuary.household.floor) }} where the draft needs {{ pct1(atActuary.household.draft) }}, at the actuary's cost estimate. At the low end it could be close to nothing</p>
+        </div>
+        <div class="brand-card glow glow-amber glow-bl edge-top op-stat">
+          <p class="op-stat-label">More spent on paperwork</p>
+          <p class="op-stat-big op-nowrap">{{ billionsShort(actuary.givenBack) }}</p>
+          <p class="op-stat-foot">Billions more a year in total, because clinics go back to billing patients. Less use of care could offset some or all of it, partly by people skipping care they need</p>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-stat">
+          <p class="op-stat-label">People who use care pay for it</p>
+          <p class="op-stat-big op-nowrap">{{ billionsShort(actuary.moved) }}</p>
+          <p class="op-stat-foot">Billions a year paid privately instead, for a tax cut of about {{ billions(actuary.net) }}. Copays fall on the sick; the add-on falls on anyone who wants dental care, glasses or hearing aids</p>
+        </div>
+        <div class="brand-card glow glow-teal glow-br edge-top op-stat">
+          <p class="op-stat-label">It does not solve the Vermont problem</p>
+          <p class="op-stat-big op-stat-big--words">Still about 11% + 9%</p>
+          <p class="op-stat-foot">Employer and household rates at the actuary's cost estimate, against {{ pct1(atActuary.payrollLow.draft) }} and {{ pct1(atActuary.household.draft) }} for the draft. Vermont dropped its plan at 11.5% and 9.5%. A floor narrows that gap; it does not close it</p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        It also brings back two tiers of coverage, and ties some of it to a job again. Compared
+        with today, most households above the exemption would still come out ahead, because the
+        premium is gone. My objection is to the floor against the board's draft, not against
+        today. The rest of this page is how I got here. If the board's actuary priced it and the
+        numbers came out very differently, I would look again.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ the idea -->
+  <section class="section section-line" id="idea">
+    <div class="container">
+      <h2 class="h-section">The idea</h2>
+      <p class="uhp-narrow uhp-body">
+        The board's draft covers nearly everything, with few or no copays. This idea covers less
+        in the public plan, at a lower tax, and lets people and employers buy the rest.
+      </p>
+      <div class="op-models">
+        <div class="brand-card glow glow-teal edge-top op-model">
+          <span class="card-eyebrow">The idea &middot; public, everyone</span>
+          <h3 class="op-model-name">The floor</h3>
+          <p class="op-option-what">
+            One basic public plan for every Oregonian, paid for by the same taxes as the draft,
+            at lower rates.
+          </p>
+          <dl class="op-facts">
+            <div><dt>Covers</dt><dd>Doctor and hospital care, mental health and addiction care, prescriptions, and children's dental and vision</dd></div>
+            <div><dt>No copays</dt><dd>For checkups and screenings, and for everyone below the income where the new household tax starts (the exemption)</dd></div>
+            <div><dt>Above that</dt><dd>Copays, up to a yearly limit: a share of the household's income above the exemption</dd></div>
+            <div><dt>Medicaid</dt><dd><strong>No change.</strong> People on Medicaid (the Oregon Health Plan) keep everything they have now</dd></div>
+          </dl>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-model">
+          <span class="card-eyebrow">The idea &middot; private, optional</span>
+          <h3 class="op-model-name">The top-up</h3>
+          <p class="op-option-what">
+            Add-on insurance, bought by a household or by an employer as a benefit. It adds to
+            the floor and never replaces it.
+          </p>
+          <dl class="op-facts">
+            <div><dt>Covers</dt><dd>Adult dental, vision, hearing and fertility care and other extras, and perhaps the floor's copays (an open question, below)</dd></div>
+            <div><dt>Who buys it</dt><dd>Anyone who wants it. Nobody has to</dd></div>
+            <div><dt>What it cannot do</dt><dd>Stand in for the floor, or move anyone ahead in line for care the floor covers</dd></div>
+            <div><dt>Cost</dt><dd><strong>Unknown.</strong> Nothing in the documents says what one would cost</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== open questions -->
+  <section class="section section-line" id="open">
+    <div class="container">
+      <h2 class="h-section">Three questions the draft leaves open</h2>
+      <div class="op-stats fl-stats3">
+        <div class="brand-card glow glow-amber edge-top op-stat">
+          <p class="op-stat-label">Copays</p>
+          <p class="op-stat-big op-stat-big--words">Not decided</p>
+          <p class="op-stat-foot">The board prefers none and says targeted copays bring "affordability and administrative burden considerations", but it "has not established a final cost-sharing policy" (legislative brief, pages 2 and 3). In plain terms: copays can keep people from care, and billing patients costs money</p>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-stat">
+          <p class="op-stat-label">Private insurance alongside the plan</p>
+          <p class="op-stat-big op-stat-big--words">Not discussed</p>
+          <p class="op-stat-foot">Whether insurers "would primarily serve a supplemental role", selling extra coverage on top: "This topic was not discussed by the Board" (brief, page 12)</p>
+        </div>
+        <div class="brand-card glow glow-teal glow-br edge-top op-stat">
+          <p class="op-stat-label">Which plan pays the bill first when a worker has both</p>
+          <p class="op-stat-big op-stat-big--words">Put off</p>
+          <p class="op-stat-foot">"The Board discussed this issue but deferred a policy decision" (brief, page 12)</p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        A floor and a top-up is one answer to all three: some copays, insurers selling extras,
+        and the public plan paying first. It is not the answer I would pick.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ why float -->
+  <section class="section section-line" id="why">
+    <div class="container">
+      <h2 class="h-section">Why I looked at it</h2>
+      <div class="op-stats">
+        <div class="brand-card glow glow-rose edge-top op-stat">
+          <p class="op-stat-label">Vermont, 2014</p>
+          <p class="op-stat-big">11.5% + 9.5%</p>
+          <p class="op-stat-foot">The payroll tax, and an income tax of up to 9.5%, that its plan needed. The governor who had championed it withdrew it</p>
+        </div>
+        <div class="brand-card glow glow-amber glow-bl edge-top op-stat">
+          <p class="op-stat-label">Colorado, 2016</p>
+          <p class="op-stat-big">79% no</p>
+          <p class="op-stat-foot">Voters on a universal plan paid for by a 10% tax on payroll and other income</p>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-stat">
+          <p class="op-stat-label">Oregon's draft, Model 3: employers + households</p>
+          <p class="op-stat-big">9.6–14% + 7.7%</p>
+          <p class="op-stat-foot">Employer payroll tax and household tax rate at the board's cost estimate. About 30% higher at the estimate of Milliman, its actuary (cost expert)</p>
+        </div>
+        <div class="brand-card glow glow-teal glow-br edge-top op-stat">
+          <p class="op-stat-label">Medicare, since 1965</p>
+          <p class="op-stat-big op-stat-big--words">A floor and a top-up</p>
+          <p class="op-stat-foot">Medicare without an extra plan leaves 20% of most doctor bills and has no yearly limit. Nearly nine in ten people on it fill the gaps with other coverage, most often a Medigap policy or a former employer's plan. About half of everyone on Medicare now picks a private plan in its place, which this idea would not allow</p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        No state has run a single public plan for everyone. Vermont's governor withdrew his plan
+        the day he presented its rates, and Colorado's voters rejected theirs. Both failed
+        largely on the size of the tax. Medicare has always covered less and let people add to
+        it, and its gaps are a much-criticized feature. That was my reason to price a thinner plan. It
+        is not proof one would pass, and the section at the top is why I stopped there.
+      </p>
+    </div>
+  </section>
+
+  <!-- ======================================================== what it moves -->
+  <section class="section section-line" id="moves">
+    <div class="container">
+      <h2 class="h-section">What it would move</h2>
+      <p class="uhp-narrow uhp-body">
+        A floor does not make care cheaper. It moves part of the bill from taxes to the people
+        who use care and the people who buy a top-up.
+        <strong>By my rough math it lowers the new taxes by {{ pctSpan(cut.actuary) }}.</strong>
+        At the low end, and with the costs I have not counted, it could save close to nothing,
+        and the trade would not be worth making. The actuary's numbers would decide which end
+        is real.
+      </p>
+      <figure class="uhp-figure">
+        <figcaption>
+          <strong>Billions of dollars a year, 2032</strong>
+          <span class="text-muted-2">Against the draft, at the actuary's estimate of ${{ actuary.target }} billion in new taxes</span>
+        </figcaption>
+        <div class="op-evidence">
+          @for (b of bars; track b.label) {
+            <div class="op-bar fl-bar" [class.op-bar--pick]="b.kind === 'net'" [class.op-bar--mine]="b.kind === 'net'">
+              <span class="op-bar-label">
+                {{ b.label }}
+                <small>{{ b.detail }}</small>
+              </span>
+              <span class="op-bar-track">
+                <span
+                  class="op-fill"
+                  [class.op-fill--draft]="b.kind === 'back'"
+                  [class.op-fill--pick]="b.kind === 'net'"
+                  [style.width.%]="b.width"
+                ></span>
+              </span>
+              <span class="op-bar-value">{{ b.kind === 'back' ? '−' : '' }}{{ billions(b.range) }}</span>
+            </div>
+          }
+        </div>
+      </figure>
+
+      <div class="op-rates">
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Lower new taxes by</p>
+          <p class="op-rate-big"><b class="op-nowrap">{{ pctSpan(cut.actuary) }}</b></p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Off the new taxes, per Oregonian a year</p>
+          <p class="op-rate-big"><b class="op-nowrap">{{ usdSpan(each.taxes) }}</b></p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Paid privately instead, per Oregonian a year</p>
+          <p class="op-rate-big"><b class="op-nowrap">{{ usdSpan(each.privately) }}</b></p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">More spent in total a year, before any drop in use</p>
+          <p class="op-rate-big"><b class="op-nowrap">{{ billions(actuary.givenBack) }}</b></p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> People pay more privately than comes off the
+        taxes. Billing patients again costs clinics money the draft had counted as saved. The
+        per-person figures are averages over every Oregonian. The private cost falls on adults
+        above the exemption who use care or buy a top-up, so their share is far larger. For
+        scale: the actuary's cost estimate is ${{ gap }} billion above the board's, and this
+        covers {{ pct(actuary.net.low / gap) }} to {{ pct(actuary.net.high / gap) }} of that
+        difference.
+      </p>
+
+      <h3 class="uhp-sub">What it does to the rates</h3>
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Model 3's rates as drafted and with a floor, at both cost estimates">
+        <table class="uhp-table uhp-table--stack" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">If the new taxes must raise</th>
+              <th role="columnheader" scope="col" class="num">Household tax rate, draft</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Household tax rate, with a floor</th>
+              <th role="columnheader" scope="col" class="num">Employer payroll tax, draft</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Employer payroll tax, with a floor</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            @for (r of rates; track r.target) {
+              <tr role="row">
+                <th role="rowheader" scope="row">
+                  ${{ r.target }} billion, {{ r.target === actuary.target ? "the actuary's estimate" : "the board's estimate" }}
+                </th>
+                <td role="cell" class="num" data-label="Household tax rate, draft">{{ pct1(r.household.draft) }}</td>
+                <td role="cell" class="num op-col-pick" data-label="Household tax rate, with a floor">{{ rateSpan(r.household.floor) }}</td>
+                <td role="cell" class="num" data-label="Employer payroll tax, draft">{{ pct1(r.payrollLow.draft) }}</td>
+                <td role="cell" class="num op-col-pick" data-label="Employer payroll tax, with a floor">{{ rateSpan(r.payrollLow.floor) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> I lowered every rate in the board's third funding
+        option, Model 3, by the same share. The employer rate shown applies above $500,000 of
+        payroll; the 14% rate above $10 million would fall the same way. This is the draft's
+        Model 3, not the proposal on my opinion page.
+        <strong>At the actuary's estimate even the floor needs an employer rate of
+        {{ rateSpan(atActuary.payrollLow.floor) }} and a household rate of
+        {{ rateSpan(atActuary.household.floor) }}, close to Vermont's 11.5% and 9.5%.</strong>
+        A floor narrows that gap. It does not close it.
+      </p>
+
+      <h3 class="uhp-sub">Where the numbers come from</h3>
+      <ul class="uhp-note fl-method">
+        <li>
+          <strong>Dental, vision and more.</strong> The draft plan spends $4.5 to $5.1 billion on
+          dental, vision, fertility, hearing aids and a few smaller benefits (report, Table E6).
+          Medicaid's part stays in the floor. I put it between its $0.8 billion of dental funding
+          (report, page 28) and a quarter of the total, its share of Oregonians. I assume
+          {{ pct(children.low) }} to {{ pct(children.high) }} of the rest is for children and
+          stays too.
+        </li>
+        <li>
+          <strong>Copays.</strong> Oregonians paid about $3.5 billion out of their own pockets in
+          2022, leaving out long-term care and drugstore items (Appendix FR, Figure AFR1a, an
+          estimate from national figures). At 5.3% growth a year, the lower of the brief's two
+          rates, that is ${{ oop }} billion in 2032. It includes people on Medicare, today's
+          dental bills and some care the plan would not cover, so I assume the floor's copays
+          keep only {{ pct(kept.low) }} to {{ pct(kept.high) }} of it. That share stands in for
+          a copay schedule. It is the number an actuary would replace.
+        </li>
+        <li>
+          <strong>Billing.</strong> The draft counts two provider savings (report, page 23 and
+          Table E7). One is $3.0 to $3.3 billion from providers collecting every dollar and "no
+          longer needing to bill individuals". I assume that is lost in step with the copays.
+          The other is $4 to $5 billion in billing and eligibility work. A clinic that bills any
+          patient keeps its billing office, so I assume {{ pct(adminLost.low) }} to
+          {{ pct(adminLost.high) }} of that is lost too.
+        </li>
+        <li>
+          <strong>Not counted.</strong> Two things that would make the floor look worse: a
+          top-up that pays the copays brings back care the copays discouraged, and the public
+          plan pays for it; and insurers selling a top-up have their own overhead. One that
+          would make it look better: people use less care when it is not free. Some of
+          that is care they did not need, and some is care they did.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================================================== who pays less, more -->
+  <section class="section section-line" id="trade">
+    <div class="container">
+      <h2 class="h-section">Who pays less, and who pays more</h2>
+      <div class="op-trade">
+        <div class="brand-card glow glow-teal edge-top">
+          <span class="card-eyebrow">Pays less than under the draft</span>
+          <ul class="op-list">
+            <li><strong>Everyone who pays the new taxes,</strong> by roughly {{ pctSpan(cut.actuary) }} of those taxes ({{ pctSpan(cut.board) }} at the board's estimate), before any copays or top-up.</li>
+            <li><strong>People who use little care</strong> and skip the top-up. They keep the whole tax cut.</li>
+            <li><strong>Healthy higher earners.</strong> The tax cut grows with income. A healthy household gains more the more it earns. A sick one above the exemption will usually pay more.</li>
+            <li><strong>Employers that offer no top-up.</strong> One that offers it pays for it on top of the payroll tax.</li>
+          </ul>
+        </div>
+        <div class="brand-card glow glow-rose glow-tl edge-top">
+          <span class="card-eyebrow">Pays more than under the draft</span>
+          <ul class="op-list">
+            <li><strong>People who are sick,</strong> above the exemption. A household with a chronic illness reaches the yearly limit every year.</li>
+            <li><strong>People who put off care because of a copay,</strong> and pay for it later in worse health.</li>
+            <li><strong>Middle-income households that use a lot of care.</strong> A limit tied to income softens this and does not remove it.</li>
+            <li><strong>Adults who need dental work, glasses, hearing aids or fertility treatment</strong> and have no top-up.</li>
+            <li><strong>Clinics and hospitals,</strong> which go on billing patients, bill a second insurer for anyone with a top-up, and write off the copays they cannot collect.</li>
+            <li><strong>Oregon as a whole.</strong> By my math about {{ billions(actuary.givenBack) }} more is spent in total, before the costs listed under "Not counted" and any drop in use.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="uhp-note">
+        Compared with today the picture is different. Most households above the exemption
+        already pay premiums, deductibles and copays, and under a floor the premium is gone. I
+        cannot show household bills the way my opinion page does: that takes a copay schedule
+        and a top-up price, and neither exists yet.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== limits -->
+  <section class="section section-line" id="limits">
+    <div class="container">
+      <h2 class="h-section">What it cannot do</h2>
+      <div class="op-trade">
+        <div class="brand-card glow glow-amber edge-top">
+          <span class="card-eyebrow">Limits</span>
+          <ul class="op-list">
+            <li><strong>It cannot be thin for everyone.</strong> People who qualify for Medicaid "would keep access to every service Medicaid requires" (report, page 9). That is about one Oregonian in four in the report's 2032 figures.</li>
+            <li><strong>It gives up part of the simpler system.</strong> The draft's savings come from one payer and no patient billing. A floor keeps some of both, and the plan, not the front desk, would have to say at every visit what each patient owes.</li>
+            <li><strong>It makes two tiers.</strong> A rule that a top-up cannot buy a place in line would have to be written into law, and it does not stop a clinic from preferring patients whose copays an insurer pays. Some coverage would again depend on your job.</li>
+            <li><strong>If the public plan pays first, as here, it may be harder to defend in court.</strong> The brief says paying first "could also be vulnerable" to challenge under the federal law that governs employer plans (page 12). That is true of the draft too.</li>
+            <li><strong>It does not fix the cost estimate.</strong> The tax rates would still assume the lower of two cost estimates unless rates are printed for both.</li>
+          </ul>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top">
+          <span class="card-eyebrow">What I have not worked out</span>
+          <ul class="op-list">
+            <li><strong>The copays and the yearly limit.</strong> Too low and the tax barely moves; too high and people skip care they need.</li>
+            <li><strong>Whether a top-up should be allowed to pay the copays.</strong> If it does, the copays stop discouraging anything and the public plan pays for the extra care. If it does not, there is less reason to buy one.</li>
+            <li><strong>What a top-up costs,</strong> and whether insurers would sell one at a price people would pay.</li>
+            <li><strong>Medicare.</strong> People on it already have a floor with gaps. Whether Oregon's floor fills those gaps is a separate decision, and my copay figure does not separate them out.</li>
+            <li><strong>How it fits my own proposal.</strong> I have not tried to combine it with the proposal on my opinion page.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="uhp-status op-ask">
+        <strong>Where I come down:</strong> I would not do this. If the board wants to settle
+        the question, its actuary could price the plan at two benefit levels, the draft's and a
+        floor with copays tied to income, and show what a household would pay under each. My
+        own proposal is on my
+        <a routerLink="/oregon-universal-health-plan/opinion">opinion page</a>.
+      </p>
+      <p class="uhp-note op-end">
+        Written {{ updated }} by Marcus Malcom, who built the
+        <a routerLink="/oregon-universal-health-plan">explainer</a>. An idea I looked at: not
+        the board's view, and not a recommendation.
+        Quotations are from the board's draft legislative report (October 13, 2026) and its
+        legislative brief, by the page numbers printed on each. Vermont: Governor Shumlin's financing presentation of December 17,
+        2014. Colorado: Amendment 69, November 8, 2016, defeated 78.8% to 21.2%. Medicare:
+        Medicare.gov and KFF. Disagree?
+        <a [routerLink]="['/']" fragment="contact">Tell me</a>.
+      </p>
+      <p class="uhp-print-only uhp-print-note">
+        &copy; {{ year }} Malcom IO LLC. Printed from
+        www.malcom.io/oregon-universal-health-plan/floor-and-top-up.
+      </p>
+    </div>
+  </section>
+</app-quillquest-shell>
