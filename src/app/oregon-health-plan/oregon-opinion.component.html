@@ -120,6 +120,7 @@
               <div><dt>Fixes</dt><dd>{{ c.fixes }}</dd></div>
               <div><dt>Costs</dt><dd>{{ c.costs }}</dd></div>
               <div><dt>Priced</dt><dd>{{ c.priced }}</dd></div>
+              <div><dt>Standing</dt><dd><strong>{{ c.standing }}</strong></dd></div>
             </dl>
           </div>
         }
@@ -172,9 +173,8 @@
               <th role="columnheader" scope="col">Household</th>
               <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
-              <th role="columnheader" scope="col" class="num">With change 1 (mine)</th>
-              <th role="columnheader" scope="col" class="num op-col-pick">With changes 1 and 2 (mine)</th>
-              <th role="columnheader" scope="col" class="num">If the rate pays for change 2</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">My proposal: changes 1 and 2</th>
+              <th role="columnheader" scope="col" class="num">If the household rate pays for change 2</th>
               <th role="columnheader" scope="col" class="num op-col-payroll">Its employer's payroll tax</th>
             </tr>
           </thead>
@@ -187,17 +187,16 @@
                 </th>
                 <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
                 <td role="cell" class="num" data-label="Draft, Model 3">{{ usd(row.model3) }}</td>
-                <td role="cell" class="num" data-label="With change 1 (mine)">{{ usd(row.withCredit) }}</td>
                 <td
                   role="cell"
                   class="num op-col-pick"
                   [class.less]="row.withBoth < row.now - 0.5"
                   [class.more]="row.withBoth > row.now + 0.5"
-                  data-label="With changes 1 and 2 (mine)"
+                  data-label="My proposal: changes 1 and 2"
                 >
                   <span class="visually-hidden">{{ row.withBoth < row.now - 0.5 ? 'Less than today: ' : row.withBoth > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.withBoth) }}
                 </td>
-                <td role="cell" class="num" data-label="If the rate pays for change 2">{{ usd(row.withBothPaidFor) }}</td>
+                <td role="cell" class="num" data-label="If the household rate pays for change 2">{{ usd(row.withBothPaidFor) }}</td>
                 <td role="cell" class="num op-col-payroll" data-label="Its employer's payroll tax">
                   {{ row.payroll < 1 ? 'None' : usd100(row.payroll) }}
                 </td>
@@ -207,10 +206,13 @@
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> The two columns of mine use a {{ pct1(rate) }} rate,
-        the middle of the range, and the soft cap in the second is not paid for. The next column
-        is what the same households would pay if the household rate alone made up the soft cap's
-        cost: about {{ pct1(rateIfCapCostAll) }}. "Pays today" and Model 3 are the explainer's and
+        <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(rate) }} rate, the middle
+        of the range, and leaves the soft cap's cost out: these are the bills only if that cost
+        is paid from outside the household rate. The next column is what happens if it is not,
+        and the household rate alone makes up the cost:
+        about {{ pct1(rateIfCapCostAll) }}. The family at $2,000,000 is then back where Model 3 had
+        it, and the family at $1,000,000 pays more than under either. That is why change 2 is
+        conditional. "Pays today" and Model 3 are the explainer's and
         count the household's own bill only. The last column is not paid by the household: it is
         the payroll tax its employer pays on its wages (the board's 9% example for a private
         employer, 14% for a public one), and it is what the credit is a quarter of. It is the
@@ -323,7 +325,7 @@
           <ul class="op-list">
             <li><strong>Anyone with no employer behind their income:</strong> the self-employed, retirees with income, investors. The rate on that income goes from 7.7% to somewhere between {{ pct1(rateRange.low) }} and {{ pct1(rateRange.high) }}, at every income.</li>
             <li><strong>Workers at employers under $500,000 of payroll.</strong> No payroll tax is paid on their wages, so there is no credit, and their rate still rises.</li>
-            <li><strong>Whoever makes up the soft cap.</strong> It is not priced. A rough yardstick is ${{ yardstick.low }} billion to ${{ yardstick.high }} billion a year; if the household rate alone covered that, it would be {{ pct1(rateIfCapCostAll) }}, not {{ pct1(rate) }}.</li>
+            <li><strong>Whoever makes up the soft cap.</strong> It is not priced. A rough yardstick is ${{ yardstick.low }} billion to ${{ yardstick.high }} billion a year. If the household rate alone covered that, it would be {{ pct1(rateIfCapCostAll) }}, not {{ pct1(rate) }}, and the cap would mostly cancel itself out. So I would only do it with money from the payroll tax, the business taxes or the plan's budget.</li>
             <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2.</li>
           </ul>
         </div>
@@ -363,14 +365,14 @@
             <tr role="row">
               <th role="rowheader" scope="row">${{ targets.board.target }} billion, the board's estimate</th>
               <td role="cell" class="num" data-label="Household rate, Model 3">{{ pct1(targets.board.household) }}</td>
-              <td role="cell" class="num op-col-pick" data-label="With change 1 (mine)">{{ pct1(targets.board.householdWithCredit) }}</td>
+              <td role="cell" class="num op-col-pick" data-label="Household rate, with change 1 (mine)">{{ pct1(targets.board.householdWithCredit) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $500,000">{{ pct1(targets.board.payrollLow) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $10 million">{{ pct1(targets.board.payrollHigh) }}</td>
             </tr>
             <tr role="row">
               <th role="rowheader" scope="row">${{ targets.actuary.target }} billion, Milliman's estimate</th>
               <td role="cell" class="num" data-label="Household rate, Model 3">{{ pct1(targets.actuary.household) }}</td>
-              <td role="cell" class="num op-col-pick" data-label="With change 1 (mine)">{{ pct1(targets.actuary.householdWithCredit) }}</td>
+              <td role="cell" class="num op-col-pick" data-label="Household rate, with change 1 (mine)">{{ pct1(targets.actuary.householdWithCredit) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $500,000">{{ pct1(targets.actuary.payrollLow) }}</td>
               <td role="cell" class="num" data-label="Payroll tax above $10 million">{{ pct1(targets.actuary.payrollHigh) }}</td>
             </tr>
@@ -433,8 +435,10 @@
 
       <p class="uhp-status op-ask">
         <strong>What I would ask for:</strong> have the board's actuaries price Model 3 with a
-        worker credit at a few levels and a soft cap at a few thresholds, at both cost estimates,
-        and show who pays more and who pays less, before the Legislature picks a model.
+        worker credit at a few levels, at both cost estimates, and show who pays more and who
+        pays less, before the Legislature picks a model. That change is the core. Then price a
+        soft cap at a few thresholds, paid for from outside the household rate. If it can only be
+        paid for by raising that rate, drop it.
       </p>
       <p class="uhp-note op-end">
         Written {{ updated }} by Marcus Malcom, who built the

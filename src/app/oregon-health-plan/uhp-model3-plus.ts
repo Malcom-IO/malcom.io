@@ -28,6 +28,8 @@ export interface Change {
   fixes: string;
   costs: string;
   priced: string;
+  /** How firmly the page stands behind it. */
+  standing: string;
 }
 
 export const CHANGES: readonly Change[] = [
@@ -39,6 +41,7 @@ export const CHANGES: readonly Change[] = [
     fixes: 'Wages taxed far more heavily than other income; public employees and single workers paying more than today',
     costs: 'A higher household rate, which lands on income with no employer behind it',
     priced: 'As a range, from two of the board\'s own models',
+    standing: 'The core. Worth doing on its own',
   },
   {
     id: 2,
@@ -48,6 +51,7 @@ export const CHANGES: readonly Change[] = [
     fixes: 'A bill several times the cost of coverage at the very top, and the risk that those households leave',
     costs: 'Revenue from the highest earners, made up by everyone below or by the payroll tax',
     priced: 'Roughly: a yardstick, not a price',
+    standing: 'Conditional. Only if it is paid for from outside the household rate',
   },
   {
     id: 3,
@@ -57,6 +61,7 @@ export const CHANGES: readonly Change[] = [
     fixes: 'Rates sized to the lower of two estimates, about 30% apart',
     costs: 'Nothing in dollars; it shows the higher number up front',
     priced: 'Yes: the rates scale with the target',
+    standing: 'Worth doing with or without the other two',
   },
 ];
 
@@ -179,10 +184,11 @@ export function rateCoveringSoftCap(credit = CREDIT): number {
 }
 
 /**
- * The twelve example households: Model 3; with change 1; with changes 1 and 2
- * as proposed (the soft cap not yet paid for); and with the household rate
- * raised to pay for the soft cap, which is the honest end state if nothing
- * else makes up the money.
+ * The twelve example households: Model 3; with changes 1 and 2 as proposed
+ * (the soft cap's cost left out, so paid from outside the household rate); and
+ * with the household rate raised to pay for the soft cap, which is the honest
+ * end state if nothing else makes up the money. `withCredit` (change 1 alone)
+ * is not a table column; the chart draws it and the tests pin it.
  */
 export const PLUS_ROWS = HOUSEHOLD_ROWS.map((h) => {
   const at = (softCap: boolean, rate?: number) =>
