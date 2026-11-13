@@ -963,3 +963,46 @@ $payroll: var(--s4);
   color: var(--text);
   white-space: nowrap;
 }
+
+// The two subjects of the page, at the top, each a link to its section.
+.op-topics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.op-topic {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  height: auto;
+  padding: 1.1rem 1.3rem 1.2rem;
+  color: var(--text);
+  text-decoration: none;
+
+  strong {
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+.op-topic-what {
+  font-size: 0.925rem;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+@media (max-width: 575.98px) {
+  .op-topics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media print {
+  .op-topics {
+    break-inside: avoid;
+  }
+}
