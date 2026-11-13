@@ -1,6 +1,7 @@
 import { DOCUMENT, Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, TitleStrategy } from '@angular/router';
+import { ThemeService } from './theme.service';
 
 /** Per-route SEO metadata, attached via a route's `data`. */
 export interface SeoData {
@@ -37,8 +38,13 @@ export class SeoTitleStrategy extends TitleStrategy {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly doc = inject(DOCUMENT);
+  private readonly theme = inject(ThemeService);
 
   override updateTitle(snapshot: RouterStateSnapshot): void {
+    // Each part of the site has its own starting theme; like the tags below,
+    // this runs at prerender, so the page's HTML arrives already themed.
+    this.theme.applyFor(snapshot.url);
+
     const title = this.buildTitle(snapshot);
     if (title !== undefined) {
       this.title.setTitle(title);

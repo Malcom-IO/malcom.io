@@ -1,0 +1,843 @@
+// The opinion page. Built from the explainer's pieces (its stylesheet is loaded
+// too), with an amber cast so it is visibly a different kind of page.
+.op-hero {
+  background:
+    radial-gradient(110% 80% at 85% 0%, color-mix(in srgb, var(--caution) 12%, transparent), transparent 60%),
+    var(--ground);
+}
+// The label a skimming reader must not miss.
+.op-label {
+  margin: 0 0 1.5rem;
+  padding: 0.85rem 1.1rem;
+  border-left: 3px solid var(--caution);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: color-mix(in srgb, var(--caution) 9%, var(--surface));
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+// ------------------------------------------------------------- stat tiles
+.op-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr));
+  gap: 1.25rem;
+}
+.op-stat {
+  padding: 1.4rem 1.5rem 1.25rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-stat-label {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+.op-stat-big {
+  margin: 0.35rem 0 0.5rem;
+  font-family: var(--mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.op-stat-foot {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+// ------------------------------------------------------------------ table
+.op-count {
+  margin: 1rem 0 0.75rem;
+  color: var(--text-soft);
+}
+// A cell the idea changes. Blue when it now pays less than the draft asks,
+// amber when it pays more, so neither is confused with less/more than today.
+.uhp-table td.op-changed {
+  background: color-mix(in srgb, var(--s1) 16%, transparent);
+  font-weight: 600;
+}
+.uhp-table td.op-changed--up {
+  background: color-mix(in srgb, var(--s4) 20%, transparent);
+}
+.op-table-key {
+  margin-top: 0.75rem;
+}
+.op-key--up {
+  background: color-mix(in srgb, var(--s4) 55%, var(--surface));
+}
+.op-key--down {
+  background: color-mix(in srgb, var(--s1) 45%, var(--surface));
+}
+.op-was {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+// --------------------------------------------------------- chart and bars
+.op-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin-top: 1.25rem;
+
+  .uhp-figure {
+    margin-top: 0;
+  }
+}
+.op-line--draft {
+  stroke: var(--s2);
+}
+.op-line--soft,
+.op-line--pick {
+  stroke: var(--s1);
+}
+// SVG paths in the option cards and the chart share these classes.
+path[class*='op-line--'] {
+  fill: none;
+}
+.op-line--ceiling {
+  stroke: var(--s3);
+}
+.op-line--broad {
+  stroke: var(--s4);
+}
+.op-key--draft {
+  background: var(--s2);
+}
+.op-key--soft,
+.op-key--pick {
+  background: var(--s1);
+}
+.op-key--ceiling {
+  background: var(--s3);
+}
+.op-bars {
+  display: grid;
+  gap: 1rem;
+}
+.op-bargrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.op-bargroup {
+  padding: 1.1rem 1.25rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-bargroup-title {
+  margin: 0 0 0.6rem;
+  font-weight: 650;
+}
+.op-bar {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr) 5.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+.op-bar + .op-bar {
+  margin-top: 0.4rem;
+}
+.op-bar-label {
+  color: var(--text-soft);
+}
+.op-bar-track {
+  height: 12px;
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-2);
+}
+.op-fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 0 4px 4px 0;
+}
+.op-fill--draft {
+  background: var(--s2);
+}
+.op-fill--soft,
+.op-fill--pick {
+  background: var(--s1);
+}
+.op-fill--today {
+  background: var(--muted);
+}
+.op-fill--ceiling {
+  background: var(--s3);
+}
+.op-bar-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+// ---------------------------------------------------------------- options
+.op-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-option {
+  padding: 1.5rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-shape {
+  display: block;
+  width: 100%;
+  max-width: 11rem;
+  margin: 0.9rem 0 1rem;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.op-shape-base {
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+.op-shape-line {
+  stroke-width: 3;
+}
+.op-option-what {
+  margin: 0 0 1rem;
+  color: var(--text-soft);
+}
+.op-facts {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.9rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  dt {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  dt {
+    flex: none;
+  }
+  dd {
+    margin: 0;
+    text-align: right;
+    font-weight: 600;
+  }
+}
+
+// ----------------------------------------------- where the ceiling starts
+.op-reach {
+  padding: 1.25rem 1.5rem 0.75rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-reach-row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr) 11.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+.op-reach-label {
+  font-weight: 600;
+
+  span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+}
+.op-reach-track {
+  position: relative;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+.op-reach-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 4px;
+  border-radius: 4px;
+  background: var(--s3);
+}
+.op-reach-value {
+  text-align: right;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.op-reach-track--axis {
+  height: 1.2rem;
+  background: none;
+
+  span {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  span:first-child {
+    transform: none;
+  }
+  span:last-child {
+    transform: translateX(-100%);
+  }
+}
+
+// --------------------------------------------------------------- trade-off
+.op-trade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+
+  .brand-card {
+    height: auto;
+  }
+  .brand-card:hover {
+    transform: none;
+  }
+}
+.op-list {
+  margin: 0.9rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-soft);
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+}
+.op-ask {
+  max-width: 46rem;
+  margin-top: 1.75rem;
+}
+.op-end {
+  max-width: 46rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 991.98px) {
+  .op-bargrid,
+  .op-two,
+  .op-options,
+  .op-trade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 767.98px) {
+  // Stacked table cells: the struck-through draft figure sits beside the new one.
+  .op-was {
+    display: inline;
+    order: 2;
+  }
+  .op-reach-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+  .op-reach-value {
+    text-align: left;
+  }
+  .op-reach-axis .op-reach-label,
+  .op-reach-axis .op-reach-value {
+    display: none;
+  }
+  .op-bar {
+    grid-template-columns: 6.5rem minmax(0, 1fr) 5rem;
+  }
+}
+
+// Column headings wrap into even lines rather than leaving one word behind.
+.uhp-table thead th {
+  text-wrap: balance;
+}
+
+// ================================================= Model 3 with three changes
+// Why Model 3: two bar charts side by side, Model 3's bar picked out.
+.op-why5 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+
+  .uhp-figure {
+    margin-top: 0;
+  }
+}
+.op-evidence .op-bar {
+  grid-template-columns: 4.5rem minmax(0, 1fr) 5.5rem;
+}
+.op-fill {
+  background: var(--line-strong);
+}
+.op-fill--pick {
+  background: var(--brand);
+}
+.op-bar--pick .op-bar-label,
+.op-bar--pick .op-bar-value {
+  color: var(--text);
+  font-weight: 700;
+}
+// Where the page's own proposal lands among the five: set apart, in blue.
+.op-fill--mine {
+  background: var(--s1);
+}
+.op-bar--mine {
+  margin-top: 0.9rem !important;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+}
+.op-evidence .op-bar {
+  grid-template-columns: 8rem minmax(0, 1fr) 5.5rem;
+}
+.op-changes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-fixes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+
+  .op-stat-big {
+    margin-top: 0;
+  }
+  .op-option-what {
+    margin: 0;
+  }
+}
+.op-chart {
+  margin-top: 1rem;
+}
+.op-line--c1 {
+  stroke: var(--s2);
+}
+.op-key--c1 {
+  background: var(--s2);
+}
+.op-line--c2 {
+  stroke: var(--s1);
+}
+.op-key--c2 {
+  background: var(--s1);
+}
+@media (max-width: 991.98px) {
+  .op-why5,
+  .op-changes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-fixes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .op-fixes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// ======================================================== the two models
+.op-models {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-model {
+  padding: 1.5rem 1.6rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-model-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.op-badge {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-bright);
+  white-space: nowrap;
+}
+.op-badge--open {
+  border-color: var(--caution);
+  color: var(--caution);
+}
+.op-model-name {
+  margin: 0.6rem 0 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+// Model 7: evidence beside a sketch, equal halves.
+.op-two--even {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.op-evidence {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+.op-bar--wide {
+  grid-template-columns: minmax(0, 1fr) 3rem;
+  grid-template-areas: 'label label' 'track value';
+  gap: 0.25rem 0.75rem;
+
+  .op-bar-label {
+    grid-area: label;
+  }
+  .op-bar-track {
+    grid-area: track;
+    height: 14px;
+  }
+  .op-bar-value {
+    grid-area: value;
+  }
+}
+.op-shapecard {
+  padding: 1.25rem 1.4rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-shape--large {
+  max-width: 22rem;
+  margin: 1rem 0 0.75rem;
+}
+@media (max-width: 991.98px) {
+  .op-models,
+  .op-two--even {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// =============================================================== Model 6
+// Two colors carry the whole page: what a household pays itself, and what is
+// collected through its employer.
+$own: var(--s1);
+$payroll: var(--s4);
+
+.op-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.5rem 2.5rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1.4rem 1.6rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-control label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 650;
+}
+.op-slider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    flex: 1;
+    accent-color: var(--brand);
+  }
+  output {
+    min-width: 3.5rem;
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: right;
+  }
+}
+.op-check {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  color: var(--text-soft);
+  cursor: pointer;
+
+  input {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.2rem;
+    accent-color: var(--brand);
+  }
+  strong {
+    color: var(--text);
+  }
+}
+
+// Where the money comes from: one bar for the draft, one for Model 6.
+.op-mix {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.op-mix-row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+.op-mix-label {
+  font-weight: 600;
+}
+.op-mix-bar {
+  display: flex;
+  gap: 2px;
+  height: 38px;
+}
+.op-seg {
+  flex-basis: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 0.6rem;
+  line-height: 38px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0b1116;
+  white-space: nowrap;
+  transition: flex-grow 0.2s ease;
+}
+.op-seg:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.op-seg:last-child {
+  border-radius: 0 4px 4px 0;
+  padding: 0;
+  text-align: center;
+}
+.op-seg--own,
+.op-fill--own,
+.op-key--own {
+  background: $own;
+}
+.op-seg--payroll,
+.op-fill--payroll,
+.op-key--payroll {
+  background: $payroll;
+}
+.op-seg--biz {
+  background: var(--s3);
+}
+
+.op-rates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.op-rate {
+  padding: 1.1rem 1.25rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-rate-big {
+  margin: 0.35rem 0 0;
+  font-family: var(--mono);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+
+  span {
+    color: var(--muted);
+    font-weight: 500;
+  }
+}
+.op-rate-big--words {
+  font-family: var(--sans);
+  font-size: 1.15rem;
+  letter-spacing: 0;
+}
+
+// The table: Model 6's own column stands out; the employer columns sit apart.
+.uhp-table .op-col-pick {
+  font-weight: 650;
+}
+.uhp-table thead .op-col-pick {
+  color: var(--text);
+}
+.uhp-table .op-col-payroll {
+  border-left: 1px solid var(--line);
+}
+
+// Stacked bars: own bill, then the employer's share, with a tick at today's bill.
+.op-bar-track--stack {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  background: var(--surface-2);
+
+  .op-fill {
+    border-radius: 0;
+  }
+  .op-fill:nth-child(2) {
+    border-radius: 0 4px 4px 0;
+  }
+}
+.op-mark,
+.op-mark-key {
+  width: 2px;
+  background: var(--text);
+}
+.op-mark {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+}
+.op-mark-key {
+  display: inline-block;
+  height: 0.9rem;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+.op-bargroup-foot {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.op-bargrid .op-bar {
+  grid-template-columns: 7rem minmax(0, 1fr) 9.5rem;
+}
+.op-bar-value span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.op-line--m1,
+.op-key--m1 {
+  stroke: var(--s2);
+}
+.op-key--m1 {
+  background: var(--s2);
+}
+.op-line--m3 {
+  stroke: var(--s4);
+}
+.op-key--m3 {
+  background: var(--s4);
+}
+.op-line--m6 {
+  stroke: var(--s1);
+}
+.op-key--m6 {
+  background: var(--s1);
+}
+.op-line--m7 {
+  stroke: var(--s3);
+}
+.op-key--m7 {
+  background: var(--s3);
+}
+// Phones: keep rate figures on one line and the mix labels inside their bars.
+@media (max-width: 575.98px) {
+  .op-rate-big {
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+  .op-rates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-seg--biz {
+    flex-basis: 2.2rem;
+    flex-shrink: 0;
+  }
+}
+.op-callcard {
+  padding: 1.25rem 1.4rem;
+  height: auto;
+
+  p {
+    margin: 0.6rem 0 0;
+    color: var(--text-soft);
+  }
+  &:hover {
+    transform: none;
+  }
+}
+.op-why {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+
+  .op-option-what {
+    margin: 0;
+  }
+  .op-shape {
+    margin-top: 0;
+  }
+}
+@media (max-width: 991.98px) {
+  .op-controls,
+  .op-why {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-rates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .op-mix-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+  .op-seg {
+    font-size: 0.75rem;
+    padding: 0 0.35rem;
+  }
+  .op-bargrid .op-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
+  .op-bar-value {
+    text-align: left;
+  }
+}
