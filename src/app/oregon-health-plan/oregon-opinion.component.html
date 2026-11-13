@@ -13,7 +13,7 @@
         </p>
         <p class="lead-lg mb-0">
           All five draft models collect most of the money through employers, where households do
-          not see it. What is left lands on the few who have no employer and high incomes.
+          not see it. A quarter to two fifths of the rest comes from the top 1% of tax filers.
         </p>
       </div>
     </div>
@@ -25,13 +25,13 @@
       <div class="op-stats">
         <div class="brand-card glow glow-blue edge-top op-stat">
           <p class="op-stat-label">New revenue collected through employers' payroll</p>
-          <p class="op-stat-big">51% to 55%</p>
+          <p class="op-stat-big">51.5% to 55%</p>
           <p class="op-stat-foot">In all five models (report)</p>
         </div>
         <div class="brand-card glow glow-teal glow-bl edge-top op-stat">
           <p class="op-stat-label">A median family of four: own bill, today and in the draft</p>
           <p class="op-stat-big">{{ usd(median.now) }} &rarr; {{ usd100(median.low) }} to {{ usd100(median.high) }}</p>
-          <p class="op-stat-foot">Plus about $8,900 through its employer</p>
+          <p class="op-stat-foot">Plus about $8,900 through its employer. Today's figure also leaves out the employer's premium</p>
         </div>
         <div class="brand-card glow glow-amber glow-tl edge-top op-stat">
           <p class="op-stat-label">Tax returns owing no household contribution</p>
@@ -53,7 +53,8 @@
       <h2 class="h-section">Model 6</h2>
       <p class="uhp-narrow uhp-body">
         The board's Model 3, with money moved from the payroll tax to the household
-        contribution. Same state revenue. Move the slider.
+        contribution. Same state revenue with the soft cap off; the cap is not priced. Move the
+        slider.
       </p>
 
       <div class="brand-card op-controls">
@@ -118,13 +119,15 @@
         <span class="uhp-ours">my math</span> Model 3 has one household rate and a two-tier payroll
         tax, so each one's revenue moves in step with its rate. Raising one and lowering the
         other by the same dollars leaves the state's total where the board set it, if nobody
-        changes what they do. It does not leave federal taxes where they were: see "Behind"
-        below.
+        changes what they do. One piece does not scale: the report credits Medicare Part B
+        premiums against the household contribution, which I have left as the board has it. And
+        it does not leave federal taxes where they were: see "Behind" below.
         @if (softCap()) {
-          The soft cap is the exception: it is not priced. It could give up at most
+          The soft cap is the exception: it is not priced. A rough yardstick is
           ${{ yardstick().low }} billion to ${{ yardstick().high }} billion a year, half of what the
-          top 1% would pay. If it cost all of that, the lower payroll rate would be
-          {{ pct1(reservePayroll()) }}, not {{ pct1(m6().payrollLow) }}.
+          top 1% would pay; it also reaches single people from about $185,000. If it cost that
+          much, the lower payroll rate would be {{ pct1(reservePayroll()) }}, not
+          {{ pct1(m6().payrollLow) }}.
         }
       </p>
     </div>
@@ -139,8 +142,8 @@
       </p>
       <p class="op-count" aria-live="polite">
         On their own bill, <strong>{{ tally().less }}</strong> of {{ tally().total }} pay less than
-        today and <strong>{{ tally().more }}</strong> pay more. Every household with an employer
-        has less collected through it.
+        today and <strong>{{ tally().more }}</strong> pay more. Every household in this table with
+        an employer has less collected through it.
       </p>
 
       <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households under Model 6">
@@ -150,7 +153,7 @@
               <th role="columnheader" scope="col">Household</th>
               <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Models 1 to 5</th>
-              <th role="columnheader" scope="col" class="num op-col-pick">Model 6</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Model 6 (mine)</th>
               <th role="columnheader" scope="col" class="num op-col-payroll">Through employer, draft</th>
               <th role="columnheader" scope="col" class="num">Through employer, Model 6</th>
             </tr>
@@ -169,7 +172,7 @@
                   class="num op-col-pick"
                   [class.less]="row.own < row.now - 0.5"
                   [class.more]="row.own > row.now + 0.5"
-                  data-label="Model 6"
+                  data-label="Model 6 (mine)"
                 >
                   <span class="visually-hidden">{{ row.own < row.now - 0.5 ? 'Less than today: ' : row.own > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.own) }}
                 </td>
@@ -188,8 +191,9 @@
         <span class="uhp-ours">my math</span> "Pays today" and the draft's range are the explainer's
         and count the household's own bill only. "Through employer" is the payroll tax on that
         household's wages: the board's 9% example for a private employer, 14% for a public one,
-        under Model 3. The appendix assumes payroll tax comes out of pay over time; nothing
-        requires an employer to pass a cut on.
+        under Model 3. A smaller employer pays less than 9%, and under $500,000 of payroll
+        nothing, so less or nothing comes off for its workers. The appendix assumes payroll tax
+        comes out of pay over time; nothing requires an employer to pass a cut on.
       </p>
     </div>
   </section>
@@ -203,7 +207,7 @@
       <ul class="uhp-legend" aria-hidden="true">
         <li><span class="uhp-key op-key--own"></span>Household's own bill</li>
         <li><span class="uhp-key op-key--payroll"></span>Through its employer</li>
-        <li><span class="op-mark-key"></span>What it pays today</li>
+        <li><span class="op-mark-key"></span>What it pays today (not counting its employer's premium)</li>
       </ul>
       <div class="op-bargrid">
         @for (group of middleBars(); track group.title) {
@@ -292,12 +296,9 @@
           <div class="brand-card glow glow-rose edge-top op-callcard">
             <span class="card-eyebrow">The catch</span>
             <p>
-              A higher household rate raises the bill for anyone without an employer.
-              @if (softCap()) {
-                The soft cap is what keeps the top near the draft's Model 3.
-              } @else {
-                Without the soft cap, the top pays more than under any draft model.
-              }
+              A higher household rate raises the bill for anyone without an employer. The
+              family at $1,000,000 would pay {{ usd100(million().own) }}, against
+              {{ usd100(million().model3) }} under the draft's Model 3{{ softCap() ? ', even with the soft cap.' : '. Turn the soft cap on above to see what it takes off.' }}
             </p>
           </div>
           <p class="uhp-note mb-0">
@@ -316,19 +317,20 @@
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Behind</span>
           <ul class="op-list">
-            <li><strong>Oregon, in federal taxes.</strong> This is the board's central reason for the payroll tax: employer health spending is untaxed, and routing contributions through payroll "keeps the tax advantage that wages do not get," instead of the money "leaving Oregon as increased federal taxes." Model 6 gives some of that up. I have not sized it.</li>
+            <li><strong>High earners, and the plan's reliance on them.</strong> The top 1% would supply about {{ pct(top1OfAll().model6) }} of all the new revenue, up from {{ pct(top1OfAll().draft) }} under Model 3, before any soft cap. <span class="uhp-ours">my math</span> This does not fix the problem I started with; the soft cap only eases it.</li>
+            <li><strong>Oregon, in federal taxes.</strong> This is a central reason the board gives for the payroll tax: employer health spending is untaxed, and routing contributions through payroll "keeps the tax advantage that wages do not get," instead of the money "leaving Oregon as increased federal taxes." Model 6 moves about {{ bn(moved().low) }} to {{ bn(moved().high) }} a year from untaxed payroll to household payments. <span class="uhp-ours">my math</span> I have not sized the federal tax on it.</li>
             <li><strong>Public employees.</strong> The single public employee's own bill goes from {{ usd(publicSingle().now) }} today to about {{ usd100(publicSingle().own) }}. Their employers' tax falls, but a raise is not guaranteed.</li>
-            <li><strong>Anyone whose employer keeps the savings.</strong> Nothing requires a payroll tax cut to become pay.</li>
-            <li><strong>The self-employed and retirees with income.</strong> They have no employer share to shrink.</li>
+            <li><strong>Anyone whose employer keeps the savings.</strong> Nothing requires a payroll tax cut to become pay, and a cut passed on as wages draws federal income and payroll taxes, so a dollar of cut is less than a dollar of take-home.</li>
+            <li><strong>The self-employed, retirees with income, and workers at employers under $500,000 of payroll.</strong> They have no employer share to shrink, and their household rate still rises.</li>
           </ul>
         </div>
         <div class="brand-card glow glow-teal glow-tl edge-top">
           <span class="card-eyebrow">Ahead</span>
           <ul class="op-list">
             <li><strong>Voters and lawmakers.</strong> The cost is on the tax return, where it can be seen and argued about.</li>
-            <li><strong>Employers.</strong> About {{ pct(payrollCut()) }} less payroll tax, which matters most to large, low-margin ones.</li>
+            <li><strong>Employers.</strong> About {{ pct(payrollCut()) }} less payroll tax: {{ big(employers()[0].model6) }} instead of {{ big(employers()[0].draft) }} on a $1.1 million payroll, {{ big(employers()[1].model6) }} instead of {{ big(employers()[1].draft) }} on $190 million.</li>
             <li><strong>Workers whose employers pass it on,</strong> at about the same total.</li>
-            <li><strong>The plan's stability.</strong> Less of the money rests on about 1 in 100 filers staying put.</li>
+            <li><strong>Households in the middle,</strong> in one sense: they would know what the plan costs them.</li>
           </ul>
         </div>
       </div>

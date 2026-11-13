@@ -13,7 +13,8 @@ import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from '../quillquest/quillquest-shell.component';
 import { COST_PER_PERSON, OWING_NOTHING, TOP1_STAKE, ceiling } from './uhp-ceiling';
 import { HOUSEHOLD_ROWS } from './uhp-households';
-import { MODELS, contribution } from './uhp-model';
+import { MODELS, contribution, payrollTax } from './uhp-model';
+import { REVENUE_TARGET } from './uhp-statewide';
 import {
   BASE,
   BASE_SHARES,
@@ -75,7 +76,8 @@ export class OregonOpinionComponent {
   // --------------------------------------------------------------- controls
   /** Share of the new revenue that comes from households rather than payroll. */
   readonly share = signal(DEFAULT_HOUSEHOLD_SHARE);
-  readonly softCap = signal(true);
+  /** Off by default: with it off, Model 6 raises what Model 3 raises. */
+  readonly softCap = signal(false);
 
   readonly m6 = computed(() => model6(this.share()));
   readonly yardstick = computed(() => softCapYardstick(this.share()));
@@ -106,8 +108,39 @@ export class OregonOpinionComponent {
     };
   });
 
+  /** Dollars a year that move from the payroll tax to household payments, in billions. */
+  readonly moved = computed(() => {
+    const delta = this.share() - BASE_SHARES.household;
+    return { low: REVENUE_TARGET.board * delta, high: REVENUE_TARGET.best * delta };
+  });
+  /**
+   * The top 1%'s share of ALL the new revenue: under Model 3, and under Model 6
+   * before any soft cap. Their share of the household contribution does not
+   * change when the rate is scaled; the household contribution's size does.
+   */
+  readonly top1OfAll = computed(() => ({
+    draft: BASE_SHARES.household * BASE.top1Share,
+    model6: this.share() * BASE.top1Share,
+  }));
+  /** The $1,000,000 family: Model 3 against Model 6 as currently set. */
+  readonly million = computed(() => this.rows().find((r) => r.income === 1_000_000)!);
+
   /** The example the page names when it says who comes out behind. */
   readonly publicSingle = computed(() => this.rows().find((r) => r.who === 'Single public employee')!);
+  /** Two employers, a small one and a large one: payroll tax under Model 3 and under Model 6. */
+  readonly employers = computed(() =>
+    [1_100_000, 190_000_000].map((payroll) => {
+      const draft = payrollTax(payroll, BASE.id);
+      return { payroll, draft, model6: draft * this.m6().payrollScale };
+    }),
+  );
+  bn(billions: number): string {
+    return `$${billions.toFixed(1)} billion`;
+  }
+  /** Compact dollars for large figures: "$16.6 million", "$36,700". */
+  big(value: number): string {
+    return value >= 1_000_000 ? `$${(value / 1_000_000).toFixed(1)} million` : this.usd100(value);
+  }
   /** How much less payroll tax employers pay under Model 6, as a share. */
   readonly payrollCut = computed(() => 1 - this.m6().payrollScale);
 
