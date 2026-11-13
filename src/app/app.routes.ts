@@ -140,5 +140,21 @@ export const routes: Routes = [
         'tax models, and a calculator for what your household would pay.',
     } satisfies SeoData,
   },
+  {
+    // Marcus's own view of the plan's financing. A separate page on purpose:
+    // the explainer above takes no position, and this one is labeled opinion.
+    path: 'oregon-universal-health-plan/opinion',
+    loadComponent: () =>
+      import('./oregon-health-plan/oregon-opinion.component').then(
+        (m) => m.OregonOpinionComponent,
+      ),
+    title: "Opinion: cap what a household pays for Oregon's Universal Health Plan | Malcom IO",
+    data: {
+      ogTitle: "Opinion: cap what a household pays for Oregon's Universal Health Plan",
+      description:
+        "One person's view of how Oregon's proposed Universal Health Plan is paid for: the " +
+        'household contribution has no upper limit, and three ways to change that.',
+    } satisfies SeoData,
+  },
   { path: '**', redirectTo: '' },
 ];

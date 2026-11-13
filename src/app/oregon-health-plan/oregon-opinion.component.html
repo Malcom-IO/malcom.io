@@ -1,0 +1,164 @@
+<app-quillquest-shell>
+  <article class="op">
+    <div class="container">
+      <div class="op-narrow">
+        <p class="eyebrow eyebrow--hero">Opinion &middot; Marcus Malcom</p>
+        <h1 class="op-title">Put a ceiling on what a household pays</h1>
+        <p class="op-label">
+          This page is one person's opinion. The
+          <a routerLink="/oregon-universal-health-plan">explainer</a> it comes from takes no
+          position on the plan, and nothing here changes that page. The numbers marked as mine
+          are my arithmetic, not the board's.
+        </p>
+
+        <p class="lead-lg">
+          I built the explainer to understand Oregon's proposed Universal Health Plan. One thing
+          in it bothers me enough to say so separately: the household contribution has no upper
+          limit. Everyone gets the same coverage, and the price of it keeps rising with income
+          forever.
+        </p>
+
+        <h2 class="op-h">What the draft does</h2>
+        <p>
+          Under all five tax models a household pays a share of its income above an exempt
+          amount. For most households that works out to less than they pay for health care
+          today. At the top it does not come close. In my examples a family of four earning
+          $220,000 would pay about $9,500 to $12,700 a year. The same family at $1,000,000
+          would pay $72,000 to $129,000, and at $2,000,000, $149,000 to $272,000, for the same
+          coverage. Four times the plan's average cost per Oregonian is about
+          {{ usd(familyCeiling) }} a year. <span class="op-mine">my math</span>
+        </p>
+        <p>
+          That is not a fee for health care. It works as an income tax earmarked for health
+          care. People can reasonably want that. But it should be chosen on purpose and
+          called what it is, because it carries a risk the board's own finance committee
+          described: a small number of very high earners would supply a large share of the
+          money, and they are the households most able to change how they are paid or where
+          they live. The committee's report says a soft cap was weighed partly to avoid a
+          schedule that "could be perceived as punitive relative to current health care
+          payments."
+        </p>
+        <p>
+          The amount at stake is large. The top 1% of tax filers would pay
+          {{ pct(stake.shareLow) }} to {{ pct(stake.shareHigh) }} of the household contribution
+          depending on the model, which is roughly ${{ stake.low }} billion to ${{ stake.high }}
+          billion a year. <span class="op-mine">my math</span> A plan that covers everyone
+          should not depend that heavily on a small group of households staying put.
+        </p>
+
+        <h2 class="op-h">What I would keep</h2>
+        <p>
+          Almost all of it. Coverage for everyone. Contributions that rise with income. The
+          exemption that leaves lower incomes paying nothing. The employer payroll tax. For
+          about nine households in ten, I would change nothing about what the draft asks.
+        </p>
+
+        <h2 class="op-h">Three ways to fix the top</h2>
+
+        <h3 class="op-h3">1. A ceiling at the cost of your own coverage (my pick)</h3>
+        <p>
+          No household pays more than the plan's average cost for a household its size:
+          about {{ usd(costPerPerson) }} a person on the actuary's 2032 estimate, so
+          {{ usd(familyCeiling) }} for a family of four. <span class="op-mine">my math</span>
+          That is an average across all ages, a typical working-age family costs less, and
+          more than half of it is already paid by federal and state money, so it is a generous
+          ceiling, not a tight one. Below the ceiling nothing changes.
+          At the ceiling a family of four is contributing about {{ ceilingTimes }} times what
+          the average family that size would, and the bill stops there.
+          <span class="op-mine">my math</span> It is easy to explain, and it answers the
+          "punitive" worry directly: nobody is charged more than the average cost of what they
+          are getting.
+        </p>
+        <p>
+          It reaches further down than it sounds. With no worker credit, a family of four
+          would hit the ceiling at about {{ usd(reachFour.low) }} to {{ usd(reachFour.high) }}
+          of income, depending on the model (later with a credit). One person, whose ceiling is {{ usd(costPerPerson) }}, would hit it at
+          about {{ usd(reachOne.low) }} to {{ usd(reachOne.high) }}. If that is too low, the
+          ceiling can be set at twice the cost of coverage instead of once; the principle is
+          the same.
+        </p>
+
+        <h3 class="op-h3">2. A soft cap</h3>
+        <p>
+          This is the version the board considered and left out. Above a threshold the rate
+          drops instead of stopping, so the contribution still rises with income, only more
+          slowly. It gives up less money than a hard ceiling and keeps more of the progressive
+          shape, at the price of being harder to explain.
+        </p>
+
+        <h3 class="op-h3">3. A lower rate on more income</h3>
+        <p>
+          Shrink the exempt amount and lower the rate. More households pay something, each
+          pays a smaller share, and the top bill falls with the rate. The board weighed this
+          and recommended the higher exemption in January after public comment, though two
+          of the five models still start lower. It is the least targeted of
+          the three: it lowers the top by raising the bottom.
+        </p>
+
+        <div class="op-scroll" tabindex="0" role="region" aria-label="A family of four under the draft and under a ceiling">
+          <table class="op-table" role="table">
+            <caption>
+              A family of four, per year. Ranges run across the five models.
+              <span class="op-mine">my math</span>
+            </caption>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">Income</th>
+                <th role="columnheader" scope="col" class="num">Pays today</th>
+                <th role="columnheader" scope="col" class="num">The draft</th>
+                <th role="columnheader" scope="col" class="num">With a ceiling</th>
+                <th role="columnheader" scope="col" class="num">With a soft cap</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              @for (r of rows; track r.income) {
+                <tr role="row">
+                  <th role="rowheader" scope="row">{{ usd(r.income) }}</th>
+                  <td role="cell" class="num" data-label="Pays today">{{ usd(r.now) }}</td>
+                  <td role="cell" class="num" data-label="The draft">{{ span(r.draft) }}</td>
+                  <td role="cell" class="num" data-label="With a ceiling">{{ span(r.hard) }}</td>
+                  <td role="cell" class="num" data-label="With a soft cap">{{ span(r.soft) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="op-note">
+          The households and what they pay today are the ones in the explainer's table. The
+          ceiling is {{ usd(familyCeiling) }}, the plan's 2032 cost for four people on
+          Milliman's best estimate, in 2032 dollars; the contributions are in today's. The soft cap here halves each dollar of contribution above
+          that ceiling; the board's documents do not specify one.
+        </p>
+
+        <h2 class="op-h">What it costs, honestly</h2>
+        <p>
+          A ceiling gives up revenue, and I have not modeled how much. It is billions of
+          dollars a year: part of the ${{ stake.low }} billion to ${{ stake.high }} billion the
+          top 1% would pay, plus something from the single people and couples below them who
+          would also reach it. Whatever the number is, it has to come from somewhere: a
+          slightly higher rate below the ceiling, the payroll tax, or the plan's budget. The
+          finance committee said the same thing about a soft cap, that it "requires explicit
+          offsets elsewhere." The board has actuaries who can price that. I would like to see
+          them do it before the Legislature picks a model.
+        </p>
+        <p>
+          There is a fair argument on the other side, and the board made it: any cap makes the
+          structure less progressive. Put bluntly, a ceiling is a tax cut for the highest
+          earners that everyone below it, or the plan's budget, pays for. The committee also
+          said the avoidance it worried about "may be limited for most households." All of
+          that is true. My answer is that a health plan is a
+          service with a cost, and contributing {{ ceilingTimes }} times the average is
+          already progressive. Contributing {{ topTimes }} times the average, as the family at
+          $2,000,000 would under one model, is something else.
+        </p>
+
+        <p class="op-end">
+          Written {{ updated }} by Marcus Malcom, who built the
+          <a routerLink="/oregon-universal-health-plan">explainer</a>. This is my view, not the
+          board's and not a finding of that page. Disagree?
+          <a [routerLink]="['/']" fragment="contact">Tell me</a>.
+        </p>
+      </div>
+    </div>
+  </article>
+</app-quillquest-shell>

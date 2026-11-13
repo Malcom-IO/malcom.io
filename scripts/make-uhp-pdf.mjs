@@ -160,11 +160,8 @@ async function main() {
     };
 
     await send('Page.enable');
-    // Print styles and the light theme, from the first paint on.
-    await send('Emulation.setEmulatedMedia', {
-      media: 'print',
-      features: [{ name: 'prefers-color-scheme', value: 'light' }],
-    });
+    // Print styles from the first paint on.
+    await send('Emulation.setEmulatedMedia', { media: 'print' });
     await send('Page.navigate', { url: origin + ROUTE });
 
     // Wait for the app to take over: the chart only draws its lines in the browser.
@@ -179,6 +176,9 @@ async function main() {
     if (!drawn) throw new Error('The page did not finish rendering (no chart lines after 20s).');
 
     const counts = await evaluate(`(async () => {
+      // The site starts dark; the PDF is the light theme.
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.setAttribute('data-bs-theme', 'light');
       // Open every collapsed section.
       const details = [...document.querySelectorAll('details')];
       for (const d of details) d.open = true;
