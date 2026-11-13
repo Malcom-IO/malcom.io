@@ -1986,6 +1986,72 @@ $warn: var(--warn);
   .uhp-print-only {
     display: block;
   }
+  // A calculator cannot work on paper. Each one is replaced by a pointer to
+  // the web page; the static tables around it stay.
+  #calculator .uhp-calc,
+  #calculator .uhp-method,
+  #employers .uhp-inputs,
+  #employers .uhp-bills {
+    display: none !important;
+  }
+  #employers .uhp-calc {
+    display: block;
+  }
+  .uhp-web-note {
+    max-width: 46rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--brand) 35%, var(--line));
+    border-left: 3px solid var(--brand);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--surface);
+    break-inside: avoid;
+  }
+  // Page breaks and grids. A grid whose background shows through its gaps
+  // paints an empty block when its last row moves to the next page, and a
+  // flex row cannot be split at all without its cards spilling, so on paper
+  // the short grids are kept whole and drawn with plain borders.
+  .uhp-facts {
+    gap: 0.75rem;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .uhp-fact {
+    // Sides only: the top edge keeps its own color (green, or amber for open items).
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    border-radius: 0.5rem;
+  }
+  .uhp-fund {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+
+    > * {
+      width: auto;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+    .brand-card {
+      height: auto !important;
+    }
+  }
+  #examples > .container,
+  .uhp-fund,
+  .uhp-share,
+  .uhp-bills,
+  .uhp-sq,
+  .uhp-est,
+  .uhp-dials,
+  .uhp-steps,
+  .uhp-existing,
+  .uhp-chips {
+    break-inside: avoid;
+  }
   .uhp-print-note {
     margin: 0.75rem 0 0;
     font-size: 0.85rem;
@@ -2032,6 +2098,15 @@ $warn: var(--warn);
   tr {
     break-inside: avoid;
   }
+  // Fine diagonal stripes do not survive every PDF renderer (one bar came out
+  // empty), so on paper a conditional bar is a pale fill inside its outline.
+  .uhp-key--cond,
+  .uhp-bridge-bar.cond {
+    background: color-mix(in srgb, var(--s3) 30%, #fff);
+  }
+  .uhp-diverge-bar.up {
+    background: color-mix(in srgb, var(--s2) 30%, #fff);
+  }
   // A heading or label stays with what it introduces.
   .h-section,
   .uhp-sub,
@@ -2040,6 +2115,11 @@ $warn: var(--warn);
   summary,
   figcaption,
   .uhp-legend {
+    break-after: avoid;
+  }
+  // ...including the paragraph between a heading and its figure or cards.
+  .h-section + p,
+  .uhp-sub + p {
     break-after: avoid;
   }
   p,

@@ -7,6 +7,9 @@ $primary: #28a745;
 
 @import "colors";
 @import "tokens";
+// Used only in print (see the print block at the end), so the PDF sets in the
+// same typeface wherever it is rendered. Browsers fetch it only when printing.
+@import "@fontsource-variable/inter/wght.css";
 
 
 :root {
@@ -31,6 +34,9 @@ $primary: #28a745;
   :root:root {
     @include light-tokens;
     --ground: #ffffff; // no gray block inside the page margins
+    // The system font differs by machine (and is much wider on the Linux
+    // build runner), which moved every line and page break in the PDF.
+    --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
 }
 
