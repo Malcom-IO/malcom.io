@@ -1,6 +1,7 @@
-// Render /oregon-universal-health-plan from the built site into a PDF:
+// Render the Oregon health plan pages from the built site into PDFs:
 //   dist/browser/oregon-universal-health-plan.pdf
-// The page's own print styles do the work (light theme, no navigation, every
+//   dist/browser/oregon-universal-health-plan-opinion.pdf
+// Each page's own print styles do the work (light theme, no navigation, every
 // collapsed section open), so the PDF cannot drift from the page. Runs after
 // `ng build`, locally (`npm run pdf`) and in the deploy workflow.
 //
@@ -16,8 +17,11 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SITE = join(ROOT, 'dist/browser');
-const ROUTE = '/oregon-universal-health-plan';
-const OUT = join(SITE, 'oregon-universal-health-plan.pdf');
+// Each page is printed to a PDF named after it, beside it in the built site.
+const PAGES = [
+  { route: '/oregon-universal-health-plan', file: 'oregon-universal-health-plan.pdf' },
+  { route: '/oregon-universal-health-plan/opinion', file: 'oregon-universal-health-plan-opinion.pdf' },
+];
 const LIVE = 'https://www.malcom.io';
 
 const TYPES = {
@@ -137,8 +141,10 @@ async function main() {
     console.error('Gave up after 2 minutes.');
     process.exit(1);
   }, 120_000).unref();
-  if (!existsSync(join(SITE, ROUTE, 'index.html'))) {
-    throw new Error(`${ROUTE} is not in dist/browser. Run "npm run build" first.`);
+  for (const { route } of PAGES) {
+    if (!existsSync(join(SITE, route, 'index.html'))) {
+      throw new Error(`${route} is not in dist/browser. Run "npm run build" first.`);
+    }
   }
   const server = await serve();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -146,6 +152,20 @@ async function main() {
   const { chrome, ready } = launch(findChrome(), profile);
   try {
     const cdp = await connect(await ready);
+    for (const page of PAGES) await render(cdp, origin, page);
+    cdp.close();
+  } finally {
+    chrome.kill();
+    server.close();
+    await new Promise((r) => setTimeout(r, 200));
+    rmSync(profile, { recursive: true, force: true, maxRetries: 5 });
+  }
+}
+
+/** Prints one page of the built site to its PDF, in a tab of its own. */
+async function render(cdp, origin, { route: ROUTE, file }) {
+  const OUT = join(SITE, file);
+  {
     const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
     const send = (method, params) => cdp.send(method, params, sessionId);
@@ -210,7 +230,7 @@ async function main() {
     }
     // Stamped on every page.
     const footer = `<div style="width:100%;padding:0 0.5in;font:8px system-ui,sans-serif;color:#59636d;display:flex;justify-content:space-between">
-      <span>${counts.copyright} &nbsp;·&nbsp; www.malcom.io/oregon-universal-health-plan</span>
+      <span>${counts.copyright} &nbsp;·&nbsp; www.malcom.io${ROUTE}</span>
       <span><span class="pageNumber"></span> / <span class="totalPages"></span></span>
     </div>`;
     const { data } = await send('Page.printToPDF', {
@@ -236,12 +256,7 @@ async function main() {
       `Wrote ${OUT.slice(ROOT.length + 1)} (${Math.round(pdf.length / 1024)} KB, ` +
         `${counts.details} sections opened, ${counts.links} links pointed at ${LIVE})`,
     );
-    cdp.close();
-  } finally {
-    chrome.kill();
-    server.close();
-    await new Promise((r) => setTimeout(r, 200));
-    rmSync(profile, { recursive: true, force: true, maxRetries: 5 });
+    await cdp.send('Target.closeTarget', { targetId });
   }
 }
 
