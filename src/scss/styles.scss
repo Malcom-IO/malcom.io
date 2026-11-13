@@ -156,6 +156,71 @@ section[id] {
   color: var(--muted);
 }
 
+// Card glow: a soft color wash from one corner plus a tinted border. Cards opt
+// in with `.glow` and vary by corner (`glow-tl`, `glow-bl`, `glow-br`,
+// `glow-left`; top-right is the default), by hue (`glow-blue`, `glow-teal`, `glow-violet`,
+// `glow-rose`, `glow-amber`; brand green is the default) and by an optional
+// `edge-top` bar, so no two neighbors look the same.
+.brand-card.glow {
+  --g: var(--brand);
+  --gx: 100%;
+  --gy: 0%;
+  --gs: 85% 130%;
+  background:
+    radial-gradient(
+      var(--gs) at var(--gx) var(--gy),
+      color-mix(in srgb, var(--g) 14%, transparent),
+      transparent 65%
+    ),
+    var(--surface);
+  border-color: color-mix(in srgb, var(--g) 30%, var(--line));
+}
+.brand-card.glow:hover {
+  background:
+    radial-gradient(
+      var(--gs) at var(--gx) var(--gy),
+      color-mix(in srgb, var(--g) 20%, transparent),
+      transparent 68%
+    ),
+    var(--surface-2);
+  border-color: color-mix(in srgb, var(--g) 65%, var(--line));
+}
+.brand-card.glow-tl {
+  --gx: 0%;
+  --gy: 0%;
+}
+.brand-card.glow-bl {
+  --gx: 0%;
+  --gy: 100%;
+}
+.brand-card.glow-br {
+  --gx: 100%;
+  --gy: 100%;
+}
+.brand-card.glow-left {
+  --gx: 0%;
+  --gy: 50%;
+  --gs: 45% 220%;
+}
+.brand-card.glow-blue {
+  --g: #3987e5;
+}
+.brand-card.glow-teal {
+  --g: #1fb5a8;
+}
+.brand-card.glow-violet {
+  --g: #9085e9;
+}
+.brand-card.glow-rose {
+  --g: #e66767;
+}
+.brand-card.glow-amber {
+  --g: #e9a23b;
+}
+.brand-card.edge-top {
+  border-top: 3px solid color-mix(in srgb, var(--g) 85%, transparent);
+}
+
 // ----------------------------------------------------------------- buttons
 .btn {
   border-radius: 10px;
