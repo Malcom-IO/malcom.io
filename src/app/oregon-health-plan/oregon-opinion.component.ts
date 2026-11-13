@@ -63,11 +63,16 @@ interface Line {
 })
 export class OregonOpinionComponent {
   readonly updated = 'November 13, 2026';
+  readonly year = 2026;
+  /** Built after each site build by scripts/make-uhp-pdf.mjs. */
+  readonly pdf = '/oregon-universal-health-plan-opinion.pdf';
   readonly changes = CHANGES;
   readonly credit = CREDIT;
   /** The household rate with change 1: the middle of the range, and the range. */
   readonly rate = creditRate();
   readonly rateRange = creditRateRange();
+  /** The range in one unbroken piece for the tile: "9.9–10.4%". */
+  readonly rateSpan = `${(this.rateRange.low * 100).toFixed(1)}–${(this.rateRange.high * 100).toFixed(1)}%`;
   readonly costPerPerson = COST_PER_PERSON;
   readonly familyThreshold = threshold(4);
   readonly thresholdIncomes = { one: thresholdIncome(1), four: thresholdIncome(4) };

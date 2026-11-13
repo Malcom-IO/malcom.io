@@ -15,6 +15,16 @@
           The board drafted five ways to pay for the plan and recommended none. I would take the
           third, and fix what it gets wrong.
         </p>
+        <p class="text-muted-2 font-monospace small mt-3 mb-0">
+          Written {{ updated }}
+          <span class="uhp-screen-only">
+            &middot; <a [href]="pdf" download="oregon-universal-health-plan-opinion.pdf">Download this page as a PDF</a>
+          </span>
+        </p>
+        <p class="uhp-print-only uhp-print-note">
+          &copy; {{ year }} Malcom IO LLC. Printed from
+          www.malcom.io/oregon-universal-health-plan/opinion.
+        </p>
       </div>
     </div>
   </section>
@@ -133,7 +143,7 @@
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Household rate, same exemption</p>
-          <p class="op-rate-big"><span>7.7%</span> &rarr; {{ pct1(rateRange.low) }} to {{ pct1(rateRange.high) }}</p>
+          <p class="op-rate-big"><span>7.7%</span> &rarr; <b class="op-nowrap">{{ rateSpan }}</b></p>
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Slower climb starts, family of four</p>

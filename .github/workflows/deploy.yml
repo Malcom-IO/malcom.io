@@ -40,9 +40,9 @@ jobs:
       - name: Build (prerendered static site)
         run: npm run build
 
-      # The Oregon health plan page offers itself as a PDF, rendered from this
-      # build with the runner's Chrome so the two cannot drift apart.
-      - name: Render the Oregon health plan PDF
+      # The Oregon health plan pages offer themselves as PDFs, rendered from this
+      # build with the runner's Chrome so they cannot drift apart.
+      - name: Render the Oregon health plan PDFs
         timeout-minutes: 5
         run: npm run pdf
 

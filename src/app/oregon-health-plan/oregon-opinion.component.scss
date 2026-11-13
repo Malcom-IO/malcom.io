@@ -226,10 +226,11 @@ path[class*='op-line--'] {
   margin: 0;
   font-size: 0.9rem;
 
+  // Label column, then the value set flush left so every row starts on one edge.
   div {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+    gap: 0.75rem;
     padding-top: 0.35rem;
     border-top: 1px solid var(--line-soft);
   }
@@ -237,14 +238,40 @@ path[class*='op-line--'] {
     font-weight: 400;
     color: var(--muted);
   }
-  dt {
-    flex: none;
-  }
   dd {
     margin: 0;
-    text-align: right;
     font-weight: 600;
   }
+}
+
+// On paper: no controls, and the short card rows stay whole.
+@media print {
+  .uhp-seg--tabs {
+    display: none !important;
+  }
+  .op-rates,
+  .op-stats,
+  .op-why5 {
+    break-inside: avoid;
+  }
+  // Four tiles across are too narrow for their figures at paper width.
+  .op-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .op-rate .op-rate-big {
+    font-size: 1.15rem;
+  }
+  // The three changes, and the households table, each start a page: begun
+  // mid-page, the table strands its last row on the next one.
+  #changes,
+  #households {
+    break-before: page;
+  }
+}
+
+// A range never breaks across lines.
+.op-nowrap {
+  white-space: nowrap;
 }
 
 // ----------------------------------------------- where the ceiling starts
