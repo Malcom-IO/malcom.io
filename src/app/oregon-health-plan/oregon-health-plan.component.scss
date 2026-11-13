@@ -2104,6 +2104,12 @@ $warn: var(--warn);
     border-radius: 0;
     overflow: visible;
   }
+  // The six cards are kept whole and do not fit under the hero, and Chrome
+  // then leaves their heading behind on page one. The hero is the cover page;
+  // the short version starts the next one.
+  #short-version {
+    break-before: page;
+  }
   .uhp-fact {
     // Sides only: the top edge keeps its own color (green, or amber for open items).
     border-right: 1px solid var(--line);
