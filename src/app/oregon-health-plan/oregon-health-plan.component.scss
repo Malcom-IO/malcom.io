@@ -2020,6 +2020,22 @@ $warn: var(--warn);
   #total-cost {
     break-before: page;
   }
+  // The open-questions grid moved to the next page whole, leaving its heading
+  // and half a sentence behind. Laid out as two columns of inline blocks it
+  // breaks between rows like text does.
+  .uhp-open {
+    display: block;
+
+    li {
+      display: inline-block;
+      width: calc(50% - 0.8rem);
+      margin: 0 0 0.75rem;
+      vertical-align: top;
+    }
+    li:nth-child(odd) {
+      margin-right: 0.75rem;
+    }
+  }
   .uhp-board-example,
   #employers .uhp-results {
     break-inside: avoid;
@@ -2169,6 +2185,8 @@ $warn: var(--warn);
   .h-section + p,
   .uhp-sub + p {
     break-after: avoid;
+    // ...and is never itself cut in two to honor that.
+    break-inside: avoid;
   }
   p,
   li {

@@ -76,6 +76,12 @@ export class OregonOpinionComponent {
   readonly rateIfCapCostAll = rateCoveringSoftCap();
   readonly targets = ratesAtBothTargets();
   readonly rows = PLUS_ROWS;
+  /** Who pays for change 2: the median family and the three self-employed families. */
+  readonly catchRows = PLUS_ROWS.filter(
+    (r) =>
+      r.who === 'Family of four, self-employed' ||
+      (r.who === 'Family of four, private employer' && r.income === 110_000),
+  );
   /**
    * The income above which a self-employed family of four pays less with both
    * changes than under Model 3: where half the higher rate, plus half the

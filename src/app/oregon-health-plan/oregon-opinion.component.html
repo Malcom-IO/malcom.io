@@ -174,7 +174,6 @@
               <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
               <th role="columnheader" scope="col" class="num op-col-pick">My proposal: changes 1 and 2</th>
-              <th role="columnheader" scope="col" class="num">If the household rate pays for change 2</th>
               <th role="columnheader" scope="col" class="num op-col-payroll">Its employer's payroll tax</th>
             </tr>
           </thead>
@@ -196,7 +195,6 @@
                 >
                   <span class="visually-hidden">{{ row.withBoth < row.now - 0.5 ? 'Less than today: ' : row.withBoth > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.withBoth) }}
                 </td>
-                <td role="cell" class="num" data-label="If the household rate pays for change 2">{{ usd(row.withBothPaidFor) }}</td>
                 <td role="cell" class="num op-col-payroll" data-label="Its employer's payroll tax">
                   {{ row.payroll < 1 ? 'None' : usd100(row.payroll) }}
                 </td>
@@ -207,17 +205,49 @@
       </div>
       <p class="uhp-note">
         <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(rate) }} rate, the middle
-        of the range, and leaves the soft cap's cost out: these are the bills only if that cost
-        is paid from outside the household rate. The next column is what happens if it is not,
-        and the household rate alone makes up the cost:
-        about {{ pct1(rateIfCapCostAll) }}. The family at $2,000,000 is then back where Model 3 had
-        it, and the family at $1,000,000 pays more than under either. That is why change 2 is
-        conditional. "Pays today" and Model 3 are the explainer's and
+        of the range. "Pays today" and Model 3 are the explainer's and
         count the household's own bill only. The last column is not paid by the household: it is
         the payroll tax its employer pays on its wages (the board's 9% example for a private
         employer, 14% for a public one), and it is what the credit is a quarter of. It is the
-        same in every column. A smaller employer pays less, and under $500,000 of payroll
+        same under Model 3 and under my proposal. A smaller employer pays less, and under $500,000 of payroll
         nothing, so its workers get a smaller credit or none.
+      </p>
+
+      <h3 class="uhp-sub">The catch: change 2 has to be paid for</h3>
+      <p class="uhp-narrow uhp-body">
+        The slower climb collects less from the top, and that money has to come from somewhere.
+        The table above assumes it comes from outside the household rate. If instead everyone's
+        household rate goes up to cover it, this is what happens.
+      </p>
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Four households, by who pays for change 2">
+        <table class="uhp-table uhp-table--stack" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Household</th>
+              <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">My proposal: paid for elsewhere ({{ pct1(rate) }} rate)</th>
+              <th role="columnheader" scope="col" class="num">Paid for by a higher household rate ({{ pct1(rateIfCapCostAll) }})</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            @for (row of catchRows; track $index) {
+              <tr role="row">
+                <th role="rowheader" scope="row">{{ row.who }}, {{ usd(row.income) }}</th>
+                <td role="cell" class="num" data-label="Draft, Model 3">{{ usd(row.model3) }}</td>
+                <td role="cell" class="num op-col-pick" data-label="My proposal: paid for elsewhere">{{ usd(row.withBoth) }}</td>
+                <td role="cell" class="num" data-label="Paid for by a higher household rate">{{ usd(row.withBothPaidFor) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> Paid for that way, the family at $2,000,000 is back
+        where Model 3 had it, and every household below it pays more than under my proposal. The
+        cap mostly cancels itself out. So change
+        2 is worth doing only if its cost comes from somewhere else: the payroll tax, the business
+        taxes or the plan's budget. {{ pct1(rateIfCapCostAll) }} is a rough figure, from the
+        yardstick below.
       </p>
     </div>
   </section>

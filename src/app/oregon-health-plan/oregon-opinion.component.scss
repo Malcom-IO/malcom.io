@@ -373,11 +373,9 @@ path[class*='op-line--'] {
   }
 }
 
-// The employer's side of the bill: present, but visibly not the household's.
-.uhp-table td.op-payroll,
-.uhp-table th:last-child {
-  border-left: 1px solid var(--line);
-  color: var(--text-soft);
+// Column headings wrap into even lines rather than leaving one word behind.
+.uhp-table thead th {
+  text-wrap: balance;
 }
 
 // ================================================= Model 3 with three changes
