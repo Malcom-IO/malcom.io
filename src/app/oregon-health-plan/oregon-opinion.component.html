@@ -51,7 +51,7 @@
         </figure>
         <figure class="uhp-figure">
           <figcaption>
-            <strong>And it shows the middle a real bill, which my changes trim a little</strong>
+            <strong>And it shows the middle a real bill, which my changes leave about where it is</strong>
             <span class="text-muted-2">Median family of four, private employer, own bill</span>
           </figcaption>
           <div class="op-evidence">
@@ -172,7 +172,7 @@
         I have the household rate make that up, which takes it to somewhere in
         {{ proposalSpan }}. The figures below use {{ pct1(proposal) }}. This part is rough: the
         documents give each income group's share of the contribution, not bills by household, so
-        I assume 60% to 90% of what the top 1% pay sits above the start, and up to 20% of what the
+        I assume 75% to 90% of what the top 1% pay sits above the start, and 20% to 45% of what the
         next 4% pay. A self-employed family of four reaches the start at about
         {{ usd1000(thresholdIncomes.four) }} of income.
       </p>
@@ -225,8 +225,8 @@
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(proposal) }} rate, the
-        middle of the range, with the slower climb paid for. "Pays today" and Model 3 are the explainer's and
+        <span class="uhp-ours">my math</span> My proposal uses a {{ pct1(proposal) }} rate, near
+        the middle of the range, with the slower climb paid for. "Pays today" and Model 3 are the explainer's and
         count the household's own bill only. The last column is not paid by the household: it is
         the payroll tax its employer pays on its wages (the board's 9% example for a private
         employer, 14% for a public one), and it is what the credit is a quarter of. It is the
@@ -265,9 +265,11 @@
       </div>
       <p class="uhp-note">
         <span class="uhp-ours">my math</span> Adding the slower climb takes about $1,000 a year
-        more from the median family and the single public employee than change 1 alone, and both
-        still pay less than under Model 3. The family pays far less than today; the public
-        employee still pays more than today. The households it costs most are the ones just under
+        more from the median family and the single public employee than change 1 alone, and at
+        {{ pct1(proposal) }} both still pay a little less than under Model 3. At the top of my
+        range they would not: the median family would pay about {{ usd100(medianAtTop.bill) }}
+        against {{ usd100(medianAtTop.model3) }}. The family pays far less than today either way;
+        the public employee still pays more than today. The households it costs most are higher earners below
         the start: the family at $220,000 and the self-employed family at $400,000 pay more than
         under Model 3 and more than today. That is the price of the two rows below them.
       </p>
@@ -374,16 +376,16 @@
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Pays more than under Model 3</span>
           <ul class="op-list">
-            <li><strong>Households with no employer behind their income, below the top:</strong> the self-employed, retirees with income, investors. Their rate goes from 7.7% to about {{ pct1(proposal) }}, and a self-employed family of four pays more than under Model 3 up to about {{ usd(topCrossover) }}.</li>
-            <li><strong>Higher earners with an employer.</strong> A family of four with a private employer pays more than under Model 3 above about {{ usd(employedCrossover) }}: the credit no longer covers the higher rate.</li>
+            <li><strong>Households with no employer behind their income, below the top:</strong> the self-employed, retirees with income, investors. Their rate goes from 7.7% to somewhere in {{ proposalSpan }}, and a self-employed family of four pays more than under Model 3 up to about {{ usd(topCrossover) }}.</li>
+            <li><strong>Higher earners with an employer.</strong> A family of four with a private employer pays more than under Model 3 from about {{ usd(employedCrossover) }} to about {{ usd(employedTop) }}: the credit no longer covers the higher rate, until the slower climb takes over.</li>
             <li><strong>Workers at employers under $500,000 of payroll.</strong> No payroll tax is paid on their wages, so there is no credit, and their rate still rises.</li>
-            <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2, and it is the point of it.</li>
+            <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2. It is the trade I am making.</li>
           </ul>
         </div>
         <div class="brand-card glow glow-teal glow-tl edge-top">
           <span class="card-eyebrow">Pays less than under Model 3</span>
           <ul class="op-list">
-            <li><strong>Most workers up to about the middle,</strong> public employees most of all. A family of four with a private employer pays less up to about {{ usd(employedCrossover) }}. Not all: the couple at $85,000 pays about $150 more.</li>
+            <li><strong>Most workers up to about the middle,</strong> public employees most of all. A family of four with a private employer pays less up to about {{ usd(employedCrossover) }}, at the middle of my rate range; at the top of it, only to just under the median. Not all: the couple at $85,000 pays about {{ usd10(coupleExtra) }} more.</li>
             <li><strong>Households at the top,</strong> above about {{ usd(topCrossover) }} for a self-employed family of four.</li>
             <li><strong>The plan itself,</strong> if the appendix is right that without a credit there is "a large financial incentive" to turn employees into contractors, and if fewer of the highest earners leave.</li>
           </ul>
@@ -431,7 +433,7 @@
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> Every rate scaled by the same 30%. Every figure
+        <span class="uhp-ours">my math</span> Every rate scaled by the same 30%. My proposal's rate is the middle of a rough range ({{ proposalSpan }} at $30 billion). Every figure
         above this section uses the lower row, as the board's draft does.
       </p>
     </div>

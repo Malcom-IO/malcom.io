@@ -79,20 +79,23 @@ describe('Model 3 with changes (opinion page)', () => {
   // between 25.3% and 33.9%, the next 4% halfway between 18.5% and 20.2%.
   it('prices the slower climb as a range', () => {
     const loss = slowerClimbLoss();
-    expect(loss.low).toBeCloseTo(0.75 * 0.6 * 0.296, 4);
-    expect(loss.high).toBeCloseTo(0.75 * (0.9 * 0.296 + 0.2 * 0.1935), 4);
-    expect(slowerClimbDollars()).toEqual({ low: 1.6, high: 2.7 });
+    expect(loss.low).toBeCloseTo(0.75 * (0.75 * 0.296 + 0.2 * 0.1935), 4);
+    expect(loss.high).toBeCloseTo(0.75 * (0.9 * 0.296 + 0.45 * 0.1935), 4);
+    // $12 billion x loss / (1 - loss).
+    expect(slowerClimbDollars()).toEqual({ low: 2.9, high: 4.3 });
     const range = proposalRateRange();
-    expect(range.low).toBeCloseTo(0.114, 3);
-    expect(range.high).toBeCloseTo(0.134, 3);
+    // The rate rises by 7.69% x loss / (1 - loss): only the net contribution is grossed up.
+    expect(range.low).toBeCloseTo(0.0987 + 0.0769 * (loss.low / (1 - loss.low)), 4);
+    expect(range.low).toBeCloseTo(0.117, 3);
+    expect(range.high).toBeCloseTo(0.131, 3);
     expect(proposalRate()).toBeGreaterThan(range.low);
     expect(proposalRate()).toBeLessThan(range.high);
-    expect(proposalRate()).toBeCloseTo(0.1235, 3);
-    // A family of four with no employer reaches the threshold near $440,000.
-    expect(Math.round(thresholdIncome(4) / 10_000) * 10_000).toBe(440_000);
+    expect(proposalRate()).toBeCloseTo(0.124, 3);
+    // A family of four with no employer reaches the threshold near $430,000.
+    expect(Math.round(thresholdIncome(4) / 10_000) * 10_000).toBe(430_000);
   });
 
-  it('puts the top rows near twice and four times today, not six', () => {
+  it('puts the top rows near three and four times today, not six', () => {
     const one = row('Family of four, self-employed', 1_000_000);
     const two = row('Family of four, self-employed', 2_000_000);
     expect(Math.round(one.withBoth / 1_000)).toBe(63);

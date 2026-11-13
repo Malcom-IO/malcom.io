@@ -104,6 +104,26 @@ export class OregonOpinionComponent {
     Math.round(crossover(4, 'none', 0, 450_000, 2_000_000) / 10_000) * 10_000;
   readonly employedCrossover =
     Math.round(crossover(4, 'private', 0.9, 70_000, 400_000) / 10_000) * 10_000;
+  /** ...and where, past the start of the slower climb, it crosses back under. */
+  readonly employedTop =
+    Math.round(crossover(4, 'private', 0.9, 400_000, 2_000_000) / 10_000) * 10_000;
+  /** The couple at the median pays a little more than under Model 3. */
+  readonly coupleExtra = (() => {
+    const couple = this.row('Couple, private employer', 85_000);
+    return couple.withBoth - couple.model3;
+  })();
+  /** The median family at the top of the rate range: about what Model 3 charges, or more. */
+  readonly medianAtTop = (() => {
+    const m = this.row('Family of four, private employer', 110_000);
+    return {
+      model3: m.model3,
+      bill: bill(m.income, m.wages, m.size, m.employer, {
+        credit: CREDIT,
+        softCap: true,
+        rate: proposalRateRange().high,
+      }),
+    };
+  })();
 
   // ------------------------------------------------------------ why Model 3
   /** Two households under the five draft models, as bars on one scale each. */
@@ -246,6 +266,10 @@ export class OregonOpinionComponent {
   /** Rounded to the nearest hundred, for figures quoted in text. */
   usd100(value: number): string {
     return USD.format(Math.round(value / 100) * 100);
+  }
+  /** Rounded to the nearest ten, for small differences. */
+  usd10(value: number): string {
+    return USD.format(Math.round(value / 10) * 10);
   }
   /** Rounded to the nearest thousand, for the largest figures. */
   usd1000(value: number): string {

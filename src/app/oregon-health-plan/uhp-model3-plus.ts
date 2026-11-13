@@ -48,7 +48,7 @@ export const CHANGES: readonly Change[] = [
     name: 'A slower climb',
     description:
       'A soft cap. Above twice what a household buying its own coverage pays today, each further dollar of contribution is cut to a quarter. It never stops rising.',
-    fixes: 'A bill several times the cost of coverage at the top, and the risk that those households leave',
+    fixes: 'A bill many times the cost of coverage at the top (it shrinks it; it does not end it), and the risk that those households leave',
     costs: 'A higher household rate again, paid by everyone below the cap',
     priced: 'Roughly, as a range. The documents do not give enough to price it',
     standing: 'Worth doing. The middle pays for it and still pays far less than today',
@@ -145,15 +145,21 @@ export function softCapped(bill: number, size: number): number {
  * 33 and Figure AFR4Ff), not bills by household. So how much of each group's
  * contribution sits above the threshold is assumed, and stated:
  *
- * LOW:  60% of what the top 1% pay, and nothing below them.
- * HIGH: 90% of what the top 1% pay, and 20% of what the next 4% pay.
+ * LOW:  75% of what the top 1% pay, and 20% of what the next 4% pay.
+ * HIGH: 90% of what the top 1% pay, and 45% of what the next 4% pay.
  *
- * Each group's share is taken halfway between Model 3 (no credit) and Model 2
- * (50% credit). A rough check on the top 1%: 16.4% of about $163 billion of
- * income over roughly 17,000 returns is about $1.6 million a return, a bill
- * near $150,000 against a threshold near $35,000, so about three quarters of
- * it is above. A higher rate pushes more bills over the threshold; that
- * second-order effect is left out.
+ * Why those. Nearly every top-1% household is above its threshold, so the
+ * share above is at least 1 - (average threshold / average bill): 16.4% of
+ * about $163 billion of income (2022) over very roughly 17,000 returns is
+ * $1.6 million a return, a bill near $150,000 against a threshold near
+ * $35,000, so about three quarters at least. For the next 4%, Figure AFR4Fa
+ * puts the 95th percentile at $150,000 for one person, $350,000 for two and
+ * $500,000 for four: a single person there is already at the threshold, a
+ * family of four mostly is not. Each group's share of the contribution is
+ * taken halfway between Model 3 (no credit) and Model 2 (50% credit).
+ *
+ * Left out: households above the threshold pay only a quarter of any rate
+ * increase, which pushes the true rate somewhat higher than this gives.
  */
 const NEXT4_SHARE = { model3: 0.185, model2: 0.202 };
 export function slowerClimbLoss(credit = CREDIT): { low: number; high: number } {
@@ -161,30 +167,46 @@ export function slowerClimbLoss(credit = CREDIT): { low: number; high: number } 
   const top1 = MODEL3.top1Share + (MODEL2.top1Share - MODEL3.top1Share) * t;
   const next4 = NEXT4_SHARE.model3 + (NEXT4_SHARE.model2 - NEXT4_SHARE.model3) * t;
   const cut = 1 - KEPT;
-  return { low: cut * 0.6 * top1, high: cut * (0.9 * top1 + 0.2 * next4) };
+  return {
+    low: cut * (0.75 * top1 + 0.2 * next4),
+    high: cut * (0.9 * top1 + 0.45 * next4),
+  };
+}
+
+/**
+ * The household rate that makes up a lost share of the contribution. The loss
+ * is a share of what households pay AFTER the worker credit, and the credit is
+ * a fixed number of dollars, so only the net contribution is grossed up: the
+ * rate rises by Model 3's rate (the net contribution over taxed income) times
+ * loss / (1 - loss). Scaling the whole rate would gross up the credit too.
+ */
+function rateCovering(rate: number, loss: number): number {
+  return rate + MODEL3.topRate * (loss / (1 - loss));
 }
 
 /** The household rate with both changes, the slower climb paid for by the rate: a range. */
 export function proposalRateRange(credit = CREDIT): { low: number; high: number } {
   const rate = creditRateRange(credit);
   const loss = slowerClimbLoss(credit);
-  return { low: rate.low / (1 - loss.low), high: rate.high / (1 - loss.high) };
+  return { low: rateCovering(rate.low, loss.low), high: rateCovering(rate.high, loss.high) };
 }
 
 /** The rate the example households use: the middle credit rate, the middle loss. */
 export function proposalRate(credit = CREDIT): number {
   const loss = slowerClimbLoss(credit);
-  return creditRate(credit) / (1 - (loss.low + loss.high) / 2);
+  return rateCovering(creditRate(credit), (loss.low + loss.high) / 2);
 }
 
-/** What the slower climb moves off the top, in billions a year: 40% of the target is households. */
+/**
+ * What the slower climb moves off the top, in billions a year. Households are
+ * 40% of the target; with the rate raised, the contribution before the cap is
+ * that over (1 - loss), so the amount moved is loss / (1 - loss) of it.
+ */
 export function slowerClimbDollars(credit = CREDIT): { low: number; high: number } {
   const loss = slowerClimbLoss(credit);
-  const round = (n: number) => Math.round(n * 10) / 10;
-  return {
-    low: round(REVENUE_TARGET.board * 0.4 * loss.low),
-    high: round(REVENUE_TARGET.board * 0.4 * loss.high),
-  };
+  const moved = (l: number) =>
+    Math.round(((REVENUE_TARGET.board * 0.4 * l) / (1 - l)) * 10) / 10;
+  return { low: moved(loss.low), high: moved(loss.high) };
 }
 
 /** The income at which a household with no employer reaches the threshold. */
