@@ -2,9 +2,19 @@
  * The numbers behind the Oregon Universal Health Plan explainer.
  *
  * Every figure here is transcribed from the Universal Health Plan Governance
- * Board's draft legislative report (dated 2026-10-13) or its legislative brief
- * (dated 2026-10-14). Nothing is estimated by us. When the board revises its
- * models, this file is the only place the numbers live.
+ * Board's draft legislative report (dated 2026-10-13), its legislative brief, or
+ * the report's Appendix FR (draft 2026-10-13, "expenditure-revenue-appendix"),
+ * which holds the bracket schedule for each model. Nothing is estimated by us.
+ * When the board revises its models, this file is the only place the numbers live.
+ *
+ * RATES: all five models use the appendix's rates, which were set on one common
+ * basis (2022 tax data, the same revenue for each). Model 3 uses 7.69%, the
+ * unrounded figure from the report's Table R4; the appendix prints 7.7% and the
+ * board's examples need 7.69%. The report's summary table lists different
+ * "maximum" rates for three models: 12.0% for Model 1 (the Legislative Revenue
+ * Office's 2032 projection, which also raises the payroll tax to 9.89%) and 11.7% / 10.4% for
+ * Models 4 and 5 (which match the AVERAGE rate paid by the top 1%, not the top
+ * marginal rate). The board's own example tables use the appendix rates.
  *
  * Kept free of Angular so the math can be tested directly against the board's
  * own worked examples (see uhp-model.spec.ts).
@@ -39,14 +49,16 @@ export interface RevenueModel {
   /** Income exempt from the household contribution, as a share of FPL. */
   exemption: '200% FPL' | '138% FPL';
   brackets: number;
-  /** Top household contribution rate. For two-bracket models it is the only rate. */
+  /** Top marginal household rate (appendix). For two-bracket models, the only rate. */
   topRate: number;
+  /** The "maximum" rate the report's summary table lists, where it differs. */
+  reportRate?: number;
+  /** Marginal rates above the exemption, lowest first. */
+  rates: readonly number[];
   /** Share of Oregon tax returns that would owe no household contribution. */
   returnsOwingNothing: number;
   /** Average net household contribution rate for the middle fifth of incomes. */
   middleFifthRate: number;
-  /** True when the report publishes enough to compute a household's bill. */
-  computable: boolean;
   /** Share of all household contributions paid by the top 1% of incomes (Table R5). */
   top1Share: number;
   /** OUR short label. The board only numbers its models. */
@@ -70,16 +82,17 @@ export const MODELS: readonly RevenueModel[] = [
     creditShare: 0.5,
     exemption: '200% FPL',
     brackets: 2,
-    topRate: 0.12,
+    topRate: 0.135,
+    reportRate: 0.12,
+    rates: [0.135],
     returnsOwingNothing: 0.545,
     middleFifthRate: 0.02,
-    computable: true,
   },
   {
     id: 2,
     name: 'Flat rate, big employers pay more',
     blurb:
-      "Model 1 with a higher payroll tax on the largest employers. The credit wipes out more workers' bills, so the top rate is the highest of the five.",
+      "Model 1 with a higher payroll tax on the largest employers. That raises more from big firms, so the household rate comes down.",
     top1Share: 0.339,
     exemptFamilyOf4: 66_000,
     employerTax: '9.6% above $500,000, 14% above $10 million',
@@ -87,9 +100,9 @@ export const MODELS: readonly RevenueModel[] = [
     exemption: '200% FPL',
     brackets: 2,
     topRate: 0.1205,
+    rates: [0.1205],
     returnsOwingNothing: 0.604,
     middleFifthRate: 0.011,
-    computable: true,
   },
   {
     id: 3,
@@ -103,25 +116,26 @@ export const MODELS: readonly RevenueModel[] = [
     exemption: '200% FPL',
     brackets: 2,
     topRate: 0.0769,
+    rates: [0.0769],
     returnsOwingNothing: 0.403,
     middleFifthRate: 0.025,
-    computable: true,
   },
   {
     id: 4,
     name: 'Stepped rates, fewest pay',
     blurb:
-      'Taxes start at a lower income but rise in five steps, with the worker credit. The most filers owe nothing, and the top 1% carry the largest share.',
+      'Taxes start at a lower income and rise in steps to the highest top rate of the five, with the worker credit. The most filers owe nothing, and the top 1% carry the largest share.',
     top1Share: 0.399,
     exemptFamilyOf4: 45_540,
     employerTax: '9.6% above $500,000, 14% above $10 million',
     creditShare: 0.5,
     exemption: '138% FPL',
     brackets: 5,
-    topRate: 0.117,
+    topRate: 0.143,
+    reportRate: 0.117,
+    rates: [0.03, 0.09, 0.12, 0.143],
     returnsOwingNothing: 0.649,
     middleFifthRate: 0.008,
-    computable: false,
   },
   {
     id: 5,
@@ -134,15 +148,13 @@ export const MODELS: readonly RevenueModel[] = [
     creditShare: 0,
     exemption: '138% FPL',
     brackets: 6,
-    topRate: 0.104,
+    topRate: 0.12,
+    reportRate: 0.104,
+    rates: [0.02, 0.0478, 0.07, 0.09, 0.12],
     returnsOwingNothing: 0.312,
     middleFifthRate: 0.02,
-    computable: false,
   },
 ];
-
-/** The three models whose household bill can be worked out from the report. */
-export const COMPUTABLE_MODELS = MODELS.filter((m) => m.computable);
 
 /**
  * Who pays you. It decides the payroll tax your employer would owe on your
@@ -212,47 +224,83 @@ export function householdContribution(input: Omit<BillInput, 'size'>): number {
   return Math.max(0, gross - credit);
 }
 
+/**
+ * The appendix states dollar bracket boundaries in 2022 dollars and says they are
+ * inflation adjusted, without giving a factor. Growth in the ONE-person poverty
+ * level (13,590 to 15,960) is our inference: it reproduces the board's 2026
+ * examples, and the two-person ratio does not.
+ */
+const INDEX_2022_TO_2026 = 15_960 / 13_590;
+
+export interface Bracket {
+  /** Income at which this marginal rate starts, in 2026 dollars. */
+  from: number;
+  rate: number;
+}
+
+/**
+ * The household contribution schedule for a model and household size
+ * (Appendix FR, pages 31-35). Models 1 to 3: one rate above 200% of FPL.
+ * Models 4 and 5: a low rate from 138% to 200% of FPL, then steps at dollar
+ * amounts that are twice as high for households of two or more.
+ */
+export function schedule(model: RevenueModel, size: number): Bracket[] {
+  if (model.rates.length === 1) return [{ from: FPL_200[size], rate: model.rates[0] }];
+  const base = (size === 1 ? 50_000 : 100_000) * INDEX_2022_TO_2026;
+  const starts = [FPL_138[size], FPL_200[size], Math.max(base, FPL_200[size]), base * 2, base * 4];
+  return model.rates.map((rate, i) => ({ from: starts[i], rate }));
+}
+
+/** Contribution before any credit: each slice of income taxed at its own rate. */
+export function grossContribution(income: number, brackets: readonly Bracket[]): number {
+  let total = 0;
+  brackets.forEach((b, i) => {
+    const top = brackets[i + 1]?.from ?? Infinity;
+    total += Math.max(0, Math.min(income, top) - b.from) * b.rate;
+  });
+  return total;
+}
+
+/** What a household owes: the gross contribution less the worker credit, never below zero. */
+export function contribution(
+  model: RevenueModel,
+  income: number,
+  wages: number,
+  size: number,
+  employerTaxRate: number,
+): number {
+  const gross = grossContribution(income, schedule(model, size));
+  return Math.max(0, gross - model.creditShare * employerTaxRate * wages);
+}
+
 export interface Bill {
   model: RevenueModel;
   /** What the household would owe per year. */
   household: number;
   /** What the employer would pay in payroll tax on this household's wages. */
   employer: number;
-  /** Income at which the household's bill equals `currentCost`, if any. */
-  breakEven: number | null;
 }
 
 /**
- * A household's yearly bill under one computable model, treating all income as
- * wages when there is an employer (the same simplification the board uses).
+ * A household's yearly bill under one model, treating all income as wages when
+ * there is an employer.
  */
-export function bill(
-  model: RevenueModel,
-  income: number,
-  size: number,
-  kind: EmployerKind,
-  currentCost: number,
-): Bill {
-  const exemption = FPL_200[size];
+export function bill(model: RevenueModel, income: number, size: number, kind: EmployerKind): Bill {
   const eRate = employerRate(kind, model.id);
-  const household = householdContribution({
-    income,
-    wages: kind === 'none' ? 0 : income,
-    exemption,
-    rate: model.topRate,
-    creditShare: model.creditShare,
-    employerRate: eRate,
-  });
-  // rate x (I - exemption) - credit x eRate x I = currentCost, solved for I.
-  const slope = model.topRate - model.creditShare * eRate;
-  const breakEven = slope > 0 ? (currentCost + model.topRate * exemption) / slope : null;
-  return { model, household, employer: eRate * (kind === 'none' ? 0 : income), breakEven };
+  const wages = kind === 'none' ? 0 : income;
+  return {
+    model,
+    household: contribution(model, income, wages, size, eRate),
+    employer: eRate * wages,
+  };
 }
 
 // ------------------------------------------------------- the board's examples
 
 export interface ScenarioRow {
   income: number;
+  /** Wages the board's employer-tax figures imply, where an employer pays. */
+  wages?: number;
   /** What the household pays today, per the board. */
   now: number;
   /** What the household would pay under Models 1 to 5. */
@@ -288,11 +336,11 @@ export const SCENARIOS: readonly Scenario[] = [
     today:
       'Today: $2,900 in premiums and $1,800 out of pocket. The employer pays another $16,700.',
     rows: [
-      { income: 40_000, now: 0, models: [0, 0, 0, 0, 203] },
-      { income: 85_000, now: 4_700, models: [2_032, 1_427, 3_208, 557, 2_263] },
-      { income: 110_000, now: 4_700, models: [4_507, 3_540, 5_131, 1_907, 3_458] },
-      { income: 170_000, now: 4_700, models: [10_357, 8_520, 9_745, 6_634, 7_492] },
-      { income: 220_000, now: 4_700, models: [14_857, 12_295, 13_590, 10_384, 10_992] },
+      { income: 40_000, wages: 40_000, now: 0, models: [0, 0, 0, 0, 203] },
+      { income: 85_000, wages: 80_000, now: 4_700, models: [2_032, 1_427, 3_208, 557, 2_263] },
+      { income: 110_000, wages: 100_000, now: 4_700, models: [4_507, 3_540, 5_131, 1_907, 3_458] },
+      { income: 170_000, wages: 150_000, now: 4_700, models: [10_357, 8_520, 9_745, 6_634, 7_492] },
+      { income: 220_000, wages: 200_000, now: 4_700, models: [14_857, 12_295, 13_590, 10_384, 10_992] },
     ],
   },
   {
@@ -301,11 +349,11 @@ export const SCENARIOS: readonly Scenario[] = [
     who: 'One person working for a public employer.',
     today: 'Today: $120 in premiums and $500 out of pocket. The employer pays another $12,000.',
     rows: [
-      { income: 40_000, now: 620, models: [0, 0, 621, 0, 581] },
-      { income: 51_000, now: 620, models: [176, 0, 1_467, 0, 1_110] },
-      { income: 66_000, now: 620, models: [1_529, 0, 2_621, 0, 1_989] },
-      { income: 85_000, now: 620, models: [3_326, 796, 4_082, 262, 3_319] },
-      { income: 110_000, now: 620, models: [5_741, 2_409, 6_004, 1_862, 5_069] },
+      { income: 40_000, wages: 40_000, now: 620, models: [0, 0, 621, 0, 581] },
+      { income: 51_000, wages: 50_000, now: 620, models: [176, 0, 1_467, 0, 1_110] },
+      { income: 66_000, wages: 64_000, now: 620, models: [1_529, 0, 2_621, 0, 1_989] },
+      { income: 85_000, wages: 80_000, now: 620, models: [3_326, 796, 4_082, 262, 3_319] },
+      { income: 110_000, wages: 100_000, now: 620, models: [5_741, 2_409, 6_004, 1_862, 5_069] },
     ],
   },
   {

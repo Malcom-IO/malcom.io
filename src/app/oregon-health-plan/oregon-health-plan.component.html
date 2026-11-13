@@ -45,7 +45,7 @@
         <div class="uhp-fact uhp-fact--open">
           <h3>How much</h3>
           <p class="uhp-fact-lead">Not decided</p>
-          <p>The board sent five tax models, with household rates topping out between 7.7% and 12.05%, and did not recommend one.</p>
+          <p>The board sent five tax models, with top household rates between 7.7% and 14.3%, and did not recommend one.</p>
         </div>
         <div class="uhp-fact uhp-fact--open">
           <h3>Who comes out ahead</h3>
@@ -89,7 +89,8 @@
             <span class="uhp-when">2027</span>
             <span>
               Lawmakers decide whether to act, whether to do it in one bill or two, and whether
-              to send any of it to voters.
+              to send any of it to voters. The board is asking for funding to keep working on the
+              design through 2029.
             </span>
           </li>
           <li>
@@ -289,7 +290,7 @@
                   {{ m.creditShare ? 'Worker credit' : 'No worker credit' }}
                 </li>
                 <li>First {{ usd(m.exemptFamilyOf4) }} exempt</li>
-                <li>{{ m.brackets === 2 ? 'One rate' : m.brackets + ' steps' }}</li>
+                <li>{{ rateLadder(m) }}</li>
               </ul>
             </div>
             @for (k of modelMetrics; track k.key) {
@@ -310,6 +311,15 @@
         resident tax returns. The middle-income figure is the average rate, after any credit,
         for the middle fifth of incomes. The board calls every figure here illustrative, not
         final.
+      </p>
+      <p class="uhp-note">
+        Top rates are from the report's appendix, where all five models are set to raise the
+        same money on 2022 tax data. The report's summary table lists lower figures for three
+        of them: 12.0% for Model 1, from a 2032 projection that also raises the payroll tax
+        to 9.89%, and 11.7% and 10.4% for Models 4 and 5, which match the average rate paid by
+        the top 1% and not the top rate. The board's own examples confirm 13.5% for Model 1
+        and 14.3% for Model 4. None of them reaches Model 5's top bracket, so its 12% rests on
+        the appendix alone.
       </p>
 
       <details class="uhp-details uhp-details--table">
@@ -355,9 +365,9 @@
     <div class="container">
       <h2 class="h-section">What would your household pay?</h2>
       <p class="uhp-narrow uhp-body">
-        An estimate under the three models the report gives enough detail to calculate, with
-        the other two shown alongside. Enter what you really spend on health care now; that
-        comparison is the whole point.
+        An estimate under all five models, using the bracket schedules in the report's
+        appendix. Enter what you really spend on health care now; that comparison is the whole
+        point.
       </p>
 
       <div class="uhp-calc">
@@ -447,8 +457,11 @@
                 <p class="uhp-bill-name">
                   <span class="uhp-key" [style.background]="series[i]"></span>
                   Model {{ b.model.id }}
-                  <span class="text-muted-2">&middot; {{ pct(b.model.topRate, 2) }}</span>
+                  <span class="text-muted-2">
+                    &middot; {{ b.model.rates.length > 1 ? 'up to ' : '' }}{{ pct(b.model.topRate, 2) }}
+                  </span>
                 </p>
+                <p class="uhp-bill-kind">{{ b.model.name }}</p>
                 <p class="uhp-bill-amount">
                   {{ usd(b.household) }}<span class="uhp-per"> / year</span>
                 </p>
@@ -457,29 +470,6 @@
                 </p>
                 @if (b.employer > 0) {
                   <p class="uhp-hint mb-0">Your employer would pay {{ usd(b.employer) }}.</p>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="uhp-unknowns">
-            @for (u of unpublished(); track u.model.id) {
-              <div class="uhp-bill uhp-bill--unknown">
-                <p class="uhp-bill-name">
-                  Model {{ u.model.id }}
-                  <span class="text-muted-2">&middot; up to {{ pct(u.model.topRate, 2) }}</span>
-                </p>
-                @if (u.owesNothing) {
-                  <p class="uhp-bill-amount">$0<span class="uhp-per"> / year</span></p>
-                  <p class="uhp-hint mb-0">
-                    Your income is within this model's {{ usd(u.exemption) }} exemption.
-                  </p>
-                } @else {
-                  <p class="uhp-bill-unknown">Can't be calculated</p>
-                  <p class="uhp-hint mb-0">
-                    The report gives {{ u.model.brackets }} brackets on income above
-                    {{ usd(u.exemption) }} and a top rate, but not the rates in between.
-                  </p>
                 }
               </div>
             }
@@ -507,7 +497,7 @@
                 width="100%"
                 role="img"
                 [attr.aria-label]="
-                  'Line chart of the yearly household contribution under Models 1, 2 and 3 for incomes up to ' +
+                  'Line chart of the yearly household contribution under all five models for incomes up to ' +
                   usd(xMax()) +
                   '. Open the table below for the figures.'
                 "
@@ -605,24 +595,28 @@
         <summary>How this is calculated, and what it leaves out</summary>
         <ul class="uhp-list uhp-body">
           <li>
-            Your bill is the model's rate times your income above the exemption, minus any
-            credit, and never less than zero. For Models 2 and 3 this matches the board's
-            self-employed, public employer and Medicare examples to the dollar.
+            Each slice of your income above the exemption is charged at that slice's rate, the
+            worker credit is subtracted, and the result is never less than zero. This matches
+            the board's own example tables to within $4 for all five models.
           </li>
           <li>
-            If you have an employer, all your income is treated as wages. In the board's
-            private-employer example the wages are lower than the listed income, so its
-            household figures run higher than this calculator's. Investment, rental or business
-            income would raise your bill, because the credit only applies to wages.
+            The rates and brackets come from Appendix FR of the draft report. Its dollar
+            brackets are in 2022 dollars; we bring them to 2026 by the growth in the
+            one-person poverty level, which is what reproduces the board's examples.
           </li>
           <li>
-            Model 1 uses the 12.0% rate the report states. The report's own Model 1 examples,
-            shown below, work out to 13.5%.
+            If you have an employer, all your income is treated as wages. Investment, rental or
+            business income would raise your bill, because the credit only applies to wages.
           </li>
           <li>
-            Models 4 and 5 have no dollar figure because the report does not publish their
-            bracket schedules. The board's examples below show what they cost four sample
-            households.
+            These rates were set on 2022 tax data. The Legislative Revenue Office's 2032
+            projection for Model 1 uses 12.0% instead of 13.5%, with the employer payroll tax
+            raised to 9.89%, so expect all five to move.
+          </li>
+          <li>
+            Household size stands in for the number of exemptions on your tax return, as the
+            appendix intends. Married couples filing separately have their own schedule, which
+            is not modeled here.
           </li>
           <li>Poverty-level figures are for 2026. Nothing you enter leaves your browser.</li>
         </ul>
@@ -706,9 +700,9 @@
         <ul class="uhp-open">
           <li>
             <strong>The tax rates</strong> No model is recommended, and the board says the
-            rates must be recalculated with current data before the plan is implemented. Model 1 was
-            sized to raise $30.2 billion in 2032; Models 2 to 5 were sized on 2022 tax data to
-            raise $20.4 billion.
+            rates must be recalculated with current data before the plan is implemented. All
+            five were set on 2022 tax data. Only Model 1 has a 2032 projection so far: a
+            12.0% household rate instead of 13.5%, with a higher payroll tax.
           </li>
           <li>
             <strong>Your wages</strong> The report's words: replacing an employer's insurance
@@ -963,6 +957,10 @@
           <li>
             <a [href]="sources.brief" rel="noopener">Legislative brief</a>, posted for the
             October 15, 2026 meeting (16 pages)
+          </li>
+          <li>
+            <a [href]="sources.appendix" rel="noopener">Appendix FR: expenditure and revenue</a>,
+            draft dated October 13, 2026 (48 pages), with each model's bracket schedule
           </li>
           <li>
             <a [href]="sources.econw" rel="noopener">ECOnorthwest finance and revenue report</a>,

@@ -12,10 +12,8 @@ import {
 import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from '../quillquest/quillquest-shell.component';
 import {
-  COMPUTABLE_MODELS,
   EMPLOYERS,
   EmployerKind,
-  FPL_138,
   FPL_200,
   MODELS,
   RevenueModel,
@@ -46,8 +44,8 @@ const USD = new Intl.NumberFormat('en-US', {
 
 const BASE = 'https://www.oregon.gov/uhpgb';
 
-/** Chart series colors: the validated dark-surface categorical slots 1 to 3. */
-const SERIES = ['#3987e5', '#d95926', '#199e70'] as const;
+/** Chart series colors: the validated dark-surface categorical slots 1 to 5. */
+const SERIES = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181'] as const;
 
 interface EndLabel {
   y: number;
@@ -75,6 +73,7 @@ export class OregonHealthPlanComponent {
     report: `${BASE}/Documents/board-meetings/2026/20261015/20261015-legislative-report-draft.pdf`,
     brief: `${BASE}/Documents/board-meetings/2026/20261015/legislative-brief-10142026.pdf`,
     econw: `${BASE}/Documents/board-meetings/2026/20260618/20260605-ECOnorthwest-FR-Full-Report.pdf`,
+    appendix: `${BASE}/Documents/board-meetings/2026/20261015/expenditure-revenue-appendix-10142026.pdf`,
     board: `${BASE}/Pages/index.aspx`,
     meetings: `${BASE}/board-meetings/Pages/2026-meetings.aspx`,
   };
@@ -85,6 +84,12 @@ export class OregonHealthPlanComponent {
   readonly sizes = [1, 2, 3, 4, 5];
   readonly series = SERIES;
   readonly incomeMax = 400_000;
+
+  /** "One rate: 13.5%" or "Rates: 3%, 9%, 12%, 14.3%". */
+  rateLadder(m: RevenueModel): string {
+    const rates = m.rates.map((r) => this.pct(r, 2));
+    return rates.length === 1 ? `One rate: ${rates[0]}` : `Rates: ${rates.join(', ')}`;
+  }
 
   // ---------------------------------------------------------------- coverage
   /** From the report's "Scope of Covered Benefits" list (page 9). */
@@ -116,7 +121,7 @@ export class OregonHealthPlanComponent {
     {
       key: 'top',
       label: 'Top rate on household income',
-      width: (m) => (m.topRate / 0.125) * 100,
+      width: (m) => (m.topRate / 0.15) * 100,
       value: (m) => this.pct(m.topRate, 2),
     },
     {
@@ -193,21 +198,7 @@ export class OregonHealthPlanComponent {
   readonly scenario = computed(() => SCENARIOS.find((s) => s.id === this.scenarioId())!);
 
   readonly bills = computed(() =>
-    COMPUTABLE_MODELS.map((m) =>
-      bill(m, this.income(), this.size(), this.employer(), this.currentCost()),
-    ),
-  );
-
-  /**
-   * Models 4 and 5: shown beside the others, but the report publishes only their
-   * top rate and bracket count, not the schedule, so there is no dollar figure
-   * above the exemption. What IS known: income at or below 138% of FPL owes nothing.
-   */
-  readonly unpublished = computed(() =>
-    MODELS.filter((m) => !m.computable).map((model) => {
-      const exemption = FPL_138[this.size()];
-      return { model, exemption, owesNothing: this.income() <= exemption };
-    }),
+    MODELS.map((m) => bill(m, this.income(), this.size(), this.employer())),
   );
 
   // ----------------------------------------------------------------- chart
@@ -230,19 +221,13 @@ export class OregonHealthPlanComponent {
   );
 
   private billAt(modelIndex: number, income: number): number {
-    return bill(
-      COMPUTABLE_MODELS[modelIndex],
-      income,
-      this.size(),
-      this.employer(),
-      this.currentCost(),
-    ).household;
+    return bill(MODELS[modelIndex], income, this.size(), this.employer()).household;
   }
 
   private readonly yStep = computed(() => {
     const top = Math.max(
       this.currentCost(),
-      ...COMPUTABLE_MODELS.map((_, i) => this.billAt(i, this.xMax())),
+      ...MODELS.map((_, i) => this.billAt(i, this.xMax())),
     );
     const steps = [5_000, 10_000, 20_000, 50_000, 100_000, 200_000, 500_000];
     const step = steps.find((s) => top * 1.05 <= s * 5);
@@ -284,21 +269,20 @@ export class OregonHealthPlanComponent {
     return ticks;
   });
 
-  /** Each model is flat at $0, then a straight line: three points draw it exactly. */
+  /** Each model's bill across the income axis, sampled finely enough to show every step. */
   readonly lines = computed(() =>
-    COMPUTABLE_MODELS.map((m, i) => {
-      const b = bill(m, 0, this.size(), this.employer(), 0);
-      const kink = Math.min(b.breakEven ?? this.xMax(), this.xMax());
-      const pts = [
-        [0, 0],
-        [kink, 0],
-        [this.xMax(), this.billAt(i, this.xMax())],
-      ];
+    MODELS.map((m, i) => {
+      const steps = 240;
+      const pts: string[] = [];
+      for (let n = 0; n <= steps; n++) {
+        const income = (this.xMax() * n) / steps;
+        pts.push(`${n ? 'L' : 'M'}${this.x(income).toFixed(1)},${this.y(this.billAt(i, income)).toFixed(1)}`);
+      }
       return {
         id: m.id,
         color: SERIES[i],
-        d: pts.map(([px, py], n) => `${n ? 'L' : 'M'}${this.x(px)},${this.y(py)}`).join(' '),
-        endY: this.y(pts[2][1]),
+        d: pts.join(' '),
+        endY: this.y(this.billAt(i, this.xMax())),
       };
     }),
   );
@@ -345,7 +329,7 @@ export class OregonHealthPlanComponent {
       income,
       x,
       left,
-      rows: COMPUTABLE_MODELS.map((m, i) => {
+      rows: MODELS.map((m, i) => {
         const value = this.billAt(i, income);
         return { id: m.id, color: SERIES[i], value, y: this.y(value) };
       }),
@@ -356,7 +340,7 @@ export class OregonHealthPlanComponent {
   readonly tableRows = computed(() =>
     [50_000, 100_000, 150_000, 200_000, 250_000].map((income) => ({
       income,
-      values: COMPUTABLE_MODELS.map((_, i) => this.billAt(i, income)),
+      values: MODELS.map((_, i) => this.billAt(i, income)),
     })),
   );
 
