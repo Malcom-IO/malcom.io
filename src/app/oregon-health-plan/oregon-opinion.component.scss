@@ -267,6 +267,11 @@ path[class*='op-line--'] {
   #households {
     break-before: page;
   }
+  // The sign-up table is all words and its rows stand alone, so it may run on
+  // from the cards above it and break between rows.
+  #sign-up .uhp-table {
+    break-inside: auto;
+  }
 }
 
 // A range never breaks across lines.

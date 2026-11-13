@@ -449,10 +449,6 @@ a {
 // Fixed columns, not auto-fit: three calculated models in one row, the two
 // uncalculated ones in a row of their own, so a card is never orphaned.
 .uhp-bills,
-.uhp-unknowns {
-  display: grid;
-  gap: 1rem;
-}
 // Five cards: three across, then two, on a six-column grid so both rows fill.
 .uhp-bills {
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -482,18 +478,6 @@ a {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 0.75rem;
-}
-// Models the report does not give enough detail to calculate: present, but quieter.
-.uhp-bill--unknown {
-  padding: 0.85rem 1.25rem;
-  background: transparent;
-  border-style: dashed;
-}
-.uhp-bill-unknown {
-  margin: 0.2rem 0 0.1rem;
-  font-size: 1rem;
-  font-weight: 650;
-  color: var(--text-soft);
 }
 .uhp-bill-name {
   margin: 0;
@@ -679,30 +663,6 @@ $down: var(--s3);
   white-space: nowrap;
   vertical-align: 0.08em;
 }
-.uhp-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
-  margin-top: 1.75rem;
-}
-.uhp-stat {
-  padding: 1.25rem 1.4rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
-}
-.uhp-stat-label {
-  margin: 0;
-  font-size: 0.925rem;
-  color: var(--text-soft);
-}
-.uhp-stat-value {
-  margin: 0.25rem 0 0.1rem;
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
 .uhp-figure--wide {
   max-width: 54rem;
 }
@@ -850,10 +810,6 @@ $down: var(--s3);
   font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
-.uhp-scroll--flat {
-  background: transparent;
-}
-
 @media (max-width: 575.98px) {
   .uhp-bridge li {
     grid-template-columns: minmax(0, 1fr) 4.5rem 4.5rem;
@@ -1899,31 +1855,6 @@ $info: var(--info);
   line-height: 1;
   color: var(--brand-bright);
 }
-.uhp-est-facts {
-  display: grid;
-  gap: 0.45rem;
-  margin: 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.925rem;
-
-  div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.1rem 1rem;
-  }
-  dt {
-    font-weight: 400;
-    color: var(--text-soft);
-  }
-  dd {
-    margin: 0;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-}
-
 // Payments that end against the taxes that replace them, as two ledger lines.
 .uhp-est-swap {
   display: grid;
