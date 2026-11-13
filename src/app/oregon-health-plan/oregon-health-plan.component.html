@@ -2,13 +2,25 @@
   <!-- ================================================================ hero -->
   <section class="uhp-hero">
     <div class="container">
+      <div class="uhp-hero-grid">
+      <aside class="uhp-official" aria-label="Official sources">
+        <p class="uhp-official-title">Official sources</p>
+        <ul>
+          <li>
+            <a [href]="sources.board" rel="noopener">Universal Health Plan Governance Board</a>
+            <span>The state board designing the plan</span>
+          </li>
+          <li>
+            <a [href]="sources.report" rel="noopener">Draft report to the Legislature (PDF)</a>
+            <span>77 pages, October 2026</span>
+          </li>
+          <li>
+            <a [href]="sources.meetings" rel="noopener">Board meeting materials</a>
+            <span>Agendas, appendices and recordings</span>
+          </li>
+        </ul>
+      </aside>
       <div class="uhp-narrow">
-        <p class="uhp-official">
-          <span>Official sources</span>
-          <a [href]="sources.board" rel="noopener">Universal Health Plan Governance Board</a>
-          <a [href]="sources.report" rel="noopener">Draft report to the Legislature (PDF)</a>
-          <a [href]="sources.meetings" rel="noopener">Board meeting materials</a>
-        </p>
         <p class="eyebrow eyebrow--hero">Oregon &middot; plain-language explainer</p>
         <h1 class="uhp-title">What Oregon's Universal Health Plan would actually do</h1>
         <p class="lead-lg">
@@ -38,6 +50,7 @@
           Printed from www.malcom.io/oregon-universal-health-plan, where the calculators take
           your own numbers. The figures here use the page's example household and employer.
         </p>
+      </div>
       </div>
     </div>
   </section>

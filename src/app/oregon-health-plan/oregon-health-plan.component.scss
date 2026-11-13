@@ -30,26 +30,81 @@
   color: var(--text-soft);
 }
 
-// Where the plan itself lives, ahead of anything this page says about it.
+// Where the plan itself lives, ahead of anything this page says about it:
+// a compact strip above the title on phones and tablets, a card to the right
+// of the hero on desktop.
 .uhp-official {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 1.1rem;
   margin: 0 0 1.75rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--line-soft);
   font-size: 0.9rem;
 
-  span {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li span {
+    display: none;
   }
   a::after {
     content: ' \2197';
+  }
+}
+.uhp-official-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+@media (min-width: 992px) {
+  .uhp-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(15rem, 20rem);
+    justify-content: space-between;
+    align-items: start;
+    gap: 3rem;
+  }
+  .uhp-hero-grid > .uhp-narrow {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .uhp-official {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0.25rem 0 0;
+    padding: 1.4rem 1.5rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--s1) 30%, var(--line));
+    border-top: 3px solid color-mix(in srgb, var(--s1) 85%, transparent);
+    border-radius: 16px;
+    background:
+      radial-gradient(85% 130% at 100% 0%, color-mix(in srgb, var(--s1) 14%, transparent), transparent 65%),
+      var(--surface);
+
+    ul {
+      display: grid;
+      gap: 1rem;
+    }
+    li {
+      display: grid;
+      gap: 0.1rem;
+    }
+    li span {
+      display: block;
+      font-size: 0.825rem;
+      color: var(--muted);
+    }
+    a {
+      font-weight: 600;
+    }
+  }
+  .uhp-official-title {
+    margin-bottom: 1rem;
   }
 }
 .uhp-print-only {
@@ -1954,5 +2009,12 @@ $warn: var(--warn);
   }
   .uhp-scroll {
     overflow: visible;
+  }
+}
+
+// The navbar is two rows tall below lg; give the sources strip room under it.
+@media screen and (max-width: 991.98px) {
+  .uhp-hero {
+    padding-top: 10rem;
   }
 }
