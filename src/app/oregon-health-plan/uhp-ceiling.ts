@@ -1,6 +1,6 @@
 import { HOUSEHOLD_ROWS } from './uhp-households';
 import { BEST, POPULATION_2032, REVENUE_TARGET } from './uhp-statewide';
-import { MODELS, contribution } from './uhp-model';
+import { FPL_200, MODELS, contribution } from './uhp-model';
 
 /**
  * Arithmetic for the OPINION page only. None of this is the board's, and none
@@ -88,3 +88,35 @@ export function averageContribution(size: number): number {
     ((REVENUE_TARGET.board * 0.4 + REVENUE_TARGET.best * 0.43) / 2) * 1e9 / POPULATION_2032;
   return perPerson * size;
 }
+
+// ---------------------------------------------------------------- the floor
+/** The share of income above the poverty line that every household contributes at least. */
+export const FLOOR_RATE = 0.02;
+
+/** The federal poverty line for a household: half the 200% figure the models use. */
+export function povertyLine(size: number): number {
+  return FPL_200[size] / 2;
+}
+
+/**
+ * A minimum contribution: 2% of income above the poverty line. It starts at
+ * zero at the poverty line, so there is no cliff, and it only bites where the
+ * draft asks for less, which is mostly where the worker credit or the
+ * exemption has wiped the bill out.
+ */
+export function floor(income: number, size: number): number {
+  return Math.max(0, income - povertyLine(size)) * FLOOR_RATE;
+}
+
+/**
+ * The two together: never less than the floor, and above the plan's average
+ * cost for the household each further dollar is halved. Unlike a hard ceiling,
+ * a household at $2,000,000 still pays more than one at $1,000,000.
+ */
+export function floorAndSoftCap(draft: number, income: number, size: number): number {
+  return softCapped(Math.max(draft, floor(income, size)), size);
+}
+
+/** Tax filers who would owe nothing under the draft, lowest and highest model. */
+const nothing = MODELS.map((m) => m.returnsOwingNothing);
+export const OWING_NOTHING = { low: Math.min(...nothing), high: Math.max(...nothing) };

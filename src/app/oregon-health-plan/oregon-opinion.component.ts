@@ -13,18 +13,22 @@ import { RouterLink } from '@angular/router';
 import { QuillquestShellComponent } from '../quillquest/quillquest-shell.component';
 import {
   COST_PER_PERSON,
+  FLOOR_RATE,
+  OWING_NOTHING,
   TOP1_STAKE,
-  averageContribution,
   capped,
   ceiling,
   ceilingIncome,
+  floor,
+  floorAndSoftCap,
+  povertyLine,
   softCapped,
 } from './uhp-ceiling';
 import { HOUSEHOLD_ROWS } from './uhp-households';
 import { MODELS, contribution } from './uhp-model';
 
-/** The draft as written, or one of the two ideas applied on top of it. */
-type View = 'draft' | 'ceiling' | 'soft';
+/** The draft as written, or one of the ideas applied on top of it. */
+type View = 'draft' | 'pick' | 'soft' | 'ceiling';
 
 const USD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -57,19 +61,37 @@ export class OregonOpinionComponent {
   readonly costPerPerson = COST_PER_PERSON;
   readonly familyCeiling = ceiling(4);
   readonly stake = TOP1_STAKE;
-  readonly ceilingTimes = Math.round(ceiling(4) / averageContribution(4));
+  readonly owingNothing = OWING_NOTHING;
+  readonly floorRate = FLOOR_RATE;
+  readonly povertyFour = povertyLine(4);
+  /** The median family of four in the explainer's table: today, and under the draft. */
+  readonly median = HOUSEHOLD_ROWS.find(
+    (h) => h.size === 4 && h.income === 110_000 && h.employer === 'private',
+  )!;
+  readonly medianDraft = { low: Math.min(...this.median.models), high: Math.max(...this.median.models) };
 
-  readonly views: readonly { id: View; label: string }[] = [
-    { id: 'draft', label: 'The draft' },
-    { id: 'ceiling', label: 'With a ceiling' },
-    { id: 'soft', label: 'With a soft cap' },
+  readonly views: readonly { id: View; label: string; heading: string }[] = [
+    { id: 'draft', label: 'The draft', heading: '' },
+    { id: 'pick', label: 'A floor and a soft cap', heading: ', with a floor and a soft cap' },
+    { id: 'soft', label: 'A soft cap alone', heading: ', with a soft cap' },
+    { id: 'ceiling', label: 'A hard ceiling', heading: ', with a hard ceiling' },
   ];
-  readonly view = signal<View>('ceiling');
+  readonly view = signal<View>('pick');
+  readonly viewHeading = computed(() => this.views.find((v) => v.id === this.view())!.heading);
   /** Which model the chart and bars show; the table shows all five. */
   readonly modelIndex = signal(0);
 
-  private apply(view: View, draft: number, size: number): number {
-    return view === 'ceiling' ? capped(draft, size) : view === 'soft' ? softCapped(draft, size) : draft;
+  private apply(view: View, draft: number, income: number, size: number): number {
+    switch (view) {
+      case 'pick':
+        return floorAndSoftCap(draft, income, size);
+      case 'soft':
+        return softCapped(draft, size);
+      case 'ceiling':
+        return capped(draft, size);
+      default:
+        return draft;
+    }
   }
 
   // ------------------------------------------------------------------ table
@@ -77,27 +99,60 @@ export class OregonOpinionComponent {
   readonly rows = computed(() =>
     HOUSEHOLD_ROWS.map((h) => {
       const cells = h.models.map((draft) => {
-        const value = this.apply(this.view(), draft, h.size);
-        return { value, draft, changed: value < draft - 0.5 };
+        const value = this.apply(this.view(), draft, h.income, h.size);
+        return {
+          value,
+          draft,
+          changed: Math.abs(value - draft) > 0.5,
+          up: value > draft + 0.5,
+          // A saving under the draft that this idea turns into a cost.
+          flipped: draft < h.now && value > h.now,
+        };
       });
       return { ...h, cells, changed: cells.some((c) => c.changed) };
     }),
   );
-  readonly unchanged = computed(() => this.rows().filter((r) => !r.changed).length);
+  /** How many of the twelve pay more, less, or the same as the draft asks, in any model. */
+  readonly tally = computed(() => {
+    const rows = this.rows();
+    return {
+      more: rows.filter((r) => r.cells.some((c) => c.up)).length,
+      less: rows.filter((r) => r.cells.some((c) => c.changed && !c.up)).length,
+      same: rows.filter((r) => !r.changed).length,
+      flipped: rows.filter((r) => r.cells.some((c) => c.flipped)).length,
+    };
+  });
 
   // ------------------------------------------------------------------- bars
-  /** A family of four with no worker credit, at three incomes, under the chosen model. */
-  readonly bars = computed(() => {
+  /** A family of four with no worker credit, at the top, under the chosen model. */
+  readonly topBars = computed(() => {
     const model = MODELS[this.modelIndex()];
-    const top = contribution(model, X_MAX, 0, 4, 0);
-    return [400_000, 1_000_000, 2_000_000].map((income) => {
+    const scale = contribution(model, X_MAX, 0, 4, 0);
+    return [1_000_000, 2_000_000].map((income) => {
       const draft = contribution(model, income, 0, 4, 0);
       const items = [
         { label: 'The draft', value: draft, tone: 'draft' },
-        { label: 'With a soft cap', value: softCapped(draft, 4), tone: 'soft' },
-        { label: 'With a ceiling', value: capped(draft, 4), tone: 'ceiling' },
+        { label: 'Floor and soft cap', value: floorAndSoftCap(draft, income, 4), tone: 'pick' },
+        { label: 'A hard ceiling', value: capped(draft, 4), tone: 'ceiling' },
       ];
-      return { income, items: items.map((i) => ({ ...i, pct: (i.value / top) * 100 })) };
+      return { title: `Family of four at ${USD.format(income)}`, items: items.map((i) => ({ ...i, pct: (i.value / scale) * 100 })) };
+    });
+  });
+
+  /** Middle households from the table: what they pay today, under the draft, and with a floor. */
+  readonly middleBars = computed(() => {
+    const i = this.modelIndex();
+    return HOUSEHOLD_ROWS.filter(
+      (h) => h.income <= 110_000 && h.employer !== 'none',
+    ).map((h) => {
+      const draft = h.models[i];
+      const items = [
+        { label: 'Pays today', value: h.now, tone: 'today' },
+        { label: 'The draft', value: draft, tone: 'draft' },
+        { label: 'Floor and soft cap', value: floorAndSoftCap(draft, h.income, h.size), tone: 'pick' },
+      ];
+      const scale = Math.max(...items.map((x) => x.value), 1);
+      return { title: `${h.who}, ${USD.format(h.income)}`, items: items.map((x) => ({ ...x, pct: (x.value / scale) * 100 })) };
     });
   });
 
@@ -120,7 +175,7 @@ export class OregonOpinionComponent {
   readonly width = signal(720);
   readonly height = 320;
   readonly narrow = computed(() => this.width() < 520);
-  readonly pad = computed(() => ({ left: 52, right: this.narrow() ? 12 : 118, top: 16, bottom: 34 }));
+  readonly pad = computed(() => ({ left: 52, right: this.narrow() ? 12 : 128, top: 16, bottom: 34 }));
 
   private readonly yMax = computed(() => {
     const top = contribution(MODELS[this.modelIndex()], X_MAX, 0, 4, 0);
@@ -155,17 +210,17 @@ export class OregonOpinionComponent {
   readonly lines = computed(() => {
     const model = MODELS[this.modelIndex()];
     const series: { id: View; label: string; d: string; endY: number }[] = [];
-    for (const view of ['draft', 'soft', 'ceiling'] as const) {
+    for (const view of ['draft', 'pick', 'ceiling'] as const) {
       const pts: string[] = [];
       let last = 0;
       for (let n = 0; n <= 200; n++) {
         const income = (X_MAX * n) / 200;
-        last = this.apply(view, contribution(model, income, 0, 4, 0), 4);
+        last = this.apply(view, contribution(model, income, 0, 4, 0), income, 4);
         pts.push(`${n ? 'L' : 'M'}${this.x(income).toFixed(1)},${this.y(last).toFixed(1)}`);
       }
       series.push({
         id: view,
-        label: view === 'draft' ? 'The draft' : view === 'soft' ? 'Soft cap' : 'Ceiling',
+        label: view === 'draft' ? 'The draft' : view === 'pick' ? 'Floor + soft cap' : 'Hard ceiling',
         d: pts.join(' '),
         endY: this.y(last),
       });
@@ -177,7 +232,7 @@ export class OregonOpinionComponent {
     const model = MODELS[this.modelIndex()];
     return [250_000, 500_000, 1_000_000, 1_500_000, 2_000_000].map((income) => {
       const draft = contribution(model, income, 0, 4, 0);
-      return { income, draft, soft: softCapped(draft, 4), ceiling: capped(draft, 4) };
+      return { income, draft, pick: floorAndSoftCap(draft, income, 4), ceiling: capped(draft, 4) };
     });
   });
 
@@ -201,6 +256,10 @@ export class OregonOpinionComponent {
   /** Rounded to the nearest hundred, for figures quoted in text. */
   usd100(value: number): string {
     return USD.format(Math.round(value / 100) * 100);
+  }
+  /** What the floor asks of a household. */
+  floorFor(income: number, size: number): number {
+    return floor(income, size);
   }
   pct(value: number): string {
     return `${Math.round(value * 100)}%`;
