@@ -6,6 +6,7 @@ import {
   bill,
   contribution,
   employerRate,
+  payrollTax,
   grossContribution,
   schedule,
 } from './uhp-model';
@@ -97,7 +98,7 @@ describe('bill', () => {
   });
 
   it('never goes negative when the credit exceeds the contribution', () => {
-    expect(bill(MODELS[1], 60_000, 1, 'large').household).toBe(0);
+    expect(bill(MODELS[1], 60_000, 1, 'public').household).toBe(0);
   });
 
   it('gives no credit without an employer payroll tax', () => {
@@ -110,14 +111,54 @@ describe('bill', () => {
 
   it('never falls as income rises', () => {
     for (const model of MODELS) {
-      for (const kind of ['none', 'midsize', 'large'] as const) {
+      for (const kind of ['none', 'private', 'public'] as const) {
         let last = 0;
         for (let income = 0; income <= 600_000; income += 5_000) {
-          const now = bill(model, income, 2, kind).household;
+          const now = bill(model, income, 2, kind, 8_500_000).household;
           expect(now).toBeGreaterThanOrEqual(last - 1e-6);
           last = now;
         }
       }
+    }
+  });
+});
+
+describe('employer payroll tax', () => {
+  it('is marginal: nothing at or below $500,000, and no cliff just above it', () => {
+    expect(payrollTax(420_000, 1)).toBe(0);
+    expect(payrollTax(500_000, 3)).toBe(0);
+    expect(payrollTax(520_000, 1)).toBeCloseTo(1_920, 6);
+  });
+
+  it("matches the board's $8.5 million example at about 9.0% of payroll", () => {
+    for (const id of [1, 2, 3, 4, 5] as const) {
+      expect(payrollTax(8_500_000, id)).toBeCloseTo(768_000, 6);
+      expect(employerRate('private', id, 8_500_000)).toBeCloseTo(0.0904, 4);
+    }
+  });
+
+  it('adds the 14% tier above $10 million in Models 2 to 5 only', () => {
+    expect(payrollTax(190_000_000, 1)).toBeCloseTo(18_192_000, 3);
+    expect(payrollTax(190_000_000, 2)).toBeCloseTo(26_112_000, 3);
+  });
+
+  it('charges public employers the top rate from the first dollar', () => {
+    expect(employerRate('public', 1)).toBe(0.096);
+    expect(employerRate('public', 4)).toBe(0.14);
+  });
+
+  it('gives a small firm a smaller credit than the $8.5 million example', () => {
+    const small = bill(MODELS[0], 78_600, 1, 'private', 1_100_000);
+    const mid = bill(MODELS[0], 78_600, 1, 'private', 8_500_000);
+    expect(small.credit).toBeLessThan(mid.credit);
+    expect(small.household).toBeGreaterThan(mid.household);
+  });
+});
+
+describe('combined rates by income fifth', () => {
+  it('lowest fifth pays a higher combined rate than the second fifth in every model', () => {
+    for (const model of MODELS) {
+      expect(model.combinedByFifth[0]).toBeGreaterThan(model.combinedByFifth[1]);
     }
   });
 });

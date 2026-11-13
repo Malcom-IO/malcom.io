@@ -1283,3 +1283,590 @@ $info: #5b9bea;
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+// --------------------------------------------------- review pass additions
+// Jump links under the hero: the page is long and several readers want one part.
+.uhp-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+
+  a {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus-visible {
+    border-color: var(--brand);
+    color: var(--text);
+  }
+}
+
+// Sign-up steps: numbered, three across.
+.uhp-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+
+  li {
+    display: grid;
+    gap: 0.2rem;
+    align-content: start;
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    counter-increment: step;
+  }
+  strong::before {
+    content: counter(step) '. ';
+    color: var(--brand-bright);
+  }
+  span {
+    color: var(--text-soft);
+    font-size: 0.925rem;
+    line-height: 1.45;
+  }
+}
+
+// Five measures per model now, not four.
+.uhp-model {
+  grid-template-columns: minmax(0, 2.1fr) repeat(5, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+@media (max-width: 1199.98px) {
+  .uhp-model--head {
+    display: none;
+  }
+  .uhp-model {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+    align-items: start;
+  }
+  .uhp-model:nth-child(2) {
+    border-top: 0;
+  }
+  .uhp-model-what {
+    grid-column: 1 / -1;
+  }
+  .uhp-metric-label {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    white-space: normal;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+}
+
+// A table whose cells carry a small bar beside the number.
+.uhp-table--bars {
+  td {
+    min-width: 7.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  thead th:first-child {
+    min-width: 12rem;
+  }
+}
+.uhp-cellbar {
+  display: block;
+  height: 8px;
+  margin-bottom: 0.3rem;
+  background: var(--ground);
+  border-radius: 0 4px 4px 0;
+
+  span {
+    display: block;
+    height: 100%;
+    background: #3987e5;
+    border-radius: 0 4px 4px 0;
+  }
+}
+
+// Calculator: second label inside a field, and the notice above the results.
+.uhp-sublabel {
+  margin-top: 0.9rem !important;
+  font-weight: 500 !important;
+  color: var(--text-soft);
+}
+.uhp-callout--top {
+  max-width: none;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+
+  p {
+    margin: 0 0 0.6rem;
+  }
+}
+.uhp-bills + .uhp-callout--top {
+  margin-top: 1rem;
+}
+.uhp-bills--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  .uhp-bill,
+  .uhp-bill:nth-child(n + 4) {
+    grid-column: auto;
+  }
+}
+@media (max-width: 575.98px) {
+  .uhp-bills--two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.uhp-verdict[data-tone='info']::before {
+  content: '\2713';
+  color: $info;
+}
+
+// Phones: the split bar is too narrow for words, so it goes bare and a key
+// underneath names the three parts in full.
+.uhp-share-key {
+  display: none;
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  gap: 0.35rem;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+@media (max-width: 767.98px) {
+  .uhp-share {
+    height: 18px;
+    margin-bottom: 0.75rem;
+
+    span {
+      padding: 0;
+      font-size: 0;
+    }
+  }
+  .uhp-share-key {
+    display: grid;
+  }
+  // Tighter sections and cards so a phone shows more than one idea per screen.
+  .section {
+    padding: 3rem 0;
+  }
+  .uhp-hero {
+    padding: 7.5rem 0 3rem;
+  }
+  .uhp-fund .brand-card {
+    padding: 1.25rem !important;
+  }
+  .uhp-fund.row {
+    --bs-gutter-y: 0.9rem;
+  }
+  .uhp-fact {
+    padding: 1.1rem 1.2rem;
+  }
+  .uhp-covered {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .uhp-covered li {
+    grid-template-columns: auto 1fr;
+    column-gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+  }
+  .uhp-covered li span {
+    grid-column: 1 / -1;
+  }
+  .uhp-sub {
+    margin-top: 2.25rem;
+  }
+}
+
+// ------------------------------------------------------------ phone layout
+// A bar that follows the thumb down the calculator form, so the answer is
+// visible while the inputs are being changed. Phones and tablets only: on wide
+// screens the results sit beside the form.
+.uhp-sticky {
+  display: none;
+}
+#results {
+  scroll-margin-top: 7rem;
+}
+@media (max-width: 1199.98px) {
+  .uhp-sticky {
+    position: sticky;
+    bottom: 0.6rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    background: var(--brand);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #08130b;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    text-decoration: none;
+
+    strong {
+      white-space: nowrap;
+    }
+  }
+  .uhp-sticky-go {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 767.98px) {
+  // Calculator form: less padding, tighter fields.
+  .uhp-inputs {
+    gap: 1.1rem;
+    padding: 1.1rem;
+  }
+  .uhp-bill {
+    padding: 0.9rem 1rem;
+  }
+  .uhp-bill-amount {
+    font-size: 1.6rem;
+  }
+  .uhp-figure {
+    padding: 1rem 0.85rem 0.85rem;
+  }
+
+  // Tables that would scroll sideways become one card per row instead: the row
+  // header on top, then a labeled line for each column.
+  .uhp-table--stack {
+    display: block;
+
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    tbody,
+    tr {
+      display: block;
+    }
+    tr {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    tr:last-child {
+      border-bottom: 0;
+    }
+    tbody th {
+      display: block;
+      padding: 0 0 0.35rem;
+      border: 0;
+      font-size: 1.05rem;
+    }
+    td,
+    td.num {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      min-width: 0;
+      padding: 0.3rem 0.5rem;
+      border: 0;
+      border-radius: 0.35rem;
+      text-align: right;
+      white-space: normal;
+    }
+    td::before {
+      content: attr(data-label);
+      color: var(--muted);
+      margin-right: auto;
+      font-size: 0.875rem;
+      text-align: left;
+      white-space: nowrap;
+    }
+    // The "pays less" arrow sits with the amount, not with the label.
+    td.less::before {
+      content: attr(data-label);
+      color: var(--text-soft);
+    }
+    td.less::after {
+      content: '\2193';
+      order: 3;
+      color: var(--brand-bright);
+    }
+    .uhp-cellbar {
+      flex: 1;
+      order: 1;
+      margin: 0;
+    }
+  }
+  .uhp-table--bars.uhp-table--stack td {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ----------------------------------------------------- statewide estimates
+// The two published estimates as paired cards: current system against the plan,
+// the saving in large type, then what it means in new taxes.
+.uhp-est {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+@media (max-width: 991.98px) {
+  .uhp-est {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.uhp-est-card {
+  --g: #3987e5;
+  padding: 1.6rem 1.75rem;
+  border: 1px solid color-mix(in srgb, var(--g) 35%, var(--line));
+  border-top: 3px solid color-mix(in srgb, var(--g) 85%, transparent);
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      85% 130% at 100% 0%,
+      color-mix(in srgb, var(--g) 15%, transparent),
+      transparent 65%
+    ),
+    var(--surface);
+}
+.uhp-est-card[data-tone='green'] {
+  --g: var(--brand);
+}
+.uhp-est-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+.uhp-est-who {
+  margin: 0.1rem 0 1.2rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+.uhp-est-bars {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem 0.8rem;
+  font-size: 0.925rem;
+}
+.uhp-est-label {
+  color: var(--text-soft);
+}
+.uhp-est-track {
+  display: block;
+  height: 14px;
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+  }
+  .now {
+    background: #8792a0;
+  }
+  .plan {
+    background: var(--g);
+  }
+}
+.uhp-est-value {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.uhp-est-saves {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.75rem;
+  margin: 1.4rem 0 1.1rem;
+  color: var(--text-soft);
+}
+.uhp-est-big {
+  font-family: var(--mono);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--brand-bright);
+}
+.uhp-est-facts {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.925rem;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.1rem 1rem;
+  }
+  dt {
+    font-weight: 400;
+    color: var(--text-soft);
+  }
+  dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// Payments that end against the taxes that replace them, as two ledger lines.
+.uhp-est-swap {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.4rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+
+  div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  dt {
+    font-weight: 600;
+  }
+  small {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-soft);
+  }
+  dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 1.35rem;
+    font-weight: 700;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .ends dd {
+    color: var(--brand-bright);
+  }
+  .starts dd {
+    color: #f0a56a;
+  }
+}
+.uhp-est-saves {
+  margin: 1.1rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+// Our own sensitivity rows read as secondary to the two published estimates:
+// hatched bars, like the conditional savings in the bridge above.
+.uhp-diverge li.ours {
+  .uhp-diverge-label strong {
+    font-weight: 500;
+    color: var(--text-soft);
+  }
+  .uhp-diverge-bar.up {
+    background: repeating-linear-gradient(135deg, $up 0 4px, transparent 4px 8px);
+    outline: 1px solid $up;
+    outline-offset: -1px;
+  }
+  .uhp-diverge-value {
+    color: var(--text-soft);
+  }
+}
+
+// ------------------------------------------------------- if nothing changes
+// The status quo's costs: warm glow, one big figure each, and a small picture.
+$warn: #e66767;
+
+.uhp-sq {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+.uhp-sq-card {
+  padding: 1.5rem 1.6rem 1.3rem;
+  border: 1px solid color-mix(in srgb, $warn 32%, var(--line));
+  border-top: 3px solid color-mix(in srgb, $warn 85%, transparent);
+  border-radius: 16px;
+  background:
+    radial-gradient(85% 130% at 100% 0%, color-mix(in srgb, $warn 14%, transparent), transparent 65%),
+    var(--surface);
+}
+.uhp-sq-card:nth-child(2) {
+  background:
+    radial-gradient(85% 130% at 0% 100%, color-mix(in srgb, $caution 13%, transparent), transparent 65%),
+    var(--surface);
+  border-color: color-mix(in srgb, $caution 32%, var(--line));
+  border-top-color: color-mix(in srgb, $caution 85%, transparent);
+}
+.uhp-sq-label {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+.uhp-sq-big {
+  margin: 0.3rem 0 0.9rem;
+  font-family: var(--mono);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.uhp-sq-bars {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem 0.7rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+.uhp-sq-track {
+  display: block;
+  height: 12px;
+
+  span {
+    display: block;
+    height: 100%;
+    background: $warn;
+    border-radius: 0 4px 4px 0;
+  }
+}
+.uhp-sq-card:nth-child(2) .uhp-sq-track span {
+  background: $caution;
+}
+.uhp-sq-dots {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.9rem;
+
+  span {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--muted) 30%, transparent);
+  }
+  .on {
+    background: $warn;
+  }
+}
+.uhp-covered--wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 767.98px) {
+  .uhp-covered--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

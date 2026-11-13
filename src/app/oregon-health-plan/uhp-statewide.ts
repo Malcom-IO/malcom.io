@@ -126,7 +126,7 @@ export const BRIDGE: readonly Step[] = [
     conditional: true,
   },
   {
-    label: 'Providers need far less billing staff, so rates can be set lower',
+    label: 'Providers need fewer billing staff hours, so rates can be set lower',
     delta: -BEST.providerAdmin,
     conditional: true,
   },
@@ -155,39 +155,43 @@ export interface Scenario {
 }
 
 /**
- * The plan against the current system. Each estimate is shown with and without
- * the provider rate reset, so neither is singled out.
+ * The plan against the current system. The two published estimates come first.
+ * Both assume provider rates are reset; the two sensitivity rows (ours) show
+ * each estimate without that reset, so neither is singled out.
  */
 export const SCENARIOS_STATEWIDE: readonly Scenario[] = [
   {
-    label: "Milliman's best estimate, no provider rate reset",
-    detail: 'The plan pays current rates in full; providers keep the gains.',
-    delta: round1(BEST.planGross - BEST.statusQuo),
-    baseline: BEST.statusQuo,
-    published: false,
-  },
-  {
     label: "Milliman's best estimate",
-    detail: 'Provider rates are reset to capture both savings.',
+    detail: 'Published. Provider rates are reset so providers are paid about what they are now.',
     delta: round1(BEST.plan - BEST.statusQuo),
     baseline: BEST.statusQuo,
     published: true,
   },
   {
-    label: "The board's assumptions, no provider rate reset",
-    detail: 'Slower cost growth, 3% administration, cheaper drugs, less fraud.',
-    delta: round1(BOARD.plan + LOW.collectability + LOW.providerAdmin - LOW.statusQuo),
-    baseline: LOW.statusQuo,
-    published: false,
-  },
-  {
     label: "The board's assumptions",
-    detail: 'All of the above, plus the provider rate reset.',
+    detail: 'Published. Adds slower cost growth, 3% administration, cheaper drugs and less fraud.',
     delta: round1(BOARD.plan - LOW.statusQuo),
     baseline: LOW.statusQuo,
     published: true,
   },
+  {
+    label: "Milliman's best estimate, if provider rates are not reset",
+    detail: 'The plan pays current rates in full, an effective raise for providers of about 10%.',
+    delta: round1(BEST.planGross - BEST.statusQuo),
+    baseline: BEST.statusQuo,
+    published: false,
+  },
+  {
+    label: "The board's assumptions, if provider rates are not reset",
+    detail: 'The same, on the board\'s lower-cost assumptions.',
+    delta: round1(BOARD.plan + LOW.collectability + LOW.providerAdmin - LOW.statusQuo),
+    baseline: LOW.statusQuo,
+    published: false,
+  },
 ];
+
+/** Milliman's high estimate of the plan, after its two provider savings (Table E7). */
+export const HIGH_PLAN = 86.5;
 
 export interface Raised {
   name: string;
