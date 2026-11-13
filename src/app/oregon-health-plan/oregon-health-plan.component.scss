@@ -559,3 +559,252 @@ a {
     cursor: pointer;
   }
 }
+
+// ----------------------------------------------------------- statewide math
+// Polarity colors for the bridge and scenario bars: one hue for "adds cost",
+// one for "saves", from the validated dark-surface categorical set. Sign and
+// wording carry the meaning too, so it is never color alone.
+$up: #d95926;
+$down: #199e70;
+
+.uhp-ours {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  white-space: nowrap;
+  vertical-align: 0.08em;
+}
+.uhp-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+.uhp-stat {
+  padding: 1.25rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+.uhp-stat-label {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+.uhp-stat-value {
+  margin: 0.25rem 0 0.1rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.uhp-figure--wide {
+  max-width: 54rem;
+}
+.uhp-key--up {
+  background: $up;
+}
+.uhp-key--down {
+  background: $down;
+}
+.uhp-key--cond {
+  background: repeating-linear-gradient(135deg, $down 0 3px, transparent 3px 6px);
+  outline: 1px solid $down;
+}
+
+// The bridge: one row per step. Totals are plain rows; changes get a bar whose
+// length is the size of the change.
+.uhp-bridge,
+.uhp-diverge {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+.uhp-bridge li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9rem 4.75rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--line-soft);
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+.uhp-bridge li.total {
+  color: var(--text);
+  font-weight: 650;
+}
+.uhp-bridge-track,
+.uhp-diverge-track {
+  display: block;
+  height: 14px;
+}
+.uhp-bridge-bar,
+.uhp-diverge-bar {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 0 4px 4px 0;
+}
+.uhp-bridge-bar.up,
+.uhp-diverge-bar.up {
+  background: $up;
+}
+.uhp-bridge-bar.down,
+.uhp-diverge-bar.down {
+  background: $down;
+}
+.uhp-bridge-bar.cond {
+  background: repeating-linear-gradient(135deg, $down 0 4px, transparent 4px 8px);
+  outline: 1px solid $down;
+  outline-offset: -1px;
+}
+.uhp-bridge-value,
+.uhp-diverge-value {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+// Scenario bars: a zero line down the middle, "more" to the right, "less" left.
+.uhp-diverge li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, 16rem) 9.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 0.95rem;
+}
+.uhp-diverge-label {
+  display: grid;
+
+  span {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+}
+.uhp-diverge-track {
+  position: relative;
+  background: linear-gradient(var(--muted), var(--muted)) center / 1px 100% no-repeat;
+  height: 22px;
+}
+.uhp-diverge-bar {
+  position: absolute;
+  top: 4px;
+  height: 14px;
+}
+.uhp-diverge-bar.up {
+  left: 50%;
+}
+.uhp-diverge-bar.down {
+  right: 50%;
+  border-radius: 4px 0 0 4px;
+}
+
+// Who pays: two stacked bars on one scale (flex-grow is the dollar amount).
+.uhp-stack-rows {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0.5rem;
+}
+.uhp-stack-row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) 4.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.925rem;
+}
+.uhp-stack {
+  display: flex;
+  gap: 2px;
+  height: 30px;
+
+  > span {
+    flex-basis: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 0.5rem;
+    line-height: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+  > span:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+  > span:last-child {
+    padding: 0;
+    border-radius: 0 4px 4px 0;
+  }
+}
+.uhp-stack-total {
+  text-align: right;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.uhp-scroll--flat {
+  background: transparent;
+}
+
+@media (max-width: 575.98px) {
+  .uhp-bridge li {
+    grid-template-columns: minmax(0, 1fr) 4.5rem 4.5rem;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+  }
+  .uhp-diverge li {
+    grid-template-columns: minmax(0, 1fr) 8.5rem;
+    row-gap: 0.4rem;
+  }
+  .uhp-diverge-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+// Raised in Oregon: paired bars on one scale (widths are % of $40B).
+.uhp-raised-title {
+  margin: 1rem 0 0;
+  font-size: 0.925rem;
+  font-weight: 650;
+}
+.uhp-raised {
+  display: flex;
+  gap: 2px;
+  height: 30px;
+
+  > span {
+    overflow: hidden;
+    padding: 0 0.5rem;
+    line-height: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+  > span:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+  > span:last-child {
+    padding: 0 0.3rem;
+    border-radius: 0 4px 4px 0;
+    text-align: center;
+  }
+}
+// On phones the Part B segment is too narrow for its label; the legend and the
+// row total carry it instead.
+@media (max-width: 575.98px) {
+  .uhp-raised > span:last-child {
+    padding: 0;
+    font-size: 0;
+  }
+}

@@ -676,58 +676,207 @@
   <!-- ============================================================ the sum -->
   <section class="section section-line" id="total-cost">
     <div class="container">
-      <div class="uhp-narrow">
-        <h2 class="h-section">The statewide math</h2>
-        <p class="uhp-body">
-          Whether the plan costs Oregon less than the current system depends on whose
-          assumptions you use. The board's actuary, Milliman, puts the plan itself slightly
-          lower ($77.7 billion against $78.3 billion) and slightly higher once it also pays
-          Medicare Part B premiums. The board, assuming more savings on administration and drug
-          prices, puts it lower either way.
-        </p>
-        <div class="uhp-scroll" tabindex="0" role="region" aria-label="2032 cost estimates">
-          <table class="uhp-table">
-            <thead>
-              <tr>
-                <th scope="col">Yearly cost in 2032, in billions of dollars</th>
-                <th scope="col" class="num">Milliman best estimate</th>
-                <th scope="col" class="num">Board's assumptions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Current system</th>
-                <td class="num">$78.3B</td>
-                <td class="num">$72.8B</td>
-              </tr>
-              <tr>
-                <th scope="row">Universal plan, with Medicare Part B premiums</th>
-                <td class="num">$81.2B</td>
-                <td class="num">$69.7B</td>
-              </tr>
-              <tr>
-                <th scope="row">Difference</th>
-                <td class="num">$2.9B more</td>
-                <td class="num">$3.1B less</td>
-              </tr>
-              <tr>
-                <th scope="row">Existing federal and state funding</th>
-                <td class="num">$42.2B</td>
-                <td class="num">$39.7B</td>
-              </tr>
-              <tr>
-                <th scope="row">New state revenue needed each year</th>
-                <td class="num">$39.0B</td>
-                <td class="num">$30.0B</td>
-              </tr>
-            </tbody>
-          </table>
+      <h2 class="h-section">The statewide math</h2>
+      <p class="uhp-narrow uhp-body">
+        The report's headline is that Oregon could cover everyone for about what the current
+        system would cost. On Milliman's best estimate, that depends mostly on one assumption:
+        resetting what providers are paid. Here is how the numbers fit together. Figures marked
+        <span class="uhp-ours">our math</span> are our own arithmetic on the report's tables,
+        not numbers the board published.
+      </p>
+
+      <div class="uhp-stats">
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">Health spending in 2032 under the current system</p>
+          <p class="uhp-stat-value">$73 to $78 billion</p>
+          <p class="uhp-hint">
+            About {{ usd100(perPerson(low.statusQuo)) }} to {{ usd100(perPerson(best.statusQuo)) }}
+            per Oregonian. <span class="uhp-ours">our math</span>
+          </p>
         </div>
-        <p class="uhp-note">
-          From the draft report's 2032 summary and Table E11. The estimates exclude start-up
-          costs and reserves.
-        </p>
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">The same year under the plan</p>
+          <p class="uhp-stat-value">$66 to $78 billion</p>
+          <p class="uhp-hint">
+            With about 348,000 more people covered and little or no cost sharing.
+          </p>
+        </div>
+        <div class="uhp-stat">
+          <p class="uhp-stat-label">New state taxes needed each year</p>
+          <p class="uhp-stat-value">$30 to $39 billion</p>
+          <p class="uhp-hint">
+            About {{ usd100(perPerson(target.board)) }} to {{ usd100(perPerson(target.best)) }} per
+            Oregonian, replacing roughly ${{ round(privateToday.board) }} to
+            ${{ round(privateToday.best) }} billion that employers and households pay now.
+            <span class="uhp-ours">our math</span>
+          </p>
+        </div>
       </div>
+
+      <!-- ------------------------------------------------------- the bridge -->
+      <h3 class="uhp-sub">How covering everyone could cost about the same</h3>
+      <p class="uhp-narrow uhp-body">
+        Covering more people with broader benefits costs more. The plan gets back to the current
+        system's total by spending less on administration and billing, and by paying providers
+        lower rates in exchange for full, reliable payment.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>From the current system to the plan</strong>
+          <span class="text-muted-2">Milliman's best estimate for 2032, billions of dollars</span>
+        </figcaption>
+        <ul class="uhp-legend" aria-hidden="true">
+          <li><span class="uhp-key uhp-key--up"></span>Adds cost</li>
+          <li><span class="uhp-key uhp-key--down"></span>Saves cost</li>
+          <li><span class="uhp-key uhp-key--cond"></span>Saves cost only if provider rates are reset</li>
+        </ul>
+        <ol class="uhp-bridge">
+          @for (s of bridge; track s.label) {
+            <li [class.total]="s.total !== undefined">
+              <span class="uhp-bridge-label">{{ s.label }}</span>
+              <span class="uhp-bridge-track" aria-hidden="true">
+                @if (s.delta !== undefined) {
+                  <span
+                    class="uhp-bridge-bar"
+                    [class.up]="s.delta > 0"
+                    [class.down]="s.delta < 0"
+                    [class.cond]="s.conditional"
+                    [style.width.%]="barPct(s.delta)"
+                  ></span>
+                }
+              </span>
+              <span class="uhp-bridge-value">
+                {{ s.total !== undefined ? bn(s.total) : signed(s.delta!) }}
+              </span>
+            </li>
+          }
+        </ol>
+      </figure>
+      <p class="uhp-note">
+        The last two savings, $7.8 billion together, depend on the plan setting payment rates
+        about {{ pct(rateReset.best, 0) }} below what it would otherwise pay providers.
+        <span class="uhp-ours">our math</span> The reasoning: providers would collect every
+        dollar billed and need less billing staff, so lower rates would leave them "paid
+        approximately the same as they are now." The report adds: "If those renegotiations do
+        not occur, these savings cannot be realized."
+      </p>
+      <p class="uhp-note">
+        The report's current-system figure counts dental care but not what people spend today on
+        vision, hearing aids or fertility care, so the third row overstates the added cost.
+        Steps may not add exactly because the report rounds each figure.
+      </p>
+
+      <!-- ---------------------------------------------------- the scenarios -->
+      <h3 class="uhp-sub">It hinges on provider rates and cost growth</h3>
+      <p class="uhp-narrow uhp-body">
+        Depending on the assumptions, the plan ranges from about 9% more than the current system
+        would cost in 2032 to about 9% less.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>The plan compared with the current system</strong>
+          <span class="text-muted-2">2032, billions of dollars a year</span>
+        </figcaption>
+        <ul class="uhp-diverge">
+          @for (s of statewide; track s.label) {
+            <li>
+              <span class="uhp-diverge-label">
+                <strong>
+                  {{ s.label }}
+                  @if (!s.published) {
+                    <span class="uhp-ours">our math</span>
+                  }
+                </strong>
+                <span>{{ s.detail }}</span>
+              </span>
+              <span class="uhp-diverge-track" aria-hidden="true">
+                <span
+                  class="uhp-diverge-bar"
+                  [class.up]="s.delta > 0"
+                  [class.down]="s.delta < 0"
+                  [style.width.%]="barPct(s.delta) / 2"
+                ></span>
+              </span>
+              <span class="uhp-diverge-value">
+                {{ moreLess(s.delta) }}
+                <span class="text-muted-2">({{ pct(abs(s.delta) / s.baseline, 0) }})</span>
+              </span>
+            </li>
+          }
+        </ul>
+      </figure>
+      <p class="uhp-note">
+        Milliman's rows are measured against a current system costing $78.3 billion. The board's
+        rows assume slower cost growth for both the plan and the current system ($72.8 billion),
+        so part of the gap between the two pairs is the growth rate, not the plan. The report
+        rounds the board's figure to "roughly 8% lower." It says board members discussed that
+        administration at 3% of spending "could be considered an ambitiously low estimate" and
+        concluded it "is believed to be attainable."
+      </p>
+
+      <!-- ------------------------------------------------------- who pays -->
+      <h3 class="uhp-sub">What Oregon employers and households would pay</h3>
+      <p class="uhp-narrow uhp-body">
+        The new taxes are large because they replace spending of about the same size by
+        employers, including public employers, and households. The report assumes federal and
+        state health funding of $40 to $42 billion continues either way, which depends on
+        federal waivers.
+      </p>
+      <figure class="uhp-figure uhp-figure--wide">
+        <figcaption>
+          <strong>Raised from Oregon employers and households</strong>
+          <span class="text-muted-2">2032, billions of dollars a year</span>
+        </figcaption>
+        <ul class="uhp-legend" aria-hidden="true">
+          <li>
+            <span class="uhp-key" [style.background]="series[0]"></span>Premiums and
+            out-of-pocket costs today; new state taxes under the plan
+          </li>
+          <li><span class="uhp-key" [style.background]="series[2]"></span>Medicare Part B premiums</li>
+        </ul>
+        @for (g of raisedGroups; track g.title) {
+          <p class="uhp-raised-title">
+            {{ g.title }}
+            @if ($first) {
+              <span class="uhp-ours">our math</span>
+            }
+          </p>
+          <div class="uhp-stack-rows">
+            @for (r of g.rows; track r.name) {
+              <div class="uhp-stack-row">
+                <span class="uhp-stack-name">{{ r.name }}</span>
+                <span class="uhp-raised" aria-hidden="true">
+                  <span [style.width.%]="r.mainPct" [style.background]="series[0]">
+                    {{ bn(r.main) }}
+                  </span>
+                  <span [style.width.%]="r.partBPct" [style.background]="series[2]">
+                    {{ bn(r.partB) }}
+                  </span>
+                </span>
+                <span class="uhp-stack-total">
+                  <span class="visually-hidden">
+                    {{ bn(r.main) }} plus {{ bn(r.partB) }} of Part B premiums, total
+                  </span>
+                  {{ bn(r.total) }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </figure>
+      <p class="uhp-note">
+        "Today" is <span class="uhp-ours">our math</span>: the report's current-system total
+        less the public funding it expects to continue. The report's own summary adds the $3.5
+        billion of Part B premiums to the plan's side only, because the state would have to
+        raise that money, and shows the plan $2.9 billion above the current system. Medicare
+        enrollees or their former employers pay those premiums today. Counted on both sides, the
+        plan comes out about $0.6 billion lower on Milliman's estimate, the same gap the report
+        shows before Part B.
+      </p>
+      <p class="uhp-note">
+        All figures come from Tables E2 to E11 of the draft report, for a plan fully running in
+        2032. They leave out start-up costs, about $21 billion in reserves, and long-term care.
+      </p>
     </div>
   </section>
 

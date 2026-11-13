@@ -22,6 +22,21 @@ import {
   bill,
 } from './uhp-model';
 
+import {
+  BEST,
+  BRIDGE,
+  LOW,
+  PRIVATE_TODAY,
+  RATE_RESET,
+  REVENUE_TARGET,
+  RAISED_IN_OREGON,
+  SCENARIOS_STATEWIDE,
+  perPerson,
+} from './uhp-statewide';
+
+/** Longest bar in the statewide charts, in billions; bars scale against it. */
+const BAR_MAX = 8;
+
 const USD = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -69,6 +84,52 @@ export class OregonHealthPlanComponent {
   readonly sizes = [1, 2, 3, 4, 5];
   readonly series = SERIES;
   readonly incomeMax = 400_000;
+
+  // --------------------------------------------------------- statewide math
+  readonly best = BEST;
+  readonly low = LOW;
+  readonly target = REVENUE_TARGET;
+  readonly privateToday = PRIVATE_TODAY;
+  readonly rateReset = RATE_RESET;
+  readonly bridge = BRIDGE;
+  readonly statewide = SCENARIOS_STATEWIDE;
+  readonly perPerson = perPerson;
+  readonly abs = Math.abs;
+  readonly round = Math.round;
+  /** Today against the plan, for each estimate; bars share one scale. */
+  readonly raisedGroups = [
+    { title: "Milliman's best estimate", rows: RAISED_IN_OREGON.best },
+    { title: "The board's assumptions", rows: RAISED_IN_OREGON.board },
+  ].map((g) => ({
+    title: g.title,
+    rows: g.rows.map((r) => ({
+      ...r,
+      total: Math.round((r.main + r.partB) * 10) / 10,
+      mainPct: (r.main / 40) * 100,
+      partBPct: (r.partB / 40) * 100,
+    })),
+  }));
+
+  /** "$78.3B" */
+  bn(billions: number): string {
+    return `$${billions.toFixed(1)}B`;
+  }
+  /** "+$7.2B" or "−$1.3B", with a real minus sign. */
+  signed(billions: number): string {
+    return `${billions < 0 ? '−' : '+'}$${Math.abs(billions).toFixed(1)}B`;
+  }
+  /** "$7.2B more" or "$0.6B less". */
+  moreLess(billions: number): string {
+    return `$${Math.abs(billions).toFixed(1)}B ${billions < 0 ? 'less' : 'more'}`;
+  }
+  /** Bar length as a percent of its track. */
+  barPct(billions: number): number {
+    return (Math.abs(billions) / BAR_MAX) * 100;
+  }
+  /** Dollars rounded to the nearest hundred. */
+  usd100(dollars: number): string {
+    return USD.format(Math.round(dollars / 100) * 100);
+  }
 
   // ------------------------------------------------------------ calculator
   readonly size = signal(2);
