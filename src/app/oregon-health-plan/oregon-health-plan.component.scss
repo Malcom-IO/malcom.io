@@ -367,6 +367,17 @@ a {
   border: 1px solid var(--line);
   border-radius: 0.75rem;
 }
+// Models the report does not give enough detail to calculate: present, but quieter.
+.uhp-bill--unknown {
+  background: transparent;
+  border-style: dashed;
+}
+.uhp-bill-unknown {
+  margin: 0.45rem 0 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: var(--text-soft);
+}
 .uhp-bill-name {
   margin: 0;
   font-size: 0.925rem;

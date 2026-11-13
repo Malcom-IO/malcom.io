@@ -15,6 +15,7 @@ import {
   COMPUTABLE_MODELS,
   EMPLOYERS,
   EmployerKind,
+  FPL_138,
   FPL_200,
   MODELS,
   SCENARIOS,
@@ -86,6 +87,18 @@ export class OregonHealthPlanComponent {
     COMPUTABLE_MODELS.map((m) =>
       bill(m, this.income(), this.size(), this.employer(), this.currentCost()),
     ),
+  );
+
+  /**
+   * Models 4 and 5: shown beside the others, but the report publishes only their
+   * top rate and bracket count, not the schedule, so there is no dollar figure
+   * above the exemption. What IS known: income at or below 138% of FPL owes nothing.
+   */
+  readonly unpublished = computed(() =>
+    MODELS.filter((m) => !m.computable).map((model) => {
+      const exemption = FPL_138[this.size()];
+      return { model, exemption, owesNothing: this.income() <= exemption };
+    }),
   );
 
   // ----------------------------------------------------------------- chart

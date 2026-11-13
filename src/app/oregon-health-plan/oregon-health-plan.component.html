@@ -284,8 +284,9 @@
     <div class="container">
       <h2 class="h-section">What would your household pay?</h2>
       <p class="uhp-narrow uhp-body">
-        An estimate under the three models the report gives enough detail to calculate. Enter
-        what you really spend on health care now; that comparison is the whole point.
+        An estimate under the three models the report gives enough detail to calculate, with
+        the other two shown alongside. Enter what you really spend on health care now; that
+        comparison is the whole point.
       </p>
 
       <div class="uhp-calc">
@@ -304,7 +305,10 @@
                 </button>
               }
             </div>
-            <p class="uhp-hint">First {{ usd(exemption()) }} of income is exempt.</p>
+            <p class="uhp-hint">
+              Models 1 to 3 exempt the first {{ usd(exemption()) }} of income. Models 4 and 5
+              exempt less.
+            </p>
           </fieldset>
 
           <div class="uhp-field">
@@ -382,6 +386,27 @@
                 </p>
                 @if (b.employer > 0) {
                   <p class="uhp-hint mb-0">Your employer would pay {{ usd(b.employer) }}.</p>
+                }
+              </div>
+            }
+            @for (u of unpublished(); track u.model.id) {
+              <div class="uhp-bill uhp-bill--unknown">
+                <p class="uhp-bill-name">
+                  Model {{ u.model.id }}
+                  <span class="text-muted-2">&middot; up to {{ pct(u.model.topRate, 2) }}</span>
+                </p>
+                @if (u.owesNothing) {
+                  <p class="uhp-bill-amount">$0<span class="uhp-per"> / year</span></p>
+                  <p class="uhp-hint mb-0">
+                    Your income is within this model's {{ usd(u.exemption) }} exemption.
+                  </p>
+                } @else {
+                  <p class="uhp-bill-unknown">Can't be calculated</p>
+                  <p class="uhp-hint mb-0">
+                    The report gives this model {{ u.model.brackets }} brackets on income above
+                    {{ usd(u.exemption) }} and a top rate of {{ pct(u.model.topRate, 2) }}, but
+                    not the rates or income ranges in between.
+                  </p>
                 }
               </div>
             }
@@ -522,8 +547,9 @@
             shown below, work out to 13.5%.
           </li>
           <li>
-            Models 4 and 5 are left out because the report does not publish their bracket
-            schedules.
+            Models 4 and 5 have no dollar figure because the report does not publish their
+            bracket schedules. The board's examples below show what they cost four sample
+            households.
           </li>
           <li>Poverty-level figures are for 2026. Nothing you enter leaves your browser.</li>
         </ul>
