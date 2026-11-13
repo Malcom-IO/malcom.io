@@ -21,6 +21,7 @@ import {
   WAGE_GAP,
   bill,
   creditRate,
+  creditRateRange,
   rateCoveringSoftCap,
   ratesAtBothTargets,
   softCapYardstick,
@@ -64,7 +65,9 @@ export class OregonOpinionComponent {
   readonly updated = 'November 13, 2026';
   readonly changes = CHANGES;
   readonly credit = CREDIT;
+  /** The household rate with change 1: the middle of the range, and the range. */
   readonly rate = creditRate();
+  readonly rateRange = creditRateRange();
   readonly costPerPerson = COST_PER_PERSON;
   readonly familyThreshold = threshold(4);
   readonly thresholdIncomes = { one: thresholdIncome(1), four: thresholdIncome(4) };

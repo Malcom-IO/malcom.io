@@ -38,7 +38,7 @@ export const CHANGES: readonly Change[] = [
       'A partial worker credit. An employee takes a quarter of the payroll tax paid on their wages off their own household contribution.',
     fixes: 'Wages taxed far more heavily than other income; public employees and single workers paying more than today',
     costs: 'A higher household rate, which lands on income with no employer behind it',
-    priced: 'Yes: halfway between Models 3 and 2',
+    priced: 'As a range, from two of the board\'s own models',
   },
   {
     id: 2,
@@ -64,17 +64,37 @@ export const CHANGES: readonly Change[] = [
 /** The share of the employer's payroll tax on a worker's wages credited back. */
 export const CREDIT = 0.25;
 
+/** Appendix FR pages 32-33, 2022 data, $ millions: Model 3's household contribution and payroll tax. */
+const HOUSEHOLD_REVENUE = 8_171;
+const PAYROLL_REVENUE = 11_341;
+/** Income taxed at Model 3's rate: its revenue divided by its rate, about $106 billion. */
+const TAXED_INCOME = HOUSEHOLD_REVENUE / MODEL3.topRate;
+
 /**
- * The household rate that pays for a worker credit of a given size.
+ * The household rate that pays for a worker credit of a given size, as a range.
  *
  * Model 2 is Model 3 with a 50% credit: same exemption, same payroll tax, and
- * the board prices it at 12.05% against 7.69%. A credit between the two is
- * priced by drawing a straight line between them. That is an approximation (a
- * credit can never exceed the bill it is taken off, so its cost is not exactly
- * proportional); the board's actuaries would price it properly.
+ * the board prices it at 12.05% against 7.69%.
+ *
+ * LOW END: a straight line between the two. This understates the cost. A
+ * credit can never exceed the bill it comes off, and at 50% about a fifth of
+ * the credit is lost that way (Model 2 uses about $4.6 billion of a possible
+ * $5.7 billion). A smaller credit hits that limit less often, so more of it is
+ * used and it costs more than half of what the 50% credit does.
+ *
+ * HIGH END: every dollar of the credit is used.
  */
+export function creditRateRange(credit = CREDIT): { low: number; high: number } {
+  return {
+    low: MODEL3.topRate + (MODEL2.topRate - MODEL3.topRate) * (credit / 0.5),
+    high: (HOUSEHOLD_REVENUE + credit * PAYROLL_REVENUE) / TAXED_INCOME,
+  };
+}
+
+/** The middle of the range, used for the example households. */
 export function creditRate(credit = CREDIT): number {
-  return MODEL3.topRate + (MODEL2.topRate - MODEL3.topRate) * (credit / 0.5);
+  const { low, high } = creditRateRange(credit);
+  return (low + high) / 2;
 }
 
 /** The payroll rate behind a household's wages: the board's example, or the public rule. */
@@ -111,6 +131,8 @@ export interface Options {
   /** Worker credit share; 0 is Model 3 as drafted. */
   credit?: number;
   softCap?: boolean;
+  /** The household rate, when not the middle of the range for that credit. */
+  rate?: number;
 }
 
 /** A household's own bill under Model 3 with the chosen changes. */
@@ -119,21 +141,12 @@ export function bill(
   wages: number,
   size: number,
   employer: EmployerKind,
-  { credit = 0, softCap = false }: Options = {},
+  { credit = 0, softCap = false, rate }: Options = {},
 ): number {
-  const gross = Math.max(0, income - FPL_200[size]) * creditRate(credit);
+  const gross = Math.max(0, income - FPL_200[size]) * (rate ?? creditRate(credit));
   const net = Math.max(0, gross - credit * payrollRate(employer) * wages);
   return softCap ? softCapped(net, size) : net;
 }
-
-/** The twelve example households: Model 3, with change 1, and with changes 1 and 2. */
-export const PLUS_ROWS = HOUSEHOLD_ROWS.map((h) => ({
-  ...h,
-  model3: h.models[MODEL3.id - 1],
-  withCredit: bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT }),
-  withBoth: bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap: true }),
-  payroll: h.wages * payrollRate(h.employer),
-}));
 
 // ------------------------------------------------------------- the yardstick
 /**
@@ -165,6 +178,26 @@ export function rateCoveringSoftCap(credit = CREDIT): number {
   return creditRate(credit) / (1 - lost);
 }
 
+/**
+ * The twelve example households: Model 3; with change 1; with changes 1 and 2
+ * as proposed (the soft cap not yet paid for); and with the household rate
+ * raised to pay for the soft cap, which is the honest end state if nothing
+ * else makes up the money.
+ */
+export const PLUS_ROWS = HOUSEHOLD_ROWS.map((h) => {
+  const at = (softCap: boolean, rate?: number) =>
+    bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap, rate });
+  return {
+    ...h,
+    model3: h.models[MODEL3.id - 1],
+    withCredit: at(false),
+    withBoth: at(true),
+    withBothPaidFor: at(true, rateCoveringSoftCap()),
+    payroll: h.wages * payrollRate(h.employer),
+  };
+});
+
+
 // --------------------------------------------------------- 3. Honest rates
 /** How much more the actuary's estimate needs than the board's. */
 export const TARGET_SCALE = REVENUE_TARGET.best / REVENUE_TARGET.board;
@@ -190,7 +223,14 @@ export const FIVE_MODELS = (() => {
   const median = HOUSEHOLD_ROWS.find(
     (h) => h.size === 4 && h.income === 110_000 && h.employer === 'private',
   )!;
-  return MODELS.map((m, i) => ({ id: m.id, top: top.models[i], median: median.models[i] }));
+  const pick = (h: typeof top) =>
+    bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap: true });
+  return [
+    ...MODELS.map((m, i) => ({ label: `Model ${m.id}`, id: m.id as number, top: top.models[i], median: median.models[i] })),
+    // The same two households with changes 1 and 2, so the comparison is honest
+    // about where the proposal lands among the five.
+    { label: 'With my changes', id: 0, top: pick(top), median: pick(median) },
+  ];
 })();
 
 /** How heavily Model 3 taxes wage income and other income (Appendix FR page 33). */

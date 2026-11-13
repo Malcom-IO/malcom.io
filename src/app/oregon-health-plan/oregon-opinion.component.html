@@ -30,10 +30,10 @@
             <span class="text-muted-2">Self-employed family of four at $1,000,000, own bill</span>
           </figcaption>
           <div class="op-evidence">
-            @for (m of why; track m.id) {
-              <div class="op-bar" [class.op-bar--pick]="m.id === 3">
-                <span class="op-bar-label">Model {{ m.id }}</span>
-                <span class="op-bar-track"><span class="op-fill" [class.op-fill--pick]="m.id === 3" [style.width.%]="m.topPct"></span></span>
+            @for (m of why; track m.label) {
+              <div class="op-bar" [class.op-bar--pick]="m.id === 3" [class.op-bar--mine]="m.id === 0">
+                <span class="op-bar-label">{{ m.label }}</span>
+                <span class="op-bar-track"><span class="op-fill" [class.op-fill--pick]="m.id === 3" [class.op-fill--mine]="m.id === 0" [style.width.%]="m.topPct"></span></span>
                 <span class="op-bar-value">{{ usd1000(m.top) }}</span>
               </div>
             }
@@ -41,14 +41,14 @@
         </figure>
         <figure class="uhp-figure">
           <figcaption>
-            <strong>And the most of the middle, on a bill it can see</strong>
+            <strong>And it shows the middle a real bill, which change 1 trims</strong>
             <span class="text-muted-2">Median family of four, private employer, own bill</span>
           </figcaption>
           <div class="op-evidence">
-            @for (m of why; track m.id) {
-              <div class="op-bar" [class.op-bar--pick]="m.id === 3">
-                <span class="op-bar-label">Model {{ m.id }}</span>
-                <span class="op-bar-track"><span class="op-fill" [class.op-fill--pick]="m.id === 3" [style.width.%]="m.medianPct"></span></span>
+            @for (m of why; track m.label) {
+              <div class="op-bar" [class.op-bar--pick]="m.id === 3" [class.op-bar--mine]="m.id === 0">
+                <span class="op-bar-label">{{ m.label }}</span>
+                <span class="op-bar-track"><span class="op-fill" [class.op-fill--pick]="m.id === 3" [class.op-fill--mine]="m.id === 0" [style.width.%]="m.medianPct"></span></span>
                 <span class="op-bar-value">{{ usd100(m.median) }}</span>
               </div>
             }
@@ -57,7 +57,9 @@
       </div>
       <p class="uhp-note">
         From the explainer's table of example households, which uses the board's schedules. Both
-        households pay about $10,000 to $23,000 a year for health care today.
+        households pay about $10,000 to $23,000 a year for health care today. The last bar in
+        each is where my changes land: in plain terms, halfway between the board's Models 2 and
+        3, plus a soft cap. <span class="uhp-ours">my math</span>
       </p>
     </div>
   </section>
@@ -68,14 +70,14 @@
       <h2 class="h-section">What Model 3 gets wrong</h2>
       <div class="op-stats">
         <div class="brand-card glow glow-rose edge-top op-stat">
-          <p class="op-stat-label">Tax on a dollar of wages, against a dollar of other income</p>
+          <p class="op-stat-label">Average tax on wage income, against other income</p>
           <p class="op-stat-big">{{ pct1(wageGap.wages) }} vs {{ pct1(wageGap.other) }}</p>
           <p class="op-stat-foot">Household contribution plus payroll tax (Appendix FR, page 33)</p>
         </div>
         <div class="brand-card glow glow-amber glow-bl edge-top op-stat">
           <p class="op-stat-label">A single public employee at $80,000</p>
           <p class="op-stat-big">$940 &rarr; $3,697</p>
-          <p class="op-stat-foot">Today, then Model 3. The appendix: most public employees "would pay more"</p>
+          <p class="op-stat-foot">Today, then Model 3. The appendix says nearly all single public employees would pay more</p>
         </div>
         <div class="brand-card glow glow-blue glow-tl edge-top op-stat">
           <p class="op-stat-label">A self-employed family of four at $2,000,000</p>
@@ -85,7 +87,7 @@
         <div class="brand-card glow glow-teal glow-br edge-top op-stat">
           <p class="op-stat-label">What the rates are sized to raise, against the actuary's estimate</p>
           <p class="op-stat-big">$30B vs $39B</p>
-          <p class="op-stat-foot">Every rate would be about 30% higher (report)</p>
+          <p class="op-stat-foot">Both estimates are the report's. Every rate would be about 30% higher <span class="uhp-ours">my math</span></p>
         </div>
       </div>
       <p class="uhp-note">
@@ -130,11 +132,11 @@
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Household rate, same exemption</p>
-          <p class="op-rate-big"><span>7.7%</span> &rarr; {{ pct1(rate) }}</p>
+          <p class="op-rate-big"><span>7.7%</span> &rarr; {{ pct1(rateRange.low) }} to {{ pct1(rateRange.high) }}</p>
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Slower climb starts, family of four</p>
-          <p class="op-rate-big">{{ usd1000(familyThreshold) }}</p>
+          <p class="op-rate-big">{{ usd(familyThreshold) }}</p>
         </div>
         <div class="brand-card op-rate">
           <p class="op-stat-label">Payroll tax, exemption, business taxes</p>
@@ -143,11 +145,14 @@
       </div>
       <p class="uhp-note">
         <span class="uhp-ours">my math</span> The board's Model 2 is Model 3 with a 50% credit:
-        same exemption, same payroll tax, a 12.05% rate against 7.69%. A 25% credit is priced
-        halfway, at {{ pct1(rate) }}. That is a straight line between two of the board's own
-        models, not an actuary's figure. A family of four reaches {{ usd1000(familyThreshold) }}
-        of contribution at about {{ usd1000(thresholdIncomes.four) }} of income; one person
-        reaches {{ usd1000(costPerPerson) }} at about {{ usd1000(thresholdIncomes.one) }}.
+        same exemption, same payroll tax, a 12.05% rate against 7.69%. Halfway between them is
+        {{ pct1(rateRange.low) }}, and that is the low end: a credit cannot exceed the bill it
+        comes off, and a smaller credit runs into that limit less often, so more of it gets used.
+        If all of it were used the rate would be {{ pct1(rateRange.high) }}. The figures below use
+        the middle, {{ pct1(rate) }}. It is a range from two of the board's own models, not an
+        actuary's figure. A family of four reaches {{ usd(familyThreshold) }} of contribution at
+        about {{ usd1000(thresholdIncomes.four) }} of income; one person reaches
+        {{ usd(costPerPerson) }} at about {{ usd1000(thresholdIncomes.one) }}.
       </p>
     </div>
   </section>
@@ -169,6 +174,7 @@
               <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
               <th role="columnheader" scope="col" class="num">With change 1 (mine)</th>
               <th role="columnheader" scope="col" class="num op-col-pick">With changes 1 and 2 (mine)</th>
+              <th role="columnheader" scope="col" class="num">If the rate pays for change 2</th>
               <th role="columnheader" scope="col" class="num op-col-payroll">Its employer's payroll tax</th>
             </tr>
           </thead>
@@ -191,6 +197,7 @@
                 >
                   <span class="visually-hidden">{{ row.withBoth < row.now - 0.5 ? 'Less than today: ' : row.withBoth > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.withBoth) }}
                 </td>
+                <td role="cell" class="num" data-label="If the rate pays for change 2">{{ usd(row.withBothPaidFor) }}</td>
                 <td role="cell" class="num op-col-payroll" data-label="Its employer's payroll tax">
                   {{ row.payroll < 1 ? 'None' : usd100(row.payroll) }}
                 </td>
@@ -200,7 +207,10 @@
         </table>
       </div>
       <p class="uhp-note">
-        <span class="uhp-ours">my math</span> "Pays today" and Model 3 are the explainer's and
+        <span class="uhp-ours">my math</span> The two columns of mine use a {{ pct1(rate) }} rate,
+        the middle of the range, and the soft cap in the second is not paid for. The next column
+        is what the same households would pay if the household rate alone made up the soft cap's
+        cost: about {{ pct1(rateIfCapCostAll) }}. "Pays today" and Model 3 are the explainer's and
         count the household's own bill only. The last column is not paid by the household: it is
         the payroll tax its employer pays on its wages (the board's 9% example for a private
         employer, 14% for a public one), and it is what the credit is a quarter of. It is the
@@ -311,7 +321,7 @@
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Pays more than under Model 3</span>
           <ul class="op-list">
-            <li><strong>Anyone with no employer behind their income:</strong> the self-employed, retirees with income, investors. The rate on that income goes from 7.7% to {{ pct1(rate) }}.</li>
+            <li><strong>Anyone with no employer behind their income:</strong> the self-employed, retirees with income, investors. The rate on that income goes from 7.7% to somewhere between {{ pct1(rateRange.low) }} and {{ pct1(rateRange.high) }}, at every income.</li>
             <li><strong>Workers at employers under $500,000 of payroll.</strong> No payroll tax is paid on their wages, so there is no credit, and their rate still rises.</li>
             <li><strong>Whoever makes up the soft cap.</strong> It is not priced. A rough yardstick is ${{ yardstick.low }} billion to ${{ yardstick.high }} billion a year; if the household rate alone covered that, it would be {{ pct1(rateIfCapCostAll) }}, not {{ pct1(rate) }}.</li>
             <li><strong>Progressivity, at the very top.</strong> The board left a soft cap out because it makes the structure less progressive. That is true of change 2.</li>
@@ -392,12 +402,12 @@
         <div class="brand-card op-option">
           <p class="op-stat-big">14%</p>
           <h3 class="uhp-card-title">Treat public employers like private ones</h3>
-          <p class="op-option-what">School districts, cities and the state would pay the top payroll rate from the first dollar. That is one public budget taxing another.</p>
+          <p class="op-option-what">School districts, cities and the state would pay the top payroll rate from the first dollar, because they spend more of payroll on coverage today. In the board's example that is still less than the premium they pay now, but it is one public budget taxing another.</p>
         </div>
         <div class="brand-card op-option">
           <p class="op-stat-big">55%</p>
           <h3 class="uhp-card-title">Write in a fallback</h3>
-          <p class="op-option-what">More than half the money is the payroll tax, which a federal benefits law could be used to challenge. The draft does not say what happens if a court blocks it.</p>
+          <p class="op-option-what">More than half the money is the payroll tax, which a federal benefits law could be used to challenge. The committee said it "may want automatic triggers" on other taxes if that happens. None is written.</p>
         </div>
       </div>
       <p class="uhp-note">
@@ -417,7 +427,7 @@
         </div>
         <div class="brand-card op-option">
           <h4 class="uhp-card-title">Moving money from payroll to households</h4>
-          <p class="op-option-what">Households would see more of the cost, but payroll tax is paid before federal tax and a household contribution is not. It would send more of Oregon's money to Washington.</p>
+          <p class="op-option-what">Households would see more of the cost, but payroll tax is paid before federal tax, and the report does not say a household contribution would be. It would likely send more of Oregon's money to Washington.</p>
         </div>
       </div>
 

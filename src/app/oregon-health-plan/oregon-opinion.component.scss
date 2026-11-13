@@ -406,6 +406,18 @@ path[class*='op-line--'] {
   color: var(--text);
   font-weight: 700;
 }
+// Where the page's own proposal lands among the five: set apart, in blue.
+.op-fill--mine {
+  background: var(--s1);
+}
+.op-bar--mine {
+  margin-top: 0.9rem !important;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+}
+.op-evidence .op-bar {
+  grid-template-columns: 8rem minmax(0, 1fr) 5.5rem;
+}
 .op-changes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
