@@ -1,154 +1,341 @@
-// The opinion page: a plain reading column, visibly not the explainer.
-.op {
-  padding: 9rem 0 5rem;
+// The opinion page. Built from the explainer's pieces (its stylesheet is loaded
+// too), with an amber cast so it is visibly a different kind of page.
+.op-hero {
   background:
-    radial-gradient(110% 60% at 85% 0%, color-mix(in srgb, var(--caution) 9%, transparent), transparent 60%),
+    radial-gradient(110% 80% at 85% 0%, color-mix(in srgb, var(--caution) 12%, transparent), transparent 60%),
     var(--ground);
-}
-.op-narrow {
-  max-width: 44rem;
-  color: var(--text-soft);
-}
-.op-title {
-  font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3rem);
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-  text-wrap: balance;
-  color: var(--text);
-  margin: 0 0 1.25rem;
 }
 // The label a skimming reader must not miss.
 .op-label {
-  margin: 0 0 2rem;
+  margin: 0 0 1.5rem;
   padding: 0.85rem 1.1rem;
   border-left: 3px solid var(--caution);
   border-radius: 0 0.5rem 0.5rem 0;
   background: color-mix(in srgb, var(--caution) 9%, var(--surface));
+  color: var(--text-soft);
   font-size: 0.95rem;
 }
-.op-h {
-  font-size: 1.45rem;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-  color: var(--text);
-  margin: 2.75rem 0 0.75rem;
-}
-.op-h3 {
-  font-size: 1.1rem;
-  font-weight: 650;
-  color: var(--text);
-  margin: 1.75rem 0 0.5rem;
-}
-a {
-  color: var(--brand-bright);
-}
-.op-mine {
-  display: inline-block;
-  padding: 0 0.4rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  vertical-align: middle;
-  white-space: nowrap;
-}
-.op-scroll {
-  // The table needs more room than the reading column.
-  width: min(60rem, calc(100vw - 2rem));
-  max-width: none;
-  margin-top: 2rem;
-  overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
-  background: var(--surface);
-}
-.op-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
 
-  caption {
-    caption-side: top;
-    padding: 0.9rem 1rem 0.6rem;
-    color: var(--text-soft);
-    font-size: 0.875rem;
-    text-align: left;
+// ------------------------------------------------------------- stat tiles
+.op-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr));
+  gap: 1.25rem;
+}
+.op-stat {
+  padding: 1.4rem 1.5rem 1.25rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
   }
-  th,
-  td {
-    padding: 0.7rem 1rem;
+}
+.op-stat-label {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+.op-stat-big {
+  margin: 0.35rem 0 0.5rem;
+  font-family: var(--mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.op-stat-foot {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+// ------------------------------------------------------------------ table
+.op-count {
+  margin: 1rem 0 0.75rem;
+  color: var(--text-soft);
+}
+// A cell the idea changes: blue, so it is not confused with less/more than today.
+.uhp-table td.op-changed {
+  background: color-mix(in srgb, var(--s1) 16%, transparent);
+  font-weight: 600;
+}
+.op-was {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+// --------------------------------------------------------- chart and bars
+.op-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin-top: 1.25rem;
+
+  .uhp-figure {
+    margin-top: 0;
+  }
+}
+.op-line--draft {
+  stroke: var(--s2);
+}
+.op-line--soft {
+  stroke: var(--s1);
+}
+.op-line--ceiling {
+  stroke: var(--s3);
+}
+.op-line--broad {
+  stroke: var(--s4);
+}
+.op-key--draft {
+  background: var(--s2);
+}
+.op-key--soft {
+  background: var(--s1);
+}
+.op-key--ceiling {
+  background: var(--s3);
+}
+.op-bars {
+  display: grid;
+  gap: 1rem;
+}
+.op-bargroup {
+  padding: 1.1rem 1.25rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-bargroup-title {
+  margin: 0 0 0.6rem;
+  font-weight: 650;
+}
+.op-bar {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) 5.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+.op-bar + .op-bar {
+  margin-top: 0.4rem;
+}
+.op-bar-label {
+  color: var(--text-soft);
+}
+.op-bar-track {
+  height: 12px;
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-2);
+}
+.op-fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 0 4px 4px 0;
+}
+.op-fill--draft {
+  background: var(--s2);
+}
+.op-fill--soft {
+  background: var(--s1);
+}
+.op-fill--ceiling {
+  background: var(--s3);
+}
+.op-bar-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+// ---------------------------------------------------------------- options
+.op-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-option {
+  padding: 1.5rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-shape {
+  display: block;
+  width: 100%;
+  max-width: 11rem;
+  margin: 0.9rem 0 1rem;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.op-shape-base {
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+.op-shape-line {
+  stroke-width: 3;
+}
+.op-option-what {
+  margin: 0 0 1rem;
+  color: var(--text-soft);
+}
+.op-facts {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.9rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.35rem;
     border-top: 1px solid var(--line-soft);
-    text-align: left;
-    white-space: nowrap;
   }
-  thead th {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  dt {
+    font-weight: 400;
     color: var(--muted);
   }
-  tbody th {
-    color: var(--text);
-  }
-  .num {
+  dd {
+    margin: 0;
     text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-}
-.op-note {
-  margin: 0.75rem 0 0;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-.op-end {
-  margin: 3rem 0 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--line-soft);
-  font-size: 0.925rem;
-  color: var(--muted);
-}
-@media (max-width: 575.98px) {
-  .op {
-    padding-top: 10rem;
+    font-weight: 600;
   }
 }
 
-// Phones: one card per income, the way the explainer's tables stack.
-@media (max-width: 767.98px) {
-  .op-scroll {
-    width: auto;
+// ----------------------------------------------- where the ceiling starts
+.op-reach {
+  padding: 1.25rem 1.5rem 0.75rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
   }
-  .op-table {
-    // Clipped, not removed, so the column headers stay available to screen readers.
-    thead {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-    }
-    tr {
-      display: block;
-      padding: 0.6rem 0;
-      border-top: 1px solid var(--line-soft);
-    }
-    th,
-    td {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.25rem 1rem;
-      border: 0;
-      white-space: normal;
-    }
-    td::before {
-      content: attr(data-label);
-      color: var(--muted);
-    }
+}
+.op-reach-row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr) 11.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+.op-reach-label {
+  font-weight: 600;
+
+  span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+}
+.op-reach-track {
+  position: relative;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+.op-reach-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 4px;
+  border-radius: 4px;
+  background: var(--s3);
+}
+.op-reach-value {
+  text-align: right;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.op-reach-track--axis {
+  height: 1.2rem;
+  background: none;
+
+  span {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  span:first-child {
+    transform: none;
+  }
+  span:last-child {
+    transform: translateX(-100%);
+  }
+}
+
+// --------------------------------------------------------------- trade-off
+.op-trade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+
+  .brand-card {
+    height: auto;
+  }
+  .brand-card:hover {
+    transform: none;
+  }
+}
+.op-list {
+  margin: 0.9rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-soft);
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+}
+.op-ask {
+  max-width: 46rem;
+  margin-top: 1.75rem;
+}
+.op-end {
+  max-width: 46rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 991.98px) {
+  .op-two,
+  .op-options,
+  .op-trade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 767.98px) {
+  // Stacked table cells: the struck-through draft figure sits beside the new one.
+  .op-was {
+    display: inline;
+    order: 2;
+  }
+  .op-reach-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+  .op-reach-value {
+    text-align: left;
+  }
+  .op-reach-axis .op-reach-label,
+  .op-reach-axis .op-reach-value {
+    display: none;
+  }
+  .op-bar {
+    grid-template-columns: 6.5rem minmax(0, 1fr) 5rem;
   }
 }

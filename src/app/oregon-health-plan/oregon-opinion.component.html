@@ -1,164 +1,357 @@
 <app-quillquest-shell>
-  <article class="op">
+  <!-- ================================================================ hero -->
+  <section class="uhp-hero op-hero">
     <div class="container">
-      <div class="op-narrow">
+      <div class="uhp-narrow">
         <p class="eyebrow eyebrow--hero">Opinion &middot; Marcus Malcom</p>
-        <h1 class="op-title">Put a ceiling on what a household pays</h1>
+        <h1 class="uhp-title">Put a ceiling on what a household pays</h1>
         <p class="op-label">
-          This page is one person's opinion. The
-          <a routerLink="/oregon-universal-health-plan">explainer</a> it comes from takes no
-          position on the plan, and nothing here changes that page. The numbers marked as mine
-          are my arithmetic, not the board's.
+          <strong>This is one person's opinion.</strong> The
+          <a routerLink="/oregon-universal-health-plan">explainer</a> takes no position on the
+          plan, and nothing here changes it. Figures marked
+          <span class="uhp-ours">my math</span> are mine, not the board's.
         </p>
-
-        <p class="lead-lg">
-          I built the explainer to understand Oregon's proposed Universal Health Plan. One thing
-          in it bothers me enough to say so separately: the household contribution has no upper
-          limit. Everyone gets the same coverage, and the price of it keeps rising with income
-          forever.
-        </p>
-
-        <h2 class="op-h">What the draft does</h2>
-        <p>
-          Under all five tax models a household pays a share of its income above an exempt
-          amount. For most households that works out to less than they pay for health care
-          today. At the top it does not come close. In my examples a family of four earning
-          $220,000 would pay about $9,500 to $12,700 a year. The same family at $1,000,000
-          would pay $72,000 to $129,000, and at $2,000,000, $149,000 to $272,000, for the same
-          coverage. Four times the plan's average cost per Oregonian is about
-          {{ usd(familyCeiling) }} a year. <span class="op-mine">my math</span>
-        </p>
-        <p>
-          That is not a fee for health care. It works as an income tax earmarked for health
-          care. People can reasonably want that. But it should be chosen on purpose and
-          called what it is, because it carries a risk the board's own finance committee
-          described: a small number of very high earners would supply a large share of the
-          money, and they are the households most able to change how they are paid or where
-          they live. The committee's report says a soft cap was weighed partly to avoid a
-          schedule that "could be perceived as punitive relative to current health care
-          payments."
-        </p>
-        <p>
-          The amount at stake is large. The top 1% of tax filers would pay
-          {{ pct(stake.shareLow) }} to {{ pct(stake.shareHigh) }} of the household contribution
-          depending on the model, which is roughly ${{ stake.low }} billion to ${{ stake.high }}
-          billion a year. <span class="op-mine">my math</span> A plan that covers everyone
-          should not depend that heavily on a small group of households staying put.
-        </p>
-
-        <h2 class="op-h">What I would keep</h2>
-        <p>
-          Almost all of it. Coverage for everyone. Contributions that rise with income. The
-          exemption that leaves lower incomes paying nothing. The employer payroll tax. For
-          about nine households in ten, I would change nothing about what the draft asks.
-        </p>
-
-        <h2 class="op-h">Three ways to fix the top</h2>
-
-        <h3 class="op-h3">1. A ceiling at the cost of your own coverage (my pick)</h3>
-        <p>
-          No household pays more than the plan's average cost for a household its size:
-          about {{ usd(costPerPerson) }} a person on the actuary's 2032 estimate, so
-          {{ usd(familyCeiling) }} for a family of four. <span class="op-mine">my math</span>
-          That is an average across all ages, a typical working-age family costs less, and
-          more than half of it is already paid by federal and state money, so it is a generous
-          ceiling, not a tight one. Below the ceiling nothing changes.
-          At the ceiling a family of four is contributing about {{ ceilingTimes }} times what
-          the average family that size would, and the bill stops there.
-          <span class="op-mine">my math</span> It is easy to explain, and it answers the
-          "punitive" worry directly: nobody is charged more than the average cost of what they
-          are getting.
-        </p>
-        <p>
-          It reaches further down than it sounds. With no worker credit, a family of four
-          would hit the ceiling at about {{ usd(reachFour.low) }} to {{ usd(reachFour.high) }}
-          of income, depending on the model (later with a credit). One person, whose ceiling is {{ usd(costPerPerson) }}, would hit it at
-          about {{ usd(reachOne.low) }} to {{ usd(reachOne.high) }}. If that is too low, the
-          ceiling can be set at twice the cost of coverage instead of once; the principle is
-          the same.
-        </p>
-
-        <h3 class="op-h3">2. A soft cap</h3>
-        <p>
-          This is the version the board considered and left out. Above a threshold the rate
-          drops instead of stopping, so the contribution still rises with income, only more
-          slowly. It gives up less money than a hard ceiling and keeps more of the progressive
-          shape, at the price of being harder to explain.
-        </p>
-
-        <h3 class="op-h3">3. A lower rate on more income</h3>
-        <p>
-          Shrink the exempt amount and lower the rate. More households pay something, each
-          pays a smaller share, and the top bill falls with the rate. The board weighed this
-          and recommended the higher exemption in January after public comment, though two
-          of the five models still start lower. It is the least targeted of
-          the three: it lowers the top by raising the bottom.
-        </p>
-
-        <div class="op-scroll" tabindex="0" role="region" aria-label="A family of four under the draft and under a ceiling">
-          <table class="op-table" role="table">
-            <caption>
-              A family of four, per year. Ranges run across the five models.
-              <span class="op-mine">my math</span>
-            </caption>
-            <thead role="rowgroup">
-              <tr role="row">
-                <th role="columnheader" scope="col">Income</th>
-                <th role="columnheader" scope="col" class="num">Pays today</th>
-                <th role="columnheader" scope="col" class="num">The draft</th>
-                <th role="columnheader" scope="col" class="num">With a ceiling</th>
-                <th role="columnheader" scope="col" class="num">With a soft cap</th>
-              </tr>
-            </thead>
-            <tbody role="rowgroup">
-              @for (r of rows; track r.income) {
-                <tr role="row">
-                  <th role="rowheader" scope="row">{{ usd(r.income) }}</th>
-                  <td role="cell" class="num" data-label="Pays today">{{ usd(r.now) }}</td>
-                  <td role="cell" class="num" data-label="The draft">{{ span(r.draft) }}</td>
-                  <td role="cell" class="num" data-label="With a ceiling">{{ span(r.hard) }}</td>
-                  <td role="cell" class="num" data-label="With a soft cap">{{ span(r.soft) }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        <p class="op-note">
-          The households and what they pay today are the ones in the explainer's table. The
-          ceiling is {{ usd(familyCeiling) }}, the plan's 2032 cost for four people on
-          Milliman's best estimate, in 2032 dollars; the contributions are in today's. The soft cap here halves each dollar of contribution above
-          that ceiling; the board's documents do not specify one.
-        </p>
-
-        <h2 class="op-h">What it costs, honestly</h2>
-        <p>
-          A ceiling gives up revenue, and I have not modeled how much. It is billions of
-          dollars a year: part of the ${{ stake.low }} billion to ${{ stake.high }} billion the
-          top 1% would pay, plus something from the single people and couples below them who
-          would also reach it. Whatever the number is, it has to come from somewhere: a
-          slightly higher rate below the ceiling, the payroll tax, or the plan's budget. The
-          finance committee said the same thing about a soft cap, that it "requires explicit
-          offsets elsewhere." The board has actuaries who can price that. I would like to see
-          them do it before the Legislature picks a model.
-        </p>
-        <p>
-          There is a fair argument on the other side, and the board made it: any cap makes the
-          structure less progressive. Put bluntly, a ceiling is a tax cut for the highest
-          earners that everyone below it, or the plan's budget, pays for. The committee also
-          said the avoidance it worried about "may be limited for most households." All of
-          that is true. My answer is that a health plan is a
-          service with a cost, and contributing {{ ceilingTimes }} times the average is
-          already progressive. Contributing {{ topTimes }} times the average, as the family at
-          $2,000,000 would under one model, is something else.
-        </p>
-
-        <p class="op-end">
-          Written {{ updated }} by Marcus Malcom, who built the
-          <a routerLink="/oregon-universal-health-plan">explainer</a>. This is my view, not the
-          board's and not a finding of that page. Disagree?
-          <a [routerLink]="['/']" fragment="contact">Tell me</a>.
+        <p class="lead-lg mb-0">
+          Everyone would get the same coverage. What a household pays for it has no upper limit.
         </p>
       </div>
     </div>
-  </article>
+  </section>
+
+  <!-- ======================================================== the problem -->
+  <section class="section">
+    <div class="container">
+      <div class="op-stats">
+        <div class="brand-card glow glow-rose edge-top op-stat">
+          <p class="op-stat-label">Upper limit on the household contribution</p>
+          <p class="op-stat-big">None</p>
+          <p class="op-stat-foot">In all five models</p>
+        </div>
+        <div class="brand-card glow glow-amber glow-bl edge-top op-stat">
+          <p class="op-stat-label">Household contributions paid by the top 1%</p>
+          <p class="op-stat-big">{{ pct(stake.shareLow) }} to {{ pct(stake.shareHigh) }}</p>
+          <p class="op-stat-foot">Depending on the model (report Table R5)</p>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-stat">
+          <p class="op-stat-label">That is, each year</p>
+          <p class="op-stat-big">${{ stake.low }}B to ${{ stake.high }}B</p>
+          <p class="op-stat-foot"><span class="uhp-ours">my math</span> from about 1 in 100 tax filers</p>
+        </div>
+        <div class="brand-card glow glow-teal glow-br edge-top op-stat">
+          <p class="op-stat-label">The plan's average cost for four people</p>
+          <p class="op-stat-big">{{ usd100(familyCeiling) }}</p>
+          <p class="op-stat-foot"><span class="uhp-ours">my math</span> {{ usd100(costPerPerson) }} a person, Milliman, 2032</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== table -->
+  <section class="section section-line" id="households">
+    <div class="container">
+      <h2 class="h-section">
+        The same twelve households@if (view() === 'ceiling') {, with a ceiling} @else if (view() === 'soft') {, with a soft cap}
+      </h2>
+      <p class="uhp-narrow uhp-body">
+        The explainer's table, with one switch. &darr; less than the household pays today,
+        &uarr; more. A highlighted cell is one the idea changes.
+      </p>
+
+      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Which version to show">
+        @for (v of views; track v.id) {
+          <button
+            type="button"
+            [class.active]="view() === v.id"
+            [attr.aria-pressed]="view() === v.id"
+            (click)="view.set(v.id)"
+          >
+            {{ v.label }}
+          </button>
+        }
+      </div>
+      <p class="op-count" aria-live="polite">
+        @if (view() === 'draft') {
+          The draft, exactly as in the explainer.
+        } @else {
+          <strong>{{ unchanged() }} of {{ rows().length }}</strong> households pay exactly what
+          the draft asks. None of the twelve is a single person above about $160,000, where a
+          ceiling would also apply.
+        }
+      </p>
+
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households">
+        <table class="uhp-table uhp-table--stack uhp-households" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Household</th>
+              <th role="columnheader" scope="col" class="num">Pays today</th>
+              @for (m of models; track m.id) {
+                <th role="columnheader" scope="col" class="num">Model {{ m.id }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            @for (row of rows(); track $index) {
+              <tr role="row" [class.op-row-changed]="row.changed">
+                <th role="rowheader" scope="row">
+                  {{ row.who }}, {{ usd(row.income) }}
+                  <span class="uhp-household-detail">{{ row.detail }}</span>
+                </th>
+                <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
+                @for (c of row.cells; track $index) {
+                  <td
+                    role="cell"
+                    class="num"
+                    [class.less]="!c.changed && c.value < row.now - 0.5"
+                    [class.more]="c.value > row.now + 0.5"
+                    [class.op-changed]="c.changed"
+                    [attr.data-label]="'Model ' + ($index + 1)"
+                  >
+                    <span class="visually-hidden">{{ c.changed ? 'Changed from ' + usd(c.draft) + ': ' : '' }}{{ c.value < row.now - 0.5 ? 'Less than today: ' : c.value > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(c.value) }}
+                    @if (c.changed) {
+                      <span class="op-was" aria-hidden="true">was {{ usd(c.draft) }}</span>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> Households, "pays today" and the draft's figures are
+        the explainer's. The ceiling is {{ usd100(costPerPerson) }} for each person in the
+        household. The soft cap halves every dollar of contribution above that ceiling; the board's
+        documents do not specify one.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== chart -->
+  <section class="section section-line">
+    <div class="container">
+      <h2 class="h-section">Where the lines part</h2>
+      <p class="uhp-narrow uhp-body">
+        A family of four with no worker credit, by income. Contributions are in today's dollars;
+        the cost of coverage is the 2032 estimate.
+      </p>
+
+      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Which model to show">
+        @for (m of models; track m.id; let i = $index) {
+          <button
+            type="button"
+            [class.active]="modelIndex() === i"
+            [attr.aria-pressed]="modelIndex() === i"
+            (click)="modelIndex.set(i)"
+          >
+            Model {{ m.id }}
+          </button>
+        }
+      </div>
+
+      <div class="op-two">
+        <figure class="uhp-figure">
+          <figcaption>
+            <strong>Household contribution by income</strong>
+            <span class="text-muted-2">Family of four, per year</span>
+          </figcaption>
+          <ul class="uhp-legend" aria-hidden="true">
+            <li><span class="uhp-key op-key--draft"></span>The draft</li>
+            <li><span class="uhp-key op-key--soft"></span>Soft cap</li>
+            <li><span class="uhp-key op-key--ceiling"></span>Ceiling</li>
+            <li><span class="uhp-key uhp-key--now"></span>Plan's average cost for four (2032, Milliman)</li>
+          </ul>
+          <div class="uhp-plot" #plot>
+            <svg
+              [attr.viewBox]="'0 0 ' + width() + ' ' + height"
+              [attr.height]="height"
+              width="100%"
+              role="img"
+              aria-label="Line chart: under the draft the contribution keeps rising with income; with a ceiling it stops at the average cost of coverage; with a soft cap it rises half as fast above that. The table below has the figures."
+            >
+              @for (t of yTicks(); track t.label) {
+                <line class="grid" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="t.y" [attr.y2]="t.y" />
+                <text class="tick" [attr.x]="pad().left - 8" [attr.y]="t.y + 4" text-anchor="end">{{ t.label }}</text>
+              }
+              @for (t of xTicks(); track t.label) {
+                <text class="tick" [attr.x]="t.x" [attr.y]="plotBottom() + 20" text-anchor="middle">{{ t.label }}</text>
+              }
+              <line class="now" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="ceilingY()" [attr.y2]="ceilingY()" />
+              @for (l of lines(); track l.id) {
+                <path class="series" [class]="'series op-line--' + l.id" [attr.d]="l.d" />
+                @if (!narrow()) {
+                  <text class="end" [attr.x]="plotRight() + 8" [attr.y]="l.endY + 4">{{ l.label }}</text>
+                }
+              }
+            </svg>
+          </div>
+          <details class="uhp-details">
+            <summary>Show these figures as a table</summary>
+            <div class="uhp-scroll" tabindex="0" role="region" aria-label="Chart data">
+              <table class="uhp-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Income</th>
+                    <th scope="col" class="num">The draft</th>
+                    <th scope="col" class="num">Soft cap</th>
+                    <th scope="col" class="num">Ceiling</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (r of chartTable(); track r.income) {
+                    <tr>
+                      <th scope="row">{{ usd(r.income) }}</th>
+                      <td class="num">{{ usd(r.draft) }}</td>
+                      <td class="num">{{ usd(r.soft) }}</td>
+                      <td class="num">{{ usd(r.ceiling) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+
+        <div class="op-bars" aria-label="A family of four at three incomes">
+          @for (group of bars(); track group.income) {
+            <div class="brand-card op-bargroup">
+              <p class="op-bargroup-title">Family of four at {{ usd(group.income) }}</p>
+              @for (b of group.items; track b.label) {
+                <div class="op-bar">
+                  <span class="op-bar-label">{{ b.label }}</span>
+                  <span class="op-bar-track"><span [class]="'op-fill op-fill--' + b.tone" [style.width.%]="b.pct"></span></span>
+                  <span class="op-bar-value">{{ usd100(b.value) }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== three options -->
+  <section class="section section-line">
+    <div class="container">
+      <h2 class="h-section">Three ways to change the top</h2>
+      <div class="op-options">
+        <div class="brand-card glow glow-teal edge-top op-option">
+          <span class="card-eyebrow">My pick</span>
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L116 4" />
+            <path class="op-shape-line op-line--ceiling" d="M4 52 L52 31 L116 31" />
+          </svg>
+          <h3 class="uhp-card-title">A ceiling</h3>
+          <p class="op-option-what">Stop at the plan's average cost for a household that size.</p>
+          <dl class="op-facts">
+            <div><dt>Explains in</dt><dd>One sentence</dd></div>
+            <div><dt>Revenue given up</dt><dd>The most</dd></div>
+            <div><dt>Board's view</dt><dd>Not priced; its soft-cap objection applies more strongly</dd></div>
+          </dl>
+        </div>
+        <div class="brand-card glow glow-blue glow-tl edge-top op-option">
+          <span class="card-eyebrow">The board looked at this</span>
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L116 4" />
+            <path class="op-shape-line op-line--soft" d="M4 52 L52 31 L116 17" />
+          </svg>
+          <h3 class="uhp-card-title">A soft cap</h3>
+          <p class="op-option-what">Above a threshold the rate drops instead of stopping.</p>
+          <dl class="op-facts">
+            <div><dt>Explains in</dt><dd>A paragraph</dd></div>
+            <div><dt>Revenue given up</dt><dd>Less</dd></div>
+            <div><dt>Board's view</dt><dd>Left out: less progressive</dd></div>
+          </dl>
+        </div>
+        <div class="brand-card glow glow-amber glow-bl edge-top op-option">
+          <span class="card-eyebrow">The blunt one</span>
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L28 52 L116 4" />
+            <path class="op-shape-line op-line--broad" d="M4 52 L14 52 L116 18" />
+          </svg>
+          <h3 class="uhp-card-title">Lower rate, more income taxed</h3>
+          <p class="op-option-what">Shrink the exempt amount and cut the rate for everyone.</p>
+          <dl class="op-facts">
+            <div><dt>Explains in</dt><dd>One sentence</dd></div>
+            <div><dt>Revenue given up</dt><dd>None; lower incomes pay more</dd></div>
+            <div><dt>Board's view</dt><dd>Recommended a higher exemption; two models start lower</dd></div>
+          </dl>
+        </div>
+      </div>
+      <p class="uhp-note">
+        Gray is the draft. The third is not in the table or chart above: pricing it needs the
+        state's tax data, which I do not have.
+      </p>
+
+      <h3 class="uhp-sub">Where a ceiling would start</h3>
+      <div class="brand-card op-reach">
+        @for (r of reach; track r.size) {
+          <div class="op-reach-row">
+            <span class="op-reach-label">
+              {{ r.label }}
+              <span>ceiling {{ usd100(r.ceiling) }}</span>
+            </span>
+            <span class="op-reach-track">
+              <span class="op-reach-bar" [style.left.%]="r.left" [style.width.%]="r.width"></span>
+            </span>
+            <span class="op-reach-value">{{ usd(r.low) }} to {{ usd(r.high) }}</span>
+          </div>
+        }
+        <div class="op-reach-row op-reach-axis" aria-hidden="true">
+          <span class="op-reach-label"></span>
+          <span class="op-reach-track op-reach-track--axis">
+            @for (t of reachTicks; track t) {
+              <span [style.left.%]="t / 10000">{{ t === 0 ? '$0' : t === 1000000 ? '$1M' : '$' + t / 1000 + 'K' }}</span>
+            }
+          </span>
+          <span class="op-reach-value"></span>
+        </div>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> Income at which a household with no worker credit
+        first reaches its ceiling, lowest to highest across the five models. It reaches lower for
+        one person than the headline suggests. Setting the ceiling at twice the average cost
+        would move every bar well to the right.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================================= trade-off -->
+  <section class="section section-line">
+    <div class="container">
+      <h2 class="h-section">What it costs</h2>
+      <div class="op-trade">
+        <div class="brand-card glow glow-rose edge-top">
+          <span class="card-eyebrow">Against a ceiling</span>
+          <ul class="op-list">
+            <li>It is a tax cut for the highest earners that everyone below, or the plan's budget, pays for.</li>
+            <li>It gives up billions a year, and I have not modeled how much.</li>
+            <li>The board left a cap out because it makes the structure less progressive.</li>
+            <li>The finance committee said avoidance "may be limited for most households."</li>
+          </ul>
+        </div>
+        <div class="brand-card glow glow-teal glow-tl edge-top">
+          <span class="card-eyebrow">For it</span>
+          <ul class="op-list">
+            <li>At the ceiling a family of four already contributes about {{ ceilingTimes }} times the average. <span class="uhp-ours">my math</span></li>
+            <li>A plan for everyone should not lean this hard on about 1 in 100 filers staying put.</li>
+            <li>The committee weighed a cap to avoid a schedule that "could be perceived as punitive relative to current health care payments."</li>
+            <li>More than nine tax filers in ten are below the incomes where a ceiling starts. <span class="uhp-ours">my math</span>, from the appendix's 95th percentiles</li>
+          </ul>
+        </div>
+      </div>
+      <p class="uhp-status op-ask">
+        <strong>What I would ask for:</strong> have the board's actuaries price a ceiling and a
+        soft cap, with what each would add below it, before the Legislature picks a model.
+      </p>
+
+      <p class="uhp-note op-end">
+        Written {{ updated }} by Marcus Malcom, who built the
+        <a routerLink="/oregon-universal-health-plan">explainer</a>. This is my view, not the
+        board's and not a finding of that page. Quotations are from the draft report and the
+        ECOnorthwest finance and revenue report. Disagree?
+        <a [routerLink]="['/']" fragment="contact">Tell me</a>.
+      </p>
+    </div>
+  </section>
 </app-quillquest-shell>
