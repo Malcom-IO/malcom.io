@@ -18,6 +18,7 @@ import {
   FPL_138,
   FPL_200,
   MODELS,
+  RevenueModel,
   SCENARIOS,
   bill,
 } from './uhp-model';
@@ -84,6 +85,53 @@ export class OregonHealthPlanComponent {
   readonly sizes = [1, 2, 3, 4, 5];
   readonly series = SERIES;
   readonly incomeMax = 400_000;
+
+  // ---------------------------------------------------------------- coverage
+  /** From the report's "Scope of Covered Benefits" list (page 9). */
+  readonly covered = [
+    { title: 'Hospital and emergency', detail: 'Inpatient care, surgery and ambulance rides' },
+    { title: 'Doctor visits', detail: 'Primary, specialty and preventive care, with screenings' },
+    { title: 'Prescription drugs', detail: 'Including specialty medications' },
+    { title: 'Mental health', detail: 'Substance use treatment and crisis services too' },
+    { title: 'Dental and vision', detail: 'Part of the core plan, not an add-on' },
+    { title: 'Maternity and family', detail: 'Newborn, fertility and reproductive care' },
+    { title: 'Tests and equipment', detail: 'Labs, imaging, rehabilitation, medical equipment' },
+    { title: 'End-of-life care', detail: 'Hospice and palliative care' },
+  ];
+
+  // ------------------------------------------------------- the five models
+  /** The four measures drawn as bars beside each model, each on its own scale. */
+  readonly modelMetrics: readonly {
+    key: string;
+    label: string;
+    width: (m: RevenueModel) => number;
+    value: (m: RevenueModel) => string;
+  }[] = [
+    {
+      key: 'nothing',
+      label: 'Tax filers who pay nothing',
+      width: (m) => m.returnsOwingNothing * 100,
+      value: (m) => `${Math.round(m.returnsOwingNothing * 100)} of 100`,
+    },
+    {
+      key: 'top',
+      label: 'Top rate on household income',
+      width: (m) => (m.topRate / 0.125) * 100,
+      value: (m) => this.pct(m.topRate, 2),
+    },
+    {
+      key: 'middle',
+      label: 'What a middle-income household pays',
+      width: (m) => (m.middleFifthRate / 0.03) * 100,
+      value: (m) => `${this.pct(m.middleFifthRate)} of income`,
+    },
+    {
+      key: 'top1',
+      label: 'Share paid by the top 1%',
+      width: (m) => (m.top1Share / 0.45) * 100,
+      value: (m) => this.pct(m.top1Share, 0),
+    },
+  ];
 
   // --------------------------------------------------------- statewide math
   readonly best = BEST;

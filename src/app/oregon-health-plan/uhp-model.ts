@@ -47,12 +47,25 @@ export interface RevenueModel {
   middleFifthRate: number;
   /** True when the report publishes enough to compute a household's bill. */
   computable: boolean;
+  /** Share of all household contributions paid by the top 1% of incomes (Table R5). */
+  top1Share: number;
+  /** OUR short label. The board only numbers its models. */
+  name: string;
+  /** One or two plain sentences on what sets this model apart. */
+  blurb: string;
+  /** Income exempt for a family of four, in dollars (Table R2). */
+  exemptFamilyOf4: number;
 }
 
 /** Report Tables R3, R4 and R7; brief pages 8-9. */
 export const MODELS: readonly RevenueModel[] = [
   {
     id: 1,
+    name: 'Simple flat rate',
+    blurb:
+      'One rate on everything above the exemption, for employers and households alike. The board calls it the simplest to explain and the least progressive.',
+    top1Share: 0.307,
+    exemptFamilyOf4: 66_000,
     employerTax: '9.6% of payroll above $500,000',
     creditShare: 0.5,
     exemption: '200% FPL',
@@ -64,6 +77,11 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 2,
+    name: 'Flat rate, big employers pay more',
+    blurb:
+      "Model 1 with a higher payroll tax on the largest employers. The credit wipes out more workers' bills, so the top rate is the highest of the five.",
+    top1Share: 0.339,
+    exemptFamilyOf4: 66_000,
     employerTax: '9.6% above $500,000, 14% above $10 million',
     creditShare: 0.5,
     exemption: '200% FPL',
@@ -75,6 +93,11 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 3,
+    name: 'Lowest rate, more people pay',
+    blurb:
+      'No credit for workers, so more households pay than under Models 1 and 2, and the rate drops to the lowest of the five.',
+    top1Share: 0.253,
+    exemptFamilyOf4: 66_000,
     employerTax: '9.6% above $500,000, 14% above $10 million',
     creditShare: 0,
     exemption: '200% FPL',
@@ -86,6 +109,11 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 4,
+    name: 'Stepped rates, fewest pay',
+    blurb:
+      'Taxes start at a lower income but rise in five steps, with the worker credit. The most filers owe nothing, and the top 1% carry the largest share.',
+    top1Share: 0.399,
+    exemptFamilyOf4: 45_540,
     employerTax: '9.6% above $500,000, 14% above $10 million',
     creditShare: 0.5,
     exemption: '138% FPL',
@@ -97,6 +125,11 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 5,
+    name: 'Stepped rates, most pay',
+    blurb:
+      'Six steps, a lower exemption and no worker credit. The board calls it the most progressive and the most complicated. About 7 in 10 filers would pay something.',
+    top1Share: 0.356,
+    exemptFamilyOf4: 45_540,
     employerTax: '9.6% above $500,000, 14% above $10 million',
     creditShare: 0,
     exemption: '138% FPL',

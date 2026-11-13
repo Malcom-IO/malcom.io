@@ -29,42 +29,33 @@
       <div class="uhp-facts">
         <div class="uhp-fact">
           <h3>Who is covered</h3>
-          <p>Everyone who lives in Oregon. Coverage would not depend on your job, age or income.</p>
+          <p class="uhp-fact-lead">Everyone in Oregon</p>
+          <p>Coverage would not depend on your job, age or income.</p>
         </div>
         <div class="uhp-fact">
           <h3>What you pay at the doctor</h3>
-          <p>
-            No premiums. The board's goal is no copays or deductibles either, but that part is
-            not final.
-          </p>
+          <p class="uhp-fact-lead">No premiums</p>
+          <p>The board's goal is no copays or deductibles either, but that part is not final.</p>
         </div>
         <div class="uhp-fact">
           <h3>What you pay instead</h3>
-          <p>
-            A new tax on household income above a set level, plus a payroll tax paid by employers
-            with more than $500,000 in payroll.
-          </p>
+          <p class="uhp-fact-lead">Two new taxes</p>
+          <p>One on household income above a set level, and a payroll tax paid by employers with more than $500,000 in payroll.</p>
         </div>
-        <div class="uhp-fact">
+        <div class="uhp-fact uhp-fact--open">
           <h3>How much</h3>
-          <p>
-            Not decided. The board sent five tax models with household rates topping out between
-            7.7% and 12.05%, and did not recommend one.
-          </p>
+          <p class="uhp-fact-lead">Not decided</p>
+          <p>The board sent five tax models, with household rates topping out between 7.7% and 12.05%, and did not recommend one.</p>
         </div>
-        <div class="uhp-fact">
+        <div class="uhp-fact uhp-fact--open">
           <h3>Who comes out ahead</h3>
-          <p>
-            In the board's examples, lower and middle incomes mostly pay less than today and
-            higher incomes pay more. It depends heavily on the model and on where you work.
-          </p>
+          <p class="uhp-fact-lead">Depends on your income</p>
+          <p>In the board's examples, lower and middle incomes mostly pay less than today and higher incomes pay more. The model and your employer matter a lot.</p>
         </div>
-        <div class="uhp-fact">
+        <div class="uhp-fact uhp-fact--open">
           <h3>When</h3>
-          <p>
-            No start date is set. The board's actuaries treat 2032 as the earliest year the plan
-            could be fully running.
-          </p>
+          <p class="uhp-fact-lead">2032 at the earliest</p>
+          <p>No start date is set. That is the first year the board's actuaries think the plan could be fully running.</p>
         </div>
       </div>
     </div>
@@ -116,77 +107,80 @@
       <h2 class="h-section">What the plan would cover</h2>
       <p class="uhp-narrow uhp-body">
         Benefits are modeled on the plan Oregon's public employees have today, with broader
-        mental health coverage added. You could see any qualified provider who takes the plan,
-        with no restrictive networks, and providers could not bill you beyond what the plan pays.
+        mental health coverage added.
       </p>
-      <div class="row g-4 mt-1">
-        <div class="col-lg-6">
-          <div class="brand-card h-100 p-4">
-            <h3 class="uhp-card-title">Covered</h3>
-            <ul class="uhp-list">
-              <li>Hospital, emergency and ambulance care</li>
-              <li>Primary and specialty care, preventive care and screenings</li>
-              <li>Prescription drugs, including specialty drugs</li>
-              <li>Mental health and substance use treatment, including crisis services</li>
-              <li>Dental and vision</li>
-              <li>Maternity, newborn, fertility and reproductive care</li>
-              <li>Lab work, imaging, rehabilitation and medical equipment</li>
-              <li>Hospice and palliative care</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="brand-card h-100 p-4">
-            <h3 class="uhp-card-title">Limits worth knowing</h3>
-            <ul class="uhp-list">
-              <li>
-                Long-term care is not included, unless you already qualify for it through
-                Medicaid.
-              </li>
-              <li>
-                New enrollees get primary, behavioral health, emergency and medically necessary care
-                right away. Elective outpatient procedures and fertility services start after six
-                months of coverage.
-              </li>
-              <li>Care outside Oregon is covered, but may come with some cost sharing.</li>
-              <li>
-                The board is still weighing limited copays for some high-cost drugs and elective
-                services.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <ul class="uhp-promises">
+        <li>Any qualified provider who takes the plan</li>
+        <li>No restrictive networks</li>
+        <li>No bills beyond what the plan pays</li>
+      </ul>
+
+      <h3 class="uhp-band uhp-band--yes">Covered</h3>
+      <ul class="uhp-covered">
+        @for (c of covered; track c.title) {
+          <li>
+            <strong>{{ c.title }}</strong>
+            <span>{{ c.detail }}</span>
+          </li>
+        }
+      </ul>
+
+      <h3 class="uhp-band uhp-band--caution">Limits worth knowing</h3>
+      <ul class="uhp-limits">
+        <li>
+          <strong>Long-term care</strong>
+          <span>Not included, unless you already qualify for it through Medicaid.</span>
+        </li>
+        <li>
+          <strong>Your first six months</strong>
+          <span>
+            Primary, behavioral health, emergency and medically necessary care start right away.
+            Elective outpatient procedures and fertility services start after six months.
+          </span>
+        </li>
+        <li>
+          <strong>Care outside Oregon</strong>
+          <span>Covered, but may come with some cost sharing.</span>
+        </li>
+        <li>
+          <strong>Copays</strong>
+          <span>
+            The board is still weighing limited copays for some high-cost drugs and elective
+            services.
+          </span>
+        </li>
+      </ul>
 
       <h3 class="uhp-sub">If you already have coverage</h3>
-      <dl class="uhp-existing">
-        <div>
-          <dt>Insurance through work</dt>
-          <dd>
+      <div class="uhp-existing">
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--caution">Your employer decides</span>
+          <h4>Insurance through work</h4>
+          <p>
             Federal law keeps the state from ending employer plans, so your employer could keep
             its plan or drop it. Whether the state plan would pay first or second when you have
             both is undecided.
-          </dd>
+          </p>
         </div>
-        <div>
-          <dt>Medicare</dt>
-          <dd>
-            Medicare stays. Current law gives Oregon no way to fold it into a state plan. The
-            board recommends the plan pay your Part B premium, pending more study.
-          </dd>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--info">Stays</span>
+          <h4>Medicare</h4>
+          <p>
+            Current law gives Oregon no way to fold Medicare into a state plan. The board
+            recommends the plan pay your Part B premium, pending more study.
+          </p>
         </div>
-        <div>
-          <dt>Oregon Health Plan</dt>
-          <dd>You would keep every benefit Medicaid requires, including long-term care.</dd>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill uhp-pill--yes">Kept in full</span>
+          <h4>Oregon Health Plan</h4>
+          <p>You would keep every benefit Medicaid requires, including long-term care.</p>
         </div>
-        <div>
-          <dt>VA, TRICARE, federal employee and Tribal health</dt>
-          <dd>
-            These stay separate. Members of federally recognized Tribes could choose to join the
-            state plan.
-          </dd>
+        <div class="uhp-existing-card">
+          <span class="uhp-pill">Stays separate</span>
+          <h4>VA, TRICARE, federal employee and Tribal health</h4>
+          <p>Members of federally recognized Tribes could choose to join the state plan.</p>
         </div>
-      </dl>
+      </div>
     </div>
   </section>
 
@@ -201,7 +195,16 @@
         a year for new state taxes to raise.
       </p>
 
-      <div class="row g-4 mt-1">
+      <div
+        class="uhp-share"
+        role="img"
+        aria-label="Where the new money would come from: employer payroll tax 51 to 55 percent, household contribution 40 to 43 percent, business taxes about 5 percent"
+      >
+        <span>Employer payroll tax &middot; 51 to 55%</span>
+        <span>Household contribution &middot; 40 to 43%</span>
+        <span>5%</span>
+      </div>
+      <div class="row g-4 uhp-fund">
         <div class="col-lg-4">
           <div class="brand-card h-100 p-4">
             <p class="uhp-kicker">A little more than half</p>
@@ -239,44 +242,111 @@
 
       <h3 class="uhp-sub">The five models</h3>
       <p class="uhp-narrow uhp-body">
-        All five raise roughly the same money. They differ in who it comes from. A credit for
-        workers and a higher exemption both mean fewer people pay, and a higher rate for those
-        who do.
+        All five raise roughly the same money. They differ in who it comes from, and three
+        choices drive the difference.
       </p>
-      <div class="uhp-scroll" tabindex="0" role="region" aria-label="The five revenue models">
-        <table class="uhp-table">
-          <thead>
-            <tr>
-              <th scope="col">Model</th>
-              <th scope="col">Employer payroll tax</th>
-              <th scope="col" class="num">Credit for workers</th>
-              <th scope="col" class="num">Income exempt</th>
-              <th scope="col" class="num">Top household rate</th>
-              <th scope="col" class="num">Tax returns owing $0</th>
-              <th scope="col" class="num">Middle-income average</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (m of models; track m.id) {
-              <tr>
-                <th scope="row">{{ m.id }}</th>
-                <td>{{ m.employerTax }}</td>
-                <td class="num">{{ m.creditShare ? '50%' : 'None' }}</td>
-                <td class="num">{{ m.exemption }}</td>
-                <td class="num">{{ pct(m.topRate, 2) }}</td>
-                <td class="num">{{ pct(m.returnsOwingNothing) }}</td>
-                <td class="num">{{ pct(m.middleFifthRate) }}</td>
-              </tr>
+      <div class="uhp-dials">
+        <div>
+          <h4>A credit for workers, or not</h4>
+          <p>
+            With the credit, half of the payroll tax your employer paid on your wages comes off
+            your own bill. Fewer people pay, and those who do pay a higher rate.
+          </p>
+        </div>
+        <div>
+          <h4>How much income is exempt</h4>
+          <p>
+            Either $66,000 or $45,540 for a family of four. The higher exemption spares more
+            lower earners and pushes the rate up for everyone else.
+          </p>
+        </div>
+        <div>
+          <h4>One rate, or steps</h4>
+          <p>
+            One rate is simple to explain. Stepped rates, like income tax brackets, move more of
+            the cost onto the highest earners.
+          </p>
+        </div>
+      </div>
+
+      <div class="uhp-models">
+        <div class="uhp-model uhp-model--head" aria-hidden="true">
+          <span></span>
+          @for (m of modelMetrics; track m.key) {
+            <span>{{ m.label }}</span>
+          }
+        </div>
+        @for (m of models; track m.id) {
+          <article class="uhp-model">
+            <div class="uhp-model-what">
+              <h4>
+                <span class="uhp-model-num">Model {{ m.id }}</span>
+                {{ m.name }}
+              </h4>
+              <p>{{ m.blurb }}</p>
+              <ul class="uhp-chips">
+                <li [class.on]="m.creditShare">
+                  {{ m.creditShare ? 'Worker credit' : 'No worker credit' }}
+                </li>
+                <li>First {{ usd(m.exemptFamilyOf4) }} exempt</li>
+                <li>{{ m.brackets === 2 ? 'One rate' : m.brackets + ' steps' }}</li>
+              </ul>
+            </div>
+            @for (k of modelMetrics; track k.key) {
+              <div class="uhp-metric">
+                <span class="uhp-metric-label">{{ k.label }}</span>
+                <span class="uhp-metric-track" aria-hidden="true">
+                  <span [style.width.%]="k.width(m)"></span>
+                </span>
+                <span class="uhp-metric-value">{{ k.value(m) }}</span>
+              </div>
             }
-          </tbody>
-        </table>
+          </article>
+        }
       </div>
       <p class="uhp-note">
-        "Credit for workers" is the share of the payroll tax your employer paid on your wages
-        that comes off your own bill. "Middle-income average" is the average net household rate
-        for the middle fifth of incomes. Models 4 and 5 use five and six brackets; the others
-        use one rate. The board calls every figure here illustrative, not final.
+        The names are ours; the board only numbers its models. Exemptions are shown for a family
+        of four and equal 200% or 138% of the federal poverty level. "Tax filers" are Oregon
+        resident tax returns. The middle-income figure is the average rate, after any credit,
+        for the middle fifth of incomes. The board calls every figure here illustrative, not
+        final.
       </p>
+
+      <details class="uhp-details uhp-details--table">
+        <summary>Show every figure as a table</summary>
+        <div class="uhp-scroll" tabindex="0" role="region" aria-label="The five revenue models">
+          <table class="uhp-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Employer payroll tax</th>
+                <th scope="col" class="num">Credit for workers</th>
+                <th scope="col" class="num">Income exempt</th>
+                <th scope="col" class="num">Rate steps</th>
+                <th scope="col" class="num">Top household rate</th>
+                <th scope="col" class="num">Tax returns owing $0</th>
+                <th scope="col" class="num">Middle-income average</th>
+                <th scope="col" class="num">Paid by top 1%</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of models; track m.id) {
+                <tr>
+                  <th scope="row">{{ m.id }}</th>
+                  <td>{{ m.employerTax }}</td>
+                  <td class="num">{{ m.creditShare ? '50%' : 'None' }}</td>
+                  <td class="num">{{ m.exemption }}</td>
+                  <td class="num">{{ m.brackets === 2 ? 'One rate' : m.brackets }}</td>
+                  <td class="num">{{ pct(m.topRate, 2) }}</td>
+                  <td class="num">{{ pct(m.returnsOwingNothing) }}</td>
+                  <td class="num">{{ pct(m.middleFifthRate) }}</td>
+                  <td class="num">{{ pct(m.top1Share) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -527,8 +597,12 @@
         </div>
       </div>
 
-      <div class="uhp-narrow">
-        <h3 class="uhp-sub">How this is calculated, and what it leaves out</h3>
+      <p class="uhp-callout">
+        <strong>One big assumption: your pay stays the same.</strong>
+        The report says an employer that stops paying premiums will not necessarily raise wages.
+      </p>
+      <details class="uhp-details uhp-method">
+        <summary>How this is calculated, and what it leaves out</summary>
         <ul class="uhp-list uhp-body">
           <li>
             Your bill is the model's rate times your income above the exemption, minus any
@@ -542,10 +616,6 @@
             income would raise your bill, because the credit only applies to wages.
           </li>
           <li>
-            <strong>Your pay is assumed to stay the same.</strong> The report says an employer
-            that stops paying premiums will not necessarily raise wages.
-          </li>
-          <li>
             Model 1 uses the 12.0% rate the report states. The report's own Model 1 examples,
             shown below, work out to 13.5%.
           </li>
@@ -556,7 +626,7 @@
           </li>
           <li>Poverty-level figures are for 2026. Nothing you enter leaves your browser.</li>
         </ul>
-      </div>
+      </details>
     </div>
   </section>
 
@@ -627,45 +697,45 @@
   <!-- ========================================================== unsettled -->
   <section class="section section-line" id="open-questions">
     <div class="container">
-      <div class="uhp-narrow">
+      <div>
         <h2 class="h-section">What is not settled</h2>
-        <p class="uhp-body">
+        <p class="uhp-narrow uhp-body">
           The report is candid about how much is open. These are the ones most likely to change
           what you would pay or get.
         </p>
         <ul class="uhp-open">
           <li>
-            <strong>The tax rates.</strong> No model is recommended, and the board says the
+            <strong>The tax rates</strong> No model is recommended, and the board says the
             rates must be recalculated with current data before the plan is implemented. Model 1 was
             sized to raise $30.2 billion in 2032; Models 2 to 5 were sized on 2022 tax data to
             raise $20.4 billion.
           </li>
           <li>
-            <strong>Your wages.</strong> The report's words: replacing an employer's insurance
+            <strong>Your wages</strong> The report's words: replacing an employer's insurance
             cost with a payroll tax "will likely keep wages at a lower level because nothing
             will force wages up when the premium cost goes away."
           </li>
           <li>
-            <strong>The wider economy.</strong> The tax estimates assume nobody changes behavior.
+            <strong>The wider economy</strong> The tax estimates assume nobody changes behavior.
             A study of effects on wages, prices, jobs and migration has not been done.
           </li>
           <li>
-            <strong>Start-up money.</strong> Start-up costs have not been estimated. The plan
+            <strong>Start-up money</strong> Start-up costs have not been estimated. The plan
             would also need about $21 billion in reserves, with no settled way to raise it.
           </li>
           <li>
-            <strong>Employer plans.</strong> About two-thirds of workers with job-based coverage
+            <strong>Employer plans</strong> About two-thirds of workers with job-based coverage
             are in plans the state cannot regulate. How many employers would switch is unknown.
           </li>
           <li>
-            <strong>Federal approval.</strong> Keeping Medicaid and Marketplace money requires
+            <strong>Federal approval</strong> Keeping Medicaid and Marketplace money requires
             federal waivers. Medicare cannot be folded in under current law.
           </li>
           <li>
-            <strong>Copays.</strong> The board prefers none but has not set a final policy.
+            <strong>Copays</strong> The board prefers none but has not set a final policy.
           </li>
           <li>
-            <strong>Timing and a public vote.</strong> There is no launch date, the plan may
+            <strong>Timing and a public vote</strong> There is no launch date, the plan may
             phase in by population, and lawmakers could refer it to voters.
           </li>
         </ul>

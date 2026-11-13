@@ -808,3 +808,467 @@ $down: #199e70;
     font-size: 0;
   }
 }
+
+// ---------------------------------------------------------- the five models
+.uhp-dials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem 2rem;
+  margin: 1.25rem 0 2rem;
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 650;
+    margin: 0 0 0.3rem;
+  }
+  p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+}
+// One row per model. The four measures line up in columns so bar lengths can
+// be compared down the page; each column has its own scale.
+.uhp-models {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  overflow: hidden;
+}
+.uhp-model {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--line-soft);
+}
+.uhp-model--head {
+  border-top: 0;
+  padding-block: 0.9rem;
+  align-items: end;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.uhp-model-what {
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 650;
+    margin: 0 0 0.35rem;
+  }
+  p {
+    margin: 0 0 0.6rem;
+    color: var(--text-soft);
+    font-size: 0.925rem;
+    line-height: 1.5;
+  }
+}
+.uhp-model-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-bright);
+  margin-bottom: 0.15rem;
+}
+.uhp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+  li.on {
+    border-color: var(--brand);
+    color: var(--text);
+  }
+}
+.uhp-metric {
+  display: grid;
+  gap: 0.3rem;
+}
+.uhp-metric-label {
+  // Desktop: the header row names each column, so the per-row label is for
+  // screen readers only. Phones show it (see below).
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.uhp-metric-track {
+  display: block;
+  height: 12px;
+  background: var(--ground);
+  border-radius: 0 4px 4px 0;
+
+  span {
+    display: block;
+    height: 100%;
+    min-width: 3px;
+    background: #3987e5;
+    border-radius: 0 4px 4px 0;
+  }
+}
+.uhp-metric-value {
+  font-size: 1.05rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.uhp-details--table {
+  margin-top: 1.25rem;
+}
+@media (max-width: 991.98px) {
+  .uhp-model--head {
+    display: none;
+  }
+  .uhp-model {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+    align-items: start;
+  }
+  .uhp-model:nth-child(2) {
+    border-top: 0;
+  }
+  .uhp-model-what {
+    grid-column: 1 / -1;
+  }
+  .uhp-metric-label {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    white-space: normal;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+}
+
+// ------------------------------------------------------------------ coverage
+// Three meanings, three colors, used the same way across the page:
+// green = you get it / it stays, amber = a limit or an open question,
+// blue = unchanged. Every colored element also carries words or a mark.
+$caution: #e9a23b;
+$info: #5b9bea;
+
+.uhp-promises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.6rem;
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+
+  li {
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--brand) 55%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--brand) 12%, transparent);
+    font-size: 0.925rem;
+    font-weight: 600;
+  }
+  li::before {
+    content: '\2713\00a0\00a0';
+    color: var(--brand-bright);
+  }
+}
+.uhp-band {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.5rem 0 1rem;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.35;
+  }
+}
+.uhp-band--yes {
+  color: var(--brand-bright);
+}
+.uhp-band--caution {
+  color: $caution;
+}
+.uhp-covered,
+.uhp-limits {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+  }
+  strong {
+    font-weight: 650;
+  }
+  span {
+    color: var(--text-soft);
+    font-size: 0.925rem;
+    line-height: 1.45;
+  }
+}
+.uhp-covered {
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+
+  li {
+    border-left: 3px solid var(--brand);
+  }
+  strong::before {
+    content: '\2713\00a0\00a0';
+    color: var(--brand-bright);
+  }
+}
+.uhp-limits {
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+
+  li {
+    border-left: 3px solid $caution;
+  }
+}
+.uhp-existing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+}
+.uhp-existing-card {
+  padding: 1.1rem 1.25rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 650;
+    margin: 0.7rem 0 0.35rem;
+  }
+  p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+.uhp-pill {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+.uhp-pill--yes {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: var(--text);
+}
+.uhp-pill--caution {
+  border-color: $caution;
+  background: color-mix(in srgb, $caution 14%, transparent);
+  color: var(--text);
+}
+.uhp-pill--info {
+  border-color: $info;
+  background: color-mix(in srgb, $info 14%, transparent);
+  color: var(--text);
+}
+
+// ------------------------------------------------------- readability pass
+// Short version: fixed three columns (no orphan slab), a bold answer per fact.
+.uhp-facts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 991.98px) {
+  .uhp-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .uhp-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.uhp-fact {
+  border-top: 3px solid var(--brand);
+
+  h3 {
+    color: var(--muted);
+  }
+  .uhp-fact-lead {
+    margin: 0 0 0.4rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+}
+.uhp-fact--open {
+  border-top-color: $caution;
+}
+
+// Coverage: four across, so eight tiles make two full rows.
+.uhp-covered {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.uhp-limits {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.uhp-covered li,
+.uhp-limits li {
+  align-content: start;
+}
+@media (max-width: 1199.98px) {
+  .uhp-covered,
+  .uhp-limits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .uhp-limits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Funding: one bar for the split, cards keyed to it by color.
+.uhp-share {
+  display: flex;
+  gap: 2px;
+  height: 34px;
+  margin: 1.75rem 0 1rem;
+
+  span {
+    overflow: hidden;
+    padding: 0 0.75rem;
+    line-height: 34px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  span:nth-child(1) {
+    flex: 53 1 0;
+    background: #3987e5;
+    border-radius: 4px 0 0 4px;
+  }
+  span:nth-child(2) {
+    flex: 42 1 0;
+    background: #d95926;
+  }
+  span:nth-child(3) {
+    flex: 5 1 0;
+    padding: 0;
+    text-align: center;
+    background: #199e70;
+    border-radius: 0 4px 4px 0;
+  }
+}
+.uhp-fund > div:nth-child(1) .brand-card {
+  border-top: 3px solid #3987e5;
+}
+.uhp-fund > div:nth-child(2) .brand-card {
+  border-top: 3px solid #d95926;
+}
+.uhp-fund > div:nth-child(3) .brand-card {
+  border-top: 3px solid #199e70;
+}
+.uhp-fund .uhp-kicker {
+  color: var(--text-soft);
+}
+
+// Calculator: the one caveat that matters, then the method behind a toggle.
+.uhp-callout {
+  max-width: 46rem;
+  margin: 1.75rem 0 0;
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid $caution;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: color-mix(in srgb, $caution 9%, var(--surface));
+  color: var(--text-soft);
+
+  strong {
+    color: var(--text);
+  }
+}
+.uhp-method {
+  max-width: 46rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+
+  summary {
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+  ul {
+    margin-top: 0.75rem;
+  }
+}
+
+// What is not settled: cards in two columns instead of a long ruled list.
+.uhp-open {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+
+  li {
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid $caution;
+    border-radius: 0.6rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 1.05rem;
+  }
+}
+@media (max-width: 767.98px) {
+  .uhp-open {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
