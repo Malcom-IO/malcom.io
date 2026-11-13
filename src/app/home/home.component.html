@@ -35,7 +35,7 @@
 <!--Founder-->
 <section id="marcus" class="section founder" appReveal>
   <div class="container">
-    <div class="brand-card founder-inner">
+    <div class="brand-card founder-inner glow glow-tl">
       <img
         class="founder-photo"
         src="/assets/img/marcus-320.webp"
@@ -88,7 +88,7 @@
         </p>
       </div>
       <div class="col-lg-5">
-        <div class="brand-card">
+        <div class="brand-card glow glow-blue edge-top">
           <span class="card-eyebrow">What you can expect</span>
           <ul class="card-list text-muted-2 mt-3 mb-0">
             <li>Audit trails built for 21 CFR Part 11</li>
@@ -113,7 +113,7 @@
 
     <div class="row g-4 mt-3">
       <div class="col-md-6">
-        <div class="brand-card">
+        <div class="brand-card glow glow-blue">
           <span class="card-eyebrow">Healthcare</span>
           <app-icon name="suitcase-medical" size="2x" class="blue-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Medical software</h3>
@@ -130,7 +130,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="brand-card">
+        <div class="brand-card glow glow-violet glow-bl">
           <span class="card-eyebrow">Product engineering</span>
           <app-icon name="code" size="2x" class="blue-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Web, mobile &amp; Mac</h3>
@@ -142,7 +142,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="brand-card">
+        <div class="brand-card glow glow-rose glow-br">
           <span class="card-eyebrow">How we work</span>
           <app-icon name="heart" size="2x" class="red-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Happiness</h3>
@@ -153,7 +153,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="brand-card">
+        <div class="brand-card glow glow-tl">
           <span class="card-eyebrow">What we take on</span>
           <app-icon name="hammer" size="2x" class="green-text d-block mt-3 mb-3"></app-icon>
           <h3 class="h5 fw-semibold">Adventure</h3>
@@ -178,7 +178,7 @@
 
     <div class="row g-4 mt-3">
       <div class="col-md-6">
-        <div class="brand-card product-card">
+        <div class="brand-card product-card glow edge-top">
           <div class="product-head">
             <span class="card-eyebrow">Work &amp; billing</span>
             <span class="product-status product-status--live">$7 / person / month</span>
@@ -190,40 +190,95 @@
             agents work, then become proposals, invoices and client-signed sign-offs. Fixed-bid,
             not-to-exceed or time-and-materials. $4 a month at the early-access price.
           </p>
-          <a href="https://shyre.io/pricing" class="product-link">See pricing <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://shyre.io/pricing" class="btn btn-primary product-action">See pricing <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="brand-card product-card">
+        <div class="brand-card product-card glow glow-teal glow-br edge-top">
           <div class="product-head">
-            <span class="card-eyebrow">Mac security</span>
+            <span class="card-eyebrow">Mac assistant</span>
             <span class="product-status">Early access</span>
           </div>
           <app-product-mark name="ward" class="d-block mt-3 mb-3"></app-product-mark>
           <h3 class="h5 fw-semibold">Shyre Ward</h3>
           <p class="text-muted-2">
-            A read-only compromise check for your Mac. It inventories everything that starts,
-            runs, listens or holds a permission, flags what looks out of place, and changes
-            nothing until you click. Nothing leaves the Mac.
+            A private assistant that lives on your Mac. Its model runs on the machine, so your
+            questions, your files and what it remembers stay there. It looks things up on the
+            web and shows the pages it read, and it checks the Mac itself for anything that
+            should not be there. No account, no server, no telemetry.
           </p>
           <p class="text-muted-2 small">We're releasing it in stages; availability is expanding soon.</p>
-          <a [routerLink]="['/']" fragment="contact" class="product-link">Request early access <span aria-hidden="true">&rarr;</span></a>
+          <a [routerLink]="['/']" fragment="contact" class="btn product-action product-action--teal">Request early access <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
       <div class="col-12">
-        <div class="brand-card product-strip">
-          <img class="product-appicon" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
-          <div>
-            <span class="card-eyebrow">Also ours &middot; Free</span>
-            <p class="text-muted-2 mb-0 mt-1">
-              QuillQuest, a learning game for grades 3–8, live on the App Store and Google Play.
-              Private by design: no ads, no accounts, no tracking.
+        <!-- QuillQuest: its own colors (night-sky indigo and quill gold), not the studio green -->
+        <div class="qq-card">
+          <div class="qq-card-copy">
+            <img class="qq-card-icon" src="/assets/quillquest/web/icon-256.webp" width="64" height="64" alt="" loading="lazy" />
+            <span class="card-eyebrow">Also ours &middot; A free learning game</span>
+            <h3 class="qq-card-title">QuillQuest</h3>
+            <p class="qq-card-pitch">
+              A spelling, times-tables, division and touch-typing game for grades 3–8. Play all
+              four in the browser; the iOS and Android apps cover spelling, times tables and
+              division.
             </p>
+            <ul class="qq-card-badges" aria-label="At a glance">
+              <li>Free</li>
+              <li>No ads</li>
+              <li>No accounts</li>
+              <li>No tracking</li>
+            </ul>
+            <div class="qq-card-actions">
+              <a href="https://quillquest.net" class="btn qq-card-play">Play it at quillquest.net <span aria-hidden="true">&rarr;</span></a>
+              <a routerLink="/quillquest" class="qq-card-more">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+            </div>
           </div>
-          <a routerLink="/quillquest" class="product-link ms-md-auto">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+          <div class="qq-card-shot" aria-hidden="true">
+            <img
+              src="/assets/quillquest/web/qq-iphone-1-home-440.webp"
+              srcset="/assets/quillquest/web/qq-iphone-1-home-440.webp 440w, /assets/quillquest/web/qq-iphone-1-home-660.webp 660w"
+              sizes="260px"
+              width="330"
+              height="717"
+              alt=""
+              loading="lazy" />
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!--Side project: a civic explainer. Its own section, visibly not a product.-->
+<section id="oregon-health-plan" class="section section-line" appReveal>
+  <div class="container">
+    <p class="eyebrow">Side project</p>
+    <h2 class="h-section">Oregon's Universal Health Plan, explained</h2>
+    <a
+      routerLink="/oregon-universal-health-plan"
+      class="civic-card"
+      aria-label="Read the explainer: Oregon's Universal Health Plan. Five tax models, none chosen yet; 30 to 39 billion dollars a year in new state taxes; 2032 is the earliest it could be running."
+    >
+      <div class="civic-text">
+        <p class="lead-lg mb-0">
+          A state board has proposed one public health plan for everyone in Oregon, paid for
+          with new taxes instead of premiums. The report runs 77 pages. We read it, checked its
+          math, and wrote the short version.
+        </p>
+        <ul class="civic-points">
+          <li>What it covers, and what happens to the coverage you have</li>
+          <li>The five tax models, side by side</li>
+          <li>A calculator for what your household would pay</li>
+        </ul>
+        <span class="btn btn-primary">Read the explainer <span aria-hidden="true">&rarr;</span></span>
+      </div>
+      <div class="civic-figures" aria-hidden="true">
+        <div><strong>5</strong><span>tax models, none chosen yet</span></div>
+        <div><strong>$30&ndash;39B</strong><span>in new state taxes a year</span></div>
+        <div><strong>2032</strong><span>earliest it could be running</span></div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -242,6 +297,7 @@
     <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
       <a routerLink="/">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
+      <a routerLink="/oregon-universal-health-plan">Oregon health plan</a>
       <a [routerLink]="['/']" fragment="contact">Contact</a>
       <a routerLink="/privacy">Privacy</a>
     </nav>

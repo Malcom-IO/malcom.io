@@ -121,5 +121,24 @@ export const routes: Routes = [
         'works, and how to ask for your message to be deleted.',
     } satisfies SeoData,
   },
+  {
+    // A civic explainer, not studio marketing: Oregon's proposed Universal Health
+    // Plan in plain language, with a calculator built on the Governance Board's
+    // published models. Lazy-loaded so the calculator stays out of the home bundle.
+    // Not in the nav on purpose; it is reached by direct link.
+    path: 'oregon-universal-health-plan',
+    loadComponent: () =>
+      import('./oregon-health-plan/oregon-health-plan.component').then(
+        (m) => m.OregonHealthPlanComponent,
+      ),
+    title: 'Oregon Universal Health Plan, explained: coverage, taxes, costs | Malcom IO',
+    data: {
+      ogTitle: "What Oregon's Universal Health Plan would actually do",
+      // Kept under ~155 chars so search results don't truncate it.
+      description:
+        "Oregon's proposed Universal Health Plan in plain language: who is covered, the five " +
+        'tax models, and a calculator for what your household would pay.',
+    } satisfies SeoData,
+  },
   { path: '**', redirectTo: '' },
 ];
