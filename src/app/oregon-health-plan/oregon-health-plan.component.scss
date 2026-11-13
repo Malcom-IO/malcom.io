@@ -446,11 +446,11 @@ a {
   margin-top: 1.25rem;
 }
 
-// Fixed columns, not auto-fit: three calculated models in one row, the two
-// uncalculated ones in a row of their own, so a card is never orphaned.
-.uhp-bills,
+// Fixed columns, not auto-fit, so a card is never orphaned.
 // Five cards: three across, then two, on a six-column grid so both rows fill.
 .uhp-bills {
+  display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 .uhp-bill {
