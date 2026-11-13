@@ -2058,3 +2058,17 @@ $warn: var(--warn);
     padding-top: 10rem;
   }
 }
+
+// The section chips and the "Updated" line sit under both hero columns.
+.uhp-hero-foot {
+  margin-top: 1.25rem;
+}
+@media (min-width: 992px) {
+  .uhp-hero-foot .uhp-jump {
+    flex-wrap: nowrap;
+  }
+  .uhp-hero-foot .uhp-jump a,
+  .uhp-hero-foot > p:first-of-type {
+    white-space: nowrap;
+  }
+}
