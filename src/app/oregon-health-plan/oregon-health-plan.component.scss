@@ -1783,3 +1783,90 @@ $info: #5b9bea;
     color: var(--text-soft);
   }
 }
+
+// ------------------------------------------------------- if nothing changes
+// The status quo's costs: warm glow, one big figure each, and a small picture.
+$warn: #e66767;
+
+.uhp-sq {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+.uhp-sq-card {
+  padding: 1.5rem 1.6rem 1.3rem;
+  border: 1px solid color-mix(in srgb, $warn 32%, var(--line));
+  border-top: 3px solid color-mix(in srgb, $warn 85%, transparent);
+  border-radius: 16px;
+  background:
+    radial-gradient(85% 130% at 100% 0%, color-mix(in srgb, $warn 14%, transparent), transparent 65%),
+    var(--surface);
+}
+.uhp-sq-card:nth-child(2) {
+  background:
+    radial-gradient(85% 130% at 0% 100%, color-mix(in srgb, $caution 13%, transparent), transparent 65%),
+    var(--surface);
+  border-color: color-mix(in srgb, $caution 32%, var(--line));
+  border-top-color: color-mix(in srgb, $caution 85%, transparent);
+}
+.uhp-sq-label {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-soft);
+}
+.uhp-sq-big {
+  margin: 0.3rem 0 0.9rem;
+  font-family: var(--mono);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.uhp-sq-bars {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem 0.7rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+.uhp-sq-track {
+  display: block;
+  height: 12px;
+
+  span {
+    display: block;
+    height: 100%;
+    background: $warn;
+    border-radius: 0 4px 4px 0;
+  }
+}
+.uhp-sq-card:nth-child(2) .uhp-sq-track span {
+  background: $caution;
+}
+.uhp-sq-dots {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.9rem;
+
+  span {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--muted) 30%, transparent);
+  }
+  .on {
+    background: $warn;
+  }
+}
+.uhp-covered--wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 767.98px) {
+  .uhp-covered--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

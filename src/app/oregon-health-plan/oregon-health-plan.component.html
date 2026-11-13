@@ -1265,22 +1265,45 @@
         The open questions above are the plan's. The report sets them beside the costs of
         staying put: "Every path forward carries risk, including making no changes at all."
       </p>
-      <div class="uhp-stats">
-        <div class="uhp-stat">
-          <p class="uhp-stat-label">Oregonians without insurance</p>
-          <p class="uhp-stat-value">122,000 to 348,000</p>
-          <p class="uhp-hint">From 2026 to 2032 under the current system, by Milliman's estimate.</p>
-        </div>
-        <div class="uhp-stat">
-          <p class="uhp-stat-label">Approved rate increases for 2027</p>
-          <p class="uhp-stat-value">21.6% and 15.5%</p>
+      <div class="uhp-sq">
+        <div class="uhp-sq-card">
+          <p class="uhp-sq-label">Oregonians without insurance</p>
+          <p class="uhp-sq-big">Nearly triple</p>
+          <div class="uhp-sq-bars" aria-hidden="true">
+            <span>2026</span>
+            <span class="uhp-sq-track"><span [style.width.%]="(122 / 348) * 100"></span></span>
+            <span>122,000</span>
+            <span>2032</span>
+            <span class="uhp-sq-track"><span style="width: 100%"></span></span>
+            <span>348,000</span>
+          </div>
           <p class="uhp-hint">
-            Average increases for plans people buy themselves and for small-business plans.
+            From 122,000 in 2026 to 348,000 in 2032 under the current system, by Milliman's
+            estimate.
           </p>
         </div>
-        <div class="uhp-stat">
-          <p class="uhp-stat-label">Medical bills took most of their savings</p>
-          <p class="uhp-stat-value">1 in 8</p>
+        <div class="uhp-sq-card">
+          <p class="uhp-sq-label">Approved rate increases for 2027</p>
+          <p class="uhp-sq-big">21.6%</p>
+          <div class="uhp-sq-bars" aria-hidden="true">
+            <span>Own plan</span>
+            <span class="uhp-sq-track"><span style="width: 100%"></span></span>
+            <span>21.6%</span>
+            <span>Small business</span>
+            <span class="uhp-sq-track"><span [style.width.%]="(15.5 / 21.6) * 100"></span></span>
+            <span>15.5%</span>
+          </div>
+          <p class="uhp-hint">
+            Average increases: 21.6% for plans people buy themselves, 15.5% for small-business
+            plans.
+          </p>
+        </div>
+        <div class="uhp-sq-card">
+          <p class="uhp-sq-label">Medical bills took most of their savings</p>
+          <p class="uhp-sq-big">1 in 8</p>
+          <div class="uhp-sq-dots" aria-hidden="true">
+            <span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
           <p class="uhp-hint">
             Oregonians who say so in a state survey. 1 in 7 say they delay or skip care because
             of cost.
@@ -1288,21 +1311,33 @@
         </div>
       </div>
 
-      <h3 class="uhp-sub">What the board says the plan would fix</h3>
-      <ul class="uhp-list uhp-body uhp-narrow">
-        <li>Coverage that does not end when a job, income or eligibility changes.</li>
+      <h3 class="uhp-band uhp-band--yes">What the board says the plan would fix</h3>
+      <ul class="uhp-covered uhp-covered--wide">
         <li>
-          Most people paying the same or less, with little or no cost sharing and no surprise
-          bills. The report calls its figures group averages.
+          <strong>Coverage that stays put</strong>
+          <span>It would not end when a job, income or eligibility changes.</span>
         </li>
         <li>
-          Less paperwork for providers: by staff estimates, 85% to 90% of the simplification
-          could come even before federal programs join, if most employers move their workers
-          onto the plan. How many would is unknown.
+          <strong>The same or less for most people</strong>
+          <span>
+            With little or no cost sharing and no surprise bills. The report calls its figures
+            group averages.
+          </span>
         </li>
         <li>
-          The same payment rules whatever a patient's coverage, with room to pay more where
-          access is short, such as rural areas.
+          <strong>Less paperwork for providers</strong>
+          <span>
+            By staff estimates, 85% to 90% of the simplification could come even before federal
+            programs join, if most employers move their workers onto the plan. How many would
+            is unknown.
+          </span>
+        </li>
+        <li>
+          <strong>One set of payment rules</strong>
+          <span>
+            The same whatever a patient's coverage, with room to pay more where access is
+            short, such as rural areas.
+          </span>
         </li>
       </ul>
     </div>
