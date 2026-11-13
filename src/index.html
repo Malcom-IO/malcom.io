@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-theme="dark" data-bs-theme="dark">
 <head>
   <meta charset="utf-8">
   <title>Malcom IO — Custom software, healthcare systems to Mac apps</title>
@@ -9,39 +9,29 @@
   <!-- SEO (static fallback; the SEO strategy re-bakes these per route at prerender) -->
   <meta name="description" content="Malcom IO designs, builds and runs custom software: healthcare systems built for 21 CFR Part 11 and HIPAA, web and mobile apps, and native Mac software.">
   <link rel="canonical" href="https://www.malcom.io/">
-  <meta name="theme-color" content="#20242a" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f1f6f0" media="(prefers-color-scheme: light)">
-  <!-- Theme, before first paint: a saved choice wins, otherwise the system setting, which is
-       followed live until a choice is saved. Keep the key and colors in step with
-       shared/theme-toggle.component.ts. -->
+  <meta name="theme-color" content="#20242a">
+  <!-- The theme, before first paint: a saved choice, otherwise dark for the studio site
+       and light for the Oregon health plan pages. Keep the path prefix and keys in step
+       with shared/theme.service.ts. -->
   <script>
     (function () {
-      var root = document.documentElement;
-      var system = window.matchMedia ? matchMedia('(prefers-color-scheme: light)') : null;
-      function saved() {
-        try {
-          var value = localStorage.getItem('theme');
-          return value === 'light' || value === 'dark' ? value : null;
-        } catch (e) {
-          return null;
-        }
-      }
-      function stamp() {
-        var theme = saved() || (system && system.matches ? 'light' : 'dark');
+      try {
+        var path = location.pathname.replace(/\/+$/, '');
+        var prefix = '/oregon-universal-health-plan';
+        var oregon = path === prefix || path.indexOf(prefix + '/') === 0;
+        var theme = null;
+        try { theme = localStorage.getItem(oregon ? 'theme-oregon' : 'theme'); } catch (e) {}
+        // No saved choice: the part's own default, in case this markup is the 404 fallback.
+        if (theme !== 'light' && theme !== 'dark') theme = oregon ? 'light' : 'dark';
+        var root = document.documentElement;
         root.setAttribute('data-theme', theme);
         root.setAttribute('data-bs-theme', theme);
-        var metas = document.querySelectorAll('meta[name="theme-color"]');
-        for (var i = 0; i < metas.length; i++) {
-          metas[i].setAttribute('content', theme === 'light' ? '#f1f6f0' : '#20242a');
-        }
-      }
-      stamp();
-      if (system && system.addEventListener) {
-        system.addEventListener('change', function () { if (!saved()) stamp(); });
-      }
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#f1f6f0' : '#20242a');
+      } catch (e) {}
     })();
   </script>
-  <!-- Without JavaScript the theme follows the system and the switch cannot work. -->
+  <!-- Without JavaScript the switch cannot work. -->
   <noscript><style>.theme-toggle { display: none !important; }</style></noscript>
 
   <!-- Open Graph -->
