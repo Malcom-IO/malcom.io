@@ -28,6 +28,7 @@ import {
 
 import {
   BEST,
+  BOARD,
   BRIDGE,
   LOW,
   PRIVATE_TODAY,
@@ -60,6 +61,7 @@ const COVERAGES: readonly CoverageOption[] = [
     kind: 'employer',
     label: 'Through a job',
     typicalCost: 4_700,
+    employer: 'private',
     hint: "Your share of premiums plus deductibles, copays and prescriptions. Leave out what your employer pays. The board's example for a couple is $4,700.",
   },
   {
@@ -74,13 +76,14 @@ const COVERAGES: readonly CoverageOption[] = [
     label: 'Medicare',
     typicalCost: 9_600,
     employer: 'none',
-    hint: "Part B premiums plus Medigap, Part D and what you pay out of pocket. The board's example for a couple is $9,600.",
-    note: 'Leave Social Security out of your income; it does not count toward the contribution. The figures assume the plan pays your Part B premium, which the board recommends but calls unfinished. The report does not say what happens to Medigap or Part D.',
+    hint: "The board's example for a couple: $4,800 in Part B premiums plus $4,800 out of pocket. Leave out Medigap and Part D premiums; the report does not say whether you would still need them.",
+    note: 'Leave Social Security out of your income; it does not count toward the contribution. The comparison follows the board\'s example, which assumes the plan pays your Part B premium and your out-of-pocket costs go away. The board recommends paying Part B but calls that unfinished, and the report does not address Medigap or Part D.',
   },
   {
     kind: 'ohp',
     label: 'Oregon Health Plan',
     typicalCost: 0,
+    employer: 'none',
     hint: 'Most Oregon Health Plan members pay nothing today, so this is $0.',
     note: 'You would keep your coverage. The board says most people who qualify for the Oregon Health Plan by income would have no health care costs under the plan.',
   },
@@ -88,8 +91,9 @@ const COVERAGES: readonly CoverageOption[] = [
     kind: 'none',
     label: 'No insurance',
     typicalCost: 0,
+    employer: 'none',
     hint: 'Enter what you spend on care in a typical year, or leave it at $0.',
-    note: 'You would be covered. The amounts below are what you would pay toward the plan; in return, care would be covered with no premium and, if the board keeps its goal, no deductible or copay.',
+    note: 'You would be covered. The amounts below are what you would pay toward the plan; in return, care would be covered with no premium and, if the board keeps its goal, no deductible or copay. If an employer pays you wages, choose it under "Who pays your wages"; in three models that lowers your bill.',
   },
 ];
 
@@ -181,7 +185,7 @@ export class OregonHealthPlanComponent {
     },
     {
       key: 'top',
-      label: 'Top rate on household income',
+      label: 'Top rate, on the highest slice of income',
       width: (m) => (m.topRate / 0.15) * 100,
       value: (m) => this.pct(m.topRate, 2),
     },
@@ -214,6 +218,27 @@ export class OregonHealthPlanComponent {
   readonly bridge = BRIDGE;
   readonly statewide = SCENARIOS_STATEWIDE;
   readonly highPlan = HIGH_PLAN;
+  /** The two published estimates, side by side. */
+  readonly estimates = [
+    {
+      name: "Milliman's best estimate",
+      who: "The board's actuary",
+      tone: 'blue',
+      current: BEST.statusQuo,
+      plan: BEST.plan,
+      taxes: REVENUE_TARGET.best,
+      privateNow: PRIVATE_TODAY.best,
+    },
+    {
+      name: "The board's assumptions",
+      who: 'Slower cost growth and more savings',
+      tone: 'green',
+      current: LOW.statusQuo,
+      plan: BOARD.plan,
+      taxes: REVENUE_TARGET.board,
+      privateNow: PRIVATE_TODAY.board,
+    },
+  ];
   readonly perPerson = perPerson;
   readonly abs = Math.abs;
   readonly round = Math.round;
@@ -596,7 +621,7 @@ export class OregonHealthPlanComponent {
     if (b.household >= 1) return null;
     return b.gross < 1
       ? 'Your income is within this model\'s exemption.'
-      : 'The worker credit covers the whole bill.';
+      : 'The worker credit covers the whole bill, if your employer pays the payroll tax shown.';
   }
 
   /** "$7,400 less" or "$52,400 more" than the employer spends today. */

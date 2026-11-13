@@ -1610,3 +1610,176 @@ $info: #5b9bea;
     font-variant-numeric: tabular-nums;
   }
 }
+
+// ----------------------------------------------------- statewide estimates
+// The two published estimates as paired cards: current system against the plan,
+// the saving in large type, then what it means in new taxes.
+.uhp-est {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+@media (max-width: 991.98px) {
+  .uhp-est {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.uhp-est-card {
+  --g: #3987e5;
+  padding: 1.6rem 1.75rem;
+  border: 1px solid color-mix(in srgb, var(--g) 35%, var(--line));
+  border-top: 3px solid color-mix(in srgb, var(--g) 85%, transparent);
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      85% 130% at 100% 0%,
+      color-mix(in srgb, var(--g) 15%, transparent),
+      transparent 65%
+    ),
+    var(--surface);
+}
+.uhp-est-card[data-tone='green'] {
+  --g: var(--brand);
+}
+.uhp-est-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+.uhp-est-who {
+  margin: 0.1rem 0 1.2rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+.uhp-est-bars {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem 0.8rem;
+  font-size: 0.925rem;
+}
+.uhp-est-label {
+  color: var(--text-soft);
+}
+.uhp-est-track {
+  display: block;
+  height: 14px;
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+  }
+  .now {
+    background: #8792a0;
+  }
+  .plan {
+    background: var(--g);
+  }
+}
+.uhp-est-value {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.uhp-est-saves {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.75rem;
+  margin: 1.4rem 0 1.1rem;
+  color: var(--text-soft);
+}
+.uhp-est-big {
+  font-family: var(--mono);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--brand-bright);
+}
+.uhp-est-facts {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.925rem;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.1rem 1rem;
+  }
+  dt {
+    font-weight: 400;
+    color: var(--text-soft);
+  }
+  dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// Payments that end against the taxes that replace them, as two ledger lines.
+.uhp-est-swap {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.4rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+
+  div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  dt {
+    font-weight: 600;
+  }
+  small {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-soft);
+  }
+  dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 1.35rem;
+    font-weight: 700;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .ends dd {
+    color: var(--brand-bright);
+  }
+  .starts dd {
+    color: #f0a56a;
+  }
+}
+.uhp-est-saves {
+  margin: 1.1rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+// Our own sensitivity rows read as secondary to the two published estimates:
+// hatched bars, like the conditional savings in the bridge above.
+.uhp-diverge li.ours {
+  .uhp-diverge-label strong {
+    font-weight: 500;
+    color: var(--text-soft);
+  }
+  .uhp-diverge-bar.up {
+    background: repeating-linear-gradient(135deg, $up 0 4px, transparent 4px 8px);
+    outline: 1px solid $up;
+    outline-offset: -1px;
+  }
+  .uhp-diverge-value {
+    color: var(--text-soft);
+  }
+}

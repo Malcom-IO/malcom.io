@@ -4,7 +4,8 @@
  * Every figure here is transcribed from the Universal Health Plan Governance
  * Board's draft legislative report (dated 2026-10-13), its legislative brief, or
  * the report's Appendix FR (draft 2026-10-13, "expenditure-revenue-appendix"),
- * which holds the bracket schedule for each model. Nothing is estimated by us.
+ * which holds the bracket schedule for each model. The one thing we infer is how
+ * the appendix's 2022-dollar brackets are brought to 2026 (see INDEX_2022_TO_2026).
  * When the board revises its models, this file is the only place the numbers live.
  *
  * RATES: all five models use the appendix's rates, which were set on one common
@@ -79,7 +80,7 @@ export interface RevenueModel {
 export const MODELS: readonly RevenueModel[] = [
   {
     id: 1,
-    name: 'One rate, flat payroll tax',
+    name: 'One rate, single payroll tier',
     blurb:
       "One household rate above the exemption and one payroll rate above $500,000, with the worker credit. The board calls it the simplest to explain and the least progressive.",
     combinedByFifth: [0.076, 0.061, 0.081, 0.104, 0.135],
@@ -97,7 +98,7 @@ export const MODELS: readonly RevenueModel[] = [
   },
   {
     id: 2,
-    name: 'One rate, worker credit',
+    name: 'One rate, two payroll tiers',
     blurb:
       "Model 1 plus a 14% payroll tier above $10 million, which Models 3 to 5 share. More comes from the largest payrolls, so the household rate is lower.",
     combinedByFifth: [0.097, 0.078, 0.089, 0.105, 0.13],
@@ -116,7 +117,7 @@ export const MODELS: readonly RevenueModel[] = [
     id: 3,
     name: 'One rate, no credit',
     blurb:
-      "Model 2 without the worker credit. The household rate is the lowest of the five, but more households pay it, and the middle fifth pays the most of any model.",
+      "Model 2 without the worker credit. The household rate is the lowest of the five, but more households pay it than under Models 1 and 2, and the middle fifth pays the most of any model.",
     combinedByFifth: [0.097, 0.081, 0.104, 0.114, 0.122],
     top1Share: 0.253,
     exemptFamilyOf4: 66_000,
@@ -151,7 +152,7 @@ export const MODELS: readonly RevenueModel[] = [
     id: 5,
     name: 'Stepped rates, no credit',
     blurb:
-      "Six steps, the lower exemption and no worker credit. The board calls it the most progressive and the most complicated. About 7 in 10 filers would pay something.",
+      "Five rates above the lower exemption, and no worker credit. The board calls it the most progressive and the most complicated. About 7 in 10 filers would pay something.",
     combinedByFifth: [0.097, 0.082, 0.099, 0.104, 0.128],
     top1Share: 0.356,
     exemptFamilyOf4: 45_540,

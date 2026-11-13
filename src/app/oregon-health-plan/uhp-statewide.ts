@@ -126,7 +126,7 @@ export const BRIDGE: readonly Step[] = [
     conditional: true,
   },
   {
-    label: 'Providers need far less billing staff, so rates can be set lower',
+    label: 'Providers need fewer billing staff hours, so rates can be set lower',
     delta: -BEST.providerAdmin,
     conditional: true,
   },
