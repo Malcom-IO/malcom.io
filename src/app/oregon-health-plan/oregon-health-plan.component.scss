@@ -1790,7 +1790,7 @@ $warn: #e66767;
 
 .uhp-sq {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: 1.25rem;
   margin-top: 1.75rem;
 }
@@ -1818,10 +1818,11 @@ $warn: #e66767;
 .uhp-sq-big {
   margin: 0.3rem 0 0.9rem;
   font-family: var(--mono);
-  font-size: 2.2rem;
+  font-size: 1.85rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1.05;
+  white-space: nowrap;
 }
 .uhp-sq-bars {
   display: grid;
@@ -1846,6 +1847,18 @@ $warn: #e66767;
 }
 .uhp-sq-card:nth-child(2) .uhp-sq-track span {
   background: $caution;
+}
+// The fourth card borrows the second's amber so the row alternates.
+.uhp-sq-card:nth-child(4) {
+  background:
+    radial-gradient(85% 130% at 0% 100%, color-mix(in srgb, $caution 13%, transparent), transparent 65%),
+    var(--surface);
+  border-color: color-mix(in srgb, $caution 32%, var(--line));
+  border-top-color: color-mix(in srgb, $caution 85%, transparent);
+
+  .uhp-sq-dots .on {
+    background: $caution;
+  }
 }
 .uhp-sq-dots {
   display: flex;
