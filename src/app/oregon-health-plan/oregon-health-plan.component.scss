@@ -2098,6 +2098,11 @@ $warn: var(--warn);
   tr {
     break-inside: avoid;
   }
+  // The households table is nearly a page tall: let it run on from under its
+  // heading and break between rows instead of jumping to a fresh page.
+  .uhp-households {
+    break-inside: auto;
+  }
   // Fine diagonal stripes do not survive every PDF renderer (one bar came out
   // empty), so on paper a conditional bar is a pale fill inside its outline.
   .uhp-key--cond,
@@ -2151,4 +2156,12 @@ $warn: var(--warn);
   .uhp-hero-foot > p:first-of-type {
     white-space: nowrap;
   }
+}
+
+// Example households: a name with its particulars underneath.
+.uhp-household-detail {
+  display: block;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--muted);
 }

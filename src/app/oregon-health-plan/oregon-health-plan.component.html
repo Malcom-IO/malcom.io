@@ -561,8 +561,8 @@
         <strong>The calculator is on the web page.</strong> Enter your household size, income
         and employer at
         <a href="https://www.malcom.io/oregon-universal-health-plan#calculator">www.malcom.io/oregon-universal-health-plan</a>
-        to see your contribution under all five models, beside what you pay today. The board's
-        own example households are in the next section.
+        to see your contribution under all five models, beside what you pay today. The table
+        below runs nine example households through the same schedules.
       </p>
       <p class="uhp-narrow uhp-body uhp-screen-only">
         An estimate of your household contribution, the income-based tax that would replace
@@ -858,6 +858,56 @@
           </figure>
         </div>
       </div>
+
+      <h3 class="uhp-sub" id="households">Example households, side by side</h3>
+      <p class="uhp-narrow uhp-body">
+        The same schedules, run for nine households. Each row is the household contribution
+        for a year under each model, beside what that household pays for health care now. A
+        marked cell is less than it pays today.
+      </p>
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Example households">
+        <table class="uhp-table uhp-table--stack uhp-households">
+          <thead>
+            <tr>
+              <th scope="col">Household</th>
+              <th scope="col" class="num">Pays today</th>
+              @for (m of models; track m.id) {
+                <th scope="col" class="num">Model {{ m.id }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of households; track $index) {
+              <tr>
+                <th scope="row">
+                  {{ row.who }}
+                  <span class="uhp-household-detail">{{ row.detail }}</span>
+                </th>
+                <td class="num" data-label="Pays today">{{ usd(row.now) }}</td>
+                @for (v of row.models; track $index) {
+                  <td class="num" [class.less]="v < row.now" [attr.data-label]="'Model ' + ($index + 1)">
+                    @if (v < row.now) {
+                      <span class="visually-hidden">Less than today: </span>
+                    }
+                    {{ usd(v) }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">our math</span> These are our examples, not the board's. The
+        "pays today" amounts are assumptions chosen for illustration, except $4,700 and $6,900,
+        which are the board's own examples for a couple with job-based coverage and for someone
+        buying a plan. Income is adjusted gross income. For the households with an employer,
+        the figures assume it drops its plan and pay stays the same; the employer would also pay
+        payroll tax on those wages (about 9% at a private employer with an $8.5 million payroll,
+        9.6% to 14% at a public one), which is not shown. Self-employed households get no worker
+        credit. None of the five models caps the contribution, so it keeps rising with income.
+        The rates are the draft appendix's and will change.
+      </p>
 
       <details class="uhp-details uhp-method">
         <summary>How this is calculated, and what it leaves out</summary>

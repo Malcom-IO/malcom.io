@@ -26,6 +26,7 @@ import {
   payrollTax,
 } from './uhp-model';
 
+import { HOUSEHOLD_ROWS } from './uhp-households';
 import { SLIDER_POSITIONS, incomeAt, positionOf } from './income-scale';
 import {
   BEST,
@@ -294,6 +295,8 @@ export class OregonHealthPlanComponent {
   readonly coverage = signal<CoverageKind>('employer');
   readonly scenarioId = signal(SCENARIOS[1].id);
 
+  /** Fixed example households for the side-by-side table. */
+  readonly households = HOUSEHOLD_ROWS;
   readonly coverages = COVERAGES;
   readonly coverageInfo = computed(() => COVERAGES.find((c) => c.kind === this.coverage())!);
 
