@@ -4,16 +4,16 @@
     <div class="container">
       <div class="uhp-narrow">
         <p class="eyebrow eyebrow--hero">Opinion &middot; Marcus Malcom</p>
-        <h1 class="uhp-title">A floor for the middle, a slower climb at the top</h1>
+        <h1 class="uhp-title">A sixth model: less through payroll, more that households can see</h1>
         <p class="op-label">
           <strong>This is one person's opinion.</strong> The
           <a routerLink="/oregon-universal-health-plan">explainer</a> takes no position on the
-          plan, and nothing here changes it. Figures marked
+          plan, and nothing here changes it. Model 6 and every figure marked
           <span class="uhp-ours">my math</span> are mine, not the board's.
         </p>
         <p class="lead-lg mb-0">
-          Everyone would get the same coverage. In the draft, many households would owe no
-          household contribution and a few would pay without limit.
+          All five draft models collect most of the money through employers, where households do
+          not see it. What is left lands on the few who have no employer and high incomes.
         </p>
       </div>
     </div>
@@ -23,74 +23,136 @@
   <section class="section">
     <div class="container">
       <div class="op-stats">
-        <div class="brand-card glow glow-amber edge-top op-stat">
-          <p class="op-stat-label">Tax returns owing no household contribution</p>
-          <p class="op-stat-big">{{ pct(owingNothing.low) }} to {{ pct(owingNothing.high) }}</p>
-          <p class="op-stat-foot">By model. Employers would still pay payroll tax on their wages (report)</p>
+        <div class="brand-card glow glow-blue edge-top op-stat">
+          <p class="op-stat-label">New revenue collected through employers' payroll</p>
+          <p class="op-stat-big">51% to 55%</p>
+          <p class="op-stat-foot">In all five models (report)</p>
         </div>
         <div class="brand-card glow glow-teal glow-bl edge-top op-stat">
-          <p class="op-stat-label">A median family of four, today and in the draft</p>
-          <p class="op-stat-big">{{ usd(median.now) }} &rarr; {{ usd100(medianDraft.low) }} to {{ usd100(medianDraft.high) }}</p>
-          <p class="op-stat-foot">$110,000, private employer (appendix; explainer's table)</p>
+          <p class="op-stat-label">A median family of four: own bill, today and in the draft</p>
+          <p class="op-stat-big">{{ usd(median.now) }} &rarr; {{ usd100(median.low) }} to {{ usd100(median.high) }}</p>
+          <p class="op-stat-foot">Plus about $8,900 through its employer</p>
         </div>
-        <div class="brand-card glow glow-rose glow-tl edge-top op-stat">
-          <p class="op-stat-label">Upper limit on the household contribution</p>
-          <p class="op-stat-big">None</p>
-          <p class="op-stat-foot">In all five models</p>
+        <div class="brand-card glow glow-amber glow-tl edge-top op-stat">
+          <p class="op-stat-label">Tax returns owing no household contribution</p>
+          <p class="op-stat-big">{{ pct(owingNothing.low) }} to {{ pct(owingNothing.high) }}</p>
+          <p class="op-stat-foot">By model. Their employers would still pay payroll tax (report)</p>
         </div>
-        <div class="brand-card glow glow-blue glow-br edge-top op-stat">
+        <div class="brand-card glow glow-rose glow-br edge-top op-stat">
           <p class="op-stat-label">Household contributions paid by the top 1%</p>
           <p class="op-stat-big">{{ pct(stake.shareLow) }} to {{ pct(stake.shareHigh) }}</p>
-          <p class="op-stat-foot">${{ stake.low }}B to ${{ stake.high }}B a year <span class="uhp-ours">my math</span></p>
+          <p class="op-stat-foot">With no upper limit in any model</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ model 6 -->
+  <section class="section section-line" id="model-6">
+    <div class="container">
+      <h2 class="h-section">Model 6</h2>
+      <p class="uhp-narrow uhp-body">
+        The board's Model 3, with money moved from the payroll tax to the household
+        contribution. Same state revenue. Move the slider.
+      </p>
+
+      <div class="brand-card op-controls">
+        <div class="op-control">
+          <label for="op-share">Share of the new revenue that comes from households</label>
+          <div class="op-slider">
+            <input
+              id="op-share"
+              type="range"
+              [min]="shareRange.min * 100"
+              [max]="shareRange.max * 100"
+              [step]="shareRange.step * 100"
+              [value]="share() * 100"
+              [attr.aria-valuetext]="pct(share()) + ' from households'"
+              (input)="setShare($any($event.target).value)"
+            />
+            <output for="op-share">{{ pct(share()) }}</output>
+          </div>
+          <p class="uhp-hint mb-0">At 40% it is exactly the board's Model 3.</p>
+        </div>
+        <label class="op-check">
+          <input type="checkbox" [checked]="softCap()" (change)="softCap.set($any($event.target).checked)" />
+          <span>
+            <strong>Soft cap at the top.</strong> Above the plan's average cost for the household
+            ({{ usd100(costPerPerson) }} a person), each further dollar is halved.
+          </span>
+        </label>
+      </div>
+
+      <div class="op-mix" aria-label="Where the new revenue comes from">
+        @for (row of mix(); track row.label) {
+          <div class="op-mix-row">
+            <span class="op-mix-label">{{ row.label }}</span>
+            <span class="op-mix-bar">
+              <span class="op-seg op-seg--own" [style.flex-grow]="row.household">Households {{ pct(row.household) }}</span>
+              <span class="op-seg op-seg--payroll" [style.flex-grow]="row.payroll">Employer payroll {{ pct(row.payroll) }}</span>
+              <span class="op-seg op-seg--biz" [style.flex-grow]="row.business" [attr.title]="'Business taxes ' + pct(row.business)">{{ pct(row.business) }}</span>
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="op-rates">
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Household rate, above the same exemption</p>
+          <p class="op-rate-big"><span>{{ pct1(baseRate) }}</span> &rarr; {{ pct1(m6().householdRate) }}</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Payroll tax above $500,000</p>
+          <p class="op-rate-big"><span>9.6%</span> &rarr; {{ pct1(m6().payrollLow) }}</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Payroll tax above $10 million</p>
+          <p class="op-rate-big"><span>14.0%</span> &rarr; {{ pct1(m6().payrollHigh) }}</p>
+        </div>
+        <div class="brand-card op-rate">
+          <p class="op-stat-label">Worker credit, business taxes, exemption</p>
+          <p class="op-rate-big op-rate-big--words">As in Model 3</p>
+        </div>
+      </div>
+      <p class="uhp-note">
+        <span class="uhp-ours">my math</span> Model 3 has one household rate and a two-tier payroll
+        tax, so each one's revenue moves in step with its rate. Raising one and lowering the
+        other by the same dollars leaves the state's total where the board set it, if nobody
+        changes what they do. It does not leave federal taxes where they were: see "Behind"
+        below.
+        @if (softCap()) {
+          The soft cap is the exception: it is not priced. It could give up at most
+          ${{ yardstick().low }} billion to ${{ yardstick().high }} billion a year, half of what the
+          top 1% would pay. If it cost all of that, the lower payroll rate would be
+          {{ pct1(reservePayroll()) }}, not {{ pct1(m6().payrollLow) }}.
+        }
+      </p>
     </div>
   </section>
 
   <!-- ============================================================== table -->
   <section class="section section-line" id="households">
     <div class="container">
-      <h2 class="h-section">The same twelve households{{ viewHeading() }}</h2>
+      <h2 class="h-section">The same twelve households, under Model 6</h2>
       <p class="uhp-narrow uhp-body">
-        The explainer's table, with one switch. &darr; less than the household pays today,
-        &uarr; more. A highlighted cell is one the idea changes.
+        The explainer's households. &darr; less than the household pays today, &uarr; more.
       </p>
-
-      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Which version to show">
-        @for (v of views; track v.id) {
-          <button
-            type="button"
-            [class.active]="view() === v.id"
-            [attr.aria-pressed]="view() === v.id"
-            (click)="view.set(v.id)"
-          >
-            {{ v.label }}
-          </button>
-        }
-      </div>
       <p class="op-count" aria-live="polite">
-        @if (view() === 'draft') {
-          The draft, exactly as in the explainer.
-        } @else {
-          Against the draft: <strong>{{ tally().more }}</strong> of {{ rows().length }} households
-          pay more, <strong>{{ tally().less }}</strong> pay less, <strong>{{ tally().same }}</strong>
-          are unchanged.
-          @if (tally().flipped) {
-            <strong>{{ tally().flipped }}</strong> goes from paying less than today to paying more.
-          }
-        }
+        On their own bill, <strong>{{ tally().less }}</strong> of {{ tally().total }} pay less than
+        today and <strong>{{ tally().more }}</strong> pay more. Every household with an employer
+        has less collected through it.
       </p>
 
-      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households">
+      <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households under Model 6">
         <table class="uhp-table uhp-table--stack uhp-households" role="table">
           <thead role="rowgroup">
             <tr role="row">
               <th role="columnheader" scope="col">Household</th>
               <th role="columnheader" scope="col" class="num">Pays today</th>
-              @for (m of models; track m.id) {
-                <th role="columnheader" scope="col" class="num">Model {{ m.id }}</th>
-              }
-              <th role="columnheader" scope="col" class="num">Employer's payroll tax</th>
+              <th role="columnheader" scope="col" class="num">Draft, Models 1 to 5</th>
+              <th role="columnheader" scope="col" class="num op-col-pick">Model 6</th>
+              <th role="columnheader" scope="col" class="num op-col-payroll">Through employer, draft</th>
+              <th role="columnheader" scope="col" class="num">Through employer, Model 6</th>
             </tr>
           </thead>
           <tbody role="rowgroup">
@@ -101,30 +163,21 @@
                   <span class="uhp-household-detail">{{ row.detail }}</span>
                 </th>
                 <td role="cell" class="num" data-label="Pays today">{{ usd(row.now) }}</td>
-                @for (c of row.cells; track $index) {
-                  <td
-                    role="cell"
-                    class="num"
-                    [class.less]="c.value < row.now - 0.5"
-                    [class.more]="c.value > row.now + 0.5"
-                    [class.op-changed]="c.changed"
-                    [class.op-changed--up]="c.changed && c.up"
-                    [attr.data-label]="'Model ' + ($index + 1)"
-                  >
-                    <span class="visually-hidden">{{ c.changed ? 'Changed from ' + usd(c.draft) + ': ' : '' }}{{ c.value < row.now - 0.5 ? 'Less than today: ' : c.value > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(c.value) }}
-                    @if (c.changed) {
-                      <span class="op-was" aria-hidden="true">was {{ usd(c.draft) }}</span>
-                    }
-                  </td>
-                }
-                <td role="cell" class="num op-payroll" data-label="Employer's payroll tax">
-                  @if (row.payroll.high < 1) {
-                    None
-                  } @else if (row.payroll.high - row.payroll.low < 1) {
-                    + {{ usd100(row.payroll.low) }}
-                  } @else {
-                    + {{ usd100(row.payroll.low) }} to {{ usd100(row.payroll.high) }}
-                  }
+                <td role="cell" class="num" data-label="Draft, Models 1 to 5">{{ range(row.draft) }}</td>
+                <td
+                  role="cell"
+                  class="num op-col-pick"
+                  [class.less]="row.own < row.now - 0.5"
+                  [class.more]="row.own > row.now + 0.5"
+                  data-label="Model 6"
+                >
+                  <span class="visually-hidden">{{ row.own < row.now - 0.5 ? 'Less than today: ' : row.own > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.own) }}
+                </td>
+                <td role="cell" class="num op-col-payroll" data-label="Through employer, draft">
+                  {{ row.payroll.draft < 1 ? 'None' : usd100(row.payroll.draft) }}
+                </td>
+                <td role="cell" class="num" data-label="Through employer, Model 6">
+                  {{ row.payroll.model6 < 1 ? 'None' : usd100(row.payroll.model6) }}
                 </td>
               </tr>
             }
@@ -132,25 +185,11 @@
         </table>
       </div>
       <p class="uhp-note">
-        <strong>The model columns are the household's own bill only.</strong> The last column is
-        what its employer would also pay in payroll tax on the same wages, which the appendix
-        assumes comes out of pay over time. "Pays today" likewise leaves out what the employer
-        pays in premiums now.
-      </p>
-      <ul class="uhp-legend op-table-key" aria-hidden="true">
-        <li><span class="uhp-key op-key--up"></span>Pays more than the draft asks</li>
-        <li><span class="uhp-key op-key--down"></span>Pays less than the draft asks</li>
-      </ul>
-      <p class="uhp-note">
-        <span class="uhp-ours">my math</span> Households, "pays today" and the draft's figures are
-        the explainer's. The floor is {{ pct(floorRate) }} of income above the poverty line
-        ({{ usd(povertyFour) }} for four people). The soft cap halves every dollar of contribution
-        above the plan's average cost for the household, {{ usd100(costPerPerson) }} a person
-        (Milliman, 2032). Both numbers are illustrations; neither is priced, and the board's
-        documents specify neither. None of the twelve pays nothing today. Households that do,
-        including many on the Oregon Health Plan, would pay more than today with a floor: in the
-        board's own examples, about $81 a year for a single person at $20,000 and $367 for a
-        couple at $40,000.
+        <span class="uhp-ours">my math</span> "Pays today" and the draft's range are the explainer's
+        and count the household's own bill only. "Through employer" is the payroll tax on that
+        household's wages: the board's 9% example for a private employer, 14% for a public one,
+        under Model 3. The appendix assumes payroll tax comes out of pay over time; nothing
+        requires an employer to pass a cut on.
       </p>
     </div>
   </section>
@@ -159,50 +198,44 @@
   <section class="section section-line">
     <div class="container">
       <h2 class="h-section">The middle and the top</h2>
-      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Which model to show">
-        @for (m of models; track m.id; let i = $index) {
-          <button
-            type="button"
-            [class.active]="modelIndex() === i"
-            [attr.aria-pressed]="modelIndex() === i"
-            (click)="modelIndex.set(i)"
-          >
-            Model {{ m.id }}
-          </button>
-        }
-      </div>
 
-      <h3 class="uhp-sub">The middle: a little more than the draft, and mostly less than today</h3>
+      <h3 class="uhp-sub">The middle: more of the bill is theirs to see, and the total moves little</h3>
+      <ul class="uhp-legend" aria-hidden="true">
+        <li><span class="uhp-key op-key--own"></span>Household's own bill</li>
+        <li><span class="uhp-key op-key--payroll"></span>Through its employer</li>
+        <li><span class="op-mark-key"></span>What it pays today</li>
+      </ul>
       <div class="op-bargrid">
         @for (group of middleBars(); track group.title) {
           <div class="brand-card op-bargroup">
             <p class="op-bargroup-title">{{ group.title }}</p>
-            @for (b of group.items; track b.label) {
+            @for (b of group.bars; track b.label) {
               <div class="op-bar">
                 <span class="op-bar-label">{{ b.label }}</span>
-                <span class="op-bar-track"><span [class]="'op-fill op-fill--' + b.tone" [style.width.%]="b.pct"></span></span>
-                <span class="op-bar-value">{{ usd(b.value) }}</span>
+                <span class="op-bar-track op-bar-track--stack">
+                  <span class="op-fill op-fill--own" [style.width.%]="b.ownPct"></span>
+                  <span class="op-fill op-fill--payroll" [style.width.%]="b.payrollPct"></span>
+                  <span class="op-mark" [style.left.%]="group.nowPct" aria-hidden="true"></span>
+                </span>
+                <span class="op-bar-value">{{ usd100(b.own) }} <span>+ {{ usd100(b.payroll) }}</span></span>
               </div>
             }
+            <p class="op-bargroup-foot">Pays today: {{ usd(group.now) }}</p>
           </div>
         }
       </div>
-      <p class="uhp-note">
-        The exception: the single public employee, who already pays more than today under
-        Models 1, 3 and 5 in the draft, would also pay more under Models 2 and 4.
-      </p>
 
-      <h3 class="uhp-sub">The top: still rising, half as fast</h3>
+      <h3 class="uhp-sub">The top: no employer, so nothing moves off the bill</h3>
       <div class="op-two">
         <figure class="uhp-figure">
           <figcaption>
             <strong>Household contribution by income</strong>
-            <span class="text-muted-2">Family of four, no worker credit, per year</span>
+            <span class="text-muted-2">Family of four, self-employed, per year</span>
           </figcaption>
           <ul class="uhp-legend" aria-hidden="true">
-            <li><span class="uhp-key op-key--draft"></span>The draft</li>
-            <li><span class="uhp-key op-key--pick"></span>Floor + soft cap</li>
-            <li><span class="uhp-key op-key--ceiling"></span>Hard ceiling</li>
+            <li><span class="uhp-key op-key--m1"></span>Draft, Model 1</li>
+            <li><span class="uhp-key op-key--m3"></span>Draft, Model 3</li>
+            <li><span class="uhp-key op-key--m6"></span>Model 6</li>
             <li><span class="uhp-key uhp-key--now"></span>Plan's average cost for four (2032, Milliman)</li>
           </ul>
           <div class="uhp-plot" #plot>
@@ -211,7 +244,7 @@
               [attr.height]="height"
               width="100%"
               role="img"
-              aria-label="Line chart: under the draft the contribution keeps rising with income at the same rate; with a soft cap it keeps rising but half as fast above the plan's average cost; with a hard ceiling it stops there. The table below has the figures."
+              aria-label="Line chart of the household contribution for a self-employed family of four by income, under the draft's Model 1 and Model 3 and under Model 6. The table below has the figures."
             >
               @for (t of yTicks(); track t.label) {
                 <line class="grid" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="t.y" [attr.y2]="t.y" />
@@ -236,18 +269,18 @@
                 <thead>
                   <tr>
                     <th scope="col">Income</th>
-                    <th scope="col" class="num">The draft</th>
-                    <th scope="col" class="num">Floor + soft cap</th>
-                    <th scope="col" class="num">Hard ceiling</th>
+                    @for (label of seriesLabels(); track label) {
+                      <th scope="col" class="num">{{ label }}</th>
+                    }
                   </tr>
                 </thead>
                 <tbody>
                   @for (r of chartTable(); track r.income) {
                     <tr>
                       <th scope="row">{{ usd(r.income) }}</th>
-                      <td class="num">{{ usd(r.draft) }}</td>
-                      <td class="num">{{ usd(r.pick) }}</td>
-                      <td class="num">{{ usd(r.ceiling) }}</td>
+                      @for (v of r.values; track $index) {
+                        <td class="num">{{ usd(v) }}</td>
+                      }
                     </tr>
                   }
                 </tbody>
@@ -255,20 +288,18 @@
             </div>
           </details>
         </figure>
-
         <div class="op-bars">
-          @for (group of topBars(); track group.title) {
-            <div class="brand-card op-bargroup">
-              <p class="op-bargroup-title">{{ group.title }}</p>
-              @for (b of group.items; track b.label) {
-                <div class="op-bar">
-                  <span class="op-bar-label">{{ b.label }}</span>
-                  <span class="op-bar-track"><span [class]="'op-fill op-fill--' + b.tone" [style.width.%]="b.pct"></span></span>
-                  <span class="op-bar-value">{{ usd100(b.value) }}</span>
-                </div>
+          <div class="brand-card glow glow-rose edge-top op-callcard">
+            <span class="card-eyebrow">The catch</span>
+            <p>
+              A higher household rate raises the bill for anyone without an employer.
+              @if (softCap()) {
+                The soft cap is what keeps the top near the draft's Model 3.
+              } @else {
+                Without the soft cap, the top pays more than under any draft model.
               }
-            </div>
-          }
+            </p>
+          </div>
           <p class="uhp-note mb-0">
             Contributions are in today's dollars; the cost of coverage is the 2032 estimate.
           </p>
@@ -277,144 +308,68 @@
     </div>
   </section>
 
-  <!-- ============================================================ options -->
-  <section class="section section-line">
-    <div class="container">
-      <h2 class="h-section">Four ways to reshape it</h2>
-      <div class="op-options">
-        <div class="brand-card glow glow-teal edge-top op-option">
-          <span class="card-eyebrow">My pick</span>
-          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
-            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
-            <path class="op-shape-line op-line--pick" d="M4 52 L12 52 L30 48 L64 33 L116 19" />
-          </svg>
-          <h3 class="uhp-card-title">A floor and a soft cap</h3>
-          <p class="op-option-what">Everyone above the poverty line pays a little. Above the cost of coverage, the rate halves.</p>
-          <dl class="op-facts">
-            <div><dt>$1M and $2M pay</dt><dd>Different amounts</dd></div>
-            <div><dt>The middle pays</dt><dd>A little more</dd></div>
-            <div><dt>Revenue</dt><dd>Gains below, gives up above; not priced</dd></div>
-            <div><dt>Board's view</dt><dd>Soft cap left out as less progressive; no minimum in its documents</dd></div>
-          </dl>
-        </div>
-        <div class="brand-card glow glow-blue glow-tl edge-top op-option">
-          <span class="card-eyebrow">The board looked at this</span>
-          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
-            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
-            <path class="op-shape-line op-line--soft" d="M4 52 L30 52 L64 33 L116 19" />
-          </svg>
-          <h3 class="uhp-card-title">A soft cap alone</h3>
-          <p class="op-option-what">The top rises more slowly. Nothing changes below it.</p>
-          <dl class="op-facts">
-            <div><dt>$1M and $2M pay</dt><dd>Different amounts</dd></div>
-            <div><dt>The middle pays</dt><dd>The same</dd></div>
-            <div><dt>Revenue</dt><dd>Gives up some; not priced</dd></div>
-            <div><dt>Board's view</dt><dd>Left out: less progressive</dd></div>
-          </dl>
-        </div>
-        <div class="brand-card glow glow-rose glow-bl edge-top op-option">
-          <span class="card-eyebrow">Why not this</span>
-          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
-            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
-            <path class="op-shape-line op-line--ceiling" d="M4 52 L30 52 L64 33 L116 33" />
-          </svg>
-          <h3 class="uhp-card-title">A hard ceiling</h3>
-          <p class="op-option-what">The bill stops at the cost of coverage.</p>
-          <dl class="op-facts">
-            <div><dt>$1M and $2M pay</dt><dd>The same</dd></div>
-            <div><dt>The middle pays</dt><dd>The same</dd></div>
-            <div><dt>Revenue</dt><dd>Gives up the most</dd></div>
-            <div><dt>Board's view</dt><dd>Not priced; its soft-cap objection applies more strongly</dd></div>
-          </dl>
-        </div>
-        <div class="brand-card glow glow-amber glow-br edge-top op-option">
-          <span class="card-eyebrow">The blunt one</span>
-          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
-            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
-            <path class="op-shape-line op-line--broad" d="M4 52 L14 52 L116 18" />
-          </svg>
-          <h3 class="uhp-card-title">Lower rate, more income taxed</h3>
-          <p class="op-option-what">Shrink the exempt amount and cut the rate for everyone.</p>
-          <dl class="op-facts">
-            <div><dt>$1M and $2M pay</dt><dd>Different amounts</dd></div>
-            <div><dt>The middle pays</dt><dd>More</dd></div>
-            <div><dt>Revenue</dt><dd>None given up; lower incomes pay more</dd></div>
-            <div><dt>Board's view</dt><dd>Recommended a higher exemption; two models start lower</dd></div>
-          </dl>
-        </div>
-      </div>
-      <p class="uhp-note">
-        Gray is the draft. The last is not in the table or chart above: pricing it needs the
-        state's tax data, which I do not have.
-      </p>
-
-      <h3 class="uhp-sub">Where the slower climb would start</h3>
-      <div class="brand-card op-reach">
-        @for (r of reach; track r.size) {
-          <div class="op-reach-row">
-            <span class="op-reach-label">
-              {{ r.label }}
-              <span>at {{ usd100(r.ceiling) }} of contribution</span>
-            </span>
-            <span class="op-reach-track">
-              <span class="op-reach-bar" [style.left.%]="r.left" [style.width.%]="r.width"></span>
-            </span>
-            <span class="op-reach-value">{{ usd(r.low) }} to {{ usd(r.high) }}</span>
-          </div>
-        }
-        <div class="op-reach-row op-reach-axis" aria-hidden="true">
-          <span class="op-reach-label"></span>
-          <span class="op-reach-track op-reach-track--axis">
-            @for (t of reachTicks; track t) {
-              <span [style.left.%]="t / 10000">{{ t === 0 ? '$0' : t === 1000000 ? '$1M' : '$' + t / 1000 + 'K' }}</span>
-            }
-          </span>
-          <span class="op-reach-value"></span>
-        </div>
-      </div>
-      <p class="uhp-note">
-        <span class="uhp-ours">my math</span> Income at which a household with no worker credit
-        first reaches the plan's average cost for its size, lowest to highest across the five
-        models. It is lower for one person than for a family.
-      </p>
-    </div>
-  </section>
-
   <!-- ========================================================= trade-off -->
   <section class="section section-line">
     <div class="container">
-      <h2 class="h-section">What it costs</h2>
+      <h2 class="h-section">Who comes out behind, and ahead</h2>
       <div class="op-trade">
         <div class="brand-card glow glow-rose edge-top">
-          <span class="card-eyebrow">Against</span>
+          <span class="card-eyebrow">Behind</span>
           <ul class="op-list">
-            <li>A floor takes money from households the draft deliberately charges nothing, to slow the bill for the highest earners. That is less progressive at both ends.</li>
-            <li>Households that pay nothing today, including many on the Oregon Health Plan, would pay more than today. So would the single public employee in the table, under Models 2 and 4.</li>
-            <li>Neither number is priced. The floor may not cover what the soft cap gives up.</li>
-            <li>The board left a soft cap out because it makes the structure less progressive, and its committee said avoidance "may be limited for most households."</li>
+            <li><strong>Oregon, in federal taxes.</strong> This is the board's central reason for the payroll tax: employer health spending is untaxed, and routing contributions through payroll "keeps the tax advantage that wages do not get," instead of the money "leaving Oregon as increased federal taxes." Model 6 gives some of that up. I have not sized it.</li>
+            <li><strong>Public employees.</strong> The single public employee's own bill goes from {{ usd(publicSingle().now) }} today to about {{ usd100(publicSingle().own) }}. Their employers' tax falls, but a raise is not guaranteed.</li>
+            <li><strong>Anyone whose employer keeps the savings.</strong> Nothing requires a payroll tax cut to become pay.</li>
+            <li><strong>The self-employed and retirees with income.</strong> They have no employer share to shrink.</li>
           </ul>
         </div>
         <div class="brand-card glow glow-teal glow-tl edge-top">
-          <span class="card-eyebrow">For</span>
+          <span class="card-eyebrow">Ahead</span>
           <ul class="op-list">
-            <li>Everyone above the poverty line pays something, and the working households in the examples still pay far less than today, with one exception.</li>
-            <li>A household at $2,000,000 still pays more than one at $1,000,000. It is not a cap.</li>
-            <li>A plan for everyone should not lean this hard on about 1 in 100 filers staying put.</li>
-            <li>The committee weighed a soft cap to avoid a schedule that "could be perceived as punitive relative to current health care payments."</li>
+            <li><strong>Voters and lawmakers.</strong> The cost is on the tax return, where it can be seen and argued about.</li>
+            <li><strong>Employers.</strong> About {{ pct(payrollCut()) }} less payroll tax, which matters most to large, low-margin ones.</li>
+            <li><strong>Workers whose employers pass it on,</strong> at about the same total.</li>
+            <li><strong>The plan's stability.</strong> Less of the money rests on about 1 in 100 filers staying put.</li>
           </ul>
         </div>
       </div>
-      <p class="uhp-status op-ask">
-        <strong>What I would ask for:</strong> have the board's actuaries price a floor and a soft
-        cap together, and show who pays more and who pays less, before the Legislature picks a
-        model.
-      </p>
 
+      <h3 class="uhp-sub">Why not something smaller</h3>
+      <div class="op-why">
+        <div class="brand-card op-option">
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
+            <path class="op-shape-line op-line--m1" d="M4 52 L30 52 L64 33 L116 33" />
+          </svg>
+          <h4 class="uhp-card-title">A hard ceiling</h4>
+          <p class="op-option-what">A household at $1,000,000 and one at $2,000,000 would pay the same.</p>
+        </div>
+        <div class="brand-card op-option">
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
+            <path class="op-shape-line op-line--m6" d="M4 52 L30 52 L64 33 L116 19" />
+          </svg>
+          <h4 class="uhp-card-title">A soft cap alone</h4>
+          <p class="op-option-what">Gives up revenue at the top and changes nothing for the middle. The board left it out as less progressive.</p>
+        </div>
+        <div class="brand-card op-option">
+          <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+            <path class="op-shape-base" d="M4 52 L30 52 L116 4" />
+            <path class="op-shape-line op-line--m3" d="M4 52 L12 52 L30 48 L116 4" />
+          </svg>
+          <h4 class="uhp-card-title">A minimum contribution</h4>
+          <p class="op-option-what">Charges households that pay nothing today, including many on the Oregon Health Plan.</p>
+        </div>
+      </div>
+
+      <p class="uhp-status op-ask">
+        <strong>What I would ask for:</strong> have the board's actuaries price a model with a
+        lower payroll tax and a higher household rate, with and without a soft cap, and show who
+        pays more and who pays less, before the Legislature picks one.
+      </p>
       <p class="uhp-note op-end">
         Written {{ updated }} by Marcus Malcom, who built the
         <a routerLink="/oregon-universal-health-plan">explainer</a>. This is my view, not the
-        board's and not a finding of that page. Quotations are from the draft report and the
-        ECOnorthwest finance and revenue report. Disagree?
+        board's and not a finding of that page. Disagree?
         <a [routerLink]="['/']" fragment="contact">Tell me</a>.
       </p>
     </div>
