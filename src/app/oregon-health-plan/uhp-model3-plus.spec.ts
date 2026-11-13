@@ -1,19 +1,26 @@
 import { HOUSEHOLD_ROWS } from './uhp-households';
 import {
-  COST_PER_PERSON,
   CREDIT,
   FIVE_MODELS,
+  KEPT,
   PLUS_ROWS,
   bill,
   creditRate,
   creditRateRange,
-  rateCoveringSoftCap,
+  crossover,
+  ownPlanToday,
+  proposalRate,
+  proposalRateRange,
   ratesAtBothTargets,
-  softCapYardstick,
+  slowerClimbDollars,
+  slowerClimbLoss,
   softCapped,
   threshold,
   thresholdIncome,
 } from './uhp-model3-plus';
+
+const row = (who: string, income: number) =>
+  PLUS_ROWS.find((r) => r.who === who && r.income === income)!;
 
 describe('Model 3 with changes (opinion page)', () => {
   // The low end of the range is a straight line between two of the board's own
@@ -48,90 +55,106 @@ describe('Model 3 with changes (opinion page)', () => {
     expect(creditRateRange(0.5).low).toBeLessThan(creditRateRange(0.5).high);
   });
 
-  it('lowers the bill for every example household with an employer', () => {
-    for (const row of PLUS_ROWS.filter((r) => r.employer !== 'none')) {
-      expect(row.withCredit).toBeLessThan(row.model3);
+  it('change 1 alone lowers the bill for every example household with an employer', () => {
+    for (const r of PLUS_ROWS.filter((x) => x.employer !== 'none')) {
+      expect(r.withCredit).toBeLessThan(r.model3);
     }
   });
 
-  // The page must not hide who pays for the credit. Pin them.
-  it('raises the bill for exactly the households with no employer', () => {
-    const more = PLUS_ROWS.filter((r) => r.withCredit > r.model3).map((r) => `${r.who} ${r.income}`);
+  it('starts the slower climb at twice what an own plan costs today', () => {
+    // Table S1 and Figure AFR4Fc.
+    expect(ownPlanToday(1)).toBe(6_900);
+    expect(ownPlanToday(4)).toBe(22_871);
+    expect(threshold(1)).toBe(13_800);
+    expect(threshold(4)).toBe(45_742);
+    // Sizes between sit on the line between the two.
+    expect(threshold(2)).toBeGreaterThan(threshold(1));
+    expect(threshold(2)).toBeLessThan(threshold(4));
+    expect(KEPT).toBe(0.25);
+    expect(softCapped(40_000, 4)).toBe(40_000);
+    expect(softCapped(85_742, 4)).toBe(45_742 + 10_000);
+  });
+
+  // The loss is assumed shares of the board's group shares: top 1% halfway
+  // between 25.3% and 33.9%, the next 4% halfway between 18.5% and 20.2%.
+  it('prices the slower climb as a range', () => {
+    const loss = slowerClimbLoss();
+    expect(loss.low).toBeCloseTo(0.75 * (0.75 * 0.296 + 0.2 * 0.1935), 4);
+    expect(loss.high).toBeCloseTo(0.75 * (0.9 * 0.296 + 0.45 * 0.1935), 4);
+    // $12 billion x loss / (1 - loss).
+    expect(slowerClimbDollars()).toEqual({ low: 2.9, high: 4.3 });
+    const range = proposalRateRange();
+    // The rate rises by 7.69% x loss / (1 - loss): only the net contribution is grossed up.
+    expect(range.low).toBeCloseTo(0.0987 + 0.0769 * (loss.low / (1 - loss.low)), 4);
+    expect(range.low).toBeCloseTo(0.117, 3);
+    expect(range.high).toBeCloseTo(0.131, 3);
+    expect(proposalRate()).toBeGreaterThan(range.low);
+    expect(proposalRate()).toBeLessThan(range.high);
+    expect(proposalRate()).toBeCloseTo(0.124, 3);
+    // A family of four with no employer reaches the threshold near $430,000.
+    expect(Math.round(thresholdIncome(4) / 10_000) * 10_000).toBe(430_000);
+  });
+
+  it('puts the top rows near three and four times today, not six', () => {
+    const one = row('Family of four, self-employed', 1_000_000);
+    const two = row('Family of four, self-employed', 2_000_000);
+    expect(Math.round(one.withBoth / 1_000)).toBe(63);
+    expect(Math.round(two.withBoth / 1_000)).toBe(94);
+    // It never stops rising, and both are below Model 3.
+    expect(two.withBoth).toBeGreaterThan(one.withBoth);
+    expect(one.withBoth).toBeLessThan(one.model3);
+    expect(two.withBoth).toBeLessThan(two.model3);
+  });
+
+  // The page must not hide who pays for the slower climb. Pin them.
+  it('raises the bill, against Model 3, for exactly these households', () => {
+    const more = PLUS_ROWS.filter((r) => r.withBoth > r.model3).map((r) => `${r.who} ${r.income}`);
     expect(more).toEqual([
       'Self-employed, buys own plan 90000',
+      // By about $150: two exemptions cover less of a couple's income than four do.
+      'Couple, private employer 85000',
       'Retired couple on Medicare 75000',
+      'Family of four, private employer 220000',
       'Family of four, self-employed 400000',
-      'Family of four, self-employed 1000000',
-      'Family of four, self-employed 2000000',
     ]);
   });
 
-  it('takes the single public employee from $3,697 to about $2,300', () => {
-    const row = PLUS_ROWS.find((r) => r.who === 'Single public employee')!;
-    expect(Math.round(row.model3)).toBe(3_697);
-    // 48,080 x 10.11% = 4,862, less a quarter of 14% of 73,300 = 2,566.
-    expect(Math.round(row.withCredit / 100) * 100).toBe(2_300);
+  it('keeps the middle below Model 3 and far below today', () => {
+    const median = row('Family of four, private employer', 110_000);
+    expect(Math.round(median.withBoth / 100) * 100).toBe(3_200);
+    expect(median.withBoth).toBeLessThan(median.model3);
+    expect(median.withBoth).toBeLessThan(median.now / 3);
+    const teacher = row('Single public employee', 80_000);
+    expect(Math.round(teacher.model3)).toBe(3_697);
+    expect(Math.round(teacher.withBoth / 100) * 100).toBe(3_400);
   });
 
-  it('starts the slower climb at the plan cost for the household', () => {
-    // $77.7 billion over 4.423 million people.
-    expect(COST_PER_PERSON).toBe(17_600);
-    expect(threshold(4)).toBe(70_400);
-    expect(softCapped(50_000, 4)).toBe(50_000);
-    expect(softCapped(100_000, 4)).toBe(70_400 + 29_600 / 2);
-    // 66,000 + 70,400 / 10.11%.
-    expect(Math.round(thresholdIncome(4) / 10_000) * 10_000).toBe(760_000);
-  });
-
-  it('with both changes: $2,000,000 still pays more than $1,000,000, and less than under Model 3', () => {
-    const one = PLUS_ROWS.find((r) => r.income === 1_000_000)!;
-    const two = PLUS_ROWS.find((r) => r.income === 2_000_000)!;
-    expect(two.withBoth).toBeGreaterThan(one.withBoth);
-    expect(two.withBoth).toBeLessThan(two.model3);
-    expect(one.withBoth).toBeGreaterThan(one.model3);
-    expect(Math.round(one.withBoth / 1_000)).toBe(82);
-    expect(Math.round(two.withBoth / 1_000)).toBe(133);
-  });
-
-  it('leaves households below the threshold untouched by the soft cap', () => {
-    for (const row of PLUS_ROWS.filter((r) => r.income <= 400_000)) {
-      expect(row.withBoth).toBe(row.withCredit);
-    }
-  });
-
-  it('sizes the soft cap yardstick and the rate that would cover it', () => {
-    const y = softCapYardstick();
-    // Top 1% share halfway between 25.3% and 33.9%; 40% of $30B and $39B; half.
-    expect(y.top1Share).toBeCloseTo(0.296, 3);
-    expect(y).toMatchObject({ low: 1.8, high: 2.3 });
-    expect(rateCoveringSoftCap()).toBeCloseTo(0.1187, 3);
-  });
-
-  // The honest end state: if the household rate pays for the soft cap, the
-  // very top lands back about where Model 3 had it, and the middle still gains.
-  it('once the rate pays for the soft cap, $2,000,000 is back near Model 3', () => {
-    const two = PLUS_ROWS.find((r) => r.income === 2_000_000)!;
-    expect(Math.abs(two.withBothPaidFor - two.model3)).toBeLessThan(3_000);
-    const median = PLUS_ROWS.find(
-      (r) => r.size === 4 && r.income === 110_000 && r.employer === 'private',
-    )!;
-    expect(median.withBothPaidFor).toBeLessThan(median.model3);
-    expect(median.withBothPaidFor).toBeGreaterThan(median.withBoth);
+  it('finds where the proposal crosses Model 3', () => {
+    // A family with a private employer pays less up to a little past the median.
+    const employed = crossover(4, 'private', 0.9, 70_000, 400_000);
+    expect(employed).toBeGreaterThan(110_000);
+    expect(employed).toBeLessThan(130_000);
+    // A self-employed family pays less from somewhere under $1,000,000.
+    const top = crossover(4, 'none', 0, 450_000, 2_000_000);
+    expect(top).toBeGreaterThan(700_000);
+    expect(top).toBeLessThan(900_000);
   });
 
   it("scales every rate by 1.3 at the actuary's estimate", () => {
     const r = ratesAtBothTargets();
     expect(r.board.household).toBeCloseTo(0.0769, 6);
     expect(r.actuary.household).toBeCloseTo(0.1, 3);
-    expect(r.actuary.householdWithCredit).toBeCloseTo(creditRate() * 1.3, 6);
+    expect(r.board.householdProposal).toBeCloseTo(proposalRate(), 10);
+    expect(r.actuary.householdProposal).toBeCloseTo(proposalRate() * 1.3, 6);
     expect(r.actuary.payrollLow).toBeCloseTo(0.1248, 4);
     expect(r.actuary.payrollHigh).toBeCloseTo(0.182, 3);
   });
 
-  it('shows Model 3 as the lightest at the top and the heaviest for the median family', () => {
-    const lowestTop = [...FIVE_MODELS].sort((a, b) => a.top - b.top)[0];
-    const highestMedian = [...FIVE_MODELS].sort((a, b) => b.median - a.median)[0];
-    expect(lowestTop.id).toBe(3);
-    expect(highestMedian.id).toBe(3);
+  it('lands below every draft model at the top, and below Model 3 in the middle', () => {
+    const mine = FIVE_MODELS.find((m) => m.id === 0)!;
+    const drafts = FIVE_MODELS.filter((m) => m.id !== 0);
+    expect(mine.top).toBeLessThan(Math.min(...drafts.map((m) => m.top)));
+    expect(mine.median).toBeLessThan(drafts.find((m) => m.id === 3)!.median);
+    expect([...drafts].sort((a, b) => a.top - b.top)[0].id).toBe(3);
   });
 });

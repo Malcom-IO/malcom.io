@@ -1,6 +1,6 @@
 import { HOUSEHOLD_ROWS } from './uhp-households';
 import { EmployerKind, FPL_200, MODELS, employerRate } from './uhp-model';
-import { BEST, POPULATION_2032, REVENUE_TARGET } from './uhp-statewide';
+import { REVENUE_TARGET } from './uhp-statewide';
 
 /**
  * Arithmetic for the OPINION page only. None of it is the board's, and none of
@@ -47,11 +47,11 @@ export const CHANGES: readonly Change[] = [
     id: 2,
     name: 'A slower climb',
     description:
-      "A soft cap. Above the plan's average cost for the household, each further dollar of contribution is halved. It never stops rising.",
-    fixes: 'A bill several times the cost of coverage at the very top, and the risk that those households leave',
-    costs: 'Revenue from the highest earners, made up by everyone below or by the payroll tax',
-    priced: 'Roughly: a yardstick, not a price',
-    standing: 'Conditional. Only if it is paid for from outside the household rate',
+      'A soft cap. Above twice what a household buying its own coverage pays today, each further dollar of contribution is cut to a quarter. It never stops rising.',
+    fixes: 'A bill many times the cost of coverage at the top (it shrinks it; it does not end it), and the risk that those households leave',
+    costs: 'A higher household rate again, paid by everyone below the cap',
+    priced: 'Roughly, as a range. The documents do not give enough to price it',
+    standing: 'Worth doing. The middle pays for it and still pays far less than today',
   },
   {
     id: 3,
@@ -96,7 +96,7 @@ export function creditRateRange(credit = CREDIT): { low: number; high: number } 
   };
 }
 
-/** The middle of the range, used for the example households. */
+/** The middle of the range: the rate with change 1 alone. */
 export function creditRate(credit = CREDIT): number {
   const { low, high } = creditRateRange(credit);
   return (low + high) / 2;
@@ -109,34 +109,118 @@ export function payrollRate(kind: EmployerKind): number {
 
 // --------------------------------------------------------- 2. A slower climb
 /**
- * What the plan would spend per Oregonian in 2032, on Milliman's best estimate.
- * An all-ages statewide average, in 2032 dollars: a yardstick for "the cost of
- * coverage", not the cost of any particular household.
+ * What a household buying its own coverage pays today, premiums and
+ * out-of-pocket, in the board's examples: $6,900 for one person (Table S1) and
+ * $22,871 for a family of four (Appendix FR, Figure AFR4Fc). Sizes between
+ * are a straight line between the two, which is ours.
  */
-export const COST_PER_PERSON = Math.round((BEST.plan * 1e9) / POPULATION_2032 / 100) * 100;
-
-/** Where the slower climb starts for a household: the plan's average cost for its size. */
-export function threshold(size: number): number {
-  return COST_PER_PERSON * size;
+const OWN_PLAN = {
+  one: HOUSEHOLD_ROWS.find((h) => h.who === 'Self-employed, buys own plan')!.now,
+  four: HOUSEHOLD_ROWS.find((h) => h.who === 'Family of four, self-employed')!.now,
+};
+export function ownPlanToday(size: number): number {
+  return OWN_PLAN.one + ((OWN_PLAN.four - OWN_PLAN.one) * (Math.min(size, 4) - 1)) / 3;
 }
 
-/** Above the threshold, each further dollar of contribution is halved. */
+/** The slower climb starts at this multiple of today's own-plan cost... */
+export const START_MULTIPLE = 2;
+/** ...and above it this share of each further dollar is still paid. */
+export const KEPT = 0.25;
+
+/** Where the slower climb starts for a household: twice what its own plan costs today. */
+export function threshold(size: number): number {
+  return START_MULTIPLE * ownPlanToday(size);
+}
+
+/** Above the threshold, each further dollar of contribution is cut to a quarter. */
 export function softCapped(bill: number, size: number): number {
   const top = threshold(size);
-  return bill <= top ? bill : top + (bill - top) / 2;
+  return bill <= top ? bill : top + (bill - top) * KEPT;
+}
+
+/**
+ * The share of the household contribution the slower climb gives up, as a
+ * range. It is three quarters of whatever sits above the threshold, and the
+ * documents give shares of the contribution by income group (Appendix FR page
+ * 33 and Figure AFR4Ff), not bills by household. So how much of each group's
+ * contribution sits above the threshold is assumed, and stated:
+ *
+ * LOW:  75% of what the top 1% pay, and 20% of what the next 4% pay.
+ * HIGH: 90% of what the top 1% pay, and 45% of what the next 4% pay.
+ *
+ * Why those. Nearly every top-1% household is above its threshold, so the
+ * share above is at least 1 - (average threshold / average bill): 16.4% of
+ * about $163 billion of income (2022) over very roughly 17,000 returns is
+ * $1.6 million a return, a bill near $150,000 against a threshold near
+ * $35,000, so about three quarters at least. For the next 4%, Figure AFR4Fa
+ * puts the 95th percentile at $150,000 for one person, $350,000 for two and
+ * $500,000 for four: a single person there is already at the threshold, a
+ * family of four mostly is not. Each group's share of the contribution is
+ * taken halfway between Model 3 (no credit) and Model 2 (50% credit).
+ *
+ * Left out: households above the threshold pay only a quarter of any rate
+ * increase, which pushes the true rate somewhat higher than this gives.
+ */
+const NEXT4_SHARE = { model3: 0.185, model2: 0.202 };
+export function slowerClimbLoss(credit = CREDIT): { low: number; high: number } {
+  const t = credit / 0.5;
+  const top1 = MODEL3.top1Share + (MODEL2.top1Share - MODEL3.top1Share) * t;
+  const next4 = NEXT4_SHARE.model3 + (NEXT4_SHARE.model2 - NEXT4_SHARE.model3) * t;
+  const cut = 1 - KEPT;
+  return {
+    low: cut * (0.75 * top1 + 0.2 * next4),
+    high: cut * (0.9 * top1 + 0.45 * next4),
+  };
+}
+
+/**
+ * The household rate that makes up a lost share of the contribution. The loss
+ * is a share of what households pay AFTER the worker credit, and the credit is
+ * a fixed number of dollars, so only the net contribution is grossed up: the
+ * rate rises by Model 3's rate (the net contribution over taxed income) times
+ * loss / (1 - loss). Scaling the whole rate would gross up the credit too.
+ */
+function rateCovering(rate: number, loss: number): number {
+  return rate + MODEL3.topRate * (loss / (1 - loss));
+}
+
+/** The household rate with both changes, the slower climb paid for by the rate: a range. */
+export function proposalRateRange(credit = CREDIT): { low: number; high: number } {
+  const rate = creditRateRange(credit);
+  const loss = slowerClimbLoss(credit);
+  return { low: rateCovering(rate.low, loss.low), high: rateCovering(rate.high, loss.high) };
+}
+
+/** The rate the example households use: the middle credit rate, the middle loss. */
+export function proposalRate(credit = CREDIT): number {
+  const loss = slowerClimbLoss(credit);
+  return rateCovering(creditRate(credit), (loss.low + loss.high) / 2);
+}
+
+/**
+ * What the slower climb moves off the top, in billions a year. Households are
+ * 40% of the target; with the rate raised, the contribution before the cap is
+ * that over (1 - loss), so the amount moved is loss / (1 - loss) of it.
+ */
+export function slowerClimbDollars(credit = CREDIT): { low: number; high: number } {
+  const loss = slowerClimbLoss(credit);
+  const moved = (l: number) =>
+    Math.round(((REVENUE_TARGET.board * 0.4 * l) / (1 - l)) * 10) / 10;
+  return { low: moved(loss.low), high: moved(loss.high) };
 }
 
 /** The income at which a household with no employer reaches the threshold. */
 export function thresholdIncome(size: number, credit = CREDIT): number {
-  return FPL_200[size] + threshold(size) / creditRate(credit);
+  return FPL_200[size] + threshold(size) / proposalRate(credit);
 }
 
 // ------------------------------------------------------------ the household
 export interface Options {
   /** Worker credit share; 0 is Model 3 as drafted. */
   credit?: number;
+  /** The slower climb, with the household rate raised to pay for it. */
   softCap?: boolean;
-  /** The household rate, when not the middle of the range for that credit. */
+  /** The household rate, when not the one that follows from the options. */
   rate?: number;
 }
 
@@ -148,71 +232,59 @@ export function bill(
   employer: EmployerKind,
   { credit = 0, softCap = false, rate }: Options = {},
 ): number {
-  const gross = Math.max(0, income - FPL_200[size]) * (rate ?? creditRate(credit));
+  const r = rate ?? (softCap ? proposalRate(credit) : creditRate(credit));
+  const gross = Math.max(0, income - FPL_200[size]) * r;
   const net = Math.max(0, gross - credit * payrollRate(employer) * wages);
   return softCap ? softCapped(net, size) : net;
 }
 
-// ------------------------------------------------------------- the yardstick
 /**
- * Roughly what the soft cap could give up, in billions a year: half of what
- * the top 1% would pay. The top 1%'s share of the household contribution is
- * 25.3% under Model 3 and 33.9% under Model 2; with a 25% credit it is taken
- * as halfway. The household contribution is 40% of the revenue target.
- *
- * Not a bound in either direction: only dollars above the threshold are
- * halved, which makes the true figure smaller, and the cap also reaches some
- * high earners below the top 1%, which makes it larger.
+ * The twelve example households: Model 3; with change 1 alone; and the
+ * proposal, both changes with the household rate raised to pay for the
+ * slower climb.
  */
-export function softCapYardstick(credit = CREDIT): { low: number; high: number; top1Share: number } {
-  const top1Share = MODEL3.top1Share + (MODEL2.top1Share - MODEL3.top1Share) * (credit / 0.5);
-  const half = 0.4 * top1Share * 0.5;
-  return {
-    low: Math.round(REVENUE_TARGET.board * half * 10) / 10,
-    high: Math.round(REVENUE_TARGET.best * half * 10) / 10,
-    top1Share,
-  };
+export const PLUS_ROWS = HOUSEHOLD_ROWS.map((h) => ({
+  ...h,
+  model3: h.models[MODEL3.id - 1],
+  withCredit: bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT }),
+  withBoth: bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap: true }),
+  payroll: h.wages * payrollRate(h.employer),
+}));
+
+/**
+ * The income at which a household's bill under the proposal crosses its bill
+ * under Model 3, searched between two incomes. Used for "pays less up to
+ * about..." and "pays less above about...".
+ */
+export function crossover(
+  size: number,
+  employer: EmployerKind,
+  wageShare: number,
+  from: number,
+  to: number,
+): number {
+  const gap = (income: number) =>
+    bill(income, income * wageShare, size, employer, { credit: CREDIT, softCap: true }) -
+    bill(income, income * wageShare, size, employer);
+  let lo = from;
+  let hi = to;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (Math.sign(gap(mid)) === Math.sign(gap(lo))) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
 }
-
-/**
- * The household rate if the soft cap cost its whole yardstick and the rate
- * alone made it up: the same money from a contribution that much smaller.
- */
-export function rateCoveringSoftCap(credit = CREDIT): number {
-  const lost = softCapYardstick(credit).top1Share * 0.5;
-  return creditRate(credit) / (1 - lost);
-}
-
-/**
- * The twelve example households: Model 3; with changes 1 and 2 as proposed
- * (the soft cap's cost left out, so paid from outside the household rate); and
- * with the household rate raised to pay for the soft cap, which is the honest
- * end state if nothing else makes up the money. `withCredit` (change 1 alone)
- * is not a table column; the chart draws it and the tests pin it.
- */
-export const PLUS_ROWS = HOUSEHOLD_ROWS.map((h) => {
-  const at = (softCap: boolean, rate?: number) =>
-    bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap, rate });
-  return {
-    ...h,
-    model3: h.models[MODEL3.id - 1],
-    withCredit: at(false),
-    withBoth: at(true),
-    withBothPaidFor: at(true, rateCoveringSoftCap()),
-    payroll: h.wages * payrollRate(h.employer),
-  };
-});
-
 
 // --------------------------------------------------------- 3. Honest rates
 /** How much more the actuary's estimate needs than the board's. */
 export const TARGET_SCALE = REVENUE_TARGET.best / REVENUE_TARGET.board;
 
-/** The rates at the board's target and at the actuary's, for Model 3 and with the credit. */
+/** The rates at the board's target and at the actuary's, for Model 3 and for the proposal. */
 export function ratesAtBothTargets(credit = CREDIT) {
   const at = (scale: number) => ({
     household: MODEL3.topRate * scale,
-    householdWithCredit: creditRate(credit) * scale,
+    householdProposal: proposalRate(credit) * scale,
     payrollLow: 0.096 * scale,
     payrollHigh: 0.14 * scale,
   });
@@ -233,8 +305,8 @@ export const FIVE_MODELS = (() => {
     bill(h.income, h.wages, h.size, h.employer, { credit: CREDIT, softCap: true });
   return [
     ...MODELS.map((m, i) => ({ label: `Model ${m.id}`, id: m.id as number, top: top.models[i], median: median.models[i] })),
-    // The same two households with changes 1 and 2, so the comparison is honest
-    // about where the proposal lands among the five.
+    // The same two households under the proposal, so the comparison is honest
+    // about where it lands among the five.
     { label: 'With my changes', id: 0, top: pick(top), median: pick(median) },
   ];
 })();
