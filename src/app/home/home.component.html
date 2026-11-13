@@ -227,19 +227,31 @@
   </div>
 </section>
 
-<!--Side project: a civic explainer, kept quiet so it does not compete with the studio's own work-->
-<section class="home-aside" appReveal>
+<!--Side project: a civic explainer. Its own section, visibly not a product.-->
+<section id="oregon-health-plan" class="section section-line" appReveal>
   <div class="container">
-    <div class="brand-card product-strip">
-      <div>
-        <span class="card-eyebrow">Side project &middot; Oregon</span>
-        <p class="text-muted-2 mb-0 mt-1">
-          Oregon's proposed Universal Health Plan, explained in plain language: what it covers,
-          the five tax models, and a calculator for your household.
+    <p class="eyebrow">Side project</p>
+    <h2 class="h-section">Oregon's Universal Health Plan, explained</h2>
+    <a routerLink="/oregon-universal-health-plan" class="civic-card">
+      <div class="civic-text">
+        <p class="lead-lg mb-0">
+          A state board has proposed one public health plan for everyone in Oregon, paid for
+          with new taxes instead of premiums. The report runs 77 pages. We read it, checked its
+          math, and wrote the short version.
         </p>
+        <ul class="civic-points">
+          <li>What it covers, and what happens to the coverage you have</li>
+          <li>The five tax models, side by side</li>
+          <li>A calculator for what your household would pay</li>
+        </ul>
+        <span class="btn btn-primary">Read the explainer <span aria-hidden="true">&rarr;</span></span>
       </div>
-      <a routerLink="/oregon-universal-health-plan" class="product-link ms-md-auto">Read the explainer <span aria-hidden="true">&rarr;</span></a>
-    </div>
+      <div class="civic-figures" aria-hidden="true">
+        <div><strong>5</strong><span>tax models, none chosen yet</span></div>
+        <div><strong>$30&ndash;39B</strong><span>in new state taxes a year</span></div>
+        <div><strong>2032</strong><span>earliest it could be running</span></div>
+      </div>
+    </a>
   </div>
 </section>
 
