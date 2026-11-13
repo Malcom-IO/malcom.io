@@ -20,12 +20,54 @@ import { REVENUE_TARGET } from './uhp-statewide';
  */
 export const BASE = MODELS[2];
 
+/**
+ * The models this page proposes. Like the board's five, each has a number, a
+ * short name of ours and a one-paragraph description. Model 6 is priced below;
+ * Model 7 cannot be priced without the state's tax-return data.
+ */
+export interface ProposedModel {
+  id: 6 | 7;
+  name: string;
+  description: string;
+  /** One line: what it changes in the board's Model 3. */
+  change: string;
+  priced: boolean;
+  /** What it does for the two things this page cares about, and to revenue. */
+  middle: string;
+  top: string;
+  revenue: string;
+}
+
+export const PROPOSED: readonly ProposedModel[] = [
+  {
+    id: 6,
+    name: 'Less payroll, higher household rate',
+    description:
+      "The board's Model 3 with money moved from the employer payroll tax to the household contribution. Households see more of what the plan costs them, and employers pay less.",
+    change: 'Payroll tax down, household rate up, by the same dollars',
+    priced: true,
+    middle: 'More, on a bill it can see',
+    top: 'More, unless softened',
+    revenue: 'Same as Model 3',
+  },
+  {
+    id: 7,
+    name: 'Lower rate, more income taxed',
+    description:
+      "The board's Model 3 with a smaller exempt amount and a lower household rate. More households pay something, each at a lower rate, and the payroll tax is left as the board has it.",
+    change: 'Exemption down, household rate down, payroll tax unchanged',
+    priced: false,
+    middle: 'More, at a lower rate',
+    top: 'Less',
+    revenue: 'Meant to match Model 3; needs pricing',
+  },
+];
+
 /** Model 3's shares of the new revenue (report, "% of Revenue"; business taxes about 5%). */
 export const BASE_SHARES = { household: 0.4, payroll: 0.55, business: 0.05 };
 
-/** The household share the page opens on, and the range its slider offers. */
+/** Model 6's household share of the new revenue. Model 3's is 40%. */
 export const DEFAULT_HOUSEHOLD_SHARE = 0.6;
-export const SHARE_RANGE = { min: 0.4, max: 0.7, step: 0.05 };
 
 export interface Model6 {
   /** Share of the new revenue from households, from payroll, from business taxes. */

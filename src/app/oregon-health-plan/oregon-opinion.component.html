@@ -4,16 +4,17 @@
     <div class="container">
       <div class="uhp-narrow">
         <p class="eyebrow eyebrow--hero">Opinion &middot; Marcus Malcom</p>
-        <h1 class="uhp-title">A sixth model: less through payroll, more that households can see</h1>
+        <h1 class="uhp-title">Two more models the board should price</h1>
         <p class="op-label">
           <strong>This is one person's opinion.</strong> The
           <a routerLink="/oregon-universal-health-plan">explainer</a> takes no position on the
-          plan, and nothing here changes it. Model 6 and every figure marked
+          plan, and nothing here changes it. Models 6 and 7 and every figure marked
           <span class="uhp-ours">my math</span> are mine, not the board's.
         </p>
         <p class="lead-lg mb-0">
-          All five draft models collect most of the money through employers, where households do
-          not see it. A quarter to two fifths of the rest comes from the top 1% of tax filers.
+          All five draft models make the same choice: most of the money through employers, where
+          households do not see it, and a quarter to two fifths of the rest from the top 1% of
+          tax filers. I would like two other choices priced before the Legislature picks.
         </p>
       </div>
     </div>
@@ -47,42 +48,57 @@
     </div>
   </section>
 
+  <!-- ======================================================= the two models -->
+  <section class="section section-line" id="models">
+    <div class="container">
+      <h2 class="h-section">The two models</h2>
+      <p class="uhp-narrow uhp-body">
+        Both start from the board's Model 3. I want two things the draft does not give: a middle
+        that pays a share it can see, and a top that is not charged without limit. Neither model
+        does both for certain.
+      </p>
+      <div class="op-models">
+        @for (m of proposed; track m.id) {
+          <div class="brand-card glow edge-top op-model" [class.glow-blue]="m.id === 6" [class.glow-amber]="m.id === 7" [class.glow-tl]="m.id === 7">
+            <div class="op-model-head">
+              <span class="card-eyebrow">Model {{ m.id }}</span>
+              <span class="op-badge" [class.op-badge--open]="!m.priced">{{ m.priced ? 'Priced on this page' : 'Not priced' }}</span>
+            </div>
+            <h3 class="op-model-name">{{ m.name }}</h3>
+            <p class="op-option-what">{{ m.description }}</p>
+            <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
+              <path class="op-shape-base" d="M4 52 L30 52 L116 22" />
+              @if (m.id === 6) {
+                <path class="op-shape-line op-line--m6" d="M4 52 L30 52 L116 7" />
+              } @else {
+                <path class="op-shape-line op-line--m3" d="M4 52 L16 52 L116 30" />
+              }
+            </svg>
+            <dl class="op-facts">
+              <div><dt>Changes</dt><dd>{{ m.change }}</dd></div>
+              <div><dt>The middle pays</dt><dd>{{ m.middle }}</dd></div>
+              <div><dt>The top pays</dt><dd>{{ m.top }}</dd></div>
+              <div><dt>State revenue</dt><dd>{{ m.revenue }}</dd></div>
+            </dl>
+          </div>
+        }
+      </div>
+      <p class="uhp-note">
+        The names are mine, as the names of Models 1 to 5 on the explainer are. In each small
+        picture, gray is the board's Model 3 and the colored line is what a household with no
+        employer would pay as income rises.
+      </p>
+    </div>
+  </section>
+
   <!-- ============================================================ model 6 -->
   <section class="section section-line" id="model-6">
     <div class="container">
-      <h2 class="h-section">Model 6</h2>
+      <p class="uhp-kicker">Model 6 &middot; priced on this page</p>
+      <h2 class="h-section">{{ model6Info.name }}</h2>
       <p class="uhp-narrow uhp-body">
-        The board's Model 3, with money moved from the payroll tax to the household
-        contribution. Same state revenue with the soft cap off; the cap is not priced. Move the
-        slider.
+        {{ model6Info.description }} It raises the same state revenue as Model 3.
       </p>
-
-      <div class="brand-card op-controls">
-        <div class="op-control">
-          <label for="op-share">Share of the new revenue that comes from households</label>
-          <div class="op-slider">
-            <input
-              id="op-share"
-              type="range"
-              [min]="shareRange.min * 100"
-              [max]="shareRange.max * 100"
-              [step]="shareRange.step * 100"
-              [value]="share() * 100"
-              [attr.aria-valuetext]="pct(share()) + ' from households'"
-              (input)="setShare($any($event.target).value)"
-            />
-            <output for="op-share">{{ pct(share()) }}</output>
-          </div>
-          <p class="uhp-hint mb-0">At 40% it is exactly the board's Model 3.</p>
-        </div>
-        <label class="op-check">
-          <input type="checkbox" [checked]="softCap()" (change)="softCap.set($any($event.target).checked)" />
-          <span>
-            <strong>Soft cap at the top.</strong> Above the plan's average cost for the household
-            ({{ usd100(costPerPerson) }} a person), each further dollar is halved.
-          </span>
-        </label>
-      </div>
 
       <div class="op-mix" aria-label="Where the new revenue comes from">
         @for (row of mix(); track row.label) {
@@ -122,13 +138,6 @@
         changes what they do. One piece does not scale: the report credits Medicare Part B
         premiums against the household contribution, which I have left as the board has it. And
         it does not leave federal taxes where they were: see "Behind" below.
-        @if (softCap()) {
-          The soft cap is the exception: it is not priced. A rough yardstick is
-          ${{ yardstick().low }} billion to ${{ yardstick().high }} billion a year, half of what the
-          top 1% would pay; it also reaches single people from about $185,000. If it cost that
-          much, the lower payroll rate would be {{ pct1(reservePayroll()) }}, not
-          {{ pct1(m6().payrollLow) }}.
-        }
       </p>
     </div>
   </section>
@@ -140,10 +149,25 @@
       <p class="uhp-narrow uhp-body">
         The explainer's households. &darr; less than the household pays today, &uarr; more.
       </p>
+      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Model 6 with or without a soft cap">
+        <button type="button" [class.active]="!softCap()" [attr.aria-pressed]="!softCap()" (click)="softCap.set(false)">
+          Model 6
+        </button>
+        <button type="button" [class.active]="softCap()" [attr.aria-pressed]="softCap()" (click)="softCap.set(true)">
+          Model 6 with a soft cap
+        </button>
+      </div>
       <p class="op-count" aria-live="polite">
         On their own bill, <strong>{{ tally().less }}</strong> of {{ tally().total }} pay less than
         today and <strong>{{ tally().more }}</strong> pay more. Every household in this table with
         an employer has less collected through it.
+        @if (softCap()) {
+          The soft cap halves each dollar of contribution above the plan's average cost for the
+          household ({{ usd100(costPerPerson) }} a person). It is not priced: a rough yardstick is
+          ${{ yardstick().low }} billion to ${{ yardstick().high }} billion a year, and to cover
+          that the lower payroll rate would be {{ pct1(reservePayroll()) }}, not
+          {{ pct1(m6().payrollLow) }}.
+        }
       </p>
 
       <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households under Model 6">
@@ -201,7 +225,7 @@
   <!-- ====================================================== middle and top -->
   <section class="section section-line">
     <div class="container">
-      <h2 class="h-section">The middle and the top</h2>
+      <h2 class="h-section">Model 6: the middle and the top</h2>
 
       <h3 class="uhp-sub">The middle: more of the bill is theirs to see, and the total moves little</h3>
       <ul class="uhp-legend" aria-hidden="true">
@@ -230,6 +254,14 @@
       </div>
 
       <h3 class="uhp-sub">The top: no employer, so nothing moves off the bill</h3>
+      <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Chart: Model 6 with or without a soft cap">
+        <button type="button" [class.active]="!softCap()" [attr.aria-pressed]="!softCap()" (click)="softCap.set(false)">
+          Model 6
+        </button>
+        <button type="button" [class.active]="softCap()" [attr.aria-pressed]="softCap()" (click)="softCap.set(true)">
+          Model 6 with a soft cap
+        </button>
+      </div>
       <div class="op-two">
         <figure class="uhp-figure">
           <figcaption>
@@ -298,7 +330,7 @@
             <p>
               A higher household rate raises the bill for anyone without an employer. The
               family at $1,000,000 would pay {{ usd100(million().own) }}, against
-              {{ usd100(million().model3) }} under the draft's Model 3{{ softCap() ? ', even with the soft cap.' : '. Turn the soft cap on above to see what it takes off.' }}
+              {{ usd100(million().model3) }} under the draft's Model 3{{ softCap() ? ', even with the soft cap.' : '. The soft cap takes some of that off.' }}
             </p>
           </div>
           <p class="uhp-note mb-0">
@@ -312,7 +344,7 @@
   <!-- ========================================================= trade-off -->
   <section class="section section-line">
     <div class="container">
-      <h2 class="h-section">Who comes out behind, and ahead</h2>
+      <h2 class="h-section">Model 6: who comes out behind, and ahead</h2>
       <div class="op-trade">
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Behind</span>
@@ -335,7 +367,82 @@
         </div>
       </div>
 
-      <h3 class="uhp-sub">Why not something smaller</h3>
+    </div>
+  </section>
+
+  <!-- ============================================================ model 7 -->
+  <section class="section section-line" id="model-7">
+    <div class="container">
+      <p class="uhp-kicker">Model 7 &middot; not priced</p>
+      <h2 class="h-section">{{ model7Info.name }}</h2>
+      <p class="uhp-narrow uhp-body">
+        {{ model7Info.description }} This is the one I think would do both things. I have no
+        figures for it: what the lower rate has to be depends on how much income sits between the
+        old exemption and the new one, and that is in the state's tax returns, not in the report.
+      </p>
+
+      <div class="op-two op-two--even">
+        <figure class="uhp-figure">
+          <figcaption>
+            <strong>What the board's own models show</strong>
+            <span class="text-muted-2">Tax returns owing no household contribution</span>
+          </figcaption>
+          <div class="op-evidence">
+            @for (e of exemptionEvidence; track e.label) {
+              <div class="op-bar op-bar--wide">
+                <span class="op-bar-label">{{ e.label }}</span>
+                <span class="op-bar-track"><span class="op-fill op-fill--own" [style.width.%]="e.value * 100"></span></span>
+                <span class="op-bar-value">{{ pct(e.value) }}</span>
+              </div>
+            }
+          </div>
+          <p class="uhp-note mb-0">
+            From the report. These are the board's two models with no worker credit. Starting the
+            tax lower brings about 9 in 100 more tax returns in. Model 5 also uses stepped rates,
+            so the two differ in more than the exemption.
+          </p>
+        </figure>
+
+        <div class="brand-card op-shapecard">
+          <span class="card-eyebrow">The shape, not the numbers</span>
+          <svg class="op-shape op-shape--large" viewBox="0 0 240 110" role="img" aria-label="Sketch: under Model 7 the contribution starts at a lower income and rises more slowly than under the board's Model 3, so it is higher for middle incomes and lower for high incomes.">
+            <path class="op-shape-base" d="M8 100 L62 100 L232 28" />
+            <path class="op-shape-line op-line--m3" d="M8 100 L34 100 L232 48" />
+          </svg>
+          <ul class="uhp-legend" aria-hidden="true">
+            <li><span class="uhp-key op-key--m3"></span>Model 7</li>
+            <li><span class="uhp-key uhp-key--now"></span>Draft, Model 3</li>
+          </ul>
+          <p class="uhp-note mb-0">A sketch with no scale. Where the lines cross is exactly what needs pricing.</p>
+        </div>
+      </div>
+
+      <div class="op-trade">
+        <div class="brand-card glow glow-rose edge-top">
+          <span class="card-eyebrow">Behind</span>
+          <ul class="op-list">
+            <li><strong>Households just above the lower exemption.</strong> A family of four between $45,540 and $66,000 pays nothing under Model 3 and would pay something here.</li>
+            <li><strong>Lower and middle incomes generally,</strong> as a share of income. It is less progressive than Model 3, by design.</li>
+            <li><strong>The board's own direction.</strong> It recommended the 200% exemption in January 2026 after public comment on exactly this.</li>
+          </ul>
+        </div>
+        <div class="brand-card glow glow-teal glow-tl edge-top">
+          <span class="card-eyebrow">Ahead</span>
+          <ul class="op-list">
+            <li><strong>High earners,</strong> through a lower rate that still rises with income. No cap, so $2,000,000 still pays more than $1,000,000.</li>
+            <li><strong>The plan's footing.</strong> Less of the money would rest on the top 1%, the opposite of Model 6.</li>
+            <li><strong>Federal tax treatment.</strong> The payroll tax is untouched, so nothing moves out of untaxed payroll, again unlike Model 6.</li>
+            <li><strong>Simplicity.</strong> One rate, one exemption, no cap to explain.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== smaller ideas -->
+  <section class="section section-line">
+    <div class="container">
+      <h2 class="h-section">Why not something smaller</h2>
       <div class="op-why">
         <div class="brand-card op-option">
           <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">
@@ -364,9 +471,9 @@
       </div>
 
       <p class="uhp-status op-ask">
-        <strong>What I would ask for:</strong> have the board's actuaries price a model with a
-        lower payroll tax and a higher household rate, with and without a soft cap, and show who
-        pays more and who pays less, before the Legislature picks one.
+        <strong>What I would ask for:</strong> have the board's actuaries price both, Model 6
+        with and without a soft cap and Model 7 at a few exemption levels, and show who pays more
+        and who pays less under each, before the Legislature picks one.
       </p>
       <p class="uhp-note op-end">
         Written {{ updated }} by Marcus Malcom, who built the

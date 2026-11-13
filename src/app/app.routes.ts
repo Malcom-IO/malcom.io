@@ -148,12 +148,12 @@ export const routes: Routes = [
       import('./oregon-health-plan/oregon-opinion.component').then(
         (m) => m.OregonOpinionComponent,
       ),
-    title: "Opinion: a sixth way to pay for Oregon's Universal Health Plan | Malcom IO",
+    title: "Opinion: two more ways to pay for Oregon's Universal Health Plan | Malcom IO",
     data: {
-      ogTitle: "Opinion: a sixth way to pay for Oregon's Universal Health Plan",
+      ogTitle: "Opinion: two more ways to pay for Oregon's Universal Health Plan",
       description:
         "One person's view of how Oregon's proposed Universal Health Plan is paid for: a " +
-        'sixth model with a lower payroll tax and a household rate people can see.',
+        'lower payroll tax with a higher household rate, or a lower rate on more income.',
     } satisfies SeoData,
   },
   { path: '**', redirectTo: '' },

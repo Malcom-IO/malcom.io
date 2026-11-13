@@ -19,7 +19,7 @@ import {
   BASE,
   BASE_SHARES,
   DEFAULT_HOUSEHOLD_SHARE,
-  SHARE_RANGE,
+  PROPOSED,
   householdBill,
   model6,
   model6Rows,
@@ -61,7 +61,19 @@ export class OregonOpinionComponent {
   readonly owingNothing = OWING_NOTHING;
   readonly baseShares = BASE_SHARES;
   readonly baseRate = BASE.topRate;
-  readonly shareRange = SHARE_RANGE;
+  /** The two models this page proposes, each with a name and a description. */
+  readonly proposed = PROPOSED;
+  readonly model6Info = PROPOSED[0];
+  readonly model7Info = PROPOSED[1];
+  /**
+   * What the board's own models show about a smaller exemption. Its two models
+   * with no worker credit differ in where the tax starts: Model 3 at 200% of
+   * poverty, Model 5 at 138%.
+   */
+  readonly exemptionEvidence = [
+    { label: 'Model 3: starts at 200% of poverty ($66,000 for four)', value: MODELS[2].returnsOwingNothing },
+    { label: 'Model 5: starts at 138% of poverty ($45,540 for four)', value: MODELS[4].returnsOwingNothing },
+  ];
 
   /** The median family of four in the explainer's table. */
   private readonly medianRow = HOUSEHOLD_ROWS.find(
@@ -74,8 +86,12 @@ export class OregonOpinionComponent {
   };
 
   // --------------------------------------------------------------- controls
-  /** Share of the new revenue that comes from households rather than payroll. */
-  readonly share = signal(DEFAULT_HOUSEHOLD_SHARE);
+  /**
+   * Share of the new revenue that comes from households rather than payroll.
+   * Fixed: a named model is one definite thing. (It was a slider at first, and
+   * a control at the top of a page that changes things far below was confusing.)
+   */
+  readonly share = signal(DEFAULT_HOUSEHOLD_SHARE).asReadonly();
   /** Off by default: with it off, Model 6 raises what Model 3 raises. */
   readonly softCap = signal(false);
 
@@ -83,10 +99,6 @@ export class OregonOpinionComponent {
   readonly yardstick = computed(() => softCapYardstick(this.share()));
   readonly reservePayroll = computed(() => payrollLowWithReserve(this.share()));
 
-  setShare(raw: string): void {
-    const value = Number(raw);
-    if (Number.isFinite(value)) this.share.set(Math.round(value) / 100);
-  }
 
   /** The revenue mix as three bar segments, for the draft and for Model 6. */
   readonly mix = computed(() => {

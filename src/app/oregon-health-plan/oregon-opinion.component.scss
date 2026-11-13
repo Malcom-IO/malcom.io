@@ -380,6 +380,92 @@ path[class*='op-line--'] {
   color: var(--text-soft);
 }
 
+// ======================================================== the two models
+.op-models {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.op-model {
+  padding: 1.5rem 1.6rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-model-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.op-badge {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-bright);
+  white-space: nowrap;
+}
+.op-badge--open {
+  border-color: var(--caution);
+  color: var(--caution);
+}
+.op-model-name {
+  margin: 0.6rem 0 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+// Model 7: evidence beside a sketch, equal halves.
+.op-two--even {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.op-evidence {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+.op-bar--wide {
+  grid-template-columns: minmax(0, 1fr) 3rem;
+  grid-template-areas: 'label label' 'track value';
+  gap: 0.25rem 0.75rem;
+
+  .op-bar-label {
+    grid-area: label;
+  }
+  .op-bar-track {
+    grid-area: track;
+    height: 14px;
+  }
+  .op-bar-value {
+    grid-area: value;
+  }
+}
+.op-shapecard {
+  padding: 1.25rem 1.4rem;
+  height: auto;
+
+  &:hover {
+    transform: none;
+  }
+}
+.op-shape--large {
+  max-width: 22rem;
+  margin: 1rem 0 0.75rem;
+}
+@media (max-width: 991.98px) {
+  .op-models,
+  .op-two--even {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 // =============================================================== Model 6
 // Two colors carry the whole page: what a household pays itself, and what is
 // collected through its employer.
