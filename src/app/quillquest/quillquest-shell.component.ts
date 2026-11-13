@@ -54,6 +54,7 @@ import { LogoComponent } from '../shared/logo.component';
         <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
           <a routerLink="/">Home</a>
           <a routerLink="/quillquest">QuillQuest</a>
+          <a routerLink="/oregon-universal-health-plan">Oregon health plan</a>
           <a [routerLink]="['/']" fragment="contact">Contact</a>
           <a routerLink="/privacy">Privacy</a>
         </nav>

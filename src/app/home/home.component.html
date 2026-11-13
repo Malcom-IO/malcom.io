@@ -227,6 +227,22 @@
   </div>
 </section>
 
+<!--Side project: a civic explainer, kept quiet so it does not compete with the studio's own work-->
+<section class="home-aside" appReveal>
+  <div class="container">
+    <div class="brand-card product-strip">
+      <div>
+        <span class="card-eyebrow">Side project &middot; Oregon</span>
+        <p class="text-muted-2 mb-0 mt-1">
+          Oregon's proposed Universal Health Plan, explained in plain language: what it covers,
+          the five tax models, and a calculator for your household.
+        </p>
+      </div>
+      <a routerLink="/oregon-universal-health-plan" class="product-link ms-md-auto">Read the explainer <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
 <!--Contact-->
 <section id="contact" class="section section-line" appReveal>
   <div class="container">
@@ -242,6 +258,7 @@
     <nav class="d-flex flex-wrap gap-4 font-monospace small page-footer-nav" aria-label="Footer">
       <a routerLink="/">Home</a>
       <a routerLink="/quillquest">QuillQuest</a>
+      <a routerLink="/oregon-universal-health-plan">Oregon health plan</a>
       <a [routerLink]="['/']" fragment="contact">Contact</a>
       <a routerLink="/privacy">Privacy</a>
     </nav>

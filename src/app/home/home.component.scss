@@ -263,3 +263,13 @@
     flex-wrap: wrap;
   }
 }
+
+// A single quiet strip between Products and Contact for a side project. It
+// borrows the product strip's look but sits outside the products section,
+// because it is not something the studio sells.
+.home-aside {
+  // Pull up into the products section's bottom padding so the strip reads as a
+  // coda to it, not a new section.
+  margin-top: -4.5rem;
+  padding: 0 0 4rem;
+}
