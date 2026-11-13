@@ -26,6 +26,7 @@ import {
   payrollTax,
 } from './uhp-model';
 
+import { SLIDER_POSITIONS, incomeAt, positionOf } from './income-scale';
 import {
   BEST,
   BOARD,
@@ -108,8 +109,8 @@ const USD = new Intl.NumberFormat('en-US', {
 
 const BASE = 'https://www.oregon.gov/uhpgb';
 
-/** Chart series colors: the validated dark-surface categorical slots 1 to 5. */
-const SERIES = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181'] as const;
+/** Chart series colors: categorical slots 1 to 5, set per theme in _tokens.scss. */
+const SERIES = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'] as const;
 
 interface EndLabel {
   y: number;
@@ -133,6 +134,8 @@ interface EndLabel {
 })
 export class OregonHealthPlanComponent {
   readonly updated = 'November 12, 2026';
+  /** Copyright year: the year of the last update, not of the visit. */
+  readonly year = this.updated.slice(-4);
   readonly sources = {
     report: `${BASE}/Documents/board-meetings/2026/20261015/20261015-legislative-report-draft.pdf`,
     brief: `${BASE}/Documents/board-meetings/2026/20261015/legislative-brief-10142026.pdf`,
@@ -141,13 +144,16 @@ export class OregonHealthPlanComponent {
     board: `${BASE}/Pages/index.aspx`,
     meetings: `${BASE}/board-meetings/Pages/2026-meetings.aspx`,
   };
+  /** Built after each site build by scripts/make-uhp-pdf.mjs. */
+  readonly pdf = '/oregon-universal-health-plan.pdf';
 
   readonly models = MODELS;
   readonly employers = EMPLOYERS;
   readonly scenarios = SCENARIOS;
   readonly sizes = [1, 2, 3, 4, 5];
   readonly series = SERIES;
-  readonly incomeMax = 400_000;
+  /** The income slider is not linear; see income-scale.ts. */
+  readonly sliderMax = SLIDER_POSITIONS;
 
   /** "One rate: 13.5%" or "Rates: 3%, 9%, 12%, 14.3%". */
   rateLadder(m: RevenueModel): string {
@@ -280,6 +286,7 @@ export class OregonHealthPlanComponent {
   // ------------------------------------------------------------ calculator
   readonly size = signal(2);
   readonly income = signal(85_000);
+  readonly incomePosition = computed(() => positionOf(this.income()));
   readonly employer = signal<EmployerKind>('private');
   /** The private employer's total yearly payroll; sets the worker credit. */
   readonly payroll = signal(8_500_000);
@@ -504,6 +511,25 @@ export class OregonHealthPlanComponent {
       const observer = new ResizeObserver(measure);
       observer.observe(el);
       destroyRef.onDestroy(() => observer.disconnect());
+
+      // Paper has no "show more": open every collapsed section for printing,
+      // then put back the ones the reader had left closed.
+      const root: HTMLElement = host.nativeElement;
+      let opened: HTMLDetailsElement[] = [];
+      const beforePrint = () => {
+        opened = [...root.querySelectorAll<HTMLDetailsElement>('details:not([open])')];
+        for (const d of opened) d.open = true;
+      };
+      const afterPrint = () => {
+        for (const d of opened) d.open = false;
+        opened = [];
+      };
+      window.addEventListener('beforeprint', beforePrint);
+      window.addEventListener('afterprint', afterPrint);
+      destroyRef.onDestroy(() => {
+        window.removeEventListener('beforeprint', beforePrint);
+        window.removeEventListener('afterprint', afterPrint);
+      });
     });
   }
 
@@ -523,6 +549,12 @@ export class OregonHealthPlanComponent {
     if (value !== null) this.income.set(value);
     // Write the canonical value back: [value] only repaints when the signal changes.
     if (box) box.value = this.income().toLocaleString('en-US');
+  }
+
+  /** From the slider, whose value is a position on the track, not dollars. */
+  setIncomePosition(raw: string): void {
+    const position = Number(raw);
+    if (Number.isFinite(position)) this.income.set(incomeAt(position));
   }
 
   setCurrentCost(raw: string, box?: HTMLInputElement): void {

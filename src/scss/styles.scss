@@ -1,4 +1,4 @@
-/* Global styles for malcom.io — dark editorial theme */
+/* Global styles for malcom.io. Two themes; the tokens live in _tokens.scss. */
 
 // Brand green becomes Bootstrap's primary (buttons, links, focus rings, etc.)
 $primary: #28a745;
@@ -6,21 +6,32 @@ $primary: #28a745;
 @import "bootstrap/scss/bootstrap";
 
 @import "colors";
+@import "tokens";
 
 
 :root {
-  --ground: #20242a;
-  --surface: #272d34;
-  --surface-2: #2d343b;
-  --line: #3a424b;
-  --line-soft: #2e353d;
-  --text: #e9ecef;
-  --muted: #98a2ac;
-  --text-soft: #cdd3d9; // between --text and --muted; body/lead copy
-  --brand: #28a745;
-  --brand-bright: #37c862;
+  @include dark-tokens;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+// Light when the visitor chose it, or when the system asks for it and they
+// have not chosen dark. The inline script in index.html stamps data-theme
+// before first paint; the media query covers visitors without JavaScript.
+:root[data-theme='light'] {
+  @include light-tokens;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    @include light-tokens;
+  }
+}
+// Paper is always light, whatever the screen theme.
+@media print {
+  :root:root {
+    @include light-tokens;
+    --ground: #ffffff; // no gray block inside the page margins
+  }
 }
 
 html,
@@ -40,7 +51,7 @@ body {
   --bs-body-bg: var(--ground);
   --bs-body-color: var(--text);
   --bs-body-font-family: var(--sans);
-  --bs-emphasis-color: #ffffff;
+  --bs-emphasis-color: var(--emphasis);
   --bs-border-color: var(--line);
   --bs-secondary-color: var(--muted);
   --bs-tertiary-bg: var(--surface);
@@ -144,7 +155,7 @@ section[id] {
     background-color 0.2s ease;
 }
 .brand-card:hover {
-  border-color: #4c5762;
+  border-color: var(--line-strong);
   background: var(--surface-2);
   transform: translateY(-3px);
 }
@@ -232,8 +243,11 @@ section[id] {
   font-size: 1rem;
 }
 .btn-primary {
-  --bs-btn-color: #08130b;
-  --bs-btn-hover-color: #08130b;
+  --bs-btn-color: var(--on-brand);
+  --bs-btn-hover-color: var(--on-brand);
+  --bs-btn-active-color: var(--on-brand);
+  --bs-btn-active-bg: var(--brand-bright);
+  --bs-btn-active-border-color: var(--brand-bright);
   --bs-btn-bg: var(--brand);
   --bs-btn-hover-bg: var(--brand-bright);
   --bs-btn-border-color: var(--brand);
@@ -242,16 +256,19 @@ section[id] {
 }
 .btn-outline-light {
   // >= 3:1 non-text contrast so the outline is visible on the ground and over the hero motif (WCAG 1.4.11)
-  --bs-btn-border-color: #6b7682;
+  --bs-btn-border-color: var(--control-border);
   --bs-btn-color: var(--text);
   --bs-btn-hover-bg: var(--surface-2);
-  --bs-btn-hover-border-color: #808b98;
+  --bs-btn-hover-border-color: var(--control-border-hover);
   --bs-btn-hover-color: var(--text);
+  --bs-btn-active-bg: var(--surface-2);
+  --bs-btn-active-border-color: var(--control-border-hover);
+  --bs-btn-active-color: var(--text);
 }
 
 // ----------------------------------------------------------------- navbar
 .malcom-navbar {
-  background-color: rgba(32, 36, 42, 0.82);
+  background-color: var(--nav-bg);
   backdrop-filter: saturate(140%) blur(10px);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -263,6 +280,50 @@ section[id] {
 .malcom-navbar .nav-link:hover,
 .malcom-navbar .nav-link.active {
   color: var(--text);
+}
+
+// Light / dark switch in the navbar. Both icons are in the markup; the theme
+// on <html> picks one, so the prerendered page needs no theme of its own.
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .theme-toggle-moon {
+    display: none;
+  }
+}
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--control-border);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 2px;
+}
+// In light mode the button offers dark, and the other way around.
+:root[data-theme='light'] .theme-toggle {
+  .theme-toggle-sun {
+    display: none;
+  }
+  .theme-toggle-moon {
+    display: block;
+  }
 }
 
 // ----------------------------------------------------------------- footer
@@ -343,5 +404,37 @@ section[id] {
   .reveal-init {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+// ------------------------------------------------------------------- print
+// Paper gets the content only, in the light theme (see the tokens above).
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .malcom-navbar,
+  .skip-link,
+  .toast-container,
+  .page-footer-nav {
+    display: none !important;
+  }
+  .container {
+    max-width: none !important;
+  }
+  .reveal-init {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+  .brand-card,
+  .civic-card {
+    break-inside: avoid;
   }
 }

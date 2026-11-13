@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LogoComponent } from '../shared/logo.component';
+import { ThemeToggleComponent } from '../shared/theme-toggle.component';
 
 /**
  * Chrome for the QuillQuest marketing page: the fixed navbar and the footer,
@@ -14,17 +15,16 @@ import { LogoComponent } from '../shared/logo.component';
  */
 @Component({
   selector: 'app-quillquest-shell',
-  imports: [DatePipe, RouterLink, RouterLinkActive, LogoComponent],
+  imports: [DatePipe, RouterLink, RouterLinkActive, LogoComponent, ThemeToggleComponent],
   template: `
     <header id="header">
       <nav
         class="navbar navbar-expand-lg fixed-top malcom-navbar"
-        data-bs-theme="dark"
         aria-label="Primary"
       >
         <div class="container">
           <a class="navbar-brand" routerLink="/"><app-logo></app-logo></a>
-          <ul class="navbar-nav ms-auto flex-row gap-4">
+          <ul class="navbar-nav ms-auto flex-row align-items-center gap-3 gap-sm-4">
             <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
             <li class="nav-item">
               <a
@@ -39,6 +39,7 @@ import { LogoComponent } from '../shared/logo.component';
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/']" fragment="contact">Contact</a>
             </li>
+            <li class="nav-item d-flex"><app-theme-toggle></app-theme-toggle></li>
           </ul>
         </div>
       </nav>
