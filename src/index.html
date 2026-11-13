@@ -9,23 +9,40 @@
   <!-- SEO (static fallback; the SEO strategy re-bakes these per route at prerender) -->
   <meta name="description" content="Malcom IO designs, builds and runs custom software: healthcare systems built for 21 CFR Part 11 and HIPAA, web and mobile apps, and native Mac software.">
   <link rel="canonical" href="https://www.malcom.io/">
-  <meta name="theme-color" content="#20242a">
-  <!-- Theme, before first paint: a saved choice wins, otherwise the system setting.
-       Keep the key and colors in step with shared/theme-toggle.component.ts. -->
+  <meta name="theme-color" content="#20242a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f1f6f0" media="(prefers-color-scheme: light)">
+  <!-- Theme, before first paint: a saved choice wins, otherwise the system setting, which is
+       followed live until a choice is saved. Keep the key and colors in step with
+       shared/theme-toggle.component.ts. -->
   <script>
     (function () {
-      var theme = null;
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-      }
       var root = document.documentElement;
-      root.setAttribute('data-theme', theme);
-      root.setAttribute('data-bs-theme', theme);
-      var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'light' ? '#f1f6f0' : '#20242a');
+      var system = window.matchMedia ? matchMedia('(prefers-color-scheme: light)') : null;
+      function saved() {
+        try {
+          var value = localStorage.getItem('theme');
+          return value === 'light' || value === 'dark' ? value : null;
+        } catch (e) {
+          return null;
+        }
+      }
+      function stamp() {
+        var theme = saved() || (system && system.matches ? 'light' : 'dark');
+        root.setAttribute('data-theme', theme);
+        root.setAttribute('data-bs-theme', theme);
+        var metas = document.querySelectorAll('meta[name="theme-color"]');
+        for (var i = 0; i < metas.length; i++) {
+          metas[i].setAttribute('content', theme === 'light' ? '#f1f6f0' : '#20242a');
+        }
+      }
+      stamp();
+      if (system && system.addEventListener) {
+        system.addEventListener('change', function () { if (!saved()) stamp(); });
+      }
     })();
   </script>
+  <!-- Without JavaScript the theme follows the system and the switch cannot work. -->
+  <noscript><style>.theme-toggle { display: none !important; }</style></noscript>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">

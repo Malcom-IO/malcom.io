@@ -298,7 +298,7 @@ section[id] {
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-border);
   border-radius: 10px;
   background: transparent;
   color: var(--muted);
@@ -423,7 +423,7 @@ section[id] {
   .malcom-navbar,
   .skip-link,
   .toast-container,
-  .page-footer-nav {
+  .page-footer {
     display: none !important;
   }
   .container {

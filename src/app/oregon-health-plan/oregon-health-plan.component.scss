@@ -329,8 +329,13 @@ a {
     color: var(--text);
   }
   .less::before {
-    content: '\2193\00a0';
+    content: '\2193\00a0' / '';
     color: var(--brand-bright);
+  }
+  // "Pays more than today": a mark only, no tint, so neither direction shouts.
+  .more::before {
+    content: '\2191\00a0' / '';
+    color: var(--caution);
   }
 }
 
@@ -378,7 +383,7 @@ a {
   }
   .form-select {
     background-color: var(--ground);
-    border-color: var(--line);
+    border-color: var(--control-border); // >= 3:1 boundary (WCAG 1.4.11)
     color: var(--text);
   }
 }
@@ -388,7 +393,7 @@ a {
   gap: 0.4rem;
   padding: 0 0.85rem;
   background: var(--ground);
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-border);
   border-radius: 0.5rem;
   color: var(--muted);
 
@@ -417,7 +422,7 @@ a {
     min-width: 2.75rem;
     padding: 0.45rem 0.85rem;
     background: var(--ground);
-    border: 1px solid var(--line);
+    border: 1px solid var(--control-border);
     border-radius: 0.5rem;
     color: var(--text-soft);
     font-weight: 600;
@@ -827,7 +832,7 @@ $down: var(--s3);
     line-height: 30px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
   }
   > span:first-child {
@@ -880,7 +885,7 @@ $down: var(--s3);
     line-height: 30px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
   }
   > span:first-child {
@@ -1276,7 +1281,7 @@ $info: var(--info);
     line-height: 34px;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #fff;
+    color: #0b1116;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -1677,9 +1682,18 @@ $info: var(--info);
       color: var(--text-soft);
     }
     td.less::after {
-      content: '\2193';
+      content: '\2193' / '';
       order: 3;
       color: var(--brand-bright);
+    }
+    td.more::before {
+      content: attr(data-label);
+      color: var(--text-soft);
+    }
+    td.more::after {
+      content: '\2191' / '';
+      order: 3;
+      color: var(--caution);
     }
     .uhp-cellbar {
       flex: 1;
@@ -1986,6 +2000,26 @@ $warn: var(--warn);
   .uhp-print-only {
     display: block;
   }
+  .uhp-print-only-inline {
+    display: inline;
+  }
+  // "Show ... as a table" is a control; on paper the table is simply there.
+  .uhp-details > summary {
+    display: none;
+  }
+  // The calculator note and the households table start a page together, and
+  // each of the board's four example tables stays whole.
+  // These sections open with a heading, a line of text and one block that
+  // cannot split; started mid-page they strand the heading.
+  #calculator,
+  #status-quo,
+  #total-cost {
+    break-before: page;
+  }
+  .uhp-board-example,
+  #employers .uhp-results {
+    break-inside: avoid;
+  }
   // A calculator cannot work on paper. Each one is replaced by a pointer to
   // the web page; the static tables around it stay.
   #calculator .uhp-calc,
@@ -2040,7 +2074,6 @@ $warn: var(--warn);
       height: auto !important;
     }
   }
-  #examples > .container,
   .uhp-fund,
   .uhp-share,
   .uhp-bills,
@@ -2164,4 +2197,17 @@ $warn: var(--warn);
   font-weight: 400;
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+// Independence, stated beside the proposal line rather than only in the sources.
+.uhp-independent {
+  margin: -0.5rem 0 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.uhp-print-only-inline {
+  display: none;
+}
+.uhp-board-example + .uhp-board-example {
+  margin-top: 1.75rem;
 }

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, afterNextRender, inject, signal } from '@angular/core';
 
 /** localStorage key; the inline script in index.html reads the same one. */
 export const THEME_KEY = 'theme';
@@ -11,8 +11,9 @@ export type Theme = keyof typeof THEME_COLORS;
  * The navbar's light / dark switch. The theme lives on <html> (data-theme and
  * Bootstrap's data-bs-theme), stamped before first paint by the inline script
  * in index.html: a saved choice wins, otherwise the system setting. This button
- * flips it and saves the choice. It holds no state of its own, so the
- * prerendered markup is the same for every visitor; CSS picks the icon.
+ * flips it and saves the choice. CSS picks the icon from the theme on <html>, so
+ * the prerendered markup is the same for every visitor; the pressed state for
+ * assistive technology is filled in once the page is running.
  */
 @Component({
   selector: 'app-theme-toggle',
@@ -21,8 +22,9 @@ export type Theme = keyof typeof THEME_COLORS;
     <button
       type="button"
       class="theme-toggle"
-      aria-label="Switch between light and dark mode"
+      aria-label="Dark mode"
       title="Switch between light and dark mode"
+      [attr.aria-pressed]="dark()"
       (click)="toggle()"
     >
       <svg class="theme-toggle-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -43,15 +45,24 @@ export type Theme = keyof typeof THEME_COLORS;
 })
 export class ThemeToggleComponent {
   private readonly doc = inject(DOCUMENT);
+  /** Null until the browser has run; then whether dark is on. */
+  readonly dark = signal<boolean | null>(null);
+
+  constructor() {
+    afterNextRender(() =>
+      this.dark.set(this.doc.documentElement.getAttribute('data-theme') !== 'light'),
+    );
+  }
 
   toggle(): void {
     const root = this.doc.documentElement;
     const next: Theme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     root.setAttribute('data-bs-theme', next);
+    this.dark.set(next === 'dark');
     this.doc
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute('content', THEME_COLORS[next]);
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((meta) => meta.setAttribute('content', THEME_COLORS[next]));
     try {
       this.doc.defaultView?.localStorage.setItem(THEME_KEY, next);
     } catch {
