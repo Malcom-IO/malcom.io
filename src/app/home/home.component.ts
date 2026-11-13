@@ -6,12 +6,13 @@ import { LogoComponent } from '../shared/logo.component';
 import { RevealDirective } from '../shared/reveal.directive';
 import { IconComponent } from '../shared/icon.component';
 import { ProductMarkComponent } from '../shared/product-mark.component';
+import { ThemeToggleComponent } from '../shared/theme-toggle.component';
 
 @Component({
   selector: 'app-home',
   // In-page section links use routerLink + fragment (anchorScrolling is enabled),
   // so they deep-link, work cross-route, and honor prefers-reduced-motion.
-  imports: [DatePipe, RouterLink, ContactComponent, LogoComponent, RevealDirective, IconComponent, ProductMarkComponent],
+  imports: [DatePipe, RouterLink, ContactComponent, LogoComponent, RevealDirective, IconComponent, ProductMarkComponent, ThemeToggleComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

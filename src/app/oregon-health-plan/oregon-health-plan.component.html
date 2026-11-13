@@ -3,6 +3,12 @@
   <section class="uhp-hero">
     <div class="container">
       <div class="uhp-narrow">
+        <p class="uhp-official">
+          <span>Official sources</span>
+          <a [href]="sources.board" rel="noopener">Universal Health Plan Governance Board</a>
+          <a [href]="sources.report" rel="noopener">Draft report to the Legislature (PDF)</a>
+          <a [href]="sources.meetings" rel="noopener">Board meeting materials</a>
+        </p>
         <p class="eyebrow eyebrow--hero">Oregon &middot; plain-language explainer</p>
         <h1 class="uhp-title">What Oregon's Universal Health Plan would actually do</h1>
         <p class="lead-lg">
@@ -24,6 +30,13 @@
         </nav>
         <p class="text-muted-2 font-monospace small mb-0">
           Updated {{ updated }} &middot; from the board's October 2026 draft report
+          <span class="uhp-screen-only">
+            &middot; <a [href]="pdf" download="oregon-universal-health-plan.pdf">Download this page as a PDF</a>
+          </span>
+        </p>
+        <p class="uhp-print-only uhp-print-note">
+          Printed from www.malcom.io/oregon-universal-health-plan, where the calculators take
+          your own numbers. The figures here use the page's example household and employer.
         </p>
       </div>
     </div>
@@ -586,11 +599,12 @@
             <input
               type="range"
               min="0"
-              [max]="incomeMax"
-              step="1000"
+              [max]="sliderMax"
+              step="1"
               aria-label="Household income per year"
-              [value]="income()"
-              (input)="setIncome($any($event.target).value)"
+              [attr.aria-valuetext]="usd(income())"
+              [value]="incomePosition()"
+              (input)="setIncomePosition($any($event.target).value)"
             />
             <p class="uhp-hint">
               Use the line labeled "adjusted gross income" on your federal tax return. Leave out
@@ -755,7 +769,7 @@
                 <line class="now" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="nowY()" [attr.y2]="nowY()" />
 
                 @for (l of lines(); track l.id) {
-                  <path class="series" [attr.d]="l.d" [attr.stroke]="l.color" />
+                  <path class="series" [attr.d]="l.d" [style.stroke]="l.color" />
                 }
 
                 @if (!narrow()) {
@@ -769,13 +783,13 @@
                 <line class="you" [attr.x1]="youX()" [attr.x2]="youX()" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
                 <text class="you-label" [attr.x]="youX()" [attr.y]="pad().top - 5" text-anchor="middle">You</text>
                 @for (d of youDots(); track $index) {
-                  <circle class="dot" [attr.cx]="youX()" [attr.cy]="d.y" r="5" [attr.fill]="d.color" />
+                  <circle class="dot" [attr.cx]="youX()" [attr.cy]="d.y" r="5" [style.fill]="d.color" />
                 }
 
                 @if (hover(); as h) {
                   <line class="cross" [attr.x1]="h.x" [attr.x2]="h.x" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
                   @for (r of h.rows; track r.id) {
-                    <circle class="dot" [attr.cx]="h.x" [attr.cy]="r.y" r="4" [attr.fill]="r.color" />
+                    <circle class="dot" [attr.cx]="h.x" [attr.cy]="r.y" r="4" [style.fill]="r.color" />
                   }
                 }
               </svg>

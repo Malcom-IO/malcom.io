@@ -1,3 +1,5 @@
+@use 'tokens';
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -39,6 +41,13 @@
   opacity: var(--xray-op-lo);
   pointer-events: none;
   animation: hero-xray-breathe 8s ease-in-out infinite;
+}
+// On a light ground "screen" would wash the motif out entirely. Invert it
+// (black becomes white, the glow becomes ink), turn the hue back to green and
+// multiply it onto the page instead.
+:host-context([data-theme='light']) .hero::before {
+  filter: invert(1) hue-rotate(180deg) saturate(1.3);
+  mix-blend-mode: multiply;
 }
 // subtle "living energy" breathe (neutralized under prefers-reduced-motion)
 @keyframes hero-xray-breathe {
@@ -380,7 +389,7 @@
 // custom button has no visible keyboard focus.
 .product-action--teal {
   --bs-btn-focus-shadow-rgb: 31, 181, 168;
-  --bs-btn-color: #6fe0d6;
+  --bs-btn-color: var(--teal-text);
   --bs-btn-border-color: #1fb5a8;
   --bs-btn-hover-color: #06201e;
   --bs-btn-hover-bg: #1fb5a8;
@@ -402,6 +411,9 @@ $qq-indigo: #2a2470;
   gap: 2rem;
   overflow: hidden;
   padding: 2.25rem 2.5rem 0 2.5rem;
+  // The card keeps the game's night sky in both themes.
+  @include tokens.dark-tokens;
+  color: var(--text);
   border: 1px solid color-mix(in srgb, #9085e9 40%, var(--line));
   border-radius: 16px;
   background:

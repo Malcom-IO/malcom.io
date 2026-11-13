@@ -1,0 +1,81 @@
+// Color tokens for both themes. Dark is the site's original look and the
+// default; light is applied by `data-theme="light"` on <html> (set before first
+// paint by the inline script in index.html) and always when printing.
+//
+// Components that must stay dark in either theme (the QuillQuest card) include
+// `dark-tokens` on themselves.
+
+@mixin dark-tokens {
+  color-scheme: dark;
+  --ground: #20242a;
+  --surface: #272d34;
+  --surface-2: #2d343b;
+  --line: #3a424b;
+  --line-soft: #2e353d;
+  --line-strong: #4c5762; // card border on hover
+  // >= 3:1 non-text contrast for control outlines (WCAG 1.4.11)
+  --control-border: #6b7682;
+  --control-border-hover: #808b98;
+  --placeholder: #8a94a0; // >= 4.5:1 on the input surface (WCAG 1.4.3)
+  --text: #e9ecef;
+  --muted: #98a2ac;
+  --text-soft: #cdd3d9; // between --text and --muted; body/lead copy
+  --emphasis: #ffffff;
+  --brand: #28a745;
+  --brand-bright: #37c862; // links and accents; hover for brand fills
+  --on-brand: #08130b; // text on a --brand fill
+  --nav-bg: rgba(32, 36, 42, 0.82);
+  --shadow: rgba(0, 0, 0, 0.4);
+
+  // Chart series: validated categorical slots 1 to 5 for this surface.
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --s5: #d55181;
+
+  // Accent text and edges that sit on a surface.
+  --caution: #e9a23b;
+  --info: #5b9bea;
+  --warn: #e66767;
+  --rise: #f0a56a;
+  --teal-text: #6fe0d6;
+  --mark: #5cbe61;
+}
+
+@mixin light-tokens {
+  color-scheme: light;
+  --ground: #f6f7f8;
+  --surface: #ffffff;
+  --surface-2: #f0f2f4;
+  --line: #d3d9df;
+  --line-soft: #e3e7eb;
+  --line-strong: #aab3bc;
+  --control-border: #7b8691;
+  --control-border-hover: #5c6670;
+  --placeholder: #6a747e;
+  --text: #171b20;
+  --muted: #59636d;
+  --text-soft: #353d45;
+  --emphasis: #000000;
+  // The logo green is too light for text on white; these keep >= 4.5:1.
+  --brand: #1a7f37;
+  --brand-bright: #146c2e;
+  --on-brand: #ffffff;
+  --nav-bg: rgba(246, 247, 248, 0.86);
+  --shadow: rgba(23, 27, 32, 0.16);
+
+  // Same hues as dark; every slot clears 3:1 on white.
+  --s1: #2a78d6;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --s5: #d55181;
+
+  --caution: #9a6200;
+  --info: #1f66c1;
+  --warn: #c23333;
+  --rise: #a8500f;
+  --teal-text: #0f766e;
+  --mark: #2f9a48;
+}
