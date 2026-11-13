@@ -357,3 +357,151 @@
     }
   }
 }
+
+// ------------------------------------------------------------ card actions
+// Buttons on product cards sit at the bottom and keep their natural width.
+.product-action {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.product-action--teal {
+  --bs-btn-color: #6fe0d6;
+  --bs-btn-border-color: #1fb5a8;
+  --bs-btn-hover-color: #06201e;
+  --bs-btn-hover-bg: #1fb5a8;
+  --bs-btn-hover-border-color: #1fb5a8;
+  --bs-btn-active-color: #06201e;
+  --bs-btn-active-bg: #1fb5a8;
+  --bs-btn-active-border-color: #1fb5a8;
+}
+
+// ---------------------------------------------------------- QuillQuest card
+// The game's own palette, taken from its icon: night-sky indigo and quill gold.
+$qq-gold: #f2b63c;
+$qq-indigo: #2a2470;
+
+.qq-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 2rem;
+  overflow: hidden;
+  padding: 2.25rem 2.5rem 0 2.5rem;
+  border: 1px solid color-mix(in srgb, #9085e9 40%, var(--line));
+  border-radius: 16px;
+  background:
+    radial-gradient(70% 120% at 100% 100%, color-mix(in srgb, $qq-gold 13%, transparent), transparent 60%),
+    radial-gradient(90% 140% at 0% 0%, color-mix(in srgb, $qq-indigo 85%, transparent), transparent 70%),
+    var(--surface);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.qq-card:hover {
+  border-color: color-mix(in srgb, $qq-gold 60%, var(--line));
+  transform: translateY(-3px);
+}
+.qq-card-copy {
+  padding-bottom: 2.25rem;
+}
+.qq-card-icon {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.1rem;
+  border-radius: 22%;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+}
+.qq-card .card-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, $qq-gold 80%, #fff);
+}
+.qq-card-title {
+  margin: 0.35rem 0 0.6rem;
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.qq-card-pitch {
+  max-width: 44ch;
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: var(--text-soft);
+}
+.qq-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+
+  li {
+    padding: 0.15rem 0.7rem;
+    border: 1px solid color-mix(in srgb, $qq-gold 45%, transparent);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+}
+.qq-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.5rem;
+}
+.qq-card-play {
+  --bs-btn-color: #1b1440;
+  --bs-btn-bg: #{$qq-gold};
+  --bs-btn-border-color: #{$qq-gold};
+  --bs-btn-hover-color: #1b1440;
+  --bs-btn-hover-bg: #ffd166;
+  --bs-btn-hover-border-color: #ffd166;
+  --bs-btn-active-color: #1b1440;
+  --bs-btn-active-bg: #ffd166;
+  --bs-btn-active-border-color: #ffd166;
+  font-weight: 600;
+}
+.qq-card-more {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: color-mix(in srgb, $qq-gold 80%, #fff);
+  text-decoration: none;
+}
+.qq-card-more:hover,
+.qq-card-more:focus-visible {
+  text-decoration: underline;
+}
+// The phone rises out of the card's bottom edge and is cut off by it.
+.qq-card-shot {
+  align-self: end;
+  height: 330px;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 260px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.45);
+  }
+}
+@media (max-width: 991.98px) {
+  .qq-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 1.75rem 1.5rem 0;
+  }
+  .qq-card-shot {
+    height: 220px;
+
+    img {
+      width: 220px;
+    }
+  }
+}

@@ -190,7 +190,7 @@
             agents work, then become proposals, invoices and client-signed sign-offs. Fixed-bid,
             not-to-exceed or time-and-materials. $4 a month at the early-access price.
           </p>
-          <a href="https://shyre.io/pricing" class="product-link">See pricing <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://shyre.io/pricing" class="btn btn-primary product-action">See pricing <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
       <div class="col-md-6">
@@ -207,20 +207,42 @@
             nothing until you click. Nothing leaves the Mac.
           </p>
           <p class="text-muted-2 small">We're releasing it in stages; availability is expanding soon.</p>
-          <a [routerLink]="['/']" fragment="contact" class="product-link">Request early access <span aria-hidden="true">&rarr;</span></a>
+          <a [routerLink]="['/']" fragment="contact" class="btn product-action product-action--teal">Request early access <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
       <div class="col-12">
-        <div class="brand-card product-strip glow glow-violet glow-left">
-          <img class="product-appicon" src="/assets/quillquest/web/icon-256.webp" width="44" height="44" alt="" loading="lazy" />
-          <div>
-            <span class="card-eyebrow">Also ours &middot; Free</span>
-            <p class="text-muted-2 mb-0 mt-1">
-              QuillQuest, a learning game for grades 3–8, live on the App Store and Google Play.
-              Private by design: no ads, no accounts, no tracking.
+        <!-- QuillQuest: its own colors (night-sky indigo and quill gold), not the studio green -->
+        <div class="qq-card">
+          <div class="qq-card-copy">
+            <img class="qq-card-icon" src="/assets/quillquest/web/icon-256.webp" width="64" height="64" alt="" loading="lazy" />
+            <span class="card-eyebrow">Also ours &middot; A free learning game</span>
+            <h3 class="qq-card-title">QuillQuest</h3>
+            <p class="qq-card-pitch">
+              A spelling, times-tables, division and touch-typing game for grades 3–8. Play all
+              four in the browser; the iOS and Android apps cover spelling, times tables and
+              division.
             </p>
+            <ul class="qq-card-badges" aria-label="At a glance">
+              <li>Free</li>
+              <li>No ads</li>
+              <li>No accounts</li>
+              <li>No tracking</li>
+            </ul>
+            <div class="qq-card-actions">
+              <a href="https://quillquest.net" class="btn qq-card-play">Play it at quillquest.net <span aria-hidden="true">&rarr;</span></a>
+              <a routerLink="/quillquest" class="qq-card-more">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+            </div>
           </div>
-          <a routerLink="/quillquest" class="product-link ms-md-auto">About QuillQuest <span aria-hidden="true">&rarr;</span></a>
+          <div class="qq-card-shot" aria-hidden="true">
+            <img
+              src="/assets/quillquest/web/qq-iphone-1-home-440.webp"
+              srcset="/assets/quillquest/web/qq-iphone-1-home-440.webp 440w, /assets/quillquest/web/qq-iphone-1-home-660.webp 660w"
+              sizes="260px"
+              width="330"
+              height="717"
+              alt=""
+              loading="lazy" />
+          </div>
         </div>
       </div>
     </div>
