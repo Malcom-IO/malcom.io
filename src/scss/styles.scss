@@ -179,7 +179,7 @@ section[id] {
   background:
     radial-gradient(
       var(--gs) at var(--gx) var(--gy),
-      color-mix(in srgb, var(--g) 20%, transparent),
+      color-mix(in srgb, var(--g) 16%, transparent),
       transparent 68%
     ),
     var(--surface-2);
@@ -217,7 +217,8 @@ section[id] {
 .brand-card.glow-amber {
   --g: #e9a23b;
 }
-.brand-card.edge-top {
+.brand-card.edge-top,
+.brand-card.edge-top:hover {
   border-top: 3px solid color-mix(in srgb, var(--g) 85%, transparent);
 }
 
@@ -334,7 +335,8 @@ section[id] {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .brand-card:hover {
+  .brand-card:hover,
+  .civic-card:hover {
     transform: none;
   }
   // never leave reveal content hidden when motion is off

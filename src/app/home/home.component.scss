@@ -138,10 +138,19 @@
   gap: 2.5rem;
   padding: 2.5rem;
   height: auto;
+  // The founder card is not a link: it keeps its resting look on hover, glow included.
   &:hover {
     transform: none;
-    border-color: var(--line);
-    background: var(--surface);
+  }
+  &.glow:hover {
+    background:
+      radial-gradient(
+        var(--gs) at var(--gx) var(--gy),
+        color-mix(in srgb, var(--g) 14%, transparent),
+        transparent 65%
+      ),
+      var(--surface);
+    border-color: color-mix(in srgb, var(--g) 30%, var(--line));
   }
 }
 .founder-photo {
@@ -164,6 +173,9 @@
 }
 .founder-bio {
   max-width: 40rem;
+}
+.founder-links .product-link {
+  margin-top: 0;
 }
 .founder-links {
   display: flex;
@@ -364,7 +376,10 @@
   margin-top: auto;
   align-self: flex-start;
 }
+// Bootstrap draws the focus ring from --bs-btn-focus-shadow-rgb; without it a
+// custom button has no visible keyboard focus.
 .product-action--teal {
+  --bs-btn-focus-shadow-rgb: 31, 181, 168;
   --bs-btn-color: #6fe0d6;
   --bs-btn-border-color: #1fb5a8;
   --bs-btn-hover-color: #06201e;
@@ -399,7 +414,6 @@ $qq-indigo: #2a2470;
 }
 .qq-card:hover {
   border-color: color-mix(in srgb, $qq-gold 60%, var(--line));
-  transform: translateY(-3px);
 }
 .qq-card-copy {
   padding-bottom: 2.25rem;
@@ -455,6 +469,7 @@ $qq-indigo: #2a2470;
   gap: 0.9rem 1.5rem;
 }
 .qq-card-play {
+  --bs-btn-focus-shadow-rgb: 242, 182, 60;
   --bs-btn-color: #1b1440;
   --bs-btn-bg: #{$qq-gold};
   --bs-btn-border-color: #{$qq-gold};
