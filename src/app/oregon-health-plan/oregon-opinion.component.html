@@ -97,8 +97,7 @@
       <p class="uhp-kicker">Model 6 &middot; mine &middot; priced on this page</p>
       <h2 class="h-section">{{ model6Info.name }}</h2>
       <p class="uhp-narrow uhp-body">
-        {{ model6Info.description }} It raises the same state revenue as Model 3, if nobody
-        changes what they do.
+        It raises the same state revenue as Model 3, if nobody changes what they do.
       </p>
 
       <div class="op-mix" aria-label="Where the new revenue comes from">
@@ -179,8 +178,8 @@
               <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Models 1 to 5</th>
               <th role="columnheader" scope="col" class="num op-col-pick">Model 6 (mine)</th>
-              <th role="columnheader" scope="col" class="num op-col-payroll">Through employer, draft</th>
-              <th role="columnheader" scope="col" class="num">Through employer, Model 6</th>
+              <th role="columnheader" scope="col" class="num op-col-payroll">Its employer's payroll tax, Model 3</th>
+              <th role="columnheader" scope="col" class="num">Its employer's payroll tax, Model 6</th>
             </tr>
           </thead>
           <tbody role="rowgroup">
@@ -201,10 +200,10 @@
                 >
                   <span class="visually-hidden">{{ row.own < row.now - 0.5 ? 'Less than today: ' : row.own > row.now + 0.5 ? 'More than today: ' : '' }}</span>{{ usd(row.own) }}
                 </td>
-                <td role="cell" class="num op-col-payroll" data-label="Through employer, draft">
+                <td role="cell" class="num op-col-payroll" data-label="Its employer's payroll tax, Model 3">
                   {{ row.payroll.draft < 1 ? 'None' : usd100(row.payroll.draft) }}
                 </td>
-                <td role="cell" class="num" data-label="Through employer, Model 6">
+                <td role="cell" class="num" data-label="Its employer's payroll tax, Model 6">
                   {{ row.payroll.model6 < 1 ? 'None' : usd100(row.payroll.model6) }}
                 </td>
               </tr>
@@ -214,8 +213,8 @@
       </div>
       <p class="uhp-note">
         <span class="uhp-ours">my math</span> "Pays today" and the draft's range are the explainer's
-        and count the household's own bill only. "Through employer" is the payroll tax on that
-        household's wages: the board's 9% example for a private employer, 14% for a public one,
+        and count the household's own bill only. The last two columns are not paid by the
+        household: they are the payroll tax its employer pays on that household's wages: the board's 9% example for a private employer, 14% for a public one,
         under Model 3. A smaller employer pays less than 9%, and under $500,000 of payroll
         nothing, so less or nothing comes off for its workers. The appendix assumes payroll tax
         comes out of pay over time; nothing requires an employer to pass a cut on.
@@ -228,11 +227,10 @@
     <div class="container">
       <h2 class="h-section">Model 6: the middle and the top</h2>
 
-      <h3 class="uhp-sub">The middle: more of the bill is theirs to see, and the total moves little</h3>
+      <h3 class="uhp-sub">The middle: more of the bill is theirs to see, less is paid by the employer</h3>
       <ul class="uhp-legend" aria-hidden="true">
         <li><span class="uhp-key op-key--own"></span>Household's own bill</li>
-        <li><span class="uhp-key op-key--payroll"></span>Through its employer</li>
-        <li><span class="op-mark-key"></span>What it pays today (not counting its employer's premium)</li>
+        <li><span class="uhp-key op-key--payroll"></span>Payroll tax its employer pays on its wages</li>
       </ul>
       <div class="op-bargrid">
         @for (group of middleBars(); track group.title) {
@@ -244,17 +242,22 @@
                 <span class="op-bar-track op-bar-track--stack">
                   <span class="op-fill op-fill--own" [style.width.%]="b.ownPct"></span>
                   <span class="op-fill op-fill--payroll" [style.width.%]="b.payrollPct"></span>
-                  <span class="op-mark" [style.left.%]="group.nowPct" aria-hidden="true"></span>
                 </span>
                 <span class="op-bar-value">{{ usd100(b.own) }} <span>+ {{ usd100(b.payroll) }}</span></span>
               </div>
             }
-            <p class="op-bargroup-foot">Pays today: {{ usd(group.now) }}</p>
+            <p class="op-bargroup-foot">Own bill today: {{ usd(group.now) }}, not counting its employer's premium</p>
           </div>
         }
       </div>
 
-      <h3 class="uhp-sub">The top: no employer, so nothing moves off the bill</h3>
+      <p class="uhp-note">
+        The two parts do not add to the same total for each household. Model 6 keeps the
+        state's total the same, not each household's: the money comes off payroll in proportion
+        to wages and goes onto households in proportion to income above the exemption.
+      </p>
+
+      <h3 class="uhp-sub">The top, under both models: no employer, so the whole bill is theirs</h3>
       <div class="uhp-seg uhp-seg--tabs" role="group" aria-label="Chart: Model 6 with or without a soft cap">
         <button type="button" [class.active]="!softCap()" [attr.aria-pressed]="!softCap()" (click)="softCap.set(false)">
           Model 6
@@ -272,7 +275,8 @@
           <ul class="uhp-legend" aria-hidden="true">
             <li><span class="uhp-key op-key--m1"></span>Draft, Model 1</li>
             <li><span class="uhp-key op-key--m3"></span>Draft, Model 3</li>
-            <li><span class="uhp-key op-key--m6"></span>Model 6</li>
+            <li><span class="uhp-key op-key--m6"></span>Model 6 (mine)</li>
+            <li><span class="uhp-key op-key--m7"></span>Model 7 (mine)</li>
             <li><span class="uhp-key uhp-key--now"></span>Plan's average cost for four (2032, Milliman)</li>
           </ul>
           <div class="uhp-plot" #plot>
@@ -281,7 +285,7 @@
               [attr.height]="height"
               width="100%"
               role="img"
-              aria-label="Line chart of the household contribution for a self-employed family of four by income, under the draft's Model 1 and Model 3 and under Model 6. The table below has the figures."
+              aria-label="Line chart of the household contribution for a self-employed family of four by income, under the draft's Model 1 and Model 3 and under Models 6 and 7. Model 6 is above Model 3 and Model 7 a little below it. The table below has the figures."
             >
               @for (t of yTicks(); track t.label) {
                 <line class="grid" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="t.y" [attr.y2]="t.y" />
@@ -329,9 +333,10 @@
           <div class="brand-card glow glow-rose edge-top op-callcard">
             <span class="card-eyebrow">The catch</span>
             <p>
-              A higher household rate raises the bill for anyone without an employer. The
-              family at $1,000,000 would pay {{ usd100(million().own) }}, against
-              {{ usd100(million().model3) }} under the draft's Model 3{{ softCap() ? ', even with the soft cap.' : '. The soft cap takes some of that off.' }}
+              Model 6's higher household rate raises the bill for anyone without an employer:
+              {{ usd100(million().own) }} at $1,000,000, against {{ usd100(million().model3) }}
+              under the draft's Model 3{{ softCap() ? ', even with the soft cap' : '' }}. Model 7
+              goes the other way, by about a tenth.
             </p>
           </div>
           <p class="uhp-note mb-0">
@@ -377,8 +382,8 @@
       <p class="uhp-kicker">Model 7 &middot; mine &middot; priced as a range</p>
       <h2 class="h-section">{{ model7Info.name }}</h2>
       <p class="uhp-narrow uhp-body">
-        {{ model7Info.description }} It does both things I want, modestly. One table in the
-        appendix is enough to put a range on it.
+        It does both things I want, modestly. One table in the appendix is enough to put a
+        likely range on it.
       </p>
 
       <div class="op-rates">
@@ -395,19 +400,20 @@
           <p class="op-rate-big">{{ pct(m7TopCut.low) }} to {{ pct(m7TopCut.high) }} less</p>
         </div>
         <div class="brand-card op-rate">
-          <p class="op-stat-label">The limit: with no exemption at all</p>
-          <p class="op-rate-big">{{ pct1(m7Floor.rate) }} <span>at best</span></p>
+          <p class="op-stat-label">The limit: with no income exempt at all</p>
+          <p class="op-rate-big">{{ pct1(m7Floor.rateLow) }} to {{ pct1(m7Floor.rateHigh) }}</p>
         </div>
       </div>
       <p class="uhp-note">
         <span class="uhp-ours">my math</span> Appendix FR page 33: under Model 3 the household
         contribution raises $8,171 million on 2022 tax data, which the appendix gives as 5.0% of
         all income. So about $163 billion of income, of which about $106 billion is taxed at
-        7.69% and about $57 billion sits under the exemption. Lowering the exemption by 31%
-        brings in at most 31% of that $57 billion, which sets the lowest possible rate. The
-        higher figure leaves out the income of the bottom two fifths, who mostly owe nothing
-        either way. Taxing every dollar would make the rate exactly 5.0%; no version of this
-        model can go lower. Same static caveat as Model 6.
+        7.69% and about $57 billion is exempt. Lowering the exemption by 31% brings in at most
+        31% of that $57 billion; that gives the low end. The high end assumes the appendix's
+        figure is after the Medicare Part B credit, which the appendix does not say, and leaves
+        out the income of the bottom two fifths, who mostly owe nothing either way. It is a
+        likely range, not a guarantee: the board's actuaries could land higher, up to Model 3's
+        own 7.69%. Like Model 6, it assumes nobody changes what they do.
       </p>
 
       <div class="uhp-scroll" tabindex="0" role="region" aria-label="Twelve example households under Model 7">
@@ -418,7 +424,7 @@
               <th role="columnheader" scope="col" class="num">Pays today</th>
               <th role="columnheader" scope="col" class="num">Draft, Model 3</th>
               <th role="columnheader" scope="col" class="num op-col-pick">Model 7 (mine)</th>
-              <th role="columnheader" scope="col" class="num op-col-payroll">Change from Model 3</th>
+              <th role="columnheader" scope="col" class="num op-col-payroll">Model 7 against Model 3</th>
             </tr>
           </thead>
           <tbody role="rowgroup">
@@ -439,8 +445,8 @@
                 >
                   <span class="visually-hidden">{{ row.own < row.now - 0.5 ? 'Less than today: ' : row.own > row.now + 0.5 ? 'More than today: ' : '' }}</span>about {{ usd100(row.own) }}
                 </td>
-                <td role="cell" class="num op-col-payroll" data-label="Change from Model 3">
-                  {{ row.own > row.model3 ? '+' : '−' }}{{ usd100(abs(row.own - row.model3)) }}
+                <td role="cell" class="num op-col-payroll" data-label="Model 7 against Model 3">
+                  {{ usd100(abs(row.own - row.model3)) }} {{ row.own > row.model3 ? 'more' : 'less' }}
                 </td>
               </tr>
             }
@@ -453,48 +459,13 @@
         it is not shown.
       </p>
 
-      <div class="op-two op-two--even">
-        <figure class="uhp-figure">
-          <figcaption>
-            <strong>How many more would pay: the board's figures</strong>
-            <span class="text-muted-2">Tax returns owing no household contribution</span>
-          </figcaption>
-          <div class="op-evidence">
-            @for (e of exemptionEvidence; track e.label) {
-              <div class="op-bar op-bar--wide">
-                <span class="op-bar-label">{{ e.label }}</span>
-                <span class="op-bar-track"><span class="op-fill op-fill--own" [style.width.%]="e.value * 100"></span></span>
-                <span class="op-bar-value">{{ pct(e.value) }}</span>
-              </div>
-            }
-          </div>
-          <p class="uhp-note mb-0">
-            From the report. These are the board's two models with no worker credit. Starting the
-            tax lower brings about 9 in 100 more tax returns in. They say nothing about how far
-            the rate could fall; that is the range above.
-          </p>
-        </figure>
-
-        <div class="brand-card op-shapecard">
-          <span class="card-eyebrow">The shape, not the numbers</span>
-          <svg class="op-shape op-shape--large" viewBox="0 0 240 110" role="img" aria-label="Sketch: under Model 7 the contribution starts at a lower income and rises more slowly than under the board's Model 3, so it is higher for middle incomes and lower for high incomes.">
-            <path class="op-shape-base" d="M8 100 L62 100 L232 28" />
-            <path class="op-shape-line op-line--m3" d="M8 100 L34 100 L232 48" />
-          </svg>
-          <ul class="uhp-legend" aria-hidden="true">
-            <li><span class="uhp-key op-key--m3"></span>Model 7</li>
-            <li><span class="uhp-key uhp-key--now"></span>Draft, Model 3</li>
-          </ul>
-          <p class="uhp-note mb-0">A sketch, not to scale. Higher in the middle, lower at the top, and still rising.</p>
-        </div>
-      </div>
-
       <div class="op-trade">
         <div class="brand-card glow glow-rose edge-top">
           <span class="card-eyebrow">Behind</span>
           <ul class="op-list">
-            <li><strong>Households just above the lower exemption.</strong> A family of four between $45,540 and $66,000 pays nothing under Model 3 and would pay something here.</li>
-            <li><strong>Lower and middle incomes generally,</strong> as a share of income. It is less progressive than Model 3, by design, and Model 3 is already the draft model that asks the most of the middle fifth.</li>
+            <li><strong>Households just above the lower exemption,</strong> about 9 in 100 tax returns by the board's figures. A family of four between $45,540 and $66,000 pays nothing under Model 3 and would pay something here.</li>
+            <li><strong>Some households that pay nothing today.</strong> The board's example couple at $40,000 pays $0 today and would pay about {{ usd100(m7PaysNothingToday) }}. That is the same objection I make to a minimum contribution below.</li>
+            <li><strong>Lower and middle incomes generally,</strong> as a share of income. It takes about {{ usd100(m7Shift.more) }} a year more from a below-median family of four and about {{ usd100(m7Shift.less) }} less from one at $2,000,000. Model 3 is already the draft model that asks the most of the middle fifth.</li>
             <li><strong>The board's own direction.</strong> It recommended the 200% exemption in January 2026 after public comment on exactly this.</li>
           </ul>
         </div>
@@ -530,7 +501,7 @@
             <path class="op-shape-line op-line--m6" d="M4 52 L30 52 L64 33 L116 19" />
           </svg>
           <h4 class="uhp-card-title">A soft cap alone</h4>
-          <p class="op-option-what">Gives up revenue at the top and changes nothing for the middle. The board left it out as less progressive.</p>
+          <p class="op-option-what">A lower rate above a set amount. It gives up revenue at the top and changes nothing for the middle. The board left it out as less progressive.</p>
         </div>
         <div class="brand-card op-option">
           <svg class="op-shape" viewBox="0 0 120 56" aria-hidden="true">

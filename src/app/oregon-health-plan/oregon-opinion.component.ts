@@ -24,6 +24,7 @@ import {
   model6,
   model6Rows,
   model7,
+  model7Bill,
   model7Rows,
   payrollLowWithReserve,
   softCapYardstick,
@@ -77,6 +78,17 @@ export class OregonOpinionComponent {
     const row = this.m7Rows.find((r) => r.income === 1_000_000)!;
     return { low: 1 - row.ownHigh / row.model3, high: 1 - row.ownLow / row.model3 };
   })();
+  /**
+   * Who Model 7 moves money between, in dollars a year against Model 3: the
+   * below-median family of four pays more, the family at $2,000,000 pays less.
+   */
+  readonly m7Shift = (() => {
+    const lower = this.m7Rows.find((r) => r.size === 4 && r.income === 70_000)!;
+    const top = this.m7Rows.find((r) => r.income === 2_000_000)!;
+    return { more: lower.own - lower.model3, less: top.model3 - top.own };
+  })();
+  /** The board's Table S2 couple at $40,000, who pay nothing today. */
+  readonly m7PaysNothingToday = model7Bill(40_000, 2, 1.38, this.m7.rate);
   /** The same cut if there were no exemption at all: the most any version could do. */
   readonly m7MaxCut = 1 - this.m7Floor.rate / BASE.topRate;
 
@@ -120,7 +132,7 @@ export class OregonOpinionComponent {
     const s = this.m6().shares;
     return [
       { label: 'Draft, Model 3', household: BASE_SHARES.household, payroll: BASE_SHARES.payroll, business: BASE_SHARES.business },
-      { label: 'Model 6', household: s.household, payroll: s.payroll, business: s.business },
+      { label: 'Model 6 (mine)', household: s.household, payroll: s.payroll, business: s.business },
     ];
   });
 
@@ -177,7 +189,7 @@ export class OregonOpinionComponent {
     this.rows()
       .filter((r) => r.employer !== 'none' && r.income <= 220_000)
       .map((r) => {
-        const scale = Math.max(r.total.draft, r.total.model6, r.now, 1);
+        const scale = Math.max(r.total.draft, r.total.model6, 1);
         const bar = (label: string, own: number, payroll: number) => ({
           label,
           own,
@@ -188,7 +200,6 @@ export class OregonOpinionComponent {
         return {
           title: `${r.who}, ${USD.format(r.income)}`,
           now: r.now,
-          nowPct: (r.now / scale) * 100,
           bars: [
             bar('Draft, Model 3', r.model3, r.payroll.draft),
             bar('Model 6', r.own, r.payroll.model6),
@@ -210,8 +221,13 @@ export class OregonOpinionComponent {
     { id: 'm3', label: 'Draft, Model 3', value: (income: number) => contribution(BASE, income, 0, 4, 0) },
     {
       id: 'm6',
-      label: this.softCap() ? 'Model 6, soft cap' : 'Model 6',
+      label: this.softCap() ? 'Model 6, soft cap' : 'Model 6 (mine)',
       value: (income: number) => householdBill(income, 4, this.share(), this.softCap()),
+    },
+    {
+      id: 'm7',
+      label: 'Model 7 (mine)',
+      value: (income: number) => model7Bill(income, 4, 1.38, this.m7.rate),
     },
   ]);
   private readonly yMax = computed(() => {

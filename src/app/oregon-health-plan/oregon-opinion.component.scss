@@ -685,6 +685,26 @@ $payroll: var(--s4);
 .op-key--m6 {
   background: var(--s1);
 }
+.op-line--m7 {
+  stroke: var(--s3);
+}
+.op-key--m7 {
+  background: var(--s3);
+}
+// Phones: keep rate figures on one line and the mix labels inside their bars.
+@media (max-width: 575.98px) {
+  .op-rate-big {
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+  .op-rates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-seg--biz {
+    flex-basis: 2.2rem;
+    flex-shrink: 0;
+  }
+}
 .op-callcard {
   padding: 1.25rem 1.4rem;
   height: auto;

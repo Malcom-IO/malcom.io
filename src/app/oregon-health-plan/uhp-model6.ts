@@ -44,7 +44,7 @@ export interface ProposedModel {
 export const PROPOSED: readonly ProposedModel[] = [
   {
     id: 6,
-    name: 'Less payroll, higher household rate',
+    name: 'Lower payroll tax, higher household rate',
     description:
       "The board's Model 3 with money moved from the employer payroll tax to the household contribution. Households see more of what the plan costs them, and employers pay less.",
     change: 'Payroll tax down, household rate up, by the same dollars',
@@ -64,7 +64,7 @@ export const PROPOSED: readonly ProposedModel[] = [
     status: 'Priced as a range',
     middle: 'More, at a lower rate',
     top: 'About a tenth less',
-    revenue: 'Same as Model 3, within the range shown',
+    revenue: 'Same as Model 3; the rate is a range',
   },
 ];
 
@@ -185,8 +185,15 @@ export function payrollLowWithReserve(householdShare = DEFAULT_HOUSEHOLD_SHARE):
  */
 export const MODEL3_2022 = { householdRevenue: 8_171, netRateOnAllIncome: 0.05 };
 const TOTAL_INCOME = MODEL3_2022.householdRevenue / MODEL3_2022.netRateOnAllIncome;
-const TAXED_AT_200 = MODEL3_2022.householdRevenue / BASE.topRate;
-const EXEMPT_AT_200 = TOTAL_INCOME - TAXED_AT_200;
+
+/**
+ * The appendix does not say whether its $8,171 million is before or after the
+ * credit for Medicare Part B premiums. The report's footnote 44 gives the size
+ * of that credit for Model 1 in 2032: $13.144 billion raised against roughly
+ * $14.1 billion without it. If the 2022 figure is after the credit, the income
+ * actually taxed is larger by this factor, and less is left under the exemption.
+ */
+export const PART_B_GROSS_UP = 14.1 / 13.144;
 
 /** Share of income the bottom two fifths of Oregonians have (appendix page 33). */
 const BOTTOM_TWO_FIFTHS_INCOME = 0.004 + 0.079;
@@ -195,29 +202,35 @@ export interface Model7 {
   /** The exemption, as a share of the poverty line (Model 3's is 2.0). */
   exemption: number;
   /**
-   * The lowest the rate could be. Exact: lowering the exemption by a share can
-   * bring in at most that share of the income now exempt.
+   * The low end. Reads the appendix figure as before the Part B credit and
+   * assumes the most a lower exemption could bring in: lowering the exemption
+   * by a share adds at most that share of the income now exempt.
    */
   rateLow: number;
   /**
-   * A likelier, higher figure: households that owe nothing under Model 3 gain
-   * little from a lower exemption, so only the rest of the exempt income
-   * counts. Estimated by taking the bottom two fifths' income out.
+   * The high end of the likely range, not a ceiling. Reads the figure as after
+   * the credit, and leaves out the income of the bottom two fifths, who mostly
+   * owe nothing either way. The only true ceiling is Model 3's own 7.69%.
    */
   rateHigh: number;
   /** The middle of the two, used for the example households. */
   rate: number;
 }
 
+/** The rate that raises a given gross amount once the exemption is lowered. */
+function rateFor(grossRevenue: number, exemption: number, leaveOutBottom: boolean): number {
+  const taxed = grossRevenue / BASE.topRate;
+  const exempt = TOTAL_INCOME - taxed;
+  const reachable = leaveOutBottom ? exempt - TOTAL_INCOME * BOTTOM_TWO_FIFTHS_INCOME : exempt;
+  return grossRevenue / (taxed + reachable * (1 - exemption / 2));
+}
+
 /** Model 7 at a given exemption (1.38 = 138% of the poverty line; 0 = none). */
 export function model7(exemption = 1.38): Model7 {
-  const cut = 1 - exemption / 2;
-  const mostNewIncome = EXEMPT_AT_200 * cut;
-  const likelyNewIncome = (EXEMPT_AT_200 - TOTAL_INCOME * BOTTOM_TWO_FIFTHS_INCOME) * cut;
-  const rateLow = MODEL3_2022.householdRevenue / (TAXED_AT_200 + mostNewIncome);
-  // With no exemption every dollar is taxed and there is nothing to estimate.
-  const rateHigh =
-    exemption === 0 ? rateLow : MODEL3_2022.householdRevenue / (TAXED_AT_200 + likelyNewIncome);
+  const revenue = MODEL3_2022.householdRevenue;
+  const rateLow = rateFor(revenue, exemption, false);
+  // With no exemption every dollar is taxed, so there is no bottom to leave out.
+  const rateHigh = rateFor(revenue * PART_B_GROSS_UP, exemption, exemption !== 0);
   return { exemption, rateLow, rateHigh, rate: (rateLow + rateHigh) / 2 };
 }
 

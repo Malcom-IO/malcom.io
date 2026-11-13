@@ -103,21 +103,22 @@ describe('Model 7 (opinion page sketch)', () => {
     }
   });
 
-  // The hard floor: tax every dollar of income and the rate is the appendix's
-  // own "net rate of HHCC" on all income, 5.0%. No exemption can beat that.
-  it('cannot take the rate below 5.0%, even with no exemption at all', () => {
+  // The limit: tax every dollar of income and the rate is the appendix's own
+  // "net rate of HHCC" on all income, 5.0%, or about 5.4% if that figure is
+  // after the Medicare Part B credit. No exemption can do better.
+  it('cannot take the rate below about 5.0% to 5.4%, even with no exemption at all', () => {
     const none = model7(0);
     expect(none.rateLow).toBeCloseTo(MODEL3_2022.netRateOnAllIncome, 6);
-    expect(none.rateHigh).toBeCloseTo(MODEL3_2022.netRateOnAllIncome, 6);
+    expect(none.rateHigh).toBeCloseTo(0.0536, 3);
     for (const exemption of [0.5, 1, 1.38, 1.75]) {
       expect(model7(exemption).rateLow).toBeGreaterThan(MODEL3_2022.netRateOnAllIncome);
     }
   });
 
-  it('at 138% of poverty: a rate between about 6.6% and 6.8%', () => {
+  it('at 138% of poverty: a likely rate of about 6.6% to 7.0%', () => {
     const m = model7(1.38);
     expect(m.rateLow).toBeCloseTo(0.0659, 3);
-    expect(m.rateHigh).toBeCloseTo(0.0683, 3);
+    expect(m.rateHigh).toBeCloseTo(0.07, 3);
     expect(m.rateLow).toBeLessThan(m.rateHigh);
     expect(m.rateHigh).toBeLessThan(0.0769);
   });
@@ -131,9 +132,9 @@ describe('Model 7 (opinion page sketch)', () => {
     expect(median.own).toBeLessThan(median.now);
     expect(one.own).toBeLessThan(one.model3);
     expect(two.own).toBeGreaterThan(one.own);
-    // The cut at the top is modest: between a tenth and a seventh.
+    // The cut at the top is modest: about a tenth.
     const cut = 1 - one.own / one.model3;
-    expect(cut).toBeGreaterThan(0.09);
-    expect(cut).toBeLessThan(0.15);
+    expect(cut).toBeGreaterThan(0.07);
+    expect(cut).toBeLessThan(0.13);
   });
 });
