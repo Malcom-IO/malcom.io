@@ -837,6 +837,16 @@
                     {{ t.label }}
                   </text>
                 }
+                <text class="axis-title" [attr.x]="plotMidX()" [attr.y]="height - 6" text-anchor="middle">
+                  Household income per year
+                </text>
+                <text
+                  class="axis-title"
+                  text-anchor="middle"
+                  [attr.transform]="'translate(14,' + plotMidY() + ') rotate(-90)'"
+                >
+                  Contribution per year
+                </text>
 
                 <line class="now" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="nowY()" [attr.y2]="nowY()" />
 

@@ -150,9 +150,9 @@ export class OregonOpinionComponent {
   readonly who = signal<Who>('self');
   private readonly plotEl = viewChild<ElementRef<HTMLElement>>('plot');
   readonly width = signal(720);
-  readonly height = 320;
+  readonly height = 340;
   readonly narrow = computed(() => this.width() < 520);
-  readonly pad = computed(() => ({ left: 52, right: this.narrow() ? 12 : 138, top: 16, bottom: 34 }));
+  readonly pad = computed(() => ({ left: 70, right: this.narrow() ? 12 : 138, top: 16, bottom: 54 }));
 
   /** The household followed, and how far along the income axis the chart runs. */
   private readonly subject = computed(() =>
@@ -190,6 +190,9 @@ export class OregonOpinionComponent {
   }
   readonly plotRight = computed(() => this.width() - this.pad().right);
   readonly plotBottom = computed(() => this.height - this.pad().bottom);
+  /** Middle of the plot area, for the axis titles. */
+  readonly plotMidX = computed(() => (this.pad().left + this.plotRight()) / 2);
+  readonly plotMidY = computed(() => (this.pad().top + this.plotBottom()) / 2);
 
   private money(v: number): string {
     return v === 0 ? '$0' : v >= 1_000_000 ? `$${v / 1_000_000}M` : `$${v / 1000}K`;

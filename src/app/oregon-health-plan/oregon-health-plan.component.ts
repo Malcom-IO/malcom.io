@@ -363,21 +363,25 @@ export class OregonHealthPlanComponent {
   // ----------------------------------------------------------------- chart
   private readonly plotEl = viewChild<ElementRef<HTMLElement>>('plot');
   readonly width = signal(720);
-  readonly height = 340;
+  readonly height = 360;
   readonly hoverIncome = signal<number | null>(null);
 
   readonly narrow = computed(() => this.width() < 520);
   readonly pad = computed(() => ({
-    left: 46,
+    left: 66,
     right: this.narrow() ? 14 : 128,
     top: 18,
-    bottom: 34,
+    bottom: 54,
   }));
 
   /** Always wide enough to hold the visitor's own income, however large. */
   readonly xMax = computed(() =>
     Math.max(250_000, Math.ceil((this.income() * 1.2) / 50_000) * 50_000),
   );
+
+  /** Middle of the plot area, for the axis titles. */
+  readonly plotMidX = computed(() => (this.pad().left + this.plotRight()) / 2);
+  readonly plotMidY = computed(() => (this.pad().top + this.plotBottom()) / 2);
 
   private billAt(modelIndex: number, income: number): number {
     return bill(MODELS[modelIndex], income, this.size(), this.employer(), this.payroll())

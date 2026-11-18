@@ -582,6 +582,11 @@ a {
     fill: var(--text);
     font-weight: 600;
   }
+  .axis-title {
+    font-size: 12px;
+    font-weight: 600;
+    fill: var(--text-soft);
+  }
   .series {
     fill: none;
     stroke-width: 2;
