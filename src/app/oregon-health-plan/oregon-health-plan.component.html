@@ -620,303 +620,12 @@
         result for reference; it is not part of your bill.
       </p>
 
-      <div class="uhp-calc">
-        <form class="uhp-inputs" (submit)="$event.preventDefault()">
-          <div class="uhp-field">
-            <label for="uhp-coverage">How you are covered today</label>
-            <select
-              id="uhp-coverage"
-              class="form-select"
-              (change)="setCoverage($any($event.target).value)"
-            >
-              @for (c of coverages; track c.kind) {
-                <option [value]="c.kind" [selected]="coverage() === c.kind">{{ c.label }}</option>
-              }
-            </select>
-          </div>
-
-          <fieldset>
-            <legend>People in your household</legend>
-            <div class="uhp-seg">
-              @for (n of sizes; track n) {
-                <button
-                  type="button"
-                  [class.active]="size() === n"
-                  [attr.aria-pressed]="size() === n"
-                  (click)="size.set(n)"
-                >
-                  {{ n }}
-                </button>
-              }
-            </div>
-            <p class="uhp-hint">
-              Not taxed: the first {{ usd(exemption()) }} of income in Models 1 to 3, and the
-              first {{ usd(exemptionLow()) }} in Models 4 and 5.
-            </p>
-          </fieldset>
-
-          <div class="uhp-field">
-            <label for="uhp-income">Household income per year</label>
-            <div class="uhp-money">
-              <span aria-hidden="true">$</span>
-              <input
-                id="uhp-income"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                [value]="income().toLocaleString('en-US')"
-                (change)="setIncome($any($event.target).value, $any($event.target))"
-              />
-            </div>
-            <input
-              type="range"
-              min="0"
-              [max]="sliderMax"
-              step="1"
-              aria-label="Household income per year"
-              [attr.aria-valuetext]="usd(income())"
-              [value]="incomePosition()"
-              (input)="setIncomePosition($any($event.target).value)"
-            />
-            <p class="uhp-hint">
-              Use the line labeled "adjusted gross income" on your federal tax return. Leave out
-              Social Security. If you are self-employed, that is profit after expenses, not
-              sales.
-            </p>
-          </div>
-
-          <div class="uhp-field">
-            <label for="uhp-employer">Who pays your wages</label>
-            <select
-              id="uhp-employer"
-              class="form-select"
-              (change)="setEmployer($any($event.target).value)"
-            >
-              @for (e of employers; track e.kind) {
-                <option [value]="e.kind" [selected]="employer() === e.kind">{{ e.label }}</option>
-              }
-            </select>
-            @if (employer() === 'private') {
-              <label for="uhp-payroll" class="uhp-sublabel">Its total payroll per year, roughly</label>
-              <div class="uhp-money">
-                <span aria-hidden="true">$</span>
-                <input
-                  id="uhp-payroll"
-                  type="text"
-                  inputmode="numeric"
-                  autocomplete="off"
-                  [value]="payroll().toLocaleString('en-US')"
-                  (change)="setPayroll($any($event.target).value, $any($event.target))"
-                />
-              </div>
-            }
-            <p class="uhp-hint">
-              {{ employerHint() }}
-              @if (employer() === 'private') {
-                A rough guess is fine: the number of employees times their typical pay. With two
-                earners, use the larger employer.
-              }
-            </p>
-          </div>
-
-          <div class="uhp-field">
-            <label for="uhp-now">What you pay for health care now, per year</label>
-            <div class="uhp-money">
-              <span aria-hidden="true">$</span>
-              <input
-                id="uhp-now"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                [value]="currentCost().toLocaleString('en-US')"
-                (change)="setCurrentCost($any($event.target).value, $any($event.target))"
-              />
-            </div>
-            <p class="uhp-hint">{{ coverageInfo().hint }}</p>
-          </div>
-        </form>
-
-        <a class="uhp-sticky" routerLink="." fragment="results" aria-hidden="true" tabindex="-1">
-          <span>
-            Your range:
-            <strong>{{ range().low === range().high ? usd(range().low) : usd(range().low) + ' to ' + usd(range().high) }}</strong>
-            a year
-          </span>
-          <span class="uhp-sticky-go">See all five &darr;</span>
-        </a>
-
-        <div class="uhp-results" id="results">
-          <div class="uhp-callout uhp-callout--top">
-            @if (coverageInfo().note; as note) {
-              <p><strong>{{ coverageInfo().label }}:</strong> {{ note }}</p>
-            }
-            @if (coverage() === 'employer') {
-              <p>
-                <strong>Two assumptions behind every figure below:</strong> your employer drops
-                its plan, and your pay stays the same. If it keeps its plan, the board has not
-                said what you would owe. If it drops it, the report says nothing requires it to
-                pass the savings on as higher pay. Public employee? Choose "A public employer"
-                under "Who pays your wages."
-              </p>
-            }
-            <p class="mb-0" aria-live="polite">
-              <strong>Your range across the five models:</strong>
-              {{ range().low === range().high ? usd(range().low) : usd(range().low) + ' to ' + usd(range().high) }}
-              a year, in today's dollars. None has been chosen, and all five will change before
-              anything is passed.
-            </p>
-          </div>
-
-          <div class="uhp-bills">
-            @for (b of bills(); track b.model.id; let i = $index) {
-              <div class="uhp-bill">
-                <p class="uhp-bill-name">
-                  <span class="uhp-key" [style.background]="series[i]"></span>
-                  Model {{ b.model.id }}
-                  <span class="text-muted-2">
-                    &middot; {{ b.model.rates.length > 1 ? 'up to ' : '' }}{{ pct(b.model.topRate, 2) }}
-                  </span>
-                </p>
-                <p class="uhp-bill-kind">{{ b.model.name }}</p>
-                <p class="uhp-bill-amount">
-                  {{ usd(b.household) }}<span class="uhp-per"> / year</span>
-                </p>
-                <p class="uhp-verdict" [attr.data-tone]="verdict(b).tone">
-                  {{ verdict(b).text }}
-                </p>
-                @if (zeroReason(b); as reason) {
-                  <p class="uhp-hint mb-0">{{ reason }}</p>
-                }
-                @if (b.employer > 0) {
-                  <p class="uhp-hint mb-0">
-                    Your employer would pay about {{ usd(b.employer) }} on your wages.
-                  </p>
-                }
-              </div>
-            }
-          </div>
-
-          <figure class="uhp-figure">
-            <figcaption>
-              <strong>Household contribution by income</strong>
-              <span class="text-muted-2">
-                Household of {{ size() }}, {{ usd(currentCost()) }} a year today
-              </span>
-            </figcaption>
-
-            <ul class="uhp-legend" aria-hidden="true">
-              @for (l of lines(); track l.id) {
-                <li><span class="uhp-key" [style.background]="l.color"></span>Model {{ l.id }}</li>
-              }
-              <li><span class="uhp-key uhp-key--now"></span>What you pay now</li>
-            </ul>
-
-            <div class="uhp-plot" #plot>
-              <svg
-                [attr.viewBox]="'0 0 ' + width() + ' ' + height"
-                [attr.height]="height"
-                width="100%"
-                role="img"
-                [attr.aria-label]="
-                  'Line chart of the yearly household contribution under all five models for incomes up to ' +
-                  usd(xMax()) +
-                  '. Open the table below for the figures.'
-                "
-                (pointermove)="onPointer($event)"
-                (pointerdown)="onPointer($event)"
-                (pointerleave)="onPointerLeave($event)"
-              >
-                @for (t of yTicks(); track t.label) {
-                  <line class="grid" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="t.y" [attr.y2]="t.y" />
-                  <text class="tick" [attr.x]="pad().left - 8" [attr.y]="t.y + 4" text-anchor="end">
-                    {{ t.label }}
-                  </text>
-                }
-                @for (t of xTicks(); track t.label) {
-                  <text class="tick" [attr.x]="t.x" [attr.y]="plotBottom() + 20" text-anchor="middle">
-                    {{ t.label }}
-                  </text>
-                }
-                <text class="axis-title" [attr.x]="plotMidX()" [attr.y]="height - 6" text-anchor="middle">
-                  Household income per year
-                </text>
-                <text
-                  class="axis-title"
-                  text-anchor="middle"
-                  [attr.transform]="'translate(14,' + plotMidY() + ') rotate(-90)'"
-                >
-                  Contribution per year
-                </text>
-
-                <line class="now" [attr.x1]="pad().left" [attr.x2]="plotRight()" [attr.y1]="nowY()" [attr.y2]="nowY()" />
-
-                @for (l of lines(); track l.id) {
-                  <path class="series" [attr.d]="l.d" [style.stroke]="l.color" />
-                }
-
-                @if (!narrow()) {
-                  @for (label of endLabels(); track label.text) {
-                    <text class="end" [attr.x]="plotRight() + 8" [attr.y]="label.y + 4">
-                      {{ label.text }}
-                    </text>
-                  }
-                }
-
-                <line class="you" [attr.x1]="youX()" [attr.x2]="youX()" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
-                <text class="you-label" [attr.x]="youX()" [attr.y]="pad().top - 5" text-anchor="middle">You</text>
-                @for (d of youDots(); track $index) {
-                  <circle class="dot" [attr.cx]="youX()" [attr.cy]="d.y" r="5" [style.fill]="d.color" />
-                }
-
-                @if (hover(); as h) {
-                  <line class="cross" [attr.x1]="h.x" [attr.x2]="h.x" [attr.y1]="pad().top" [attr.y2]="plotBottom()" />
-                  @for (r of h.rows; track r.id) {
-                    <circle class="dot" [attr.cx]="h.x" [attr.cy]="r.y" r="4" [style.fill]="r.color" />
-                  }
-                }
-              </svg>
-
-              @if (hover(); as h) {
-                <div class="uhp-tip" aria-hidden="true" [style.left.px]="h.left">
-                  <strong>{{ usd(h.income) }} income</strong>
-                  @for (r of h.rows; track r.id) {
-                    <span>
-                      <span class="uhp-key" [style.background]="r.color"></span>Model {{ r.id }}
-                      <b>{{ usd(r.value) }}</b>
-                    </span>
-                  }
-                </div>
-              }
-            </div>
-
-            <details class="uhp-details">
-              <summary>Show these figures as a table</summary>
-              <div class="uhp-scroll" tabindex="0" role="region" aria-label="Chart data">
-                <table class="uhp-table" role="table">
-                  <thead role="rowgroup">
-                    <tr role="row">
-                      <th role="columnheader" scope="col">Income</th>
-                      @for (l of lines(); track l.id) {
-                        <th role="columnheader" scope="col" class="num">Model {{ l.id }}</th>
-                      }
-                    </tr>
-                  </thead>
-                  <tbody role="rowgroup">
-                    @for (row of tableRows(); track row.income) {
-                      <tr role="row">
-                        <th role="rowheader" scope="row">{{ usd(row.income) }}</th>
-                        @for (v of row.values; track $index) {
-                          <td role="cell" class="num">{{ usd(v) }}</td>
-                        }
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
-            </details>
-          </figure>
-        </div>
-      </div>
+      <app-uhp-calculator show="household" />
+      <p class="uhp-note uhp-screen-only">
+        An unofficial calculator, built from the draft documents listed under
+        <a routerLink="." fragment="sources">Sources</a>. It is the open-source
+        <a href="https://github.com/Malcom-IO/oregon-uhp-explainer" rel="noopener">Oregon UHP explainer calculator</a>.
+      </p>
 
       <h3 class="uhp-sub" id="households">Example households, side by side</h3>
       <p class="uhp-narrow uhp-body">
@@ -1179,103 +888,46 @@
         spend on health benefits by your payroll and set it beside the percentage in the table.
       </p>
 
-      <div class="uhp-calc">
-        <form class="uhp-inputs" (submit)="$event.preventDefault()">
-          <div class="uhp-field">
-            <label for="biz-kind">Type of employer</label>
-            <select id="biz-kind" class="form-select" (change)="setBizKind($any($event.target).value)">
-              <option value="private" [selected]="bizKind() === 'private'">Private</option>
-              <option value="public" [selected]="bizKind() === 'public'">Public</option>
-            </select>
-          </div>
-          <div class="uhp-field">
-            <label for="biz-payroll">Total payroll per year</label>
-            <div class="uhp-money">
-              <span aria-hidden="true">$</span>
-              <input
-                id="biz-payroll"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                [value]="bizPayroll().toLocaleString('en-US')"
-                (change)="setBizPayroll($any($event.target).value, $any($event.target))"
-              />
-            </div>
-          </div>
-          <div class="uhp-field">
-            <label for="biz-spend">What you spend on employee health benefits now, per year</label>
-            <div class="uhp-money">
-              <span aria-hidden="true">$</span>
-              <input
-                id="biz-spend"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                [value]="bizSpend().toLocaleString('en-US')"
-                (change)="setBizSpend($any($event.target).value, $any($event.target))"
-              />
-            </div>
-            <p class="uhp-hint">
-              The figure shown is an example. Count the employer's share only: premiums, or
-              if you are self-funded, claims, stop-loss and administration, less what employees
-              pay in. Enter 0 if you do not offer coverage.
-            </p>
-          </div>
-        </form>
+      <app-uhp-calculator show="employer" />
 
-        <div class="uhp-results">
-          <div class="uhp-bills uhp-bills--two" aria-live="polite">
-            @for (r of bizRows(); track r.label) {
-              <div class="uhp-bill">
-                <p class="uhp-bill-name">{{ r.label }}</p>
-                <p class="uhp-bill-amount">
-                  {{ usd(r.tax) }}<span class="uhp-per"> / year</span>
-                </p>
-                <p class="uhp-verdict" [attr.data-tone]="r.diff < -1 ? 'less' : r.diff > 1 ? 'more' : 'same'">
-                  {{ bizVerdict(r.diff) }}
-                </p>
-                <p class="uhp-hint mb-0">{{ pct(r.rate) }} of payroll.</p>
-              </div>
-            }
-          </div>
-          <div class="uhp-callout uhp-callout--top">
-            <p class="mb-0">
-              <strong>These figures assume you drop your plan.</strong> The board's consultants
-              say that to survive federal law the tax must apply to every employer whether or
-              not it offers coverage. No offset for keeping a plan has been proposed, and the
-              brief lists the treatment of employers that keep one as still to be decided. Our
-              reading: keeping a plan would mean paying for both.
-            </p>
-          </div>
-
-          <div class="uhp-scroll" tabindex="0" role="region" aria-label="Payroll tax by payroll size">
-            <table class="uhp-table uhp-table--stack" role="table">
-              <thead role="rowgroup">
-                <tr role="row">
-                  <th role="columnheader" scope="col">Private employer's yearly payroll</th>
-                  <th role="columnheader" scope="col" class="num">Model 1</th>
-                  <th role="columnheader" scope="col" class="num">Models 2 to 5</th>
-                </tr>
-              </thead>
-              <tbody role="rowgroup">
-                @for (e of bizExamples; track e.payroll) {
-                  <tr role="row">
-                    <th role="rowheader" scope="row">{{ usd(e.payroll) }}</th>
-                    <td role="cell" class="num" data-label="Model 1">{{ usd(e.one) }} ({{ pct1(e.one / e.payroll) }})</td>
-                    <td role="cell" class="num" data-label="Models 2 to 5">{{ usd(e.rest) }} ({{ pct1(e.rest / e.payroll) }})</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-          <p class="uhp-note">
-            Yearly payroll tax and its share of payroll, at 9.6% above $500,000 and, in Models 2
-            to 5, 14% above $10 million. <span class="uhp-ours">our math</span> The one 2032
-            projection so far, for Model 1, raises the 9.6% to 9.89%. The appendix intends public
-            employers to pay the top rate from the first dollar, with no $500,000 exemption: 9.6%
-            of payroll under Model 1 and 14% under the others.
+      <div class="uhp-results">
+        <div class="uhp-callout uhp-callout--top">
+          <p class="mb-0">
+            <strong>These figures assume you drop your plan.</strong> The board's consultants
+            say that to survive federal law the tax must apply to every employer whether or
+            not it offers coverage. No offset for keeping a plan has been proposed, and the
+            brief lists the treatment of employers that keep one as still to be decided. Our
+            reading: keeping a plan would mean paying for both.
           </p>
         </div>
+
+        <div class="uhp-scroll" tabindex="0" role="region" aria-label="Payroll tax by payroll size">
+          <table class="uhp-table uhp-table--stack" role="table">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">Private employer's yearly payroll</th>
+                <th role="columnheader" scope="col" class="num">Model 1</th>
+                <th role="columnheader" scope="col" class="num">Models 2 to 5</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              @for (e of bizExamples; track e.payroll) {
+                <tr role="row">
+                  <th role="rowheader" scope="row">{{ usd(e.payroll) }}</th>
+                  <td role="cell" class="num" data-label="Model 1">{{ usd(e.one) }} ({{ pct1(e.one / e.payroll) }})</td>
+                  <td role="cell" class="num" data-label="Models 2 to 5">{{ usd(e.rest) }} ({{ pct1(e.rest / e.payroll) }})</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="uhp-note">
+          Yearly payroll tax and its share of payroll, at 9.6% above $500,000 and, in Models 2
+          to 5, 14% above $10 million. <span class="uhp-ours">our math</span> The one 2032
+          projection so far, for Model 1, raises the 9.6% to 9.89%. The appendix intends public
+          employers to pay the top rate from the first dollar, with no $500,000 exemption: 9.6%
+          of payroll under Model 1 and 14% under the others.
+        </p>
       </div>
 
       <h3 class="uhp-sub">What the documents do and do not say</h3>
@@ -1846,6 +1498,11 @@
           is not tax or insurance advice. The source documents are drafts and their numbers will
           change. Where this page differs from the report, it says so and shows why. Spot an error?
           <a [routerLink]="['/']" fragment="contact">Tell us</a> and we will fix it<span class="uhp-print-only-inline">, through the contact form at www.malcom.io</span>.
+        </p>
+        <p class="uhp-note">
+          The two calculators are the open-source
+          <a href="https://github.com/Malcom-IO/oregon-uhp-explainer" rel="noopener">Oregon UHP explainer calculator</a>
+          (MIT license), version {{ uhpVersion }}.
         </p>
         <p class="uhp-note">
           The author's own view of how the plan is paid for is on a

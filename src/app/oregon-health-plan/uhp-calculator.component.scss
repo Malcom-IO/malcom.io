@@ -1,0 +1,33 @@
+// The open-source widget's public color tokens, set to the site's own, so both
+// site themes flow through. The widget scopes its rules under .oregon-uhp. This
+// component has no view encapsulation, so the selector names the element.
+app-uhp-calculator {
+  display: block;
+  margin-top: 2rem;
+  --uhp-surface: var(--ground);
+  --uhp-paper: var(--surface);
+  --uhp-ink: var(--text);
+  --uhp-muted: var(--muted);
+  --uhp-line: var(--line);
+  --uhp-control-line: var(--control-border);
+  --uhp-grid: var(--line-soft);
+  --uhp-accent: var(--brand);
+  --uhp-status: color-mix(in srgb, var(--caution) 9%, var(--surface));
+  --uhp-error: var(--warn);
+  --uhp-series-1: var(--s1);
+  --uhp-series-2: var(--s2);
+  --uhp-series-3: var(--s3);
+  --uhp-series-4: var(--s4);
+  --uhp-series-5: var(--s5);
+  --uhp-font: var(--sans);
+  // Flush with the page column, not centered at 72em inside its own padding.
+  --uhp-max-width: none;
+  --uhp-padding: 0;
+}
+
+// A calculator cannot work on paper; the page prints a pointer to the web page.
+@media print {
+  app-uhp-calculator {
+    display: none;
+  }
+}

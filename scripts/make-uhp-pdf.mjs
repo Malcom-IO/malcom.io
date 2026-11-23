@@ -184,16 +184,18 @@ async function render(cdp, origin, { route: ROUTE, file }) {
     await send('Emulation.setEmulatedMedia', { media: 'print' });
     await send('Page.navigate', { url: origin + ROUTE });
 
-    // Wait for the app to take over: the chart only draws its lines in the browser.
+    // Wait for the app to take over. Each page has something only the browser
+    // draws: the opinion page its chart lines, the explainer its calculator
+    // (mounted though hidden in print).
     const drawn = await evaluate(`new Promise((resolve) => {
       const started = Date.now();
       (function check() {
-        if (document.querySelector('.uhp-plot path.series')) return resolve(true);
+        if (document.querySelector('.uhp-plot path.series, app-uhp-calculator .oregon-uhp')) return resolve(true);
         if (Date.now() - started > 20000) return resolve(false);
         setTimeout(check, 100);
       })();
     })`);
-    if (!drawn) throw new Error('The page did not finish rendering (no chart lines after 20s).');
+    if (!drawn) throw new Error('The page did not finish rendering (no chart lines or calculator after 20s).');
 
     const counts = await evaluate(`(async () => {
       // The site starts dark; the PDF is the light theme.
