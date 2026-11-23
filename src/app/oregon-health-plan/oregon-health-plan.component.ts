@@ -15,7 +15,7 @@ import { MODELS, RevenueModel, SCENARIOS, payrollTax } from './uhp-model';
 
 import { HOUSEHOLD_ROWS } from './uhp-households';
 import { UhpCalculatorComponent } from './uhp-calculator.component';
-import { version as uhpCalculatorVersion } from 'oregon-uhp-calculator/package.json';
+import { version as uhpCalculatorVersion } from 'oregon-uhp-explainer/package.json';
 import {
   BEST,
   BOARD,

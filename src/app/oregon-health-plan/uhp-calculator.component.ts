@@ -9,11 +9,11 @@ import {
   inject,
   input,
 } from '@angular/core';
-import type { WidgetOptions } from 'oregon-uhp-calculator';
+import type { WidgetOptions } from 'oregon-uhp-explainer';
 import { ThemeService } from '../shared/theme.service';
 
 /**
- * The open-source Oregon UHP calculator (npm `oregon-uhp-calculator`, source at
+ * The open-source Oregon UHP calculator (npm `oregon-uhp-explainer`, source at
  * github.com/Malcom-IO/oregon-uhp-explainer, MIT), pinned to an exact version in
  * package.json and mounted in the browser only. With `header: false` the page
  * around it must state the title, the source snapshot and that the calculator
@@ -28,7 +28,7 @@ import { ThemeService } from '../shared/theme.service';
   selector: 'app-uhp-calculator',
   template: '',
   styleUrls: [
-    '../../../node_modules/oregon-uhp-calculator/oregon-uhp.css',
+    '../../../node_modules/oregon-uhp-explainer/oregon-uhp.css',
     './uhp-calculator.component.scss',
   ],
   encapsulation: ViewEncapsulation.None,
@@ -60,7 +60,7 @@ export class UhpCalculatorComponent {
 
     // Browser only: imported here, the widget never runs during prerendering.
     afterNextRender(() => {
-      import('oregon-uhp-calculator').then(
+      import('oregon-uhp-explainer').then(
         ({ mount }) => {
           if (gone) return;
           const options: WidgetOptions = {
