@@ -50,6 +50,12 @@ jobs:
       - name: Add 404 fallback
         run: cp dist/browser/index.csr.html dist/browser/404.html
 
+      # The build strips license comments from bundles and writes the notices of
+      # every bundled package (MIT and others require them) beside the site, not
+      # in it. Publish them at /3rdpartylicenses.txt.
+      - name: Publish third-party licenses
+        run: cp dist/3rdpartylicenses.txt dist/browser/3rdpartylicenses.txt
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
